@@ -1,0 +1,78 @@
+/* Global */
+:root {
+  /* Color */
+  --color-white: #ffffff;
+  --color-light-white: #eeeeee;
+  --color-dark-white: #bdbdbd;
+  --color-grey: #616161;
+  --color-dark-grey: #4d4d4d;
+  --color-light-grey: #7c7979;
+  --color-black: #000000;
+  --color-red: #E64E39;
+  --color-dark-blue: #2A3B59;
+  --color-blue: #01BABD;
+  --color-light-blue: rgb(174, 213, 245, 0.3);
+  --color-green: #9CBB3A;
+  --color-orange: #F9A634;
+  --color-beigie: #ffe5d2;
+
+  /* Font size */
+  --font-large: 50px;
+  --font-medium: 40px;
+  --font-regular: 24px;
+  --font-small: 20px;
+  --font-micro: 14px;
+
+  /* Font weight */
+  --weight-bold: 700;
+  --weight-semi-bold: 400;
+  --weight-regular: 300;
+
+  /* Size */
+  --size-border-radius: 4px;
+
+  /* Animation */
+  --animation-duration: 300ms;
+};
+
+/* Universal tags */
+*{
+  box-sizing: border-box;
+}
+
+body{
+  margin: 0px;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: default;
+  font-size: var(--font-regular);
+  position: relative;
+  height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-dark-beige);
+}
+
+ul {
+  padding-left: 0px;
+  margin: 0px;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  color: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 0px;
+}
+
+input {
+  border: none;
+  outline: none;
+  padding: 0px;
+}
