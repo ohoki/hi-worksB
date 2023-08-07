@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<!-- <definition name="home" extends="companyTemplate">
+		<put-attribute name="content" value="/WEB-INF/views/home.jsp"/>
+	</definition> -->
+
+	<!-- 로그인/회원가입 페이지 -->
+	<definition name="loginTemplate" template="/WEB-INF/views/tiles/membership/membershipLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/tiles/membership/memHeader.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/membership/memFooter.jsp"/>
+	</definition>
+	
+	<definition name="membership/*" extends="loginTemplate">
+		<put-attribute name="content" value="/WEB-INF/views/membership/{1}.jsp"/>
+	</definition>
+	
+	<!-- 회사페이지 -->
+	<definition name="companyTemplate" template="/WEB-INF/views/tiles/company/mainLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/tiles/company/mainHeader.jsp"/>
+		<put-attribute name="aside" value="/WEB-INF/views/tiles/company/mainAside.jsp"/>
+	</definition>
+
+	<definition name="*/*" extends="companyTemplate">
+		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"/>
+	</definition>
+	
+	<!-- 관리자페이지 -->
+	<definition name="adminTemplate" template="/WEB-INF/views/tiles/admin/adminLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/tiles/company/mainHeader.jsp"/>
+		<put-attribute name="aside" value="/WEB-INF/views/tiles/admin/adminAside.jsp"/>
+	</definition>
+	
+	<definition name="admin/*" extends="adminTemplate">
+		<put-attribute name="content" value="/WEB-INF/views/admin/{1}.jsp"/>
+	</definition>
+</tiles-definitions>

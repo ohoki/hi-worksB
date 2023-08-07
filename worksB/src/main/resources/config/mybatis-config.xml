@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+<configuration>
+	<settings>
+		<!-- 변수이름 통일 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<!-- null에 대한 처리 -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	<typeAliases>
+		<!-- *는 못쓰기 때문에 풀 경로를 지정해줘야함 -->
+		<package name="com.worksb.hi"/>
+	</typeAliases>
+	<typeHandlers>
+		<!-- java.util.Date로 변환 -->
+		<typeHandler javaType="java.sql.Date" handler="org.apache.ibatis.type.DateTypeHandler"/>
+	</typeHandlers>
+</configuration>
+  
