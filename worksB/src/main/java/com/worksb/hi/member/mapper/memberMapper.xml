@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.worksb.hi.member.mapper.MemberMapper">
+  	<insert id="inserMemberInfo" parameterType="MemberVO">
+  		INSERT INTO member (
+  							member_id, 
+  							member_name,
+  							member_pw,
+  							member_phone,
+  							member_grade
+  							)
+  					VALUES (
+  							#{memberId},
+  							#{memberName},
+  							#{memberPw},
+  							#{memberPhone}
+  							,(SELECT literal FROM code_tree WHERE subcode = 'H3')
+  							)
+  	</insert>
+  </mapper>
