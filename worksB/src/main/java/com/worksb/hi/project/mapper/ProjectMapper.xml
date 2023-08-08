@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.project.mapper.ProjectMapper">
+<!-- 이진 -->
 	<insert id="insertProject" parameterType="ProjectVO">
 		<selectKey keyProperty="projectId" resultType="int" order="BEFORE">
 			SELECT NVL(MAX(projectId), 0) + 1
@@ -23,4 +24,22 @@
 						null
 						)
 	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<!-- 	주현 -->
 </mapper>

@@ -11,11 +11,20 @@ import com.worksb.hi.project.service.ProjectVO;
 @Controller
 public class ProjectController {
 	@Autowired
+	//이진
 	ProjectService projectService;
 	
+	
+	
+	//주현
+	
+	
+	
+	
+	//이진
 	@GetMapping("/projectInsert")
 	public String projectInsertForm() {
-		// 해당 회사의 부서이름 받아와서 나타내야됨!!
+		// �빐�떦 �쉶�궗�쓽 遺��꽌�씠由� 諛쏆븘���꽌 �굹���궡�빞�맖!!
 		
 		return "project/projectInsert";
 	}
@@ -34,9 +43,23 @@ public class ProjectController {
 			projectVO.setManagerAccp("A2");
 		}
 		
-		// 부서이름 나타낼 코드작성해야됨!!
+		// 遺��꽌�씠由� �굹���궪 肄붾뱶�옉�꽦�빐�빞�맖!!
 		
 		projectService.insertProject(projectVO);
 		return "home";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//주현
 }
