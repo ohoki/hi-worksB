@@ -5,7 +5,8 @@ import com.worksb.hi.project.service.ProjectVO;
 public interface ProjectMapper {
 	//이진
 	public int insertProject(ProjectVO projectVO);
-	
+	public int updateProject(ProjectVO projectVO);
+	public ProjectVO getProjectInfo(ProjectVO projectVO);
 	
 	
 	
