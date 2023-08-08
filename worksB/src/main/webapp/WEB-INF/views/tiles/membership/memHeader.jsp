@@ -1,46 +1,70 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<link rel="canonical"
-	href="https://getbootstrap.com/docs/5.3/examples/headers/">
-<link href="${pageContext.request.contextPath }/resources/headers.css"
-	rel="stylesheet">
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
 
-<main>
-	<nav class="py-2 bg-body-tertiary border-bottom">
-		<div class="container d-flex flex-wrap">
-			<ul class="nav me-auto">
-				<li class="nav-item"><a
-					href="${pageContext.request.contextPath }/"
-					class="nav-link link-body-emphasis px-2 active" aria-current="page">Home</a></li>
-				<li class="nav-item"><a href="boardList"
-					class="nav-link link-body-emphasis px-2">Board List</a></li>
-				<li class="nav-item"><a href="boardInsert"
-					class="nav-link link-body-emphasis px-2">Board Insert</a></li>
-				<li class="nav-item"><a href="mandalart"
-					class="nav-link link-body-emphasis px-2">점심 뭐먹지</a></li>
-				<li class="nav-item"><a href="#"
-					class="nav-link link-body-emphasis px-2">About</a></li>
-			</ul>
-			<ul class="nav">
-				<li class="nav-item"><a href="#"
-					class="nav-link link-body-emphasis px-2">Login</a></li>
-				<li class="nav-item"><a href="#"
-					class="nav-link link-body-emphasis px-2">Sign up</a></li>
-			</ul>
+<title>접속 페이지</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/home.css">
+<script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
+</head>
+<style>
+.index-header{
+	justify-content: space-between;
+}
+.index-header__logo{
+	display: flex;
+	margin-left: 0 !important;
+	align-items: center;
+}
+.index-header_btns {
+	margin-right: 50px !important;
+}
+
+.index-header_btn {
+	width: 100px;
+	height: 40px;
+	margin-left: 20px;
+	background-color: rgb(174, 213, 245);
+	border-radius: 5px;
+	color: var(--color-white);
+	font-weight: var(--weight-bold);
+}
+
+.index-header_btn:hover, .active{
+	background-color: var(--color-white);
+	border-radius: 5px;
+	color: rgb(174, 213, 245);
+	font-weight: var(--weight-bold);
+	border: 1px solid rgb(174, 213, 245);
+}
+</style>
+<body>
+	<!--header-->
+	<header class="index-header">
+		<div class="index-header__logo">
+			<a href="home"><img src="${pageContext.request.contextPath }/resources/img/company_logo.png" alt="worksB 로고"></a>
+			<div>
+				<span>w</span> <span>o</span> <span>r</span> <span>k</span> <span>s</span>
+				<span>B</span>
+			</div>
 		</div>
-	</nav>
-
-	<header class="py-3 mb-4 border-bottom">
-		<div class="container d-flex flex-wrap justify-content-center">
-			<a href="${pageContext.request.contextPath }"
-				class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
-				<span><span class="glyphicon glyphicon-home" aria-hidden="true">
-				</span></span> <span class="fs-4">나는 헤드야</span>
-			</a>
-			<form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
-				<input type="search" class="form-control" placeholder="검색아직안됨..."
-					aria-label="Search">
-			</form>
+		<div class="index-header_btns">
+			<button type="button" class="index-header_btn active" id="loginBtn" value="로그인">로그인</button>
+			<button type="button" class="index-header_btn" id="registerBtn" value="회원가입">회원가입</button>
 		</div>
 	</header>
-</main>
+	<script>
+		$('.index-header_btn').on('click', function(e) {
+			let loginBtn = $('#loginBtn');
+			let registerBtn = $('#registerBtn');
+			if(e.currentTarget.value == '로그인') {
+				location.href='loginForm';
+			}else if(e.currentTarget.value == '회원가입') {
+				location.href='registerForm';
+			}	
+		});
+	</script>
+</body>
+</html>

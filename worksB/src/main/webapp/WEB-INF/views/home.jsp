@@ -16,9 +16,7 @@
 <body>
 	<!--header-->
 	<header class="index-header">
-		<img
-			src="${pageContext.request.contextPath }/resources/img/company_logo.png"
-			alt="worksB 로고">
+		<a href="home"><img src="${pageContext.request.contextPath }/resources/img/company_logo.png" alt="worksB 로고"></a>
 		<div>
 			<span>w</span> <span>o</span> <span>r</span> <span>k</span> <span>s</span>
 			<span>B</span>
@@ -39,7 +37,7 @@
 				<span>w</span> <span>o</span> <span>r</span> <span>k</span> <span>s</span>
 				<span><a href="home">B</a></span>
 			</h1>
-			<button type="${pageContext.request.contextPath }">시작하기</button>
+			<button type="button" onclick="location.href='loginForm'">시작하기</button>
 		</div>
 	</main>
 	<!--footer-->
