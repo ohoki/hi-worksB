@@ -1,7 +1,7 @@
 package com.worksb.hi.project.service;
 
 public interface ProjectService {
-	//ÀÌÁø
+	//ì´ì§„
 	public int insertProject(ProjectVO projectVO);
 	
 	
@@ -15,5 +15,5 @@ public interface ProjectService {
 	
 	
 	
-	//ÁÖÇö
+	//ì£¼í˜„
 }
