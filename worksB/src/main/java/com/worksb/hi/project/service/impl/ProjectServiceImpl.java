@@ -10,8 +10,15 @@ import com.worksb.hi.project.service.ProjectVO;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 	@Autowired
+	//이진
 	ProjectMapper projectMapper;
 	
+	
+	//주현
+	
+	
+	
+	//이진
 	@Override
 	public int insertProject(ProjectVO projectVO) {
 		int result = projectMapper.insertProject(projectVO);
@@ -21,5 +28,15 @@ public class ProjectServiceImpl implements ProjectService {
 			return -1 ;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//주현
 
 }
