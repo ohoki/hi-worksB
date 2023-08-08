@@ -24,7 +24,6 @@ public class ProjectController {
 	//이진
 	@GetMapping("/projectInsert")
 	public String projectInsertForm() {
-		// �빐�떦 �쉶�궗�쓽 遺��꽌�씠由� 諛쏆븘���꽌 �굹���궡�빞�맖!!
 		
 		return "project/projectInsert";
 	}
@@ -43,7 +42,6 @@ public class ProjectController {
 			projectVO.setManagerAccp("A2");
 		}
 		
-		// 遺��꽌�씠由� �굹���궪 肄붾뱶�옉�꽦�빐�빞�맖!!
 		
 		projectService.insertProject(projectVO);
 		return "home";

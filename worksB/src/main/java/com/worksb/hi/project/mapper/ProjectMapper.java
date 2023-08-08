@@ -3,7 +3,7 @@ package com.worksb.hi.project.mapper;
 import com.worksb.hi.project.service.ProjectVO;
 
 public interface ProjectMapper {
-	//ÀÌÁø
+	//ì´ì§„
 	public int insertProject(ProjectVO projectVO);
 	
 	
@@ -32,5 +32,5 @@ public interface ProjectMapper {
 	
 	
 	
-	//ÁÖÇö
+	//ì£¼í˜„
 }

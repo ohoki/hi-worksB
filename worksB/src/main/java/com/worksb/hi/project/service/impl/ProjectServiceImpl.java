@@ -10,15 +10,15 @@ import com.worksb.hi.project.service.ProjectVO;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 	@Autowired
-	//ÀÌÁø
+	//ì´ì§„
 	ProjectMapper projectMapper;
 	
 	
-	//ÁÖÇö
+	//ì£¼í˜„
 	
 	
 	
-	//ÀÌÁø
+	//ì´ì§„
 	@Override
 	public int insertProject(ProjectVO projectVO) {
 		int result = projectMapper.insertProject(projectVO);
@@ -37,6 +37,6 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	
 	
-	//ÁÖÇö
+	//ì£¼í˜„
 
 }

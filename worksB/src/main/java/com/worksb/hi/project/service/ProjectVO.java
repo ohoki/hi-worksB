@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ProjectVO {
-	//юлаЬ
+	//Л²╢Л╖└
 /*
 PROJECT_ID     NOT NULL NUMBER        
 PROJECT_NAME   NOT NULL VARCHAR2(100) 
@@ -36,5 +36,5 @@ PROJECT_CLS             VARCHAR2(5)
 	
 	
 	
-	//ажгЖ
+	//Лё╪М≤└
 }
