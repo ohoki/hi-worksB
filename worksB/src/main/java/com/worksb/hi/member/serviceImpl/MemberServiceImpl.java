@@ -13,6 +13,13 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	
+	//단건 조회
+	@Override
+	public MemberVO selectMember(MemberVO memberVO) {
+		return memberMapper.selectMember(memberVO);
+	}
+	
+	//회원 등록
 	@Override
 	public int insertMemberInfo(MemberVO memberVO) {
 		int result = memberMapper.inserMemberInfo(memberVO);
@@ -22,5 +29,4 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return 0;
 	}
-
 }
