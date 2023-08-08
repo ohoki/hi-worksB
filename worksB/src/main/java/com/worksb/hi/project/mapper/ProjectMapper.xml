@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.worksb.hi.project.mapper.ProjectMapper">
+	<insert id="insertProject" parameterType="ProjectVO">
+		<selectKey keyProperty="projectId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(projectId), 0) + 1
+			FROM project
+		</selectKey>
+		INSERT INTO project
+				VLAUES (
+						#{projectId},
+						#{projectName},
+						#{projectAccess},
+						#{managerAccp},
+						#{writeAccess},
+						#{updateAccess},
+						#{boardAccess},
+						#{commentAccess},
+						#{fileAccess},
+						#{departmentId},
+						null
+						)
+	</insert>
+</mapper>
