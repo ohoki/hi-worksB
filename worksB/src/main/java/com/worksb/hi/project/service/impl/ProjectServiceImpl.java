@@ -28,6 +28,24 @@ public class ProjectServiceImpl implements ProjectService {
 			return -1 ;
 		}
 	}
+
+
+	@Override
+	public int updateProject(ProjectVO projectVO) {
+		int result = projectMapper.insertProject(projectVO);
+		if(result == 1) {
+			return projectVO.getProjectId();
+		}else {
+			return -1 ;
+		}
+	}
+
+
+	@Override
+	public ProjectVO getProjectInfo(ProjectVO projectVO) {
+		
+		return projectMapper.getProjectInfo(projectVO);
+	}
 	
 	
 	
