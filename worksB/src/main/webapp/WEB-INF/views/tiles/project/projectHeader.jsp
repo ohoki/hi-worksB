@@ -13,6 +13,7 @@
             <div class="project__menu">
                 <i class="fa-regular fa-star empty-star" style="color: #4d4d4d;"></i>
                 <a href="#"><i class="fa-solid fa-ellipsis-vertical" style="color: #4d4d4d;" onclick="openSetting()"></i></a>
+                <span>프로젝트이름</span>
                 <div class="project__setting" id="setting">
                     <ul>
                         <li><a href="#">알림설정</a></li>
