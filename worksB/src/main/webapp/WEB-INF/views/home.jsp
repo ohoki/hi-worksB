@@ -37,7 +37,7 @@
 				<span>w</span> <span>o</span> <span>r</span> <span>k</span> <span>s</span>
 				<span><a href="home">B</a></span>
 			</h1>
-			<button type="button" onclick="location.href='loginForm'">시작하기</button>
+			<button type="button" onclick="location.href='loginForm?memberId='+'${cookie.memberId.value}'+'&companyId='+'${cookie.companyId.value}'">시작하기</button>
 		</div>
 	</main>
 	<!--footer-->

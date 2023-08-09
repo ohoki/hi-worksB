@@ -23,8 +23,23 @@
   							#{memberId},
   							#{memberName},
   							#{memberPw},
-  							#{memberPhone}
-  							,(SELECT literal FROM code_tree WHERE subcode = 'H3')
+  							#{memberPhone},
+  							(SELECT literal FROM code_tree WHERE subcode = 'H3')
   							)
   	</insert>
+  	
+  	<!-- 인증번호 생성 -->
+  	<update id="updateMailKey" parameterType="MemberVO">
+  		UPDATE member SET mail_key = #{mailKey} WHERE member_id = #{memberId}
+  	</update>
+  	
+  	<!-- 인증확인 -->
+  	<update id="updateMailAuth" parameterType="MemberVO">
+  		UPDATE member SET mail_auth = 1 WHERE member_id = #{memberId}
+  	</update>
+  	
+  	<!-- 회원삭제 -->
+  	<delete id="deleteMemberInfo" parameterType="String">
+  		DELETE member WHERE member_id = #{memberId}
+  	</delete>
   </mapper>

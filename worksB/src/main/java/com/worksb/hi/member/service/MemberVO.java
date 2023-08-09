@@ -18,7 +18,10 @@ public class MemberVO {
 //	CON_STATUS                 VARCHAR2(5)   
 //	COMPANY_ID        NOT NULL NUMBER        
 //	LOGIN_FAIL                 NUMBER        
-//	LOGIN_LOCK        NOT NULL VARCHAR2(5)   
+//	LOGIN_LOCK        NOT NULL VARCHAR2(5)
+//	MAIL_KEY                   VARCHAR2(50)  
+//	MAIL_AUTH                  NUMBER
+	
 	private String memberId;
 	private String memberName;
 	private String memberPw;
@@ -31,7 +34,9 @@ public class MemberVO {
 	private int deptId;
 	private String empStatus;
 	private String conStatus;
-	private int companyId;
+	private Integer companyId;
 	private int loginFail;
 	private String loginLock;
+	private String mailKey;
+	private int mailAuth;
 }

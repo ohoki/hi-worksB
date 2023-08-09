@@ -14,21 +14,21 @@
 		<form action="insertMember" method="post" class="register-form">
 			<label for="memberId">이메일
 				<div class="member-id-box">
-					<input type="email" placeholder="example@gmail.com" id="memberId" name="memberId">
+					<input type="email" placeholder="example@gmail.com" id="memberId" name="memberId" required>
 					<button type="button" class="check-id" onclick="checkId()" value="0">중복확인</button>
 				</div>
 			</label>
 			<label for="memberName">이름
-			<input type="text" placeholder="이름" id="memberName" name="memberName">
+			<input type="text" placeholder="이름" id="memberName" name="memberName" required>
 			</label>
 			<label for="memberPw">비밀번호
-			<input type="password" placeholder="비밀번호" id="memberPw" name="memberPw">
+			<input type="password" placeholder="비밀번호" id="memberPw" name="memberPw" required>
 			</label>
 			<label for="pwChek">비밀번호 확인
-			<input type="password" placeholder="비밀번호 재입력" id="pwCheck">
+			<input type="password" placeholder="비밀번호 재입력" id="pwCheck" required>
 			</label>
 			<label for="memberPhone">전화번호
-				<input type="text" placeholder="전화번호" id="memberPhone" name="memberPhone">
+				<input type="text" placeholder="전화번호" id="memberPhone" name="memberPhone" required>
 			</label>
 			<label for="consent" class="flex-box">
 				<input type="checkbox" id="consent" name="consent">(필수)서비스 이용약관, 개인정보처리방침을 확인하였고, 이에 동의합니다.
@@ -40,23 +40,49 @@
 		</form>
 	</div>
 	<script>
+		let checkIdBtn = $('.check-id');
+		
 		function checkId() {
-			let checkIdBtn = $('.check-id');
 			let id = $('#memberId').val();
 			
 			$.ajax({
 				url: 'selectMember?memberId='+id,
 				type: 'get',
-				dataType : 'json',
-	            contentType: 'application/json; charset=UTF-8',
 				success : function(data) {
-					console.log(data);
+					if(data == 'yes') {
+						alert('사용가능한 아이디 입니다.');
+						checkIdBtn.val(1);
+					} else {
+						alert('중복된 아이디 입니다.');
+					}
 				},
 				error : function(reject) {
 					console.log(reject);
 				}
 			});
-		}
+		} //checkId() -> 아이디 중복 체크
+		
+		$('form').on('submit', function(e) {
+			let memberPw = $('#memberPw').val();
+			let pwCheck = $('#pwCheck').val();
+			let consent = $('#consent');
+			
+			if(checkIdBtn.val() == 0) {
+				alert('아이디 중복체크를 확인해 주세요.');
+				$('#memberId').focus();
+				return false;
+			}
+			if(memberPw != pwCheck) { //비밀번호가 같지 않으면
+				alert('비밀번호를 확인해 주세요.');
+				$('#memberPw').focus();
+				return false;
+			}
+			if(!consent.is(':checked')) { //개인정보 동의 체크 안되면
+				alert('개인정보 수집에 동의해주세요.');
+				return false;	
+			}
+		}); //회원가입 form 제출 전 정보 확인
+		
 	</script>
 </body>
 </html>
