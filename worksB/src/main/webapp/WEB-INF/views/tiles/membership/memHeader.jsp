@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,8 +52,13 @@
 			</div>
 		</div>
 		<div class="index-header_btns">
-			<button type="button" class="index-header_btn active" id="loginBtn" value="로그인">로그인</button>
-			<button type="button" class="index-header_btn" id="registerBtn" value="회원가입">회원가입</button>
+			<c:if test="${memberId eq null}">
+				<button type="button" class="index-header_btn active" id="loginBtn" value="로그인">로그인</button>
+				<button type="button" class="index-header_btn" id="registerBtn" value="회원가입">회원가입</button>
+			</c:if>
+			<c:if test="${memberId ne null}">
+				<button type="button" class="index-header_btn active" id="logoutBtn" value="로그아웃">로그아웃</button>
+			</c:if>
 		</div>
 	</header>
 	<script>
@@ -63,7 +69,9 @@
 				location.href='loginForm';
 			}else if(e.currentTarget.value == '회원가입') {
 				location.href='registerForm';
-			}	
+			}else if(e.currentTarget.value == '로그아웃') {
+				location.href='logout';
+			}
 		});
 	</script>
 </body>
