@@ -38,11 +38,18 @@ public class HomeController {
 	}
 	
 	@GetMapping("index")
-	public void index() {}
+	public String index() {
+		return "project/index";
+	}
 	
 	@GetMapping("home")
 	public void home() {}
 	
 	@GetMapping("admin")
 	public void admin() {}
+	
+	@GetMapping("lunch")
+	public String lunch() {
+		return "lunch/lunch";
+	}
 }
