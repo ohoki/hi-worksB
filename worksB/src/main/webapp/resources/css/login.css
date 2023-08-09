@@ -1,0 +1,82 @@
+@import "root.css";
+
+.login-form-box {
+	text-align: center;
+	margin: 100px;
+	height: 500px;
+}
+
+.login-form-box__title {
+	font-size: var(--font-regular);
+}
+
+.login-form {
+	width: 20%;
+	margin: 0 auto;
+}
+
+.login-form input {
+	border: 1px solid var(--color-light-white);
+	height: 40px;
+	width: 99%;
+	display: block;
+	margin: 0 auto 20px;
+	border-radius: 5px;
+	padding-left: 1%;
+}
+
+.login-form input:focus {
+	outline: 1px solid var(--color-dark-grey);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-transition: background-color 9999s ease-out;
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color: var(--color-dark-grey) !important;
+}
+
+.searchPw {
+	text-decoration: underline;
+	display: block;
+	text-align: left;
+	font-size: var(--font-micro);
+	margin-bottom: 20px;
+}
+
+.login-form button {
+	background-color: rgb(174, 213, 245);
+	height: 50px;
+	width: 100%;
+	border-radius: 5px;
+	display: block;
+	margin: 0 auto 20px;
+	color: white;
+	font-weight: var(--weight-bold);
+	font-size: var(--font-regular);
+}
+
+.auto {
+	font-size: var(--font-micro);
+	text-align: left;
+	line-height: 20px;
+}
+
+.auto label {
+	display: flex;
+	align-items: center;
+}
+
+#autoLogin {
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	transition: background 0.2s;
+	line-height: 20px;
+	margin: 0 10px 0 0;
+	outline: none;
+}

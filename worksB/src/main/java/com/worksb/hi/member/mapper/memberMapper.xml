@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.worksb.hi.member.mapper.MemberMapper">
+  	<!-- 단건조회 -->
+  	<select id="selectMember" resultType="MemberVO">
+  		SELECT * 
+  		FROM member 
+  		WHERE member_id = #{memberId} 
+  	</select>
+  	
+	<!-- 회원 등록 -->  
+  	<insert id="inserMemberInfo" parameterType="MemberVO">
+  		INSERT INTO member (
+  							member_id, 
+  							member_name,
+  							member_pw,
+  							member_phone,
+  							member_grade
+  							)
+  					VALUES (
+  							#{memberId},
+  							#{memberName},
+  							#{memberPw},
+  							#{memberPhone},
+  							(SELECT literal FROM code_tree WHERE subcode = 'H3')
+  							)
+  	</insert>
+  	
+  	<!-- 인증번호 생성 -->
+  	<update id="updateMailKey" parameterType="MemberVO">
+  		UPDATE member SET mail_key = #{mailKey} WHERE member_id = #{memberId}
+  	</update>
+  	
+  	<!-- 인증확인 -->
+  	<update id="updateMailAuth" parameterType="MemberVO">
+  		UPDATE member SET mail_auth = 1 WHERE member_id = #{memberId}
+  	</update>
+  	
+  	<!-- 회원삭제 -->
+  	<delete id="deleteMemberInfo" parameterType="String">
+  		DELETE member WHERE member_id = #{memberId}
+  	</delete>
+  </mapper>

@@ -13,7 +13,7 @@
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/membership/memFooter.jsp"/>
 	</definition>
 	
-	<definition name="member/*" extends="loginTemplate">
+	<definition name="membership/*" extends="loginTemplate">
 		<put-attribute name="content" value="/WEB-INF/views/member/{1}.jsp"/>
 	</definition>
 	
@@ -26,6 +26,7 @@
 	
 	<definition name="project/*" extends="projectTemplate">
 		<put-attribute name="content" value="/WEB-INF/views/project/{1}.jsp"/>
+
 	</definition>
 	
 	<!-- 회사페이지 -->
@@ -39,9 +40,9 @@
 	</definition>
 	
 	<!-- 관리자페이지 -->
-	<definition name="adminTemplate" template="/WEB-INF/views/tiles/admin/adminLayout.jsp">
+	<definition name="adminTemplate" template="/WEB-INF/views/tiles/adminPage/adminLayout.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/tiles/company/mainHeader.jsp"/>
-		<put-attribute name="aside" value="/WEB-INF/views/tiles/admin/adminAside.jsp"/>
+		<put-attribute name="aside" value="/WEB-INF/views/tiles/adminPage/adminAside.jsp"/>
 	</definition>
 	
 	<definition name="admin/*" extends="adminTemplate">
