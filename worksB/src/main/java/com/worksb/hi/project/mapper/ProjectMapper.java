@@ -8,6 +8,7 @@ public interface ProjectMapper {
 	public int updateProject(ProjectVO projectVO);
 	public ProjectVO getProjectInfo(ProjectVO projectVO);
 	
+	public int deleteProject(int projectId);
 	
 	
 	

@@ -46,6 +46,17 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return projectMapper.getProjectInfo(projectVO);
 	}
+
+
+	@Override
+	public int deleteProject(int projectId) {
+		int result = projectMapper.deleteProject(projectId);
+		if(result == 1) {
+			return projectId;
+		}else {
+			return -1;
+		}
+	}
 	
 	
 	
