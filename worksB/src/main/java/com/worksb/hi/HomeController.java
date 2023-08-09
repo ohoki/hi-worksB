@@ -37,11 +37,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	@GetMapping("index")
-	public String index() {
-		return "project/index";
-	}
-	
 	@GetMapping("home")
 	public void home() {}
 	
@@ -50,6 +45,6 @@ public class HomeController {
 	
 	@GetMapping("lunch")
 	public String lunch() {
-		return "lunch/lunch";
+		return "mypage/lunch";
 	}
 }
