@@ -1,25 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>프로젝트 생성하기</title>
+<title>프로젝트 수정</title>
 <link  rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/projectInsert.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </head>
 <body>
 	<!-- 이진 -->
-    <p class="form__title">프로젝트 만들기</p>
-    <form class="project-create-form" action="projectInsert" method="post">
+    <p class="form__title">프로젝트 수정</p>
+    <form class="project-create-form" name="updateForm">
         <div>
-            <input type="text" class="form__input-title" name="projectName" placeholder="제목을 입력하세요.">
+            <input type="text" class="form__input-title" name="projectName" value="${projectInfo.projectName }">
         </div>
 
         <div class="form__divide">
             <div>
             	<!-- 부서 이름 수정!!!!! -->
                 <label>부서 선택</label>
-                <select class="form__select" name="departmentId">
+                <select class="form__select" name="departmentId" id="departmentId">
+                
                     <option value="">부서를 선택하세요.</option>
                     <option value="1">부서1</option>
                     <option value="2">부서2</option>
@@ -29,12 +32,12 @@
 
             <div>
                 <label>회사 공개로 설정</label>
-                <input type="checkbox" class="form__checkbox" name="projectAccess">
+                <input type="checkbox" class="form__checkbox" name="projectAccess" value="">
             </div>
 
             <div>
                 <label>관리자 승인 후 참여 가능</label>
-                <input type="checkbox" class="form__checkbox" name="managerAccp">
+                <input type="checkbox" class="form__checkbox" name="managerAccp" value="">
             </div>
         </div>
 		
@@ -98,8 +101,13 @@
 	        </div>
         </div>
         <div class="form__button">
-            <button type="submit">프로젝트 만들기</button>
+            <button type="submit">프로젝트 수정하기</button>
         </div>
     </form>
+    <script>
+    $(function(){
+    	$("#departmentId").val("${projectInfo.departmentId}").attr("selected","selected");
+    });
+    </script>
 </body>
 </html>

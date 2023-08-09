@@ -1,19 +1,20 @@
-@import "/css/root.css";
+@import "root.css";
 
 .form__title {
     font-size: var(--font-regular);
     text-align: center;
     color: var(--color-dark-grey);
     font-weight: var(--weight-bold);
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .project-create-form {
-    width: 700px;
+    width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 30px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
     border-radius: var(--size-border-radius);
+    background-color: #ffffff;
 }
 
 .form__divide {
@@ -37,7 +38,7 @@
     padding: 10px;
     border-radius: var(--size-border-radius);
     border: 1px solid var(--color-dark-white);
-    width: 650px;
+    width: 770px;
     font-size: var(--font-small);
     margin-bottom: 15px;
 }
@@ -77,16 +78,17 @@ button {
     padding: 10px 20px;
     border-radius: 10px;
     font-size: 18px;
+    margin-top: 15px;
 }
 
 button:hover {
-    background-color: #c5eefe;
+    background-color: #c0e6f5;
     color: #ffffff;
 }
 
 .form__select {
-    height: 36px;
-    width: 300px;
+    height: 40px;
+    width: 400px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: var(--size-border-radius);

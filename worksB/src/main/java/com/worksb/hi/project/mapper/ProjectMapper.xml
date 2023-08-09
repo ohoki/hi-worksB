@@ -3,13 +3,28 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.project.mapper.ProjectMapper">
+	<!-- 이진 -->
+	<!-- 프로젝트 등록 -->
 	<insert id="insertProject" parameterType="ProjectVO">
 		<selectKey keyProperty="projectId" resultType="int" order="BEFORE">
-			SELECT NVL(MAX(projectId), 0) + 1
+			SELECT NVL(MAX(project_id), 0) + 1
 			FROM project
 		</selectKey>
 		INSERT INTO project
-				VLAUES (
+						(
+							project_id,
+							project_name,
+							project_access,
+							manager_accp,
+							write_access,
+							update_access,
+							board_access,
+							comment_access,
+							file_access,
+							department_id	
+						)
+						
+				VALUES 	(
 						#{projectId},
 						#{projectName},
 						#{projectAccess},
@@ -19,8 +34,60 @@
 						#{boardAccess},
 						#{commentAccess},
 						#{fileAccess},
-						#{departmentId},
-						null
+						#{departmentId}
 						)
 	</insert>
+	
+	<select id="getProjectInfo" resultType="projectVO">
+		SELECT project_id,
+				project_name,
+				project_access,
+				manager_accp,
+				write_access,
+				update_access,
+				board_access,
+				comment_access,
+				file_access,
+				department_id
+		FROM project
+		WHERE project_id = #{projectId}
+	</select>
+
+	<!-- 프로젝트 수정 -->
+	<!-- 수정해야됨!!!!!!!! -->
+	<update id="updateProject" parameterType="projectVO">
+		UPDATE project
+		SET project_name = #{projectName},
+			project_access = #{projectAccess},
+			manager_accp = #{managerAccp},
+			write_access = #{writeAccess},
+			update_access = #{updateAccess},
+			board_access = #{boardAccess},
+			comment_access = #{commentAccess},
+			file_access = #{fileAccess},
+			department_id = #{departmentId}
+		WHERE project_id = #{projectId}
+	</update>
+	
+	<!-- 프로젝트 삭제 -->
+	<delete id="deleteProject" parameterType="int">
+		DELETE TABLE project
+		WHERE project_id = #{projectId}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<!-- 	주현 -->
 </mapper>

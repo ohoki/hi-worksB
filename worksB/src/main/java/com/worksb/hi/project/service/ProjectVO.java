@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ProjectVO {
+	//이진
 /*
 PROJECT_ID     NOT NULL NUMBER        
 PROJECT_NAME   NOT NULL VARCHAR2(100) 
@@ -29,4 +30,11 @@ PROJECT_CLS             VARCHAR2(5)
 	private String fileAccess;
 	private int departmentId;
 	private String projectCls;
+	
+	
+	
+	
+	
+	
+	//주현
 }
