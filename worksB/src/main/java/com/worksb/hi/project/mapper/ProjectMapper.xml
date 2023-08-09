@@ -69,6 +69,11 @@
 		WHERE project_id = #{projectId}
 	</update>
 	
+	<!-- 프로젝트 삭제 -->
+	<delete id="deleteProject" parameterType="int">
+		DELETE TABLE project
+		WHERE project_id = #{projectId}
+	</delete>
 	
 	
 	

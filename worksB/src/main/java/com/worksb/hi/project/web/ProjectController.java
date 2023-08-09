@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
@@ -55,18 +57,30 @@ public class ProjectController {
 		projectService.insertProject(projectVO);
 		return "home"; //리턴페이지 수정해야됨!!
 	}
-	// 프로젝트 수정
+	//프로젝트 수정
+	//로그인 정보 !!!
 //	@GetMapping("/projectUpdate")
 //	public String projectUpdateForm(ProjectVO projectVO, Model model) {
-//		ProjectVO vo = projectService.getProjectInfo(projectVO);
-//		model.addAttribute("projectInfo", vo);
+//		ProjectVO findVO = projectService.getProjectInfo(projectVO);
+//		model.addAttribute("projectInfo", findVO);
 //		return "project/projectUpdate";
 //	}
 //	
 //	@PostMapping("/projectUpdate")
-//	public Ma
-
+//	public String projectUpdate(ProjectVO projectVO, RedirectAttributes rtt) {
+//		projectService.updateProject(projectVO);
+//		rtt.addFlashAttribute("result", "update success");
+//		return "redirect:project
+//	}
 	
+
+
+	// 프로젝트 삭제
+	@GetMapping("/projectDelete")
+	public String projectDelete(@RequestParam(name = "projectId") int projectId) {
+		projectService.deleteProject(projectId);
+		return "redirect:projectList";
+	}
 	
 	
 	
