@@ -37,15 +37,17 @@ public class memberController {
 	
 // ========== 로그인 & 로그아웃 =====================	
 	@GetMapping("/loginForm")
-	public String loginForm(String memberId, String companyId) {
+	public String loginForm(String memberId, String companyId, HttpSession session) {
 		
-		System.out.println("companyId" + companyId);
 		if(memberId == null || memberId == "") { //자동로그인 x
 			return "membership/loginForm";
 		}
+		//자동로그인 시 세션 등록
+		session.setAttribute("memberId", memberId);
+		session.setAttribute("companyId", companyId);
 		
 		if(companyId == null || companyId == "") { // 등록된 회사 x
-			return "membership/companyRegisterForm";
+			return "membership/practiceCompany";
 		} else {
 			return "company/companyMain";
 		}
@@ -102,7 +104,7 @@ public class memberController {
 		
 		//등록된 회사 존재 여부
 		if(memberVO.getCompanyId() == null) {
-			return "membership/companyRegisterForm";
+			return "membership/practiceCompany";
 		}else {
 			return "company/companyMain";
 		}
