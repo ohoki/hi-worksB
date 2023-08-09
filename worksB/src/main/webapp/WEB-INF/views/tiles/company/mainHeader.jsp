@@ -10,7 +10,7 @@
 	<header class="header">
 		<!-- 회사 로고 -->
 		<div>
-			<a href="index"><img src="${pageContext.request.contextPath }/resources/img/logo.png" alt="회사 로고"
+			<a href="home"><img src="${pageContext.request.contextPath }/resources/img/logo.png" alt="회사 로고"
 				class="header__logo"></a>
 		</div>
 		<!-- 검색창 -->
