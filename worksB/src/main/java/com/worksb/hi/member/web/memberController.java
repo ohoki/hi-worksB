@@ -40,14 +40,14 @@ public class memberController {
 	public String loginForm(String memberId, String companyId, HttpSession session) {
 		
 		if(memberId == null || memberId == "") { //자동로그인 x
-			return "membership/loginForm";
+			return "member/loginForm";
 		}
 		//자동로그인 시 세션 등록
 		session.setAttribute("memberId", memberId);
 		session.setAttribute("companyId", companyId);
 		
 		if(companyId == null || companyId == "") { // 등록된 회사 x
-			return "membership/practiceCompany";
+			return "member/practiceCompany";
 		} else {
 			return "company/companyMain";
 		}
@@ -62,14 +62,14 @@ public class memberController {
 		if(dbMember == null) {
 			message = "해당 아이디는 회원이 아닙니다.";
 			model.addAttribute("message",message);
-			return "membership/loginForm";
+			return "member/loginForm";
 		}
 		
 		//이메일 인증 확인
 		if(dbMember.getMailAuth() == 0) {
 			message = "이메일 인증 후 로그인이 가능합니다.";
 			model.addAttribute("message",message);
-			return "membership/loginForm";
+			return "member/loginForm";
 		}
 				
 		//비밀번호 확인
@@ -78,7 +78,7 @@ public class memberController {
 		if(!dbMember.getMemberPw().equals(inputPw)) {
 			message = "비밀번호를 다시 입력해주세요.";
 			model.addAttribute("message",message);
-			return "membership/loginForm";
+			return "member/loginForm";
 		}
 		
 		//자동로그인 여부
@@ -104,7 +104,7 @@ public class memberController {
 		
 		//등록된 회사 존재 여부
 		if(memberVO.getCompanyId() == null) {
-			return "membership/practiceCompany";
+			return "member/practiceCompany";
 		}else {
 			return "company/companyMain";
 		}
@@ -136,14 +136,14 @@ public class memberController {
 		}
 		
 		model.addAttribute("message", message);
-		return "membership/loginForm";
+		return "member/loginForm";
 	}
 	
 	
 //	======== 이메일 인증 및 회원 가입 ===============
 	@GetMapping("/registerForm")
 	public String registerForm() {
-		return "membership/registerForm";
+		return "member/registerForm";
 	}//registerForm
 	
 	@PostMapping("/insertMember")
@@ -165,7 +165,7 @@ public class memberController {
 		
 		model.addAttribute("message", message);
 		
-		return "membership/loginForm";
+		return "member/loginForm";
 	}//insertMember
 	
 	@GetMapping("/registerEmail")
@@ -182,7 +182,12 @@ public class memberController {
 		}
 		
 		model.addAttribute("message", message);
- 		return "membership/emailAuthSuccess";
+ 		return "member/emailAuthSuccess";
 	}//emailConfirm
 	
+//========== 회사 등록 ==================
+	@GetMapping("companyRegisterForm")
+	public String companyRegisterForm() {
+		return "member/companyRegisterForm";
+	}
 }
