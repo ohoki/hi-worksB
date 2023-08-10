@@ -2,8 +2,11 @@ package com.worksb.hi.board.service;
 
 import java.util.Date;
 
+import lombok.Data;
+
+@Data
 public class BoardVO {
-/*
+/* 이진
 PRJ_BOARD_ID      NOT NULL NUMBER         
 PRJ_BOARD_TITLE   NOT NULL VARCHAR2(100)  
 PRJ_BOARD_SUBJECT NOT NULL VARCHAR2(3000) 

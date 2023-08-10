@@ -25,7 +25,7 @@
                     <option value="">부서를 선택하세요.</option>
                     <!-- 
                     <c:forEach items="${department}">
-        				<option value="${department.departmentId}">${department.departmentName}</option>
+        				<option value="${department.deptId}">${department.deptName}</option>
     				</c:forEach>
     				 -->
     				<option value="1">부서1</option>
