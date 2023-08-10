@@ -78,7 +78,7 @@ public class ProjectController {
 	    model.addAttribute("projectInfo", projectInfo);
 	    //부서번호 -> 부서이름
 	    
-	    return "project/projectUpdate";
+	    return "projectForm/projectUpdate";
 	}
 	
 	//프로젝트 수정

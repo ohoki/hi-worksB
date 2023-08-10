@@ -21,7 +21,7 @@
             <div>
             	<!-- 부서 이름 수정!!!!! -->
                 <label>부서 선택</label>
-                <select class="form__select" name="departmentId">
+                <select class="form__select" name="deptId" required>
                     <option value="">부서를 선택하세요.</option>
                     <!-- 
                     <c:forEach items="${department}">
