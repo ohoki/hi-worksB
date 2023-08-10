@@ -1,4 +1,4 @@
-package com.worksb.hi.member.serviceImpl;
+package com.worksb.hi.member.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
