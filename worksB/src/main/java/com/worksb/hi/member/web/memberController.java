@@ -42,6 +42,7 @@ public class memberController {
 		if(memberId == null || memberId == "") { //자동로그인 x
 			return "member/loginForm";
 		}
+		
 		//자동로그인 시 세션 등록
 		session.setAttribute("memberId", memberId);
 		session.setAttribute("companyId", companyId);
@@ -98,6 +99,7 @@ public class memberController {
 
 		//세션등록
 		session.setAttribute("memberId", memberVO.getMemberId());
+		session.setAttribute("companyId", memberVO.getCompanyId());
 		
 		message = "정상적으로 로그인되었습니다.";
 		model.addAttribute("message",message);
