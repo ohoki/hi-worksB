@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.worksb.hi.board.mapper.BoardMapper">
+	<!-- 이진 -->
+	<!-- 게시글 등록 -->
+	<insert id="insertBoard" parameterType="BoardVO">
+		<selectKey keyProperty="prjBoardId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(prj_board_id), 0) + 1
+			FROM prj_board
+		</selectKey>
+		INSERT INTO prj_board
+						(
+							prj_board_id
+							, prj_board_title
+							, prj_board_subject
+							, prj_board_regate
+							, member_id
+							, insp_yn
+							<if test="pinYn != null">
+							, pin_yn
+							</if>
+							, board_type
+							, project_id
+							<if test="coordinate !=null">
+							, coordinate
+							</if>
+						)
+					VALUES
+						(
+							#{prjBoardId}
+							, #{prjBoardTitle}
+							, #{prjBoardSubject}
+							, #{prjBoardRegdate}
+							, #{memberId}
+							, #{inspYn}
+							<if test="pinYn != null">
+							, #{pinYn}
+							</if>
+							, #{BoardType}
+							, #{projectId}
+							<if test="coordinate !=null">
+							, #{coordinate}
+							</if>		
+						)
+	</insert>
+</mapper>

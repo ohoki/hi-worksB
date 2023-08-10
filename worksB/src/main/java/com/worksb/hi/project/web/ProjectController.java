@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -18,7 +19,6 @@ public class ProjectController {
 	@Autowired
 	//이진
 	ProjectService projectService;
-	
 	
 	
 	//주현
@@ -30,8 +30,9 @@ public class ProjectController {
 	//프로젝트 등록 폼
 	@GetMapping("/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
+
 		String memberId = (String) session.getAttribute("memberId");
-		
+
 		//해당 회사의 부서이름 받아와야함!!
 		// companyId -> departmentId, departmentName 
 		
@@ -66,7 +67,7 @@ public class ProjectController {
 		projectService.insertProject(projectVO);
 		
 	    
-		return "redirect:/home"; //리턴페이지 수정해야됨!!
+		return "home"; //리턴페이지 수정해야됨!!
 	}
 	
 	//프로젝트 수정폼
