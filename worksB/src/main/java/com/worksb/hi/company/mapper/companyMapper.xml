@@ -3,5 +3,28 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.worksb.hi.company.mapper.CompanyMapper">
-  
+  <!-- 등록 -->
+  <insert id="insertCompany" parameterType="companyVO">
+  	<selectKey order="BEFORE" resultType="int" keyProperty="companyId">
+  		SELECT NVL(MAX(company_id), 0) + 1
+  		FROM company
+  	</selectKey>
+  	INSERT INTO company
+  		( company_id
+  		 ,company_name
+  		 ,compnay_url
+  		 ,logo_path
+  		 ,real_logo_path
+  		 ,company_addr
+  		)
+  		VALUES
+  		( #{companyId}
+  		 ,#{companyName}
+  		 ,#{companyUrl}
+  		 ,#{logoPath}
+  		 ,#{realLogoPath}
+  		 ,#{companyAddr}
+  		 ,#{admAccp}
+  		)
+  </insert>
   </mapper>

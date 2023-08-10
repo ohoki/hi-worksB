@@ -11,6 +11,7 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap"
 	rel="stylesheet">
+<script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
 </head>
 <body>
 	<header>

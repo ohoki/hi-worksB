@@ -23,6 +23,15 @@
 			<a href="${pageContext.request.contextPath }/companyRegisterForm">신규 회사 URL을 등록하시겠습니까?</a>
 		</p>
 	</form>
+	<script>
+		$(window).on('load',function() {
+			let message = '${message}';
+			
+			if(message != ''){
+				alert(message);
+			}
+		});
+	</script>
 </div>
 </body>
 </html>
