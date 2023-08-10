@@ -17,9 +17,9 @@
                 <div class="project__setting" id="setting">
                     <ul>
                         <li><a href="#">알림설정</a></li>
-                        <li><a href="#">프로젝트 나가기</a></li>
+                        <li ><a href="#">프로젝트 나가기</a></li>
                         <li><a href="#">프로젝트 수정</a></li>
-                        <li class="btn-open-modal">프로젝트 삭제</li>
+                        <li class="open-modal">프로젝트 삭제</li>
                     </ul>
                 </div>
                 <div class="modal">
@@ -50,7 +50,7 @@
         
         //모달창 열기
         const modal = document.querySelector('.modal');
-        const btnOpenModal=document.querySelector('.btn-open-modal');
+        const btnOpenModal=document.querySelector('.open-modal');
 
         btnOpenModal.addEventListener("click", ()=>{
             modal.style.display="flex";

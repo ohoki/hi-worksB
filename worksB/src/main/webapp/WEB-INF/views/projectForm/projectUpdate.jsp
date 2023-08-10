@@ -22,7 +22,7 @@
             <div>
             	<!-- 부서 이름 수정!!!!! -->
                 <label>부서 선택</label>
-                <select class="form__select" name="departmentId" id="departmentId">
+                <select class="form__select" name="deptId" id="deptId">
                 
                     <option value="">부서를 선택하세요.</option>
                     <option value="1">부서1</option>
