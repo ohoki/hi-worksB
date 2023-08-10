@@ -24,7 +24,7 @@
   							#{memberName},
   							#{memberPw},
   							#{memberPhone},
-  							(SELECT literal FROM code_tree WHERE subcode = 'H3')
+  							'H3'
   							)
   	</insert>
   	
