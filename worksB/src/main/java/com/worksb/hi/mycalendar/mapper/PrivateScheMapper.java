@@ -20,4 +20,5 @@ public interface PrivateScheMapper {
 	
 	//일정삭제
 	public int deletePsche(PrivateScheVO privateScheVO);
+	
 }
