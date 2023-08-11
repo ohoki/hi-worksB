@@ -72,7 +72,8 @@ public class ProjectController {
 	
 	//프로젝트 수정폼
 	@GetMapping("/projectUpdate")
-	public String projectUpdateForm(@RequestParam(name = "projectId") int projectId, Model model) {
+	public String projectUpdateForm(ProjectVO projectVO, @RequestParam int projectId, Model model) {
+		projectVO.setProjectId(projectId);
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	    
 	    model.addAttribute("projectInfo", projectInfo);
@@ -83,8 +84,9 @@ public class ProjectController {
 	
 	//프로젝트 수정
 	@PostMapping("/projectUpdate")
-	public String projectUpdate(ProjectVO projectVO, RedirectAttributes rtt) {
-		projectService.updateProject(projectVO);	
+	public String projectUpdate(ProjectVO projectVO, RedirectAttributes rtt, @RequestParam int projectId) {
+		
+		projectService.updateProject(projectVO);
 		rtt.addFlashAttribute("result", "update success");
 		return "redirect:/projectList";
 	}
