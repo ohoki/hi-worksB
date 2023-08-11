@@ -14,7 +14,18 @@
 	</definition>
 	
 	<definition name="membership/*" extends="loginTemplate">
-		<put-attribute name="content" value="/WEB-INF/views/membership/{1}.jsp"/>
+		<put-attribute name="content" value="/WEB-INF/views/member/{1}.jsp"/>
+	</definition>
+	
+	<!-- 프로젝트페이지 -->
+	<definition name="projectTemplate" template="/WEB-INF/views/tiles/project/projectLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/tiles/company/mainHeader.jsp"/>
+		<put-attribute name="aside" value="/WEB-INF/views/tiles/company/mainAside.jsp"/>
+		<put-attribute name="projectHeader" value="/WEB-INF/views/tiles/project/projectHeader.jsp"/>
+	</definition>
+	
+	<definition name="project/*" extends="projectTemplate">
+		<put-attribute name="content" value="/WEB-INF/views/project/{1}.jsp"/>
 	</definition>
 	
 	<!-- 회사페이지 -->
@@ -22,15 +33,15 @@
 		<put-attribute name="header" value="/WEB-INF/views/tiles/company/mainHeader.jsp"/>
 		<put-attribute name="aside" value="/WEB-INF/views/tiles/company/mainAside.jsp"/>
 	</definition>
-
+	
 	<definition name="*/*" extends="companyTemplate">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"/>
 	</definition>
 	
 	<!-- 관리자페이지 -->
-	<definition name="adminTemplate" template="/WEB-INF/views/tiles/admin/adminLayout.jsp">
+	<definition name="adminTemplate" template="/WEB-INF/views/tiles/adminPage/adminLayout.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/tiles/company/mainHeader.jsp"/>
-		<put-attribute name="aside" value="/WEB-INF/views/tiles/admin/adminAside.jsp"/>
+		<put-attribute name="aside" value="/WEB-INF/views/tiles/adminPage/adminAside.jsp"/>
 	</definition>
 	
 	<definition name="admin/*" extends="adminTemplate">

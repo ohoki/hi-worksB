@@ -37,12 +37,14 @@ public class HomeController {
 		return "home";
 	}
 	
-	@GetMapping("index")
-	public void index() {}
-	
 	@GetMapping("home")
 	public void home() {}
 	
 	@GetMapping("admin")
 	public void admin() {}
+	
+	@GetMapping("lunch")
+	public String lunch() {
+		return "mypage/lunch";
+	}
 }
