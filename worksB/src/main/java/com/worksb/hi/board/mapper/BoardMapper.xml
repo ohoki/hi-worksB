@@ -18,9 +18,6 @@
 							, prj_board_regate
 							, member_id
 							, insp_yn
-							<if test="pinYn != null">
-							, pin_yn
-							</if>
 							, board_type
 							, project_id
 							<if test="coordinate !=null">
@@ -32,13 +29,10 @@
 							#{prjBoardId}
 							, #{prjBoardTitle}
 							, #{prjBoardSubject}
-							, #{prjBoardRegdate}
+							, sysdate
 							, #{memberId}
 							, #{inspYn}
-							<if test="pinYn != null">
-							, #{pinYn}
-							</if>
-							, #{BoardType}
+							, 'C5'
 							, #{projectId}
 							<if test="coordinate !=null">
 							, #{coordinate}

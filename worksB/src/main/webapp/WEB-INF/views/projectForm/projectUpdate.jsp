@@ -20,7 +20,7 @@
 
         <div class="form__divide">
             <div>
-            	<!-- 부서 이름 수정!!!!! -->
+            	<!-- 부서선택값 수정!!!!! -->
                 <label>부서 선택</label>
                 <select class="form__select" name="deptId" id="deptId">
                 
