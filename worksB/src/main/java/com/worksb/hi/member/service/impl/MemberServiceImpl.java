@@ -75,6 +75,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.updateMailAuth(memberVO);
 	}
 	
+	//회원 수정
+	public int updateMember(MemberVO memberVO) {
+		return memberMapper.updateMember(memberVO);
+	};
+	
 	//회원 삭제
 	@Override
 	public int deleteMemberInfo(String memberId) {
