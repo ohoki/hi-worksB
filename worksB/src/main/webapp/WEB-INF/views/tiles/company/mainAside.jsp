@@ -33,7 +33,7 @@
 			<ul class="side__menu__items">
 				<li class="side__menu__item"><a>마이 캘린더</a></li>
 				<li class="side__menu__item"><a>네이버 뉴스</a></li>
-				<li class="side__menu__item"><a href="lunch">점.메.추</a></li>
+				<li class="side__menu__item"><a>점.메.추</a></li>
 			</ul>
 		</div>
 		<!-- 하단 메뉴 -->

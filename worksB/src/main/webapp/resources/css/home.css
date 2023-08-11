@@ -1,8 +1,5 @@
 @import "root.css";
 
-body {
-  background-color: #fff;
-}
 
 .index-header {
   height: 60px;
@@ -11,13 +8,10 @@ body {
   align-items: center;
 }
 
-.index-header a {
-  max-width: 100%;
-  padding-left: 50px;
-}
-
 .index-header img {
-  width: 40px;
+  max-width: 100%;
+  max-height: 50%;
+  padding-left: 50px;
 }
 
 .index-header div{
