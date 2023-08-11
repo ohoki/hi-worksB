@@ -28,7 +28,7 @@ PROJECT_CLS             VARCHAR2(5)
 	private String boardAccess;
 	private String commentAccess;
 	private String fileAccess;
-	private int departmentId;
+	private int deptId;
 	private String projectCls;
 	
 	
