@@ -38,6 +38,49 @@
   		UPDATE member SET mail_auth = 1 WHERE member_id = #{memberId}
   	</update>
   	
+  	<update id="updateMember">
+  		UPDATE member SET 	
+						member_id = member_id
+						<if test="memberName != null and !memberName.equals('')">
+						,member_name = #{memberName}
+						</if>
+						<if test="memberPw != null and !memberPw.equals('')">
+						,member_pw = #{memberPw}
+						</if>
+						<if test="memberPhone != null and !memberPhone.equals('')">
+						,member_phone = #{memberPhone}
+						</if>
+						<if test="profilePath != null and !profilePath.equals('')">
+						,profile_path = #{profilePath}
+						</if>
+						<if test="realProfilePath != null and !realProfilePath.equals('')">
+						,real_profile_path = #{realProfilePath}
+						</if>
+						<if test="memberGrade != null and !memberGrade.equals('')">
+						,member_grade = #{memberGrade}
+						</if>
+						<if test="conIp != null and !conIp.equals('')">
+						,con_ip = #{conIp}
+						</if>
+						<if test="jobId != null and jobId != 0">
+						,job_id = #{jobId}
+						</if>
+						<if test="deptId != null and deptId != 0">
+						,dept_id = #{deptId}
+						</if>
+						<if test="empStatus != null and !empStatus.equals('')">
+						,emp_status = #{empStatus}
+						</if>
+						<if test="conStatus != null and !conStatus.equals('')">
+						,con_status = #{conStatus}
+						</if>
+						<if test="companyId != null and companyId != 0">
+						,company_id = #{companyId}
+						</if>
+  					WHERE member_id = #{memberId}
+  	</update>
+  	
+  	
   	<!-- 회원삭제 -->
   	<delete id="deleteMemberInfo" parameterType="String">
   		DELETE member WHERE member_id = #{memberId}

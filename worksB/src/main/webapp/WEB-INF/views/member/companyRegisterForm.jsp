@@ -25,7 +25,7 @@
 		margin-bottom: 40px;
 	}
 	
-	#logoPath{
+	#logo{
 		margin-bottom: 5px;
 	}
 	
@@ -36,8 +36,8 @@
 	}
 	
 	.image-box {
-	    width: 200px;
-	    height: 50px;
+	    width: 400px;
+	    height: 100px;
 	    margin: 5px 0;
 	    text-align: left;
 	    margin-right: 20px;
@@ -78,8 +78,8 @@
 			<p class="logo-text">로고 설정</p>
 			<div class="flex-box">
 				<img src="${pageContext.request.contextPath }/resources/img/no-image.jpg" class="image-box" />
-				<label for="logoPath" class="upload-btn">
-	      			<input type="file" accept=".png" name="logoPath" id="logoPath" required/>
+				<label for="logo" class="upload-btn">
+	      			<input type="file" accept=".png" name="logo" id="logo" data-width="400" data-height="100"/>
 	      			<span>Upload Image</span>
       			</label>
 			</div>
@@ -95,38 +95,54 @@
 	</div>
 </body>
 <script>
-	//비동기 방식으로 이미지 파일 미리보기
-	const fileDOM = document.querySelector('#logoPath');
+	$(window).on('load',function() {
+		let message = '${message}';
+		
+		if(message != ''){
+			alert(message);
+		}
+	});
+
+	//비동기 방식으로 이미지 파일 미리보기 + 사이즈 및 용량제한
+	const fileDOM = document.querySelector('#logo');
 	const preview = document.querySelector('.image-box');
 	
+	let maxWidth = fileDOM.dataset.width;
+	let maxHeigth = fileDOM.dataset.height;
+	let maxSize = 512000;
+	
 	fileDOM.addEventListener('change', function() {
-		const reader = new FileReader();
+		//파일 용량 제한
+		if(fileDOM.files[0].size > maxSize) {
+			alert('500KB이하의 이미지만 등록할 수 있습니다.');
+			fileDOM.value = '';
+			return false;		
+		}
+	
+		//이미지 사이즈 제한
+		let img = new Image();
+		img.src = URL.createObjectURL(fileDOM.files[0]);
 		
-		reader.onload = ({ target }) => {
-			preview.src = target.result;
+		img.onload = function() {
+			if(this.width > maxWidth || this.heigth > maxHeigth) {
+				alert('400 * 100px 이미지만 등록할 수 있습니다.');
+				fileDOM.value = '';
+			} else {
+				//미리보기 이미지 출력
+				preview.src = URL.createObjectURL(fileDOM.files[0]);		
+			}
 		};
-		
-		reader.readAsDataURL(fileDOM.files[0]);
 	});
 	
-	//회사 등록
-	$('form').addEventListener('submit', function(e) {
-		let formData = new FormData();
+	//로고 없으면 알림창
+	$('form').on('submit', function(e) {
+		e.preventDefault();
 		
-		
-		$.ajax({
-			url:'',
-			type:'POST',
-			processData: false,
-			contentType: false,
-			data: formData,
-			success: function(result) {
-				console.log(result);
-			},
-			error: function(reject) {
-				console.log(reject);
-			}
-		});
+		if(fileDOM.value == '') {
+			alert("로고를 등록해주세요.");
+		}else {
+			$('form').unbind('submit');
+		}
 	});
 </script>
 </html>

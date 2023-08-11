@@ -3,6 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.worksb.hi.company.mapper.CompanyMapper">
+  <!-- 단건 조회 -->
+  <select id="getCompanyByUrl" resultType="CompanyVO">
+  	SELECT *
+  	FROM company
+  	WHERE company_url = #{companyUrl}
+  </select>
+  
   <!-- 등록 -->
   <insert id="insertCompany" parameterType="companyVO">
   	<selectKey order="BEFORE" resultType="int" keyProperty="companyId">
@@ -12,7 +19,7 @@
   	INSERT INTO company
   		( company_id
   		 ,company_name
-  		 ,compnay_url
+  		 ,company_url
   		 ,logo_path
   		 ,real_logo_path
   		 ,company_addr
@@ -24,7 +31,6 @@
   		 ,#{logoPath}
   		 ,#{realLogoPath}
   		 ,#{companyAddr}
-  		 ,#{admAccp}
   		)
   </insert>
   </mapper>

@@ -39,7 +39,7 @@ public class memberController {
 	@GetMapping("/loginForm")
 	public String loginForm(String memberId, String companyId, HttpSession session) {
 		
-		if(memberId == null || memberId == "") { //자동로그인 x
+		if(memberId == null || memberId.equals("") || memberId.equals("null")) { //자동로그인 x
 			return "member/loginForm";
 		}
 		
@@ -47,7 +47,7 @@ public class memberController {
 		session.setAttribute("memberId", memberId);
 		session.setAttribute("companyId", companyId);
 		
-		if(companyId == null || companyId == "") { // 등록된 회사 x
+		if(companyId == null || companyId.equals("") || companyId.equals("")) { // 등록된 회사가 없으면
 			return "member/practiceCompany";
 		} else {
 			return "company/companyMain";
@@ -99,13 +99,13 @@ public class memberController {
 
 		//세션등록
 		session.setAttribute("memberId", memberVO.getMemberId());
-		session.setAttribute("companyId", memberVO.getCompanyId());
+		session.setAttribute("companyId", dbMember.getCompanyId());
 		
 		message = "정상적으로 로그인되었습니다.";
 		model.addAttribute("message",message);
 		
 		//등록된 회사 존재 여부
-		if(memberVO.getCompanyId() == null) {
+		if(dbMember.getCompanyId() == null) {
 			return "member/practiceCompany";
 		}else {
 			return "company/companyMain";

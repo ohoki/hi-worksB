@@ -12,6 +12,12 @@ public class CompanyServiceImpl implements CompanyService{
 	@Autowired
 	CompanyMapper companyMapper;
 	
+	//단건 조회
+	@Override
+	public CompanyVO getCompanyByUrl(CompanyVO companyVO) {
+		return companyMapper.getCompanyByUrl(companyVO);
+	}
+	
 	//등록
 	@Override
 	public int insertCompany(CompanyVO companyVO) {
