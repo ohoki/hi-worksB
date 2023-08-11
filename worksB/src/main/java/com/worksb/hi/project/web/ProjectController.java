@@ -43,7 +43,7 @@ public class ProjectController {
 	@PostMapping("/projectInsert")
 	public String projectInsertProcess(ProjectVO projectVO, HttpSession session) {
 		if("on".equals(projectVO.getProjectAccess())){
-			// A1 : Yes
+			// 공개여부 A1 : Yes
 			projectVO.setProjectAccess("A1");
 		}else {
 			// A2 : No
@@ -51,6 +51,7 @@ public class ProjectController {
 		}
 		
 		if("on".equals(projectVO.getManagerAccp())) {
+			// 관리자 승인 필요
 			projectVO.setManagerAccp("A1");
 		}else {
 			projectVO.setManagerAccp("A2");
@@ -67,16 +68,16 @@ public class ProjectController {
 		projectService.insertProject(projectVO);
 		
 	    
-		return "home"; //리턴페이지 수정해야됨!!
+		return "project/index"; //리턴페이지 수정해야됨!! -> 프로젝트 피드홈
 	}
 	
 	//프로젝트 수정폼
 	@GetMapping("/projectUpdate")
-	public String projectUpdateForm(ProjectVO projectVO, @RequestParam int projectId, Model model) {
-		projectVO.setProjectId(projectId);
+	public String projectUpdateForm(@RequestParam int projectId, Model model) {
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	    
 	    model.addAttribute("projectInfo", projectInfo);
+	    model.addAttribute("projectId", projectId);
 	    //부서번호 -> 부서이름
 	    
 	    return "projectForm/projectUpdate";
@@ -84,11 +85,29 @@ public class ProjectController {
 	
 	//프로젝트 수정
 	@PostMapping("/projectUpdate")
-	public String projectUpdate(ProjectVO projectVO, RedirectAttributes rtt, @RequestParam int projectId) {
+	public String projectUpdate(ProjectVO projectVO) {
+		int projectId = projectVO.getProjectId();
+		
+		projectVO.setProjectId(projectId);
+		
+		if("on".equals(projectVO.getProjectAccess())){
+			// 공개여부 A1 : Yes
+			projectVO.setProjectAccess("A1");
+		}else {
+			// A2 : No
+			projectVO.setProjectAccess("A2");
+		}
+		
+		if("on".equals(projectVO.getManagerAccp())) {
+			// 관리자 승인 필요
+			projectVO.setManagerAccp("A1");
+		}else {
+			projectVO.setManagerAccp("A2");
+		}
 		
 		projectService.updateProject(projectVO);
-		rtt.addFlashAttribute("result", "update success");
-		return "redirect:/projectList";
+
+		return "project/index"; // 리턴 페이지 수정 -> 프로젝트피드홈
 	}
 	
 
@@ -97,7 +116,7 @@ public class ProjectController {
 	@GetMapping("/projectDelete")
 	public String projectDelete(@RequestParam(name = "projectId") int projectId) {
 		projectService.deleteProject(projectId);
-		return "redirect:projectList";
+		return "project/index"; // 리턴 페이지 수정 -> 프로젝트 리스트
 	}
 	
 	
