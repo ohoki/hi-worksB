@@ -96,6 +96,7 @@ public class memberController {
 
 		//세션등록
 		session.setAttribute("memberId", memberVO.getMemberId());
+		session.setAttribute("companyId", memberVO.getCompanyId());
 		
 		message = "정상적으로 로그인되었습니다.";
 		model.addAttribute("message",message);
