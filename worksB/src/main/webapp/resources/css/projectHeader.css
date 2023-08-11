@@ -1,10 +1,17 @@
 @import "root.css";
+
+.project__header {
+    margin: 0 auto;
+    width: 100%;
+    background-color: aliceblue;
+}
+
 .project__nav {
     list-style: none;
-    width: 300px;
     height: 100%;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    margin-left: 80px;
 }
 
 .project__nav a {
@@ -15,69 +22,64 @@
     font-size: 16px;
 }
 
-.project__header {
-    margin: 0 auto;
-    width: 1000px;
-}
-
-header {
-    width: 1200px;
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: aliceblue;
-}
-
-
 .project__nav li {
-    font-size:20px;
+    font-size: 20px;
     height: 100%;
     display: flex;
     align-items: center;
-}
-
-.project__title{
-    color: var(--color-dark-grey);
-    font-weight: var(--weight-bold);
-    font-size: 25px;
+    margin-right: 20px;
 }
 
 .project__nav a:hover {
     color: #303030;
 }
 
-.project__menu{
+.project__menu {
     width: 800px;
     margin-bottom: 15px;
+    margin-left: 80px;
 }
 
 .fa-regular {
     margin-right: 10px;
 }
 
-.project__setting{
-    width: 180px;
-    height: 180px;
-    position: absolute;
-    display: none;
-    margin-right: 300px;
-    border: 1px solid var(--color-light-grey);
-    border-radius: var(--size-border-radius);
-    background-color: white;
-    font-size: 13px;
-    z-index: 1;
+
+span{
+	font-size: 25px;
+	margin-left: 20px;
 }
 
-.project__setting li{
+.modal{
+    position:absolute;
+    display:none;
+    justify-content: center;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+.modal_body{
+    position:absolute;
+    top:20%;
+    left:15%;
+    width: 180px;
+    height: 190px; 
+    background-color: rgb(255,255,255);
+    border-radius:10px;
+    box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
+    transform:translateY(-50%);
+}
+
+.modal li{
     font-size: 16px;
     color: var(--color-dark-grey);
     margin: 15px;
     padding: 2px;
 }
 
-.project__setting li:hover{
+.modal li:hover{
     background-color: var(--color-light-blue);
     color: #303030;
 }
-

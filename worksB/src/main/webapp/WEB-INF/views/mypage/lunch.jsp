@@ -5,106 +5,101 @@
 <head>
 <meta charset="UTF-8">
 <title>오늘 점심 뭐먹지</title>
-<style>
-	.ojc {
-	    margin: 0 auto;
-	    align-content: center;
-	
-	}
-	.ojc__header {
-	    text-align: center;
-	}
-	.ojc__button {
-	    margin-right: 20%;
-	    text-align: right;
-	    color : black;
-	}
-	.mandalart {
-	    margin: 0 auto;
-	    width: 40%;
-	}
-	.mandalart-top {
-	    display: inline-block;
-	    margin-left: 20%;
-	}
-	#manda1 {
-	    float: left;
-	}
-	#manda2 {
-	    float: left;
-	}
-	.mandalart-mid {
-	    display: inline-block;
-	}
-	#manda4 {
-	    float: left;
-	}
-	#manda {
-	    float: left;
-	}
-	.mandalart-bot {
-	    display: inline-block;
-	}
-	#manda6 {
-	    float: left;
-	}
-	#manda7 {
-	    float: left;
-	}
-	.cover-black{
-	    background-color : black;
-	}
-	.reveal-gray{
-	    background-color: gray;
-	}
-	.mandalart{
-	    background-color: gray;
-	}
-	.mandalart td {
-	    width: 75px;
-	    height: 75px;
-	    text-align: center;
-	    font-size: small;
-	    border: 1px solid white;
-	}
-	
-	.map_wrap, .map_wrap * {padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-	.map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-	.map_wrap {position:relative;width:100%;height:500px;}
-	#menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
-	.bg_white {background:#fff;}
-	#menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
-	#menu_wrap .option{text-align: center;}
-	#menu_wrap .option p {margin:10px 0;}  
-	#menu_wrap .option button {margin-left:5px;}
-	#placesList li {list-style: none;}
-	#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
-	#placesList .item span {display: block;margin-top:4px;}
-	#placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-	#placesList .item .info{padding:10px 0 10px 55px;}
-	#placesList .info .gray {color:#8a8a8a;}
-	#placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
-	#placesList .info .tel {color:#009900;}
-	#placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
-	#placesList .item .marker_1 {background-position: 0 -10px;}
-	#placesList .item .marker_2 {background-position: 0 -56px;}
-	#placesList .item .marker_3 {background-position: 0 -102px}
-	#placesList .item .marker_4 {background-position: 0 -148px;}
-	#placesList .item .marker_5 {background-position: 0 -194px;}
-	#placesList .item .marker_6 {background-position: 0 -240px;}
-	#placesList .item .marker_7 {background-position: 0 -286px;}
-	#placesList .item .marker_8 {background-position: 0 -332px;}
-	#placesList .item .marker_9 {background-position: 0 -378px;}
-	#placesList .item .marker_10 {background-position: 0 -423px;}
-	#placesList .item .marker_11 {background-position: 0 -470px;}
-	#placesList .item .marker_12 {background-position: 0 -516px;}
-	#placesList .item .marker_13 {background-position: 0 -562px;}
-	#placesList .item .marker_14 {background-position: 0 -608px;}
-	#placesList .item .marker_15 {background-position: 0 -654px;}
-	#pagination {margin:10px auto;text-align: center;}
-	#pagination a {display:inline-block;margin-right:10px;}
-	#pagination .on {font-weight: bold; cursor: default;color:#777;}
-</style>
+    <style>
+        .ojc {
+            margin: 0 auto;
+
+        }
+        .ojc__header {
+            text-align: center;
+        }
+        .ojc__button {
+            margin-right: 20%;
+            text-align: right;
+            color: black;
+        }
+        .mandalart {
+            margin: 0 auto;
+            width: 40%;
+            overflow: hidden;
+            background-color: gray;
+        }
+        .mandalart-top {
+            display: flex;
+            text-align: center;
+        }
+        .mandalart-top div{
+            float: left;
+            width: 33%;
+        }
+        .mandalart-mid {
+            align-items: center;
+            text-align: center;
+        }
+        .mandalart-mid div{
+            float: left;
+            width: 33%;
+        }
+        .mandalart-bot {
+            align-items: center;
+            text-align: center;
+        }
+        .mandalart-bot div{
+            float: left;
+            width: 33%;
+        }
+        .cover-black{
+            background-color : black;
+        }
+        .reveal-gray{
+            background-color: gray;
+        }
+        .mandalart td {
+            width: 75px;
+            height: 75px;
+            text-align: center;
+            font-size: small;
+            border: 1px solid white;
+        }
+
+        .map_wrap, .map_wrap * {padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+        .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
+        .map_wrap {position:relative;width:100%;height:500px;}
+        #menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 0.7);z-index: 1;font-size:12px;border-radius: 10px;}
+        .bg_white {background:#fff;}
+        #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
+        #menu_wrap .option{text-align: center;}
+        #menu_wrap .option p {margin:10px 0;}  
+        #menu_wrap .option button {margin-left:5px;}
+        #placesList li {list-style: none;}
+        #placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
+        #placesList .item span {display: block;margin-top:4px;}
+        #placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+        #placesList .item .info{padding:10px 0 10px 55px;}
+        #placesList .info .gray {color:#8a8a8a;}
+        #placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
+        #placesList .info .tel {color:#009900;}
+        #placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
+        #placesList .item .marker_1 {background-position: 0 -10px;}
+        #placesList .item .marker_2 {background-position: 0 -56px;}
+        #placesList .item .marker_3 {background-position: 0 -102px}
+        #placesList .item .marker_4 {background-position: 0 -148px;}
+        #placesList .item .marker_5 {background-position: 0 -194px;}
+        #placesList .item .marker_6 {background-position: 0 -240px;}
+        #placesList .item .marker_7 {background-position: 0 -286px;}
+        #placesList .item .marker_8 {background-position: 0 -332px;}
+        #placesList .item .marker_9 {background-position: 0 -378px;}
+        #placesList .item .marker_10 {background-position: 0 -423px;}
+        #placesList .item .marker_11 {background-position: 0 -470px;}
+        #placesList .item .marker_12 {background-position: 0 -516px;}
+        #placesList .item .marker_13 {background-position: 0 -562px;}
+        #placesList .item .marker_14 {background-position: 0 -608px;}
+        #placesList .item .marker_15 {background-position: 0 -654px;}
+        #pagination {margin:10px auto;text-align: center;}
+        #pagination a {display:inline-block;margin-right:10px;}
+        #pagination .on {font-weight: bold; cursor: default;color:#777;}
+
+    </style>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -125,12 +120,14 @@
                 <span>점심 메뉴가 고민인 당신! 점심 메뉴를 랜덤으로 골라보세요</span>
             </div>
         </div>
-        <div class="ojc__button">
-            <button class="ojc__button-random" onclick="allRandomMenu()">랜덤 메뉴</button>
-            <button class="ojc__button-ranAll" onclick="allRandomCategory()">전체 랜덤</button>
+        <div class="ojc__btn-group">
+	        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+	            <button class="btn btn-primary" onclick="allRandomMenu()">랜덤 메뉴</button>
+	            <button class="btn btn-primary" onclick="allRandomCategory()">전체 랜덤</button>
+	        </div>
         </div>
         <div class="mandalart">
-            <div class="madalart-top">
+            <div class="mandalart-top">
                 <div id="manda1">
                 </div>
                 <div id="manda2">
@@ -138,7 +135,7 @@
                 <div id="manda3">
                 </div>
             </div>
-            <div class="madalart-mid">
+            <div class="mandalart-mid">
                 <div id="manda4">
                 </div>
                 <div id="manda">
@@ -146,7 +143,7 @@
                 <div id="manda5">
                 </div>
             </div>
-            <div class="madalart-bot">
+            <div class="mandalart-bot">
                 <div id="manda6">
                 </div>
                 <div id="manda7">

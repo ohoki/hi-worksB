@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.worksb.hi.company.mapper.CompanyMapper">
+  <!-- 단건 조회 -->
+  <select id="getCompanyByUrl" resultType="CompanyVO">
+  	SELECT *
+  	FROM company
+  	WHERE company_url = #{companyUrl}
+  </select>
+  
+  <!-- 등록 -->
+  <insert id="insertCompany" parameterType="companyVO">
+  	<selectKey order="BEFORE" resultType="int" keyProperty="companyId">
+  		SELECT NVL(MAX(company_id), 0) + 1
+  		FROM company
+  	</selectKey>
+  	INSERT INTO company
+  		( company_id
+  		 ,company_name
+  		 ,company_url
+  		 ,logo_path
+  		 ,real_logo_path
+  		 ,company_addr
+  		)
+  		VALUES
+  		( #{companyId}
+  		 ,#{companyName}
+  		 ,#{companyUrl}
+  		 ,#{logoPath}
+  		 ,#{realLogoPath}
+  		 ,#{companyAddr}
+  		)
+  </insert>
+  </mapper>

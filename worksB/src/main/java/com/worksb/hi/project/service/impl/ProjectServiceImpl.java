@@ -1,5 +1,7 @@
 package com.worksb.hi.project.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +44,9 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public ProjectVO getProjectInfo(ProjectVO projectVO) {
+	public ProjectVO getProjectInfo(int projectId) {
 		
-		return projectMapper.getProjectInfo(projectVO);
+		return projectMapper.getProjectInfo(projectId);
 	}
 
 
@@ -57,7 +59,8 @@ public class ProjectServiceImpl implements ProjectService {
 			return -1;
 		}
 	}
-	
+
+
 	
 	
 	

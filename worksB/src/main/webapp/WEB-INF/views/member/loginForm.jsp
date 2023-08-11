@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>로그인 폼</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/login.css">
-<script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
 </head>
 <body>
 	<div class="login-form-box">
