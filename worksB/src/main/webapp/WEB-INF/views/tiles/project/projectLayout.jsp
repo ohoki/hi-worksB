@@ -14,6 +14,7 @@
 <script src="https://kit.fontawesome.com/8af996bb56.js" crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/projectHeader.css">
+<script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
 <style >
 	.main-page {
 		display: flex;
