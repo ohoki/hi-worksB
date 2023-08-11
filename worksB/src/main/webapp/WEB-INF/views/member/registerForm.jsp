@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/register.css">
-<script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
 </head>
 <body>
 	<div class="register-form-box">

@@ -1,4 +1,4 @@
-package com.worksb.hi.member.serviceImpl;
+package com.worksb.hi.member.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -74,6 +74,11 @@ public class MemberServiceImpl implements MemberService {
 	public int updateMailAuth(MemberVO memberVO) {
 		return memberMapper.updateMailAuth(memberVO);
 	}
+	
+	//회원 수정
+	public int updateMember(MemberVO memberVO) {
+		return memberMapper.updateMember(memberVO);
+	};
 	
 	//회원 삭제
 	@Override

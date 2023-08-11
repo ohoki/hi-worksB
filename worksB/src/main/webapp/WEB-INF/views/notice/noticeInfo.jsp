@@ -79,25 +79,26 @@ div h2 {
 	float: left;
 	width: 800px;
 	padding: 2px;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.199);
-	border-top: 1px solid rgba(0, 0, 0, 0.199);
+	border-bottom: 1px solid rgb(174, 213, 245);
+	border-top: 1px solid rgb(174, 213, 245);
 	
 }
 
 .buttonss {
 	width: 800px;
 	height: 50px;
-	border-bottom: solid 1px rgba(0, 0, 0, 0.199);
+	border-bottom: 1px solid rgb(174, 213, 245);
 }
 
 .button1 {
 	float: left;
 	margin-top: 5px;
+	color: black;
 }
 
 .buttons {
 	float: right;
-	width: 90px;
+	width: 103px;
 	margin-top: 5px;
 }
 
@@ -105,6 +106,16 @@ div h2 {
 	float: left;
 	margin-right: 3px;
 }
+
+.buttonss__button {
+	background-color: rgb(174, 213, 245);
+    border-radius: 5px;
+    color: white;
+    width: 50px;
+    height: 30px;
+    font-weight: bold;
+}
+
 </style>
 </head>
 <body>
@@ -126,8 +137,7 @@ div h2 {
 						<td>
 							<div class="contents">
 								<div class="writer">
-									<p class="writer__p">${memberId} 회원 이름 나오는곳<!-- 작성자 넣는칸 -->
-									</p>
+									<p class="writer__p">${memberId} 회원 이름 나오는곳<!-- 작성자 넣는칸 --></p>
 								</div>
 								<div class="date">
 									<p class="date__date">조회수 ${noticeInfo.boardHit } | <fmt:formatDate value="${noticeInfo.boardRegdate}" pattern="yyyy/MM/dd HH:mm:ss"/></p>
@@ -148,11 +158,11 @@ div h2 {
 		</form>
 		<div class="buttonss">
 			<div class="button1">
-				<button type="button">목록</button>
+				<button type="button" class="buttonss__button" onclick="location.href='noticeList'">목록</button>
 			</div>
 			<div class="buttons">
-				<button type="button">수정</button>
-				<button type="button">삭제</button>
+				<button type="button" class="buttonss__button" onclick="location.href='noticeUpdate'">수정</button>
+				<button type="button" class="buttonss__button">삭제</button>
 			</div>
 		</div>
 	</div>

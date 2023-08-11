@@ -16,6 +16,7 @@
 	rel="stylesheet">
 <script src="https://kit.fontawesome.com/8af996bb56.js"
 	crossorigin="anonymous"></script>
+<script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
 </head>
 <style >
 	.main-page {

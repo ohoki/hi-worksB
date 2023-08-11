@@ -4,7 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
 <title>인증 성공 화면</title>
 </head>
 <body>

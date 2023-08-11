@@ -15,6 +15,9 @@ public interface MemberMapper {
 	//인증 확인
 	public int updateMailAuth(MemberVO memberVO);
 	
+	//회원 수정
+	public int updateMember(MemberVO memberVO);
+	
 	//회원삭제
 	public int deleteMemberInfo(String memberId);
 }

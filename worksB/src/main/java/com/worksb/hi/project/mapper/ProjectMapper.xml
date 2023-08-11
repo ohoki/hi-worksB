@@ -21,7 +21,7 @@
 							board_access,
 							comment_access,
 							file_access,
-							department_id	
+							dept_id	
 						)
 						
 				VALUES 	(
@@ -34,7 +34,7 @@
 						#{boardAccess},
 						#{commentAccess},
 						#{fileAccess},
-						#{departmentId}
+						#{deptId}
 						)
 	</insert>
 	
@@ -48,7 +48,7 @@
 				board_access,
 				comment_access,
 				file_access,
-				department_id
+				dept_id
 		FROM project
 		WHERE project_id = #{projectId}
 	</select>
@@ -65,7 +65,7 @@
 			board_access = #{boardAccess},
 			comment_access = #{commentAccess},
 			file_access = #{fileAccess},
-			department_id = #{departmentId}
+			dept_id = #{deptId}
 		WHERE project_id = #{projectId}
 	</update>
 	
@@ -74,7 +74,7 @@
 		DELETE TABLE project
 		WHERE project_id = #{projectId}
 	</delete>
-	
+
 	
 	
 	
