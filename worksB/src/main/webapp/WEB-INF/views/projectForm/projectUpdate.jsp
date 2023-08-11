@@ -13,7 +13,8 @@
 	<!-- 이진 -->
 	
     <p class="form__title">프로젝트 수정</p>
-    <form class="project-create-form" name="updateForm">
+    <form class="project-create-form" action="projectUpdate" method="post">
+    	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
         <div>
             <input type="text" class="form__input-title" name="projectName" value="${projectInfo.projectName }">
         </div>
@@ -108,13 +109,7 @@
         </div>
     </form>
     <script>
-        $(document).ready(function() {
-            let message = '${message}';
-            
-            if (message !== '') {
-                alert(message);
-            }
-        });
+
     </script>
 </body>
 </html>

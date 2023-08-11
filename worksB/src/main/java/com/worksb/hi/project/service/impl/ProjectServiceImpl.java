@@ -34,7 +34,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public int updateProject(ProjectVO projectVO) {
-		int result = projectMapper.insertProject(projectVO);
+		int result = projectMapper.updateProject(projectVO);
 		if(result == 1) {
 			return projectVO.getProjectId();
 		}else {

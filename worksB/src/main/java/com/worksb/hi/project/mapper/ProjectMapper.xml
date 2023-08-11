@@ -71,7 +71,7 @@
 	
 	<!-- 프로젝트 삭제 -->
 	<delete id="deleteProject" parameterType="int">
-		DELETE TABLE project
+		DELETE FROM project
 		WHERE project_id = #{projectId}
 	</delete>
 
