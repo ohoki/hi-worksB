@@ -26,7 +26,6 @@
 	
 	<definition name="project/*" extends="projectTemplate">
 		<put-attribute name="content" value="/WEB-INF/views/project/{1}.jsp"/>
-
 	</definition>
 	
 	<!-- 회사페이지 -->
