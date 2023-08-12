@@ -54,7 +54,6 @@
 	</select>
 
 	<!-- 프로젝트 수정 -->
-	<!-- 수정해야됨!!!!!!!! -->
 	<update id="updateProject" parameterType="projectVO">
 		UPDATE project
 		SET project_name = #{projectName},

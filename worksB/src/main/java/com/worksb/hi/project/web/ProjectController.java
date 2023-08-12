@@ -26,7 +26,7 @@ public class ProjectController {
 	
 	
 	
-	//이진
+	//이진 - 등록수정삭제
 	//프로젝트 등록 폼
 	@GetMapping("/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
@@ -68,7 +68,7 @@ public class ProjectController {
 		projectService.insertProject(projectVO);
 		
 	    
-		return "project/index"; //리턴페이지 수정해야됨!! -> 프로젝트 피드홈
+		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId(); //리턴페이지 수정해야됨!! -> 프로젝트 피드홈
 	}
 	
 	//프로젝트 수정폼
@@ -91,7 +91,7 @@ public class ProjectController {
 		projectVO.setProjectId(projectId);
 		
 		if("on".equals(projectVO.getProjectAccess())){
-			// 공개여부 A1 : Yes
+			// 공개여부 checked A1 : Yes
 			projectVO.setProjectAccess("A1");
 		}else {
 			// A2 : No
@@ -99,27 +99,36 @@ public class ProjectController {
 		}
 		
 		if("on".equals(projectVO.getManagerAccp())) {
-			// 관리자 승인 필요
+			// 관리자 승인 필요 checked A1 : Yes
 			projectVO.setManagerAccp("A1");
 		}else {
+			// A2 : No
 			projectVO.setManagerAccp("A2");
 		}
 		
 		projectService.updateProject(projectVO);
 
-		return "project/index"; // 리턴 페이지 수정 -> 프로젝트피드홈
+		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId(); // 리턴 페이지 수정해야함!! -> 프로젝트피드홈
 	}
 	
 
 
 	// 프로젝트 삭제
 	@GetMapping("/projectDelete")
-	public String projectDelete(@RequestParam(name = "projectId") int projectId) {
+	public String projectDelete(@RequestParam int projectId) {
 		projectService.deleteProject(projectId);
-		return "project/index"; // 리턴 페이지 수정 -> 프로젝트 리스트
+		return "redirect:/home"; // 리턴 페이지 수정해야함!! -> 프로젝트 리스트
 	}
 	
-	
+	// 프로젝트 피드
+	@GetMapping("/projectFeed")
+    public String projectFeed(@RequestParam int projectId, Model model) {
+        ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+
+        model.addAttribute("projectInfo", projectInfo);
+
+        return "project/projectFeed";
+    }
 	
 	
 	
