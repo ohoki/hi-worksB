@@ -24,20 +24,19 @@ public class BoardController {
 	@GetMapping("/boardInsert")
 	public String BoardInsertForm(HttpSession session, Model model) {
 		String memberId = (String) session.getAttribute("memberId");
+		
 		model.addAttribute("memberId", memberId);
-		
-
-		
 		return "project/boardInsert";
 	}
 	
 	//게시글 등록
 	@PostMapping("/boardInsert")
-	public String boardInsertProcess(BoardVO boardVO) {
-		
+	public String boardInsertProcess(BoardVO boardVO, HttpSession session) {
+		String memberId = (String) session.getAttribute("memberId");
+        boardVO.setMemberId(memberId);
 		
 		boardService.insertBoard(boardVO);
-		return "redirect:boardList"; 
+		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
 	}
 	
 	
