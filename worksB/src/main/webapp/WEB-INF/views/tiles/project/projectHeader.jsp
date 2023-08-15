@@ -18,9 +18,14 @@
     display:none;
     justify-content: center;
     top:0;
-    left:0;
+    left:-30%;
     width:100%;
     height:100%;
+}
+
+.secondModal{
+	top:0;
+    left:0;
 }
 
 .modal_body{
@@ -117,7 +122,7 @@ ol, ul {
 						<ul id="menuList">
 							<li data-toggle="modal" data-target="#subMenuModal11">알림설정</li>
 							<li data-toggle="modal" data-target="#subMenuModal12">프로젝트 나가기</li>
-							<li data-toggle="modal" data-target="#subMenuModal13">프로젝트 수정</li>
+							<li onclick="location.href='projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>
 							<li data-toggle="modal" data-target="#subMenuModal14">프로젝트 삭제</li>
 						</ul>
 					</div>
@@ -166,7 +171,7 @@ ol, ul {
 			</div>
 		</div>
 
-		<div class="modal" tabindex="-1" id="subMenuModal14">
+		<div class="modal secondModal" tabindex="-1" id="subMenuModal14">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
