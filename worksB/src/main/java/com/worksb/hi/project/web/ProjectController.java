@@ -124,7 +124,7 @@ public class ProjectController {
 	@GetMapping("/projectFeed")
     public String projectFeed(@RequestParam int projectId, Model model) {
         ProjectVO projectInfo = projectService.getProjectInfo(projectId);
-
+         
         model.addAttribute("projectInfo", projectInfo);
 
         return "project/projectFeed";
