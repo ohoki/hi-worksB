@@ -10,7 +10,7 @@
 <body>
 	<div class="login-form-box">
 		<h1 class="login-form-box__title">로그인</h1>
-		<form action="loginMember" method="post" class="login-form">
+		<form action="${pageContext.request.contextPath }/loginMember" method="post" class="login-form">
 			<input type="text" placeholder="아이디" name="memberId" required>
 			<input type="password" placeholder="비밀번호" name="memberPw" required>
 			<a href="#" class="searchPw">비밀번호찾기</a>
