@@ -45,7 +45,7 @@
 	<!--header-->
 	<header class="index-header">
 		<div class="index-header__logo">
-			<a href="home"><img src="${pageContext.request.contextPath }/resources/img/company_logo.png" alt="worksB 로고"></a>
+			<a href="${pageContext.request.contextPath }/home"><img src="${pageContext.request.contextPath }/resources/img/company_logo.png" alt="worksB 로고"></a>
 			<div>
 				<span>w</span> <span>o</span> <span>r</span> <span>k</span> <span>s</span>
 				<span>B</span>
@@ -65,6 +65,7 @@
 		$('.index-header_btn').on('click', function(e) {
 			let loginBtn = $('#loginBtn');
 			let registerBtn = $('#registerBtn');
+			
 			if(e.currentTarget.value == '로그인') {
 				location.href='loginForm';
 			}else if(e.currentTarget.value == '회원가입') {

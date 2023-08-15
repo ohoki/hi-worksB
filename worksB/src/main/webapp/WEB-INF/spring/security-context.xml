@@ -6,15 +6,27 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-	<security:http pattern="/css/**" security="none" />
+	<security:http pattern="/resources/**" security="none"/>
+   	<security:http pattern="/**/tiles/**" security="none"/>
+	<security:http pattern="/" security="none" />
 	<security:http pattern="/home" security="none" />
-	<!-- <security:http>
-		<security:intercept-url pattern="/admin/**" access="hasAuthority('ROLE_ADMIN')" />
-		<security:intercept-url pattern="/**" access="isAuthenticated()" />
-		<security:form-login default-target-url="/home" />
-		<security:logout logout-url="/logout" logout-success-url="/top.jsp" />
+	
+	<security:http use-expressions="true">
+		<security:intercept-url pattern="/loginForm" access="permitAll" />
+		<security:intercept-url pattern="/**" access="hasRole('USER')"/>	
+		<security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
+		<security:form-login
+			username-parameter="memberId"
+			password-parameter="memberPw"
+			login-page="/loginForm"
+			login-processing-url="/loginMember"
+		/>
 		<security:csrf disabled="true" />
-	</security:http> -->
+		<security:session-management>
+                  <security:concurrency-control max-sessions="1" />
+            </security:session-management>
+	</security:http>
+	
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:user-service>

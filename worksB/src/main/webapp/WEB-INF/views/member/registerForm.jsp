@@ -44,6 +44,11 @@
 		function checkId() {
 			let id = $('#memberId').val();
 			
+			if(id.length == 0) {
+				alert('아이디를 입력해주세요.');
+				return false;
+			}
+			
 			$.ajax({
 				url: 'selectMember?memberId='+id,
 				type: 'get',
