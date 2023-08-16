@@ -87,5 +87,45 @@
 						, #{companyId}
 					)
 	</insert>
-
+	
+	<!-- 투표 등록 -->
+	<insert id="insertVote" parameterType="VoteVO">
+		INSERT INTO prj_vote
+						(
+							prj_board_id
+							, end_date
+							, anony_vote
+							, compno_vote
+							, result_yn
+						)
+					VALUES
+						(
+							#{prjBoardId}
+							, #{endDate}
+							, #{anonyVote}
+							, #{compnoVote}
+							, #{resultYn}	
+						)
+	</insert>
+	
+	<!-- 투표 항목 등록 -->	
+	<insert id="insertVoteList" parameterType="VoteVO">
+		<selectKey keyProperty="listId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(list_id), 0) + 1
+			FROM vote_list
+		</selectKey>
+			INSERT INTO vote_list
+							(
+								prj_board_id
+								, list_id
+								, list_content
+							)
+						VALUES
+							(
+								#{prjBoardId}
+								, #{listId}
+								, #{listContent}
+							)
+	</insert>
+	
 </mapper>

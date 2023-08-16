@@ -5,4 +5,7 @@ public interface BoardService {
 	public int insertBoard(BoardVO boardVO);
 	
 	public int insertTask(TaskVO taskVO);
+	
+	public int insertVote(VoteVO voteVO);
+	public int insertVoteList(VoteVO voteVO);
 }

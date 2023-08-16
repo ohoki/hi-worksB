@@ -85,6 +85,13 @@
     border-radius: var(--size-border-radius);
     margin: 5px;
 }
+
+.vote-add-buttons input{
+	border: 1px solid var(--color-light-white);
+    border-radius: var(--size-border-radius);
+    margin: 5px;
+}
+
 </style>
 </head>
 <body>
@@ -129,8 +136,8 @@
             
             <div class="modal-body boardForm" id="task">
                 <form action="boardInsert" method="post">
-                    <!-- 업무 작성 폼!!! -->
-                    <!-- 시작일자 마감일자 우선순위 진척도 추가!!!! -->
+                    <!-- 상위 업무 작성 폼!!! -->
+                    <!-- 시작일자 마감일자 우선순위 진척도 추가!!!! 하위업무-->
 					<div>
 						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
 					</div>
@@ -155,6 +162,7 @@
 					<div>
 						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
 					</div>
+					
 					<div>
 						<label for="startDate">시작일 추가</label>
 						<input type="text" name="startDate" id="startDate" class="date-input">
@@ -163,6 +171,7 @@
 						<label for="endDate">마감일 추가</label>
 						<input type="text" name="endDate" id="endDate" class="date-input">
 					</div>
+					
 					<!-- 진척도 -->
 					<!-- 진척도 전체 프로그레스-->
 					<div class="js-progress create-content-cell">
@@ -185,11 +194,17 @@
 							<span class="progress-button" data-progress-value="100"></span>
 				        </div>
     				</div>
-    				<!-- 값 표시하기 -->
+    				<!-- 진척도 값 표시하기 -->
 				    <div class="progress-value">0%</div>
-				    <!-- 값 넘길때 -->
+				    <!-- 진척도 값 넘길때 -->
 				    <input type="hidden" name="processivity" value="0">
-
+				    
+				    <!-- 우선 순위 -->
+				    
+						
+					<!-- 하위 업무 -->	
+					
+					
 					<div>
 						<label>공개 범위</label>
 						<select class="form__select" name="inspYn">
@@ -245,12 +260,26 @@
 						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
 					</div>
 					
+					<div class="vote-add-buttons">            
+			        	<input type="text" name="listContent"> <input type="button" class="btnAdd" value="항목추가"><br>        
+			        </div>
+					
+					<div>
+						<input type="text" name="endDate" id="vote-endDate" class="date-input">
+						<label for="endDate">투표 종료일</label>
+					</div>
+					
 					<div>
 						<label>공개 범위</label> <select class="form__select" name="inspYn">
 							<option value="E2">전체 공개</option>
 							<option value="E1">프로젝트 관리자만</option>
 						</select>
 					</div>
+					
+					<input type="hidden" name="anonyVote" value="11">
+					<input type="hidden" name="compnoVote" value="11">
+					<input type="hidden" name="resultYn" value="11">
+					
 		            <div class="modal-footer form__button">
 		            	<input type="hidden" name="boardType" value="C7">
 		            	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
@@ -310,13 +339,19 @@
 			minDate: 0
 		});
 		
-		// 폼 리셋 버튼을 클릭할 때 Datepicker 전부 초기화
+		// 폼 리셋 버튼을 클릭할 때 날짜 전부 초기화
 		$("button[type='reset']").on("click", function() {
 			$("#startDate").datepicker("setDate", null);
 			$("#endDate").datepicker("setDate", null);
 			$("#endDate").datepicker("option", "minDate", 0);
 		});
 		
+	});
+	
+	$("#vote-endDate").datepicker({
+		dateFormat: "yy-mm-dd",
+		// 오늘 이후로 선택 가능하게 설정
+		minDate: 0
 	});
 	
 	//진척도!!
@@ -359,5 +394,20 @@
 			progressValue.textContent = selectedProgress + "%";
 		}
 	});
+	
+	// 투표 항목 추가
+	$(document).ready (function () {                
+        $('.btnAdd').click (function () {                                        
+            $('.vote-add-buttons').append (                        
+                '<input type="text" name="listContent"> <input type="button" class="btnRemove" value="X"><br>'                    
+            ); // end append                            
+            $('.btnRemove').on('click', function () { 
+                $(this).prev().remove (); // remove the textbox
+                $(this).next ().remove (); // remove the <br>
+                $(this).remove (); // remove the button
+            });
+        }); // end click                                            
+    }); // end ready      
+	
 </script>
 </html>

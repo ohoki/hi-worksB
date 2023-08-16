@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.TaskVO;
+import com.worksb.hi.board.service.VoteVO;
 
 
 @Controller
 public class BoardController {
-	//이진
-	
+	//이진	
 	@Autowired
 	BoardService boardService;
 	
@@ -34,7 +34,8 @@ public class BoardController {
     
 	//게시글 등록
 	@PostMapping("/boardInsert")
-	public String boardInsertProcess(BoardVO boardVO, TaskVO taskVO, HttpSession session) {
+	public String boardInsertProcess(BoardVO boardVO, TaskVO taskVO, VoteVO voteVO, HttpSession session) {
+		
 		String memberId = (String) session.getAttribute("memberId");
         boardVO.setMemberId(memberId);
 		
@@ -43,10 +44,11 @@ public class BoardController {
         // 글 prj_project
 		boardService.insertBoard(boardVO);
         
+		int prjBoardId = boardVO.getPrjBoardId();
+		
         if(boardType.equals("C8")) {
         	// 업무 prj_task
         	//board테이블의 id -> task테이블에도 넣기
-        	int prjBoardId = boardVO.getPrjBoardId();
         	taskVO.setPrjBoardId(prjBoardId);
         	
         	boardService.insertTask(taskVO);
@@ -56,6 +58,16 @@ public class BoardController {
         	
         }else if(boardType.equals("C7")) {
         	// 투표
+        	voteVO.setPrjBoardId(prjBoardId);
+        	
+        	boardService.insertVote(voteVO);
+        	
+        	String[] listContentArr = voteVO.getListContent().split(",");
+        	
+        	for(int i=0; i<listContentArr.length; i++) {
+        		voteVO.setListContent(listContentArr[i]);
+        		boardService.insertVoteList(voteVO);
+        	}
         }
         
 		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
