@@ -10,12 +10,13 @@
    	<security:http pattern="/**/tiles/**" security="none"/>
 	<security:http pattern="/" security="none" />
 	<security:http pattern="/home" security="none" />
+	<security:http pattern="/**" security="none" />
 	
-	<security:http use-expressions="true">
+	<!-- <security:http use-expressions="true">
 		<security:intercept-url pattern="/loginForm" access="permitAll" />
-		<security:intercept-url pattern="/**" access="hasRole('USER')"/>	
+		<security:intercept-url pattern="/**" access="permitAll"/>	
 		<security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
-		<security:form-login
+		<security:form-login 
 			username-parameter="memberId"
 			password-parameter="memberPw"
 			login-page="/loginForm"
@@ -25,7 +26,7 @@
 		<security:session-management>
                   <security:concurrency-control max-sessions="1" />
             </security:session-management>
-	</security:http>
+	</security:http> -->
 	
 	<security:authentication-manager>
 		<security:authentication-provider>

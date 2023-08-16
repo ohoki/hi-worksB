@@ -21,6 +21,7 @@ public class MemberVO {
 //	LOGIN_LOCK        NOT NULL VARCHAR2(5)
 //	MAIL_KEY                   VARCHAR2(50)  
 //	MAIL_AUTH                  NUMBER
+//  COMPANY_ACCP               VARCHAR2(20)  
 	
 	private String memberId;
 	private String memberName;
@@ -39,4 +40,5 @@ public class MemberVO {
 	private String loginLock;
 	private String mailKey;
 	private int mailAuth;
+	private String companyAccp;
 }
