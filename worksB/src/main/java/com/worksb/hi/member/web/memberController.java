@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.common.UserSha256;
+import com.worksb.hi.company.service.CompanyService;
+import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 
@@ -22,7 +25,57 @@ public class memberController {
 
 	@Autowired
 	MemberService memberService;
+	@Autowired
+	CompanyService companyService;
 
+//========== 서비스 시작하기 ===============
+	@GetMapping("/start")
+	public String start(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		Cookie[] cookies = request.getCookies();
+		String cookieMemberId = null;
+		MemberVO member = new MemberVO();
+		CompanyVO company = new CompanyVO();
+		
+		//쿠키값 가져오기
+		for(Cookie c : cookies) {
+			if(c.getName().equals("memberId")) {
+				cookieMemberId = c.getValue();
+			}
+		}
+		
+		if(cookieMemberId == null && session.getAttribute("memberId") == null) { // 둘 다 null
+			return "redirect:/loginForm";
+		}
+		
+		//둘 중 하나라도 null이 아니라면 해당 회원 찾아오기
+		member.setMemberId(cookieMemberId != null ? cookieMemberId : (String)session.getAttribute("memberId"));
+		member = memberService.selectMember(member);
+	
+		if(member.getCompanyId() == null) { // 회사가 등록되지 않은 회원
+			session.setAttribute("memberId", member.getMemberId());
+			return "member/practiceCompany";
+		} else { // 회사가 등록된 회원
+			session.setAttribute("memberId", member.getMemberId());
+			session.setAttribute("companyId", member.getCompanyId());
+			//회사 승인 여부
+			if("A2".equals(member.getCompanyAccp())) { // 승인 NO
+				return "member/accpWait";
+			}else { // 승인 YES
+				//해당 회사 정보 가져오기
+				company.setCompanyId(member.getCompanyId());
+				company = companyService.getCompanyById(company);
+				
+				model.addAttribute("memberInfo", member);
+				model.addAttribute("companyInfo", company);
+				return "company/companyMain";
+			} 
+		}
+	}//start
+	
+	
+	
+// ========== 로그인 & 로그아웃 =====================	
 	@GetMapping("/selectMember")
 	@ResponseBody
 	public String selectMember(MemberVO memberVO) {
@@ -36,47 +89,10 @@ public class memberController {
 		return result;
 	}// selectMember
 
- //========== 로그인 & 로그아웃 =====================	
 	@GetMapping("/loginForm")
-	public String loginForm(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		Cookie[] cookies = request.getCookies();
-		String cookieMemberId = null;
-		String cookieCompanyId = null;
-		
-		//쿠키값 가져오기
-		for(Cookie c : cookies) {
-			if(c.getName() == "memberId") {
-				cookieMemberId = c.getValue();
-			} else if(c.getName() == "companyId") {
-				cookieCompanyId = c.getValue();
-			}
-		}
-		
-		//자동 로그인 O
-		if(cookieMemberId != null) {
-			if(cookieCompanyId == null) { // 회사가 등록되지 않은 회원의 자동로그인
-				session.setAttribute("memberId", cookieMemberId);
-				return "member/practiceCompany";
-			} else { // 회사가 등록된 회원의 자동로그인
-				session.setAttribute("memberId", cookieCompanyId);
-				session.setAttribute("companyId", cookieCompanyId);
-				return "company/companyMain"; 
-			}
-		 }
-		 
-		//자동 로그인 X
-		if(session.getAttribute("memberId") == null) { //로그인 되지 않은 회원
-			return "member/loginForm";
-		}else { //로그인 된 회원
-			if(session.getAttribute("companyId") == null) { // 회사가 등록되지 않은 회원
-				return "member/practiceCompany";
-			}else { //회사가 등록된 회원
-				return "company/companyMain"; 
-			}
-		}
+	public String loginForm() {
+		return "member/loginForm";
 	}//loginForm
-
 
 	@PostMapping("loginMember")
 	public String login(MemberVO memberVO, boolean autoLogin, Model model, HttpServletResponse response,
@@ -114,27 +130,14 @@ public class memberController {
 			idCookie.setMaxAge(60 * 60 * 24 * 7); // 쿠키 수명
 			idCookie.setPath("/"); // 모든 경로에 적용
 
-			Cookie companyCookie = new Cookie("companyId", String.valueOf(dbMember.getCompanyId()));
-			companyCookie.setMaxAge(60 * 60 * 24 * 7);
-			companyCookie.setPath("/");
-
 			response.addCookie(idCookie);
-			response.addCookie(companyCookie);
 		}
 
 		// 세션등록
 		session.setAttribute("memberId", memberVO.getMemberId());
 		session.setAttribute("companyId", dbMember.getCompanyId());
-
-		message = "정상적으로 로그인되었습니다.";
-		model.addAttribute("message", message);
-
-		// 등록된 회사 존재 여부
-		if (dbMember.getCompanyId() == null) {
-			return "member/practiceCompany";
-		} else {
-			return "company/companyMain";
-		}
+		
+		return "redirect:/start";
 	}// login
 
 	@GetMapping("logout")
@@ -146,14 +149,9 @@ public class memberController {
 			Cookie idCookie = new Cookie("memberId", null);
 			idCookie.setMaxAge(0); // 쿠키 수명
 			idCookie.setPath("/"); // 모든 경로에 적용
-
-			Cookie companyCookie = new Cookie("companyId", null);
-			companyCookie.setMaxAge(0);
-			companyCookie.setPath("/");
-
+			
 			response.addCookie(idCookie);
-			response.addCookie(companyCookie);
-
+			
 			// 세션 삭제
 			session.invalidate();
 

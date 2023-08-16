@@ -70,12 +70,14 @@ public class CompanyController {
 		MemberVO member = new MemberVO();
 		member.setMemberId((String)session.getAttribute("memberId"));
 		member.setCompanyId(companyVO.getCompanyId());
+		member.setCompanyAccp("A1");
+		member.setMemberGrade("H1");
 		
 		memberService.updateMember(member);
 		
 		session.setAttribute("companyId", member.getCompanyId());
 		
-		return "company/companyMain";
+		return "redirect:/start";
 	}//insertCompnay
 	
 	//폴더생성
@@ -95,4 +97,22 @@ public class CompanyController {
 	private String setImagePath(String uploadFileName) {
 		return uploadFileName.replace(File.separator, "/");
 	}
+	
+	//회사 참여
+	@PostMapping("practiceCompany")
+	public String practiceCompany(CompanyVO companyVO, HttpSession session) {
+		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
+		MemberVO member = new MemberVO();
+		member.setMemberId((String)session.getAttribute("memberId"));
+		member.setCompanyId(dbCompany.getCompanyId());
+		// 관리자 승인여부 확인
+		if("A1".equals(dbCompany.getAdmAccp())) { 
+			member.setCompanyAccp("A2");
+		} else {
+			member.setCompanyAccp("A1");
+		}
+		memberService.updateMember(member);
+		session.setAttribute("companyId", dbCompany.getCompanyId());
+		return "redirect:/start";
+	}	
 }
