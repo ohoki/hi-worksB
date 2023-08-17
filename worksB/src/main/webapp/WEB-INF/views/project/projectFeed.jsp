@@ -200,7 +200,14 @@
 				    <input type="hidden" name="processivity" value="0">
 				    
 				    <!-- 우선 순위 -->
-				    
+					<div class="select-priority">
+						<select name="priority">
+							<option value="">우선 순위</option>
+							<option value="F3">낮음</option>
+							<option value="F2">보통</option>
+							<option value="F1">긴급</option>
+						</select>
+					</div>
 						
 					<!-- 하위 업무 -->	
 					
@@ -261,12 +268,27 @@
 					</div>
 					
 					<div class="vote-add-buttons">            
-			        	<input type="text" name="listContent"> <input type="button" class="btnAdd" value="항목추가"><br>        
+			        	<input type="text" name="listContent"> <input type="button" class="btnAdd" value="항목 추가"><br>        
 			        </div>
 					
 					<div>
 						<input type="text" name="endDate" id="vote-endDate" class="date-input">
 						<label for="endDate">투표 종료일</label>
+					</div>
+					
+					<div class="form-check form-switch">
+						<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+						<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
+					</div>
+					
+					<div class="form-check form-switch">
+						<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+						<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
+					</div>
+					
+					<div class="form-check form-switch">
+						<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+						<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
 					</div>
 					
 					<div>
@@ -275,10 +297,6 @@
 							<option value="E1">프로젝트 관리자만</option>
 						</select>
 					</div>
-					
-					<input type="hidden" name="anonyVote" value="11">
-					<input type="hidden" name="compnoVote" value="11">
-					<input type="hidden" name="resultYn" value="11">
 					
 		            <div class="modal-footer form__button">
 		            	<input type="hidden" name="boardType" value="C7">
@@ -395,19 +413,19 @@
 		}
 	});
 	
-	// 투표 항목 추가
+	// 투표 항목 추가하기
 	$(document).ready (function () {                
         $('.btnAdd').click (function () {                                        
             $('.vote-add-buttons').append (                        
                 '<input type="text" name="listContent"> <input type="button" class="btnRemove" value="X"><br>'                    
             ); // end append                            
             $('.btnRemove').on('click', function () { 
-                $(this).prev().remove (); // remove the textbox
-                $(this).next ().remove (); // remove the <br>
-                $(this).remove (); // remove the button
+                $(this).prev().remove (); // text 지우기
+                $(this).next ().remove (); // <br> 지우기
+                $(this).remove (); // 버튼 지우기
             });
-        }); // end click                                            
-    }); // end ready      
+        });                                           
+    });
 	
 </script>
 </html>

@@ -42,20 +42,10 @@ public class ProjectController {
 	//프로젝트 등록
 	@PostMapping("/projectInsert")
 	public String projectInsertProcess(ProjectVO projectVO, HttpSession session) {
-		if("on".equals(projectVO.getProjectAccess())){
-			// 공개여부 A1 : Yes
-			projectVO.setProjectAccess("A1");
-		}else {
-			// A2 : No
-			projectVO.setProjectAccess("A2");
-		}
 		
-		if("on".equals(projectVO.getManagerAccp())) {
-			// 관리자 승인 필요
-			projectVO.setManagerAccp("A1");
-		}else {
-			projectVO.setManagerAccp("A2");
-		}
+		//A1 : Yes, A2 : No
+		projectVO.setProjectAccess("on".equals(projectVO.getProjectAccess())? "A1" : "A2");
+		projectVO.setManagerAccp("on".equals(projectVO.getManagerAccp())? "A1" : "A2");
 		
 		// 부서번호 -> 부서이름 !!!
 		
@@ -68,7 +58,7 @@ public class ProjectController {
 		projectService.insertProject(projectVO);
 		
 	    
-		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId(); //리턴페이지 수정해야됨!! -> 프로젝트 피드홈
+		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 	
 	//프로젝트 수정폼
@@ -78,7 +68,7 @@ public class ProjectController {
 	    
 	    model.addAttribute("projectInfo", projectInfo);
 	    model.addAttribute("projectId", projectId);
-	    //부서번호 -> 부서이름
+	    //부서번호 -> 부서이름 추가해야함
 	    
 	    return "projectForm/projectUpdate";
 	}
@@ -90,25 +80,13 @@ public class ProjectController {
 		
 		projectVO.setProjectId(projectId);
 		
-		if("on".equals(projectVO.getProjectAccess())){
-			// 공개여부 checked A1 : Yes
-			projectVO.setProjectAccess("A1");
-		}else {
-			// A2 : No
-			projectVO.setProjectAccess("A2");
-		}
-		
-		if("on".equals(projectVO.getManagerAccp())) {
-			// 관리자 승인 필요 checked A1 : Yes
-			projectVO.setManagerAccp("A1");
-		}else {
-			// A2 : No
-			projectVO.setManagerAccp("A2");
-		}
+		//A1 : Yes, A2 : No
+		projectVO.setProjectAccess("on".equals(projectVO.getProjectAccess())? "A1" : "A2");
+		projectVO.setManagerAccp("on".equals(projectVO.getManagerAccp())? "A1" : "A2");
 		
 		projectService.updateProject(projectVO);
 
-		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId(); // 리턴 페이지 수정해야함!! -> 프로젝트피드홈
+		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 	
 
