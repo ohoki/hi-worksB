@@ -50,8 +50,11 @@
 						<a href="#">상태변경</a>
 					</p>
 					<p>
-						<a href="logout">로그아웃</a>
+						<a href="#" data-type="logout">로그아웃</a>
 					</p>
+					<form action="${pageContext.request.contextPath }/logout" method="post" id="logout">
+						<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+					</form>
 				</div>			
 			</div>
 		</div>
@@ -64,6 +67,8 @@
 		if(type == 'profile') {
 			$('#profile-modal').addClass('modal-visible');
 			$('body').css('overflow', 'hidden');
+		}else if(type == 'logout') {
+			$('#logout').submit();
 		}
 	});
 	

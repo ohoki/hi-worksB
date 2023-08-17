@@ -28,6 +28,25 @@ public class memberController {
 	@Autowired
 	CompanyService companyService;
 
+	@GetMapping("/selectMember")
+	@ResponseBody
+	public String selectMember(MemberVO memberVO) {
+		String result = "no";
+
+		memberVO = memberService.selectMember(memberVO);
+
+		if (memberVO == null) { // 아이디 중복 X -> 아이디 사용가능
+			result = "yes";
+		}
+		return result;
+	}// selectMember
+
+	@GetMapping("/loginForm")
+	public String loginForm() {
+		return "member/loginForm";
+	}//loginForm
+	
+	
 //========== 서비스 시작하기 ===============
 	@GetMapping("/start")
 	public String start(HttpServletRequest request, Model model) {
@@ -72,98 +91,7 @@ public class memberController {
 			} 
 		}
 	}//start
-	
-	
-	
-// ========== 로그인 & 로그아웃 =====================	
-	@GetMapping("/selectMember")
-	@ResponseBody
-	public String selectMember(MemberVO memberVO) {
-		String result = "no";
-
-		memberVO = memberService.selectMember(memberVO);
-
-		if (memberVO == null) { // 아이디 중복 X -> 아이디 사용가능
-			result = "yes";
-		}
-		return result;
-	}// selectMember
-
-	@GetMapping("/loginForm")
-	public String loginForm() {
-		return "member/loginForm";
-	}//loginForm
-
-	@PostMapping("loginMember")
-	public String login(MemberVO memberVO, boolean autoLogin, Model model, HttpServletResponse response,
-			HttpSession session) {
-		String message = null;
-
-		// 아이디 확인
-		MemberVO dbMember = memberService.selectMember(memberVO);
-		if (dbMember == null) {
-			message = "해당 아이디는 회원이 아닙니다.";
-			model.addAttribute("message", message);
-			return "member/loginForm";
-		}
-
-		// 이메일 인증 확인
-		if (dbMember.getMailAuth() == 0) {
-			message = "이메일 인증 후 로그인이 가능합니다.";
-			model.addAttribute("message", message);
-			return "member/loginForm";
-		}
-
-		// 비밀번호 확인
-		String inputPw = UserSha256.encrypt(memberVO.getMemberPw());
-
-		if (!dbMember.getMemberPw().equals(inputPw)) {
-			message = "비밀번호를 다시 입력해주세요.";
-			model.addAttribute("message", message);
-			return "member/loginForm";
-		}
-
-		// 자동로그인 여부
-		if (autoLogin == true) {
-			// 쿠키등록
-			Cookie idCookie = new Cookie("memberId", memberVO.getMemberId());
-			idCookie.setMaxAge(60 * 60 * 24 * 7); // 쿠키 수명
-			idCookie.setPath("/"); // 모든 경로에 적용
-
-			response.addCookie(idCookie);
-		}
-
-		// 세션등록
-		session.setAttribute("memberId", memberVO.getMemberId());
-		session.setAttribute("companyId", dbMember.getCompanyId());
 		
-		return "redirect:/start";
-	}// login
-
-	@GetMapping("logout")
-	public String logout(String memberId, HttpServletResponse response, Model model, HttpSession session) {
-		String message = null;
-
-		try {
-			// 쿠키 삭제
-			Cookie idCookie = new Cookie("memberId", null);
-			idCookie.setMaxAge(0); // 쿠키 수명
-			idCookie.setPath("/"); // 모든 경로에 적용
-			
-			response.addCookie(idCookie);
-			
-			// 세션 삭제
-			session.invalidate();
-
-			message = "정상적으로 로그아웃 되었습니다.";
-		} catch (Exception e) {
-			message = "로그아웃에 실패했습니다.";
-		}
-
-		model.addAttribute("message", message);
-		return "member/loginForm";
-	}
-
 //	======== 이메일 인증 및 회원 가입 ===============
 	@GetMapping("/registerForm")
 	public String registerForm() {
