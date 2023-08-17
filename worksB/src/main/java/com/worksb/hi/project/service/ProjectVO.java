@@ -37,4 +37,5 @@ PROJECT_CLS             VARCHAR2(5)
 	
 	
 	//주현
+	private Integer particirNum;
 }

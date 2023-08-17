@@ -59,17 +59,7 @@ public class NoticeController {
 		return "redirect:noticeList";
 	}
 	
-	// 게시글 수정 폼
-	@GetMapping("/noticeUpdate")
-	public String noticeUpdateForm() {
-		
-	}
-	
-	// 게시글 수정
-	@PostMapping("/noticeUpdate")
-	public String noticeUpdate() {
-		
-	}
+
 	
 	// 게시글 삭제
 	@GetMapping("/noticedelete")
