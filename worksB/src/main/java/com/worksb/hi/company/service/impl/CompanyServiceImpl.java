@@ -17,6 +17,10 @@ public class CompanyServiceImpl implements CompanyService{
 	public CompanyVO getCompanyByUrl(CompanyVO companyVO) {
 		return companyMapper.getCompanyByUrl(companyVO);
 	}
+	@Override
+	public CompanyVO getCompanyById(CompanyVO companyVO) {
+		return companyMapper.getCompanyById(companyVO);
+	}
 	
 	//등록
 	@Override

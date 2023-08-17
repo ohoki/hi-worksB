@@ -11,7 +11,7 @@
 <div class="form-box">
 	<h1 class="form-box__title">기존 회사 참여</h1>
 	<p class="form-box__sub">이미 회사에서 사용하고 있다면 회사 URL을 입력하여 함께하세요.</p>
-	<form action="#" method="post" class="form">
+	<form action="practiceCompany" method="post" class="form">
 		<div class="form__input-box">
 			<label for="companyUrl"><p>회사URL</p>
 				<span>htttps://</span><input type="text" placeholder="회사 URL" name="companyUrl" id="companyUrl"><span>worksB.com</span>

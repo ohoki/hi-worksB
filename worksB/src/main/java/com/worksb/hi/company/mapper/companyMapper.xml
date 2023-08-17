@@ -10,6 +10,13 @@
   	WHERE company_url = #{companyUrl}
   </select>
   
+  <select id="getCompanyById" resultType="CompanyVO">
+  	SELECT *
+  	FROM company
+  	WHERE company_id = #{companyId}
+  </select>
+  
+  
   <!-- 등록 -->
   <insert id="insertCompany" parameterType="companyVO">
   	<selectKey order="BEFORE" resultType="int" keyProperty="companyId">

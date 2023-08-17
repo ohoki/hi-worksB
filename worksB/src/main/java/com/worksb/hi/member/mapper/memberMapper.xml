@@ -2,87 +2,107 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.worksb.hi.member.mapper.MemberMapper">
-  	<!-- 단건조회 -->
-  	<select id="selectMember" resultType="MemberVO">
-  		SELECT * 
-  		FROM member 
-  		WHERE member_id = #{memberId} 
-  	</select>
-  	
-	<!-- 회원 등록 -->  
-  	<insert id="inserMemberInfo" parameterType="MemberVO">
-  		INSERT INTO member (
-  							member_id, 
-  							member_name,
-  							member_pw,
-  							member_phone,
-  							member_grade
-  							)
-  					VALUES (
-  							#{memberId},
-  							#{memberName},
-  							#{memberPw},
-  							#{memberPhone},
-  							'H3'
-  							)
-  	</insert>
-  	
-  	<!-- 인증번호 생성 -->
-  	<update id="updateMailKey" parameterType="MemberVO">
-  		UPDATE member SET mail_key = #{mailKey} WHERE member_id = #{memberId}
-  	</update>
-  	
-  	<!-- 인증확인 -->
-  	<update id="updateMailAuth" parameterType="MemberVO">
-  		UPDATE member SET mail_auth = 1 WHERE member_id = #{memberId}
-  	</update>
-  	
-  	<update id="updateMember">
-  		UPDATE member SET 	
-						member_id = member_id
-						<if test="memberName != null and !memberName.equals('')">
-						,member_name = #{memberName}
-						</if>
-						<if test="memberPw != null and !memberPw.equals('')">
-						,member_pw = #{memberPw}
-						</if>
-						<if test="memberPhone != null and !memberPhone.equals('')">
-						,member_phone = #{memberPhone}
-						</if>
-						<if test="profilePath != null and !profilePath.equals('')">
-						,profile_path = #{profilePath}
-						</if>
-						<if test="realProfilePath != null and !realProfilePath.equals('')">
-						,real_profile_path = #{realProfilePath}
-						</if>
-						<if test="memberGrade != null and !memberGrade.equals('')">
-						,member_grade = #{memberGrade}
-						</if>
-						<if test="conIp != null and !conIp.equals('')">
-						,con_ip = #{conIp}
-						</if>
-						<if test="jobId != null and jobId != 0">
-						,job_id = #{jobId}
-						</if>
-						<if test="deptId != null and deptId != 0">
-						,dept_id = #{deptId}
-						</if>
-						<if test="empStatus != null and !empStatus.equals('')">
-						,emp_status = #{empStatus}
-						</if>
-						<if test="conStatus != null and !conStatus.equals('')">
-						,con_status = #{conStatus}
-						</if>
-						<if test="companyId != null and companyId != 0">
-						,company_id = #{companyId}
-						</if>
-  					WHERE member_id = #{memberId}
-  	</update>
-  	
-  	
-  	<!-- 회원삭제 -->
-  	<delete id="deleteMemberInfo" parameterType="String">
-  		DELETE member WHERE member_id = #{memberId}
-  	</delete>
-  </mapper>
+<mapper namespace="com.worksb.hi.member.mapper.MemberMapper">
+	<!-- 단건조회 -->
+	<select id="selectMember" resultType="MemberVO">
+		SELECT MEMBER_ID,
+				MEMBER_NAME,
+				MEMBER_PW,
+				MEMBER_PHONE,
+				PROFILE_PATH,
+				REAL_PROFILE_PATH,
+				'ROLE_' || MEMBER_GRADE member_grade,
+				CON_IP,
+				JOB_ID,
+				DEPT_ID,
+				EMP_STATUS,
+				CON_STATUS,
+				COMPANY_ID,
+				LOGIN_FAIL,
+				LOGIN_LOCK,
+				MAIL_KEY,
+				MAIL_AUTH,
+				COMPANY_ACCP 
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
+
+	<!-- 회원 등록 -->
+	<insert id="inserMemberInfo" parameterType="MemberVO">
+		INSERT INTO member (
+		member_id,
+		member_name,
+		member_pw,
+		member_phone,
+		member_grade
+		)
+		VALUES (
+		#{memberId},
+		#{memberName},
+		#{memberPw},
+		#{memberPhone},
+		'H3'
+		)
+	</insert>
+
+	<!-- 인증번호 생성 -->
+	<update id="updateMailKey" parameterType="MemberVO">
+		UPDATE member SET mail_key = #{mailKey} WHERE member_id = #{memberId}
+	</update>
+
+	<!-- 인증확인 -->
+	<update id="updateMailAuth" parameterType="MemberVO">
+		UPDATE member SET mail_auth = 1 WHERE member_id = #{memberId}
+	</update>
+
+	<update id="updateMember">
+		UPDATE member SET
+		member_id = member_id
+		<if test="memberName != null and !memberName.equals('')">
+			,member_name = #{memberName}
+		</if>
+		<if test="memberPw != null and !memberPw.equals('')">
+			,member_pw = #{memberPw}
+		</if>
+		<if test="memberPhone != null and !memberPhone.equals('')">
+			,member_phone = #{memberPhone}
+		</if>
+		<if test="profilePath != null and !profilePath.equals('')">
+			,profile_path = #{profilePath}
+		</if>
+		<if test="realProfilePath != null and !realProfilePath.equals('')">
+			,real_profile_path = #{realProfilePath}
+		</if>
+		<if test="memberGrade != null and !memberGrade.equals('')">
+			,member_grade = #{memberGrade}
+		</if>
+		<if test="conIp != null and !conIp.equals('')">
+			,con_ip = #{conIp}
+		</if>
+		<if test="jobId != null and jobId != 0">
+			,job_id = #{jobId}
+		</if>
+		<if test="deptId != null and deptId != 0">
+			,dept_id = #{deptId}
+		</if>
+		<if test="empStatus != null and !empStatus.equals('')">
+			,emp_status = #{empStatus}
+		</if>
+		<if test="conStatus != null and !conStatus.equals('')">
+			,con_status = #{conStatus}
+		</if>
+		<if test="companyId != null and companyId != 0">
+			,company_id = #{companyId}
+		</if>
+		<if test="companyAccp != null and !companyAccp.equals('')">
+			,company_accp = #{companyAccp}
+		</if>
+		WHERE member_id = #{memberId}
+	</update>
+
+
+	<!-- 회원삭제 -->
+	<delete id="deleteMemberInfo" parameterType="String">
+		DELETE member WHERE member_id = #{memberId}
+	</delete>
+</mapper>

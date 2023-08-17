@@ -17,17 +17,17 @@ body {
 
 .header__logo {
   display: block;
-  width: 140px;
+  width : 100px;
+  height: 25px; 
 }
 
 .header__search {
-  width: 350px;
   height: 30px;
   border-radius: 15px;
   border: 1px solid var(--color-dark-white);
   padding: 0 15px;
   padding-left: 50px;
-  background-image: url(/img/search-icon.png);
+  background-image: url(../img/search-icon.png);
   background-repeat: no-repeat;
   background-size: 20px;
   background-position: 15px;
@@ -55,6 +55,51 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 20%;
+}
+
+/* modal */
+#profile-modal {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.1);
+	font-size: 12px;
+	display: none;
+	left: 0;
+	top: 0;
+}
+
+.profile-modal__content {
+	position: absolute;
+	width: 10%;
+	height: 21%;
+	right: 5%;
+	top: 7%;
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 5px 15px;
+}
+
+.modal-logo {
+	width: 25%;
+	margin-right: 20px;
+	border-radius: 10px;
+}
+
+.profile-modal__title {
+	display: flex;
+	height: 50px;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+#profile-modal p {
+	margin-top: 5px;
+}
+
+.modal-visible {
+	display: block !important;
 }
 
 /* side */
