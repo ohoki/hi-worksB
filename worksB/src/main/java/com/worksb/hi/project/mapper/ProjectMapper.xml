@@ -90,22 +90,35 @@
 	
 <!-- 주현 -->
 <select id="searchPrj" parameterType="Integer" resultType="ProjectVO">
-    SELECT p.project_id,
-    	p.project_name,
-    	find_subcode(project_access) project_access,
-    	find_subcode(manager_accp) manager_accp,
-    	find_subcode(write_access) write_access,
-    	find_subcode(update_access) update_access,
-    	find_subcode(board_access) board_access,
-    	find_subcode(file_access) file_access,
-    	find_subcode(comment_access) comment_access, 
-    	(SELECT count(*)from prj_particir pp where p.project_id=pp.project_id) particir_num,
-    	dept_id,
-    	project_cls
-    FROM project p INNER JOIN (SELECT DISTINCT project_id from prj_particir) pp ON p.project_id=pp.project_id 
-    WHERE dept_id BETWEEN(SELECT MIN(dept_id) FROM department WHERE company_id=#{companyId})
-    AND
-    (SELECT MAX(dept_id) FROM department WHERE company_id=#{companyId})
+	SELECT
+	    p.project_id,
+	    p.project_name,
+	    find_subcode(p.project_access) AS project_access,
+	    find_subcode(p.manager_accp) AS manager_accp,
+	    find_subcode(p.write_access) AS write_access,
+	    find_subcode(p.update_access) AS update_access,
+	    find_subcode(p.board_access) AS board_access,
+	    find_subcode(p.file_access) AS file_access,
+	    find_subcode(p.comment_access) AS comment_access, 
+	    pp.particir_count AS prj_particir,
+	    pp.project_markup AS markup,
+	    p.dept_id,
+	    p.project_cls
+	FROM
+	    project p
+	JOIN (
+	    SELECT
+	        project_id,
+	        COUNT(*) AS particir_count,
+	        MAX(project_markup) AS project_markup
+	    FROM
+	        prj_particir
+	    GROUP BY
+	        project_id
+	) pp ON p.project_id = pp.project_id
+	WHERE
+	    p.dept_id BETWEEN (SELECT MIN(dept_id) FROM department WHERE company_id = #{companyId})
+	    AND (SELECT MAX(dept_id) FROM department WHERE company_id = #{companyId})
 
 </select>
 </mapper>

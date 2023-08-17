@@ -33,22 +33,27 @@
 	<div class="block">
 		<h3>내프로젝트</h3>
 		<br> 
-		<img class="tiled icon" alt="타일형으로 보기" src="${pageContext.request.contextPath }/resources/icon/microsoft.svg">
-		<img class="list icon" alt="리스트로 보기" src="${pageContext.request.contextPath }/resources/icon/list.svg">
+		<a href="projectTiled"><img class="tiled icon" alt="타일형으로 보기" src="${pageContext.request.contextPath }/resources/icon/microsoft.svg"></a>
+		<a href="projectList"><img class="list icon" alt="리스트로 보기" src="${pageContext.request.contextPath }/resources/icon/list.svg"></a>
 		<h4 class="star-list">즐겨찾기</h4>
-		<c:forEach items="projectList" var="list">
-			<div class="container">
-				<ul class="draggable" draggable="true">
-					<li><img class="colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/star.svg">
-<!-- 					<i class="fa-solid fa-star colored-star"></i> -->
-<!-- 					<div class="colored-icon"></div> -->
-					<p onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</p> 
-					<img class="icon" alter="참여자수 아이콘" src="${PageContext.request.contextPath }/resources/icon/user.svg">${list.particirNum }
-<!-- 					<i class="fa-solid fa-user">6</i> -->
-					<div class="unread-project">1</div>
-					</li>
-			</ul>
-		</div>
+		<c:forEach items="${projectList }" var="list">
+			<c:if test="${list.markup eq 'Y' }">
+				<div class="container">
+					<ul class="draggable" draggable="true">
+						<li><img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/star.svg">
+	<!-- 					<i class="fa-solid fa-star colored-star"></i> -->
+	<!-- 					<div class="colored-icon"></div> -->
+						<p onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</p> 
+						<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticir }
+						<c:if test="${list.projectAccess eq 'YES'}">
+								<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
+						</c:if>
+	<!-- 					<i class="fa-solid fa-user">6</i> -->
+						<div class="unread-project">1</div>
+						</li>
+					</ul>
+				</div>
+			</c:if>
 		</c:forEach>
 		<hr>
 
@@ -60,16 +65,24 @@
 			</select>
 		</div>
 		<div class="container">
-			<c:forEach items="projectList" var="list"></c:forEach>
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4></h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
+			<c:forEach items="${projectList }" var="list">
+				<c:if test="${list.markup eq 'N' }">
+					<ul class="draggable" draggable="true">
+						<li><img class="icon  colored-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
+		<!-- 					<div class="colored-icon"></div> -->
+							<p onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</p> 
+							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticir }
+							<c:if test="${list.projectAccess eq 'YES'}">
+								<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
+							</c:if>
+		<!-- 					 <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i> -->
+						</li>
+					</ul>
+				</c:if>
+			</c:forEach>
 		</div>
 	</div>
+	
 
 	<div class="create-project-list-view">새 프로젝트 생성</div>
 
