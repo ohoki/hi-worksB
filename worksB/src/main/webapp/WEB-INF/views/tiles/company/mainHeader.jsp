@@ -59,15 +59,21 @@
 			<div id="my-profile-modal">
 				<div class="my-profile-modal__content">
 					<div class="my-profile-modal__title">
-						<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="modal-logo">
-						<div>${memberInfo.memberName }</div>
+						<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="my-profile-logo">
+						<div class="my-profile-modal__name">${memberInfo.memberName }</div>
 						<ul>
-							<i class="fa-regular fa-compass"></i><li>${companyInfo.companyName }</li>
-							<i class="fa-regular fa-compass"></i><li>${memberInfo.memberId }</li>
-							<i class="fa-regular fa-compass"></i><li>${memberInfo.memberPhone }</li>
-							<i class="fa-regular fa-compass"></i><li>${memberInfo.deptId }</li>
+							<li class="my-profile-item"><i class="fa-regular fa-compass"></i><span>${companyInfo.companyName }</span></li>
+							<li class="my-profile-item"><i class="fa-regular fa-compass"></i><span>${memberInfo.memberId }</span></li>
+							<li class="my-profile-item"><i class="fa-regular fa-compass"></i><span>${memberInfo.memberPhone }</span></li>
+							<li class="my-profile-item">
+								<i class="fa-regular fa-compass"></i>
+								<span>
+									<c:if test="${memberInfo.deptId eq 0}">-</c:if>
+									<c:if test="${memberInfo.deptId ne 0}">${memberInfo.deptId }</c:if>
+								</span></li>
 						</ul>
-						<button type="button">정보 수정</button>
+						<button type="button" class="my-profile__btn">정보 수정</button>
+					</div>	
 				</div>			
 			</div>
 		</div>
