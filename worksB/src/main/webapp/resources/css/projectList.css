@@ -1,0 +1,102 @@
+@import "root.css";
+
+.colored-icon{
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    display: inline-block;
+    border-radius: 3px;
+}
+h4{
+    display: inline-block;
+}
+
+.fa-globe{
+    text-align: right;
+}
+.fa-user{
+    width:30px;
+}
+.fa-bars, .fa-microsoft{
+    float: right;
+    width: 80px;
+}
+
+.sort-icons {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    height: 50px;
+
+}
+
+.project-main{
+    display: inline-flex;
+    border-radius: 18px;
+    background-color: #fffae0;
+    width: 300px;
+    height: 150px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+.bar{
+    border-top-left-radius: 13px;
+    border-bottom-left-radius: 13px;
+    background-color: black;
+    width: 20px;
+    height: 150px;
+    float: left;
+    margin-right: 10px;
+}
+
+.project__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.select-box{
+    display: block;
+    margin-bottom: 20px;
+}
+
+.unread-project{
+    border-radius: 50px;
+    display: inline-block;
+    background-color: red;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    color: white;
+    margin-left: 30px;
+}
+.create-project-list-view{
+    width: 260px;
+    background-color: #9fdbf5;
+    height: 100px;
+    border-radius: 30px;
+    text-align: center;
+    position: absolute;
+    bottom: 87%;
+    left: 76%;
+    line-height: 100px;
+}
+
+.create-project-tiled-view{
+    width: 260px;
+    background-color: #9fdbf5;
+    height: 100px;
+    border-radius: 30px;
+    text-align: center;
+    position: absolute;
+    bottom: 79%;
+    left: 76%;
+    line-height: 100px;
+}
+.colored-star{
+    color: #ffd43b;
+}
+.empty-star{
+    color: #394521;
+}

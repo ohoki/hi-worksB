@@ -70,5 +70,14 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	
 	//주현
+	@Override
+	public List<ProjectVO> searchPrj(String companyId) {
+		List<ProjectVO> vo=projectMapper.searchPrj(companyId);
+		return vo;
+	}
+
+
+
+
 
 }
