@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.worksb.hi.member.service.MemberVO;
+
 import lombok.Data;
 
 @Data
@@ -21,5 +23,11 @@ public class NoticeVO {
 	private int boardHit;
 	private String boardType;
 	private int companyId;
+	
+	private String memberName;
+	
+	
+	
+
 	
 }
