@@ -128,4 +128,21 @@
 							)
 	</insert>
 	
+	<!-- 일정 등록 -->
+	<insert id="insertSche" parameterType="ScheVO">
+		INSERT INTO prj_sche
+							(
+								start_date
+								, end_date
+								, prj_board_id
+								, alarm_date
+							)
+						VALUES
+							(
+								#{startDate}
+								, #{endDate}
+								, #{prjBoardId}
+								, #{alarmDate}
+							)
+	</insert>
 </mapper>

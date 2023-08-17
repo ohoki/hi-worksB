@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
 
@@ -51,6 +52,16 @@ public class BoardServiceImpl implements BoardService {
 		int result = boardMapper.insertVoteList(voteVO);
 		if(result == 1) {
 			return voteVO.getPrjBoardId();
+		}else {
+			return -1;
+		}
+	}
+
+	@Override
+	public int insertSche(ScheVO scheVO) {
+		int result = boardMapper.insertSche(scheVO);
+		if(result == 1) {
+			return scheVO.getPrjBoardId();
 		}else {
 			return -1;
 		}
