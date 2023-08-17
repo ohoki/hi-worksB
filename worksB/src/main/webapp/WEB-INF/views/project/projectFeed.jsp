@@ -95,6 +95,10 @@
     margin: 5px;
 }
 
+a {
+    text-decoration: none;
+}
+
 </style>
 </head>
 <body>
