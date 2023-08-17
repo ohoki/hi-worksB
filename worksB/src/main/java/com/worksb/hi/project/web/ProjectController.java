@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.worksb.hi.company.service.CompanyVO;
@@ -116,7 +117,8 @@ public class ProjectController {
 	
 	
 	//주현
-	//프로젝트리스트출력
+	
+	//프로젝트리스트출력(리스트형식)
 	@GetMapping("/projectList")
 	public String projectList(Model m,HttpSession session) {
 		Integer companyId = (Integer)((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
@@ -124,12 +126,22 @@ public class ProjectController {
 		m.addAttribute("projectList",projectService.searchPrj(companyId));
 		return"prj/projectList";
 	}
-	
+	//프로젝트리스트출력(그리드형식)
 	@GetMapping("/projectGrid")
 	public String projectGrid(Model m,HttpSession session) {
 		Integer companyId =  (Integer)((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		
 		m.addAttribute("projectList",projectService.searchPrj(companyId));
 		return"prj/projectGrid";
+	}
+	//즐겨찾기갱신(즐겨찾기해제)
+	@PostMapping("/updateStar")
+	public void removeStar(@RequestBody String starInfo) {
+		if(starInfo=="full") {
+			
+		}
+		else if(starInfo=="none") {
+			
+		}
 	}
 }
