@@ -144,7 +144,7 @@ form {
 	<table class="table">
 		<thead>
 			<tr class="table__ftr">
-				<th>No</th>
+				<th>번호</th>
 				<th>제목</th>
 				<th>글쓴이</th>
 				<th>작성일</th>
@@ -156,9 +156,7 @@ form {
 				<tr onclick="location.href='noticeInfo?noticeId=${notice.noticeId}'">
 					<td>${notice.noticeId }</td>
 					<td>${notice.noticeTitle }</td>
-					<td>
-						<!-- member_name 넣는자리 -->관리자
-					</td>
+					<td>${notice.memberName} </td>
 					<td><fmt:formatDate value="${notice.boardRegdate }"
 							pattern="yyyy/MM/dd" /></td>
 					<td>
