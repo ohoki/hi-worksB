@@ -7,8 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document</title>
-<script src="https://kit.fontawesome.com/f322160cc3.js"
-	crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <%-- 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/projectList.css"> --%>
 <style>
 .icon{
@@ -40,16 +39,17 @@
 			<c:if test="${list.markup eq 'Y' }">
 				<div class="container">
 					<ul class="draggable" draggable="true">
-						<li><img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/star.svg">
-	<!-- 					<i class="fa-solid fa-star colored-star"></i> -->
-	<!-- 					<div class="colored-icon"></div> -->
-						<p onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</p> 
-						<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticir }
-						<c:if test="${list.projectAccess eq 'YES'}">
-								<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
-						</c:if>
-	<!-- 					<i class="fa-solid fa-user">6</i> -->
-						<div class="unread-project">1</div>
+						<li>
+							<p hidden>${list.projectId }</p>
+							<img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/star.svg">
+		
+							<p onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</p> 
+							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticir }
+							<c:if test="${list.projectAccess eq 'YES'}">
+									<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
+							</c:if>
+	
+							<div class="unread-project">1</div>
 						</li>
 					</ul>
 				</div>
@@ -68,14 +68,16 @@
 			<c:forEach items="${projectList }" var="list">
 				<c:if test="${list.markup eq 'N' }">
 					<ul class="draggable" draggable="true">
-						<li><img class="icon  colored-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
-		<!-- 					<div class="colored-icon"></div> -->
+						<li>
+							<p hidden>${list.projectId }</p>
+							<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
+		
 							<p onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</p> 
 							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticir }
 							<c:if test="${list.projectAccess eq 'YES'}">
 								<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
 							</c:if>
-		<!-- 					 <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i> -->
+		
 						</li>
 					</ul>
 				</c:if>
@@ -88,9 +90,8 @@
 
 	<script>
     
-//즐찾해제와 추가
-    document.addEventListener("click",(e)=>{
-        
+//즐찾해제
+    document.addEventListener("click",(e)=>{     
         if(e.target.className.includes('colored-star')){
             e.preventDefault()
             let remove=document.getElementsByClassName('colored-star')
@@ -99,16 +100,18 @@
                 function(e){
                     e.preventDefault();
                     let stared=this;
-                    stared.classList.remove('colored-star','fa-solid')
-                    stared.className+=' '+'empty-star'+' '+'fa-regular'
+                    stared.src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg"
                     let none=document.getElementsByClassName('none-star')[0].nextSibling.nextSibling
-                    console.log(none)
+                    
                     let pn=this.parentNode;
-                    console.log(pn)
+					
                     none.appendChild(pn)
+                    
+                    let starInfo='full'
+                    updateStar(starInfo)
                 })
             }
-
+//즐찾추가
         }else if(e.target.className.includes('empty-star'))
             e.preventDefault()
             let add=document.getElementsByClassName('empty-star');
@@ -117,16 +120,37 @@
                     function(event){
                         event.preventDefault();
                         let empty=this;
-                        empty.classList.remove('empty-star','fa-regular')
-                        empty.className+=' '+'colored-star'+' '+'fa-solid'
+
+                        //let title;
+                        
+                        empty.src="${pageContext.request.contextPath }/resources/icon/star.svg"
                         //empty.classList.replace('fa-regular fa-star empty-star','fa-regular fa-star colored-star')
                         let starList=document.getElementsByClassName('star-list')[0].nextSibling.nextSibling
+
                         let pn=this.parentNode;
+
                         starList.appendChild(pn)
                 })
             }
         
     })
+    //즐겨찾기 관련 정보를 DB에 연동
+    function updateStar(starInfo){
+	console.log(starInfo)
+		$.ajax({
+			url:'updateStar',
+			type:'post',
+			contentType:'application/json',
+			data:JSON.stringify(starInfo)
+		})
+		.done(data=>{
+			console.log(data)
+		})
+		.fail(reject=>{
+			alert('즐겨찾기 갱신에 실패하였습니다')
+			window.location.reload()	
+		})
+}
 
     
 
