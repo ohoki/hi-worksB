@@ -124,12 +124,17 @@ div h2 {
 					<tr>
 						<td>
 							<div class="content">
-								<p class="content__text" name="content"></p>
+								<input type="text" name="noticeContent">
 							</div>
 						</td>
 					</tr>
 				</tbody>
+				<input type="hidden" value="${boardRegdate}">
+				<input type="hidden" value="${memberId }">
+				
 			</table>
+			<button type="button" onclick="location.href='noticeList'">목록</button>
+			<button type="submit">작성</button>
 		</form>
 	</div>
 </body>

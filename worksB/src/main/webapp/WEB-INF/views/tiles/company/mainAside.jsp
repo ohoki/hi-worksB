@@ -22,7 +22,7 @@
 		<p class="side__menu__cate">사내 게시판</p>
 		<div class="side__menu">
 			<ul class="side__menu__items">
-				<li class="side__menu__item"><a>사내 공지</a></li>
+				<li class="side__menu__item"><a href="noticeList">사내 공지</a></li>
 				<li class="side__menu__item"><a>같이타요</a></li>
 				<li class="side__menu__item"><a>동호회</a></li>
 			</ul>

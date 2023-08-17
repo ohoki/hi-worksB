@@ -13,6 +13,8 @@ import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.notice.service.NoticeService;
 import com.worksb.hi.notice.service.NoticeVO;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 @Controller
 public class NoticeController {
 	
@@ -36,13 +38,6 @@ public class NoticeController {
 		
 	}
 	
-	// 전체조회
-	/*
-	 * @GetMapping("/noticeList") public String getNoticeList(Model model) {
-	 * model.addAttribute("notice", noticeService.getNoticeList()); return
-	 * "notice/noticeList"; }
-	 */
-	
 	// 단건 조회
 	@GetMapping("/noticeInfo")
 	public String getNoticeInfo(NoticeVO noticeVO, Model model) {
@@ -64,8 +59,24 @@ public class NoticeController {
 		return "redirect:noticeList";
 	}
 	
+	// 게시글 수정 폼
+	@GetMapping("/noticeUpdate")
+	public String noticeUpdateForm() {
+		
+	}
 	
+	// 게시글 수정
+	@PostMapping("/noticeUpdate")
+	public String noticeUpdate() {
+		
+	}
 	
+	// 게시글 삭제
+	@GetMapping("/noticedelete")
+	public String noticeDelete(@RequestParam(name = "noticeId", defaultValue = "0") int noticeId) {
+		noticeService.noticeDelete(noticeId);
+		return "redirect:noticeList";
+	}
 	/*
 	  // 좋아요 기능
 	  

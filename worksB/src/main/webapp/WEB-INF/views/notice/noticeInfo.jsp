@@ -32,7 +32,8 @@ body {
 	text-align: left;
 	height: 40px;
 	background-color: rgba(225, 239, 251);
-	padding-left: 15px
+	padding-left: 15px;
+	border-radius: 3px;
 }
 
 .contents {
@@ -137,7 +138,7 @@ div h2 {
 						<td>
 							<div class="contents">
 								<div class="writer">
-									<p class="writer__p">${memberId} 회원 이름 나오는곳<!-- 작성자 넣는칸 --></p>
+									<p class="writer__p">${noticeInfo.memberName}<!-- 작성자 넣는칸 --></p>
 								</div>
 								<div class="date">
 									<p class="date__date">조회수 ${noticeInfo.boardHit } | <fmt:formatDate value="${noticeInfo.boardRegdate}" pattern="yyyy/MM/dd HH:mm:ss"/></p>
@@ -161,8 +162,8 @@ div h2 {
 				<button type="button" class="buttonss__button" onclick="location.href='noticeList'">목록</button>
 			</div>
 			<div class="buttons">
-				<button type="button" class="buttonss__button" onclick="location.href='noticeUpdate'">수정</button>
-				<button type="button" class="buttonss__button">삭제</button>
+				<button type="button" class="buttonss__button" onclick="location.href='noticeUpdate?noticeId=${noticeInfo.noticeId}'">수정</button>
+				<button type="button" class="buttonss__button" onclick="location.href='noticeDelete?noticeId=${noticeInfo.noticeId}'">삭제</button>
 			</div>
 		</div>
 	</div>
