@@ -28,10 +28,10 @@
 			</ul>
 		</div>
 		<!-- 마이 공간 -->
-		<p class="side__menu__cate">'이름'의 공간</p>
+		<p class="side__menu__cate">${memberId }의 공간</p>
 		<div class="side__menu">
 			<ul class="side__menu__items">
-				<li class="side__menu__item"><a>마이 캘린더</a></li>
+				<li class="side__menu__item"><a href="privateSche">마이 캘린더</a></li>
 				<li class="side__menu__item"><a>네이버 뉴스</a></li>
 				<li class="side__menu__item"><a href="lunch">점.메.추</a></li>
 			</ul>
