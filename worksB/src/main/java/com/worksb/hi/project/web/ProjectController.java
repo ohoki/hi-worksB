@@ -26,7 +26,7 @@ public class ProjectController {
 	
 	
 	
-	//이진
+	//이진 - 등록수정삭제
 	//프로젝트 등록 폼
 	@GetMapping("/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
@@ -42,19 +42,10 @@ public class ProjectController {
 	//프로젝트 등록
 	@PostMapping("/projectInsert")
 	public String projectInsertProcess(ProjectVO projectVO, HttpSession session) {
-		if("on".equals(projectVO.getProjectAccess())){
-			// A1 : Yes
-			projectVO.setProjectAccess("A1");
-		}else {
-			// A2 : No
-			projectVO.setProjectAccess("A2");
-		}
 		
-		if("on".equals(projectVO.getManagerAccp())) {
-			projectVO.setManagerAccp("A1");
-		}else {
-			projectVO.setManagerAccp("A2");
-		}
+		//A1 : Yes, A2 : No
+		projectVO.setProjectAccess("on".equals(projectVO.getProjectAccess())? "A1" : "A2");
+		projectVO.setManagerAccp("on".equals(projectVO.getManagerAccp())? "A1" : "A2");
 		
 		// 부서번호 -> 부서이름 !!!
 		
@@ -67,40 +58,55 @@ public class ProjectController {
 		projectService.insertProject(projectVO);
 		
 	    
-		return "home"; //리턴페이지 수정해야됨!!
+		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 	
 	//프로젝트 수정폼
 	@GetMapping("/projectUpdate")
-	public String projectUpdateForm(ProjectVO projectVO, @RequestParam int projectId, Model model) {
-		projectVO.setProjectId(projectId);
+	public String projectUpdateForm(@RequestParam int projectId, Model model) {
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	    
 	    model.addAttribute("projectInfo", projectInfo);
-	    //부서번호 -> 부서이름
+	    model.addAttribute("projectId", projectId);
+	    //부서번호 -> 부서이름 추가해야함
 	    
 	    return "projectForm/projectUpdate";
 	}
 	
 	//프로젝트 수정
 	@PostMapping("/projectUpdate")
-	public String projectUpdate(ProjectVO projectVO, RedirectAttributes rtt, @RequestParam int projectId) {
+	public String projectUpdate(ProjectVO projectVO) {
+		int projectId = projectVO.getProjectId();
+		
+		projectVO.setProjectId(projectId);
+		
+		//A1 : Yes, A2 : No
+		projectVO.setProjectAccess("on".equals(projectVO.getProjectAccess())? "A1" : "A2");
+		projectVO.setManagerAccp("on".equals(projectVO.getManagerAccp())? "A1" : "A2");
 		
 		projectService.updateProject(projectVO);
-		rtt.addFlashAttribute("result", "update success");
-		return "redirect:/projectList";
+
+		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 	
 
 
 	// 프로젝트 삭제
 	@GetMapping("/projectDelete")
-	public String projectDelete(@RequestParam(name = "projectId") int projectId) {
+	public String projectDelete(@RequestParam int projectId) {
 		projectService.deleteProject(projectId);
-		return "redirect:projectList";
+		return "redirect:/home"; // 리턴 페이지 수정해야함!! -> 프로젝트 리스트
 	}
 	
-	
+	// 프로젝트 피드
+	@GetMapping("/projectFeed")
+    public String projectFeed(@RequestParam int projectId, Model model) {
+        ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+         
+        model.addAttribute("projectInfo", projectInfo);
+
+        return "project/projectFeed";
+    }
 	
 	
 	
