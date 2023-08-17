@@ -11,106 +11,6 @@
 	crossorigin="anonymous"></script>
 <%-- 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/projectList.css"> --%>
 <style>
-/* .colored-icon{ */
-/*     width: 20px; */
-/*     height: 20px; */
-/*     background-color: red; */
-/*     display: inline-block; */
-/*     border-radius: 3px; */
-/* } */
-/* h4{ */
-/*     display: inline-block; */
-/* } */
-
-/* .fa-globe{ */
-/*     text-align: right; */
-/* } */
-/* .fa-user{ */
-/*     width:30px; */
-/* } */
-/* .fa-bars, .fa-microsoft{ */
-/*     float: right; */
-/*     width: 80px; */
-/* } */
-
-/* .sort-icons { */
-/*     display: flex; */
-/*     justify-content: right; */
-/*     align-items: center; */
-/*     height: 50px; */
-
-/* } */
-
-/* .project-main{ */
-/*     display: inline-flex; */
-/*     border-radius: 18px; */
-/*     background-color: #fffae0; */
-/*     width: 300px; */
-/*     height: 150px; */
-/*     margin-bottom: 20px; */
-/*     margin-left: 10px; */
-/* } */
-
-/* .bar{ */
-/*     border-top-left-radius: 13px; */
-/*     border-bottom-left-radius: 13px; */
-/*     background-color: black; */
-/*     width: 20px; */
-/*     height: 150px; */
-/*     float: left; */
-/*     margin-right: 10px; */
-/* } */
-
-/* .project__content { */
-/*     display: flex; */
-/*     flex-direction: column; */
-/*     justify-content: center; */
-/* } */
-
-/* .select-box{ */
-/*     display: block; */
-/*     margin-bottom: 20px; */
-/* } */
-
-/* .unread-project{ */
-/*     border-radius: 50px; */
-/*     display: inline-block; */
-/*     background-color: red; */
-/*     width: 30px; */
-/*     height: 30px; */
-/*     text-align: center; */
-/*     color: white; */
-/*     margin-left: 30px; */
-/* } */
-/* .create-project-list-view{ */
-/*     width: 260px; */
-/*     background-color: #9fdbf5; */
-/*     height: 100px; */
-/*     border-radius: 30px; */
-/*     text-align: center; */
-/*     position: absolute; */
-/*     bottom: 87%; */
-/*     left: 76%; */
-/*     line-height: 100px; */
-/* } */
-
-/* .create-project-tiled-view{ */
-/*     width: 260px; */
-/*     background-color: #9fdbf5; */
-/*     height: 100px; */
-/*     border-radius: 30px; */
-/*     text-align: center; */
-/*     position: absolute; */
-/*     bottom: 79%; */
-/*     left: 76%; */
-/*     line-height: 100px; */
-/* } */
-/* .colored-star{ */
-/*     color: #ffd43b; */
-/* } */
-/* .empty-star{ */
-/*     color: #394521; */
-/* } */
 .icon{
 	width: 30px;
 	height: 30px;
@@ -141,99 +41,33 @@
 				<ul class="draggable" draggable="true">
 					<li><img class="colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/star.svg">
 <!-- 					<i class="fa-solid fa-star colored-star"></i> -->
-					<div class="colored-icon"></div>
+<!-- 					<div class="colored-icon"></div> -->
 					<p onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</p> 
-					<img class="icon" alter="참여자수 아이콘" src="${PatgeContext.request.contextPath }/resources/icon/user.svg">${list.!!!!! }
+					<img class="icon" alter="참여자수 아이콘" src="${PageContext.request.contextPath }/resources/icon/user.svg">${list.particirNum }
 <!-- 					<i class="fa-solid fa-user">6</i> -->
-					<div class="unread-project">1</div></li>
+					<div class="unread-project">1</div>
+					</li>
 			</ul>
 		</div>
 		</c:forEach>
 		<hr>
 
 		<br>
-		<h4 class="none-star">참여중</h4>
+		<div class="none-star">
+			<select>
+				<option>참여중</option>
+				<option>만료</option>
+			</select>
+		</div>
 		<div class="container">
 			<c:forEach items="projectList" var="list"></c:forEach>
 			<ul class="draggable" draggable="true">
 				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
 					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
+					<h4></h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
 				</li>
 			</ul>
 
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i>
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i></li>
-			</ul>
-
-
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i>
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i></li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">50</i></li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
 		</div>
 	</div>
 

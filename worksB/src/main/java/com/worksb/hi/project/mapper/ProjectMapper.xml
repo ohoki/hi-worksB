@@ -88,22 +88,24 @@
 	
 	
 	
-<!-- 	주현 -->
-<select id="searchPrj" parameterType="String" resultType="ProjectVO">
+<!-- 주현 -->
+<select id="searchPrj" parameterType="Integer" resultType="ProjectVO">
     SELECT p.project_id,
-    p.project_name,
-    (SELECT find_subcode(project_access) FROM project) project_access,
-    (SELECT find_subcode(manager_accp) FROM project) manager_accp,
-    (SELECT find_subcode(write_access) FROM project) write_access,
-    (SELECT find_subcode(update_access) FROM project) update_access,
-    (SELECT find_subcode(board_access) FROM project) board_access,
-    (SELECT find_subcode(file_access) FROM project) file_access,
-    (SELECT find_subcode(comment_access) FROM project) comment_access, 
-    (SELECT count(*)from prj_particir pp where p.project_id=pp.project_id) particir_num,
-    dept_id,
-    project_cls
+    	p.project_name,
+    	find_subcode(project_access) project_access,
+    	find_subcode(manager_accp) manager_accp,
+    	find_subcode(write_access) write_access,
+    	find_subcode(update_access) update_access,
+    	find_subcode(board_access) board_access,
+    	find_subcode(file_access) file_access,
+    	find_subcode(comment_access) comment_access, 
+    	(SELECT count(*)from prj_particir pp where p.project_id=pp.project_id) particir_num,
+    	dept_id,
+    	project_cls
     FROM project p INNER JOIN (SELECT DISTINCT project_id from prj_particir) pp ON p.project_id=pp.project_id 
-    WHERE dept_id=(SELECT dept_id FROM department WHERE company_id=#{companyId})
+    WHERE dept_id BETWEEN(SELECT MIN(dept_id) FROM department WHERE company_id=#{companyId})
+    AND
+    (SELECT MAX(dept_id) FROM department WHERE company_id=#{companyId})
 
 </select>
 </mapper>
