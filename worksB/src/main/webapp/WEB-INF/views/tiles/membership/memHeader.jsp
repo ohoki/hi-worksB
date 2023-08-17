@@ -45,7 +45,7 @@
 	<!--header-->
 	<header class="index-header">
 		<div class="index-header__logo">
-			<a href="home"><img src="${pageContext.request.contextPath }/resources/img/company_logo.png" alt="worksB 로고"></a>
+			<a href="${pageContext.request.contextPath }/home"><img src="${pageContext.request.contextPath }/resources/img/company_logo.png" alt="worksB 로고"></a>
 			<div>
 				<span>w</span> <span>o</span> <span>r</span> <span>k</span> <span>s</span>
 				<span>B</span>
@@ -57,7 +57,10 @@
 				<button type="button" class="index-header_btn" id="registerBtn" value="회원가입">회원가입</button>
 			</c:if>
 			<c:if test="${memberId ne null}">
-				<button type="button" class="index-header_btn active" id="logoutBtn" value="로그아웃">로그아웃</button>
+			<form action="${pageContext.request.contextPath }/logout" method="post" id="logout">
+				<button type="submit" class="index-header_btn active" id="logoutBtn" value="로그아웃">로그아웃</button>
+				<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+			</form>
 			</c:if>
 		</div>
 	</header>
@@ -65,12 +68,11 @@
 		$('.index-header_btn').on('click', function(e) {
 			let loginBtn = $('#loginBtn');
 			let registerBtn = $('#registerBtn');
+			
 			if(e.currentTarget.value == '로그인') {
 				location.href='loginForm';
 			}else if(e.currentTarget.value == '회원가입') {
 				location.href='registerForm';
-			}else if(e.currentTarget.value == '로그아웃') {
-				location.href='logout';
 			}
 		});
 	</script>

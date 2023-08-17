@@ -11,7 +11,7 @@ public class CompanyVO {
 //	REAL_LOGO_PATH          VARCHAR2(200) 
 //	COMPANY_ADDR   NOT NULL VARCHAR2(80)  
 //	ADM_ACCP       NOT NULL VARCHAR2(5)  
-	private int companyId;
+	private Integer companyId;
 	private String companyName;
 	private String companyUrl;
 	private String logoPath;

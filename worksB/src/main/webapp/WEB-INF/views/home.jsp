@@ -37,12 +37,7 @@
 				<span>w</span> <span>o</span> <span>r</span> <span>k</span> <span>s</span>
 				<span><a href="home">B</a></span>
 			</h1>
-			<c:if test="${memberId ne null }">
-			<button type="button" onclick="location.href='loginForm?memberId='+'${memberId }'+'&companyId='+'${companyId}'">시작하기</button>
-			</c:if>
-			<c:if test="${memberId eq null }">
-			<button type="button" onclick="location.href='loginForm?memberId='+'${cookie.memberId.value}'+'&companyId='+'${cookie.companyId.value}'">시작하기</button>
-			</c:if>
+			<button type="button" onclick="location.href='start'">시작하기</button>
 		</div>
 	</main>
 	<!--footer-->
