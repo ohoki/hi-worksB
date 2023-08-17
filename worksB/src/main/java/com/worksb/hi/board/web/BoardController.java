@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
 
@@ -34,7 +35,7 @@ public class BoardController {
     
 	//게시글 등록
 	@PostMapping("/boardInsert")
-	public String boardInsertProcess(BoardVO boardVO, TaskVO taskVO, VoteVO voteVO, HttpSession session) {
+	public String boardInsertProcess(BoardVO boardVO, TaskVO taskVO, VoteVO voteVO, ScheVO scheVO, HttpSession session) {
 		
 		String memberId = (String) session.getAttribute("memberId");
         boardVO.setMemberId(memberId);
@@ -42,7 +43,7 @@ public class BoardController {
         String boardType = boardVO.getBoardType();
         
         // 글 prj_project
-//		boardService.insertBoard(boardVO);
+		boardService.insertBoard(boardVO);
         
 		int prjBoardId = boardVO.getPrjBoardId();
 		
@@ -55,6 +56,9 @@ public class BoardController {
         	
         }else if(boardType.equals("C6")) {
         	// 일정
+        	scheVO.setPrjBoardId(prjBoardId);
+        	
+        	boardService.insertSche(scheVO);
         	
         }else if(boardType.equals("C7")) {
         	// 투표

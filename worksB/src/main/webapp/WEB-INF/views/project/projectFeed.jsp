@@ -5,10 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+ 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
 <style>
 .form__select,
@@ -23,7 +26,7 @@
 }
 
 .form__textarea{
-	height: 400px;
+	height: 300px;
 	resize: none; /*textarea 길이 고정*/
 }
 
@@ -165,11 +168,11 @@
 					
 					<div>
 						<label for="startDate">시작일 추가</label>
-						<input type="text" name="startDate" id="startDate" class="date-input">
+						<input type="text" name="startDate" class="date-input startDate">
 					</div>
 					<div>
 						<label for="endDate">마감일 추가</label>
-						<input type="text" name="endDate" id="endDate" class="date-input">
+						<input type="text" name="endDate" class="date-input endDate">
 					</div>
 					
 					<!-- 진척도 -->
@@ -235,7 +238,19 @@
 					<label>일정일정</label>
 						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
 					</div>
-
+					
+					<div>
+						<label for="startDate">시작일</label>
+						<input type="text" name="startDate" class="date-input startDate">
+					</div>
+					<div>
+						<label for="endDate">종료일</label>
+						<input type="text" name="endDate" class="date-input endDate">
+					</div>
+					
+					<!-- 알람 추가 -->
+					
+					
 					<div>
 						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
 					</div>
@@ -272,7 +287,7 @@
 			        </div>
 					
 					<div>
-						<input type="text" name="endDate" id="vote-endDate" class="date-input">
+						<input type="text" name="endDate" class="date-input endDate">
 						<label for="endDate">투표 종료일</label>
 					</div>
 					
@@ -336,22 +351,22 @@
 		}	
 	})
 	
-
-	//업무 시작일자, 마감일자 범위 선택하기
+	// 업무, 투표, 일정
+	// 시작일자, 마감일자 범위 선택하기
 	$(function () {
-		$("#startDate").datepicker({
+		$(".startDate").datepicker({
 			dateFormat: "yy-mm-dd",
 			// 오늘 이후로 선택 가능하게 설정
 			minDate: 0,
 			onSelect: function(selectedDate) {
 				// 시작일 선택 -> selectedDate
 				// 최소 선택 일자를 minDate -> selectedDate로 설정
-				$("#endDate").datepicker("option", "minDate", selectedDate);
+				$(".endDate").datepicker("option", "minDate", selectedDate);
 			}
 		});
 		
 		// 마감 일자 설정
-		$("#endDate").datepicker({
+		$(".endDate").datepicker({
 			dateFormat: "yy-mm-dd",
 			// 오늘 이후로 선택 가능하게 설정
 			minDate: 0
@@ -359,18 +374,12 @@
 		
 		// 폼 리셋 버튼을 클릭할 때 날짜 전부 초기화
 		$("button[type='reset']").on("click", function() {
-			$("#startDate").datepicker("setDate", null);
-			$("#endDate").datepicker("setDate", null);
-			$("#endDate").datepicker("option", "minDate", 0);
+			$(".startDate").datepicker("setDate", null);
+			$(".endDate").datepicker("setDate", null);
+			$(".endDate").datepicker("option", "minDate", 0);
 		});
-		
 	});
 	
-	$("#vote-endDate").datepicker({
-		dateFormat: "yy-mm-dd",
-		// 오늘 이후로 선택 가능하게 설정
-		minDate: 0
-	});
 	
 	//진척도!!
 	const progressBar = document.querySelector(".progress-bar");
@@ -426,6 +435,9 @@
             });
         });                                           
     });
+	
+	
+	
 	
 </script>
 </html>
