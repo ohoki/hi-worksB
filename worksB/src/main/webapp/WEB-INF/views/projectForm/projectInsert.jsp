@@ -8,6 +8,7 @@
 <title>프로젝트 생성하기</title>
 <link  rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/projectInsert.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
 </head>
 <body>
 	<!-- 이진 -->
@@ -33,7 +34,7 @@
                     <option value="3">부서3</option>
                 </select>
             </div>
-
+			
             <div>
                 <label>회사 공개로 설정</label>
                 <input type="checkbox" class="form__checkbox" name="projectAccess">
@@ -109,7 +110,9 @@
         </div>
     </form>
     <script>
-
+    document.getElementById('submit').onclick = function() {
+        document.querySelector('input[type=checkbox][name=gender]:checked').value;
+    }
     </script>
 </body>
 </html>

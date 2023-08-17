@@ -42,7 +42,7 @@ public class BoardController {
         String boardType = boardVO.getBoardType();
         
         // 글 prj_project
-		boardService.insertBoard(boardVO);
+//		boardService.insertBoard(boardVO);
         
 		int prjBoardId = boardVO.getPrjBoardId();
 		
@@ -52,7 +52,7 @@ public class BoardController {
         	taskVO.setPrjBoardId(prjBoardId);
         	
         	boardService.insertTask(taskVO);
-        
+        	
         }else if(boardType.equals("C6")) {
         	// 일정
         	
@@ -60,8 +60,14 @@ public class BoardController {
         	// 투표
         	voteVO.setPrjBoardId(prjBoardId);
         	
+        	voteVO.setAnonyVote(voteVO.getAnonyVote() == null ? "A2" : voteVO.getAnonyVote());
+        	voteVO.setCompnoVote(voteVO.getCompnoVote() == null ? "A2" : voteVO.getCompnoVote());
+        	voteVO.setResultYn(voteVO.getResultYn() == null ? "A2" : voteVO.getResultYn());
+        	
+        	// 투표글 등록
         	boardService.insertVote(voteVO);
         	
+        	// 투표항목 등록
         	String[] listContentArr = voteVO.getListContent().split(",");
         	
         	for(int i=0; i<listContentArr.length; i++) {
