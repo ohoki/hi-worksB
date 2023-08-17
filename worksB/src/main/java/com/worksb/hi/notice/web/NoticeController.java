@@ -58,8 +58,18 @@ public class NoticeController {
 		noticeService.noticeInsert(noticeVO);
 		return "redirect:noticeList";
 	}
-	
 
+	// 게시글 수정 폼
+	@GetMapping("/noticeUpdate")
+	public String noticeUpdateForm() {
+		return null;
+	}
+	
+	// 게시글 수정
+	@PostMapping("/noticeUpdate")
+	public String noticeUpdate() {
+		return null;
+	}
 	
 	// 게시글 삭제
 	@GetMapping("/noticedelete")
