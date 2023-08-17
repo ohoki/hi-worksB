@@ -166,6 +166,20 @@ div h2 {
 				<button type="button" class="buttonss__button" onclick="location.href='noticeDelete?noticeId=${noticeInfo.noticeId}'">삭제</button>
 			</div>
 		</div>
+		<div>
+			<form>
+				<table>
+					<thead>
+						<tr>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tr>
+					</tr>
+				</table>
+			</form>
+		</div>
 	</div>
 </body>
 </html>

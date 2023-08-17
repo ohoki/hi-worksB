@@ -1,6 +1,8 @@
 package com.worksb.hi.notice.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,18 +63,32 @@ public class NoticeController {
 	
 	// 게시글 수정 폼
 	@GetMapping("/noticeUpdate")
-	public String noticeUpdateForm() {
-		
+	public String noticeUpdateForm(NoticeVO noticeVO, Model model) {
+		NoticeVO findVO = noticeService.getNoticeInfo(noticeVO);
+		model.addAttribute("noticeInfo", findVO);
+		return "notice/noticeUpdate";
 	}
 	
 	// 게시글 수정
 	@PostMapping("/noticeUpdate")
-	public String noticeUpdate() {
+	public Map<String, Object> noticeUpdate(NoticeVO noticeVO) {
+		boolean result = false;
+		
+		int noticeId = noticeService.noticeUpdate(noticeVO);
+		if(noticeId > -1) {
+			result = true;
+		}
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("result", result);
+		map.put("noticeInfo", noticeVO);
+		
+		return map;
 		
 	}
 	
 	// 게시글 삭제
-	@GetMapping("/noticedelete")
+	@GetMapping("/noticeDelete")
 	public String noticeDelete(@RequestParam(name = "noticeId", defaultValue = "0") int noticeId) {
 		noticeService.noticeDelete(noticeId);
 		return "redirect:noticeList";

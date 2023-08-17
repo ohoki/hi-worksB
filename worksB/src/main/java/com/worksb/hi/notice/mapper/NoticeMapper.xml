@@ -18,7 +18,7 @@
 		select *
 		from (  select rownum rn, a.*
         		from (select *
-              		  from notice_board n LEFT JOIN member m
+              		  from notice_board n JOIN member m
               		  on n.member_id = m.member_id
               		  where board_type = 'C2' <!-- and title like '%' || '${keyword }' || '%'  검색 --> 
               	      order by notice_id desc ) a )
@@ -66,7 +66,7 @@
 <!-- 등록 -->
 	<insert id="noticeInsert" parameterType="NoticeVO">
 		<selectKey keyProperty="noticeId" resultType="int" order="BEFORE">
-			SELECT NVL(MAX(noticeId), 0) + 1
+			SELECT NVL(MAX(notice_id), 0) + 1
 			  FROM notice_board
 		</selectKey>
 		INSERT INTO notice_board (
@@ -87,18 +87,25 @@
 			   					  ,#{noticeTitle}
 			   				  	  ,#{noticeContent}
 			   				 	  ,#{memberId}
-			   					  ,#{boardRegdate}
 			   					  ,sysdate
+			   					  ,#{boardUpddate}
 			   					  ,#{coordinate}
 			   					  ,0
 			   					  ,'C2'
-			   					  ,{companyId}
+			   					  ,#{companyId}
 			   					  )
 	</insert>
 
 <!-- 수정 -->
 	<update id="noticeUpdate" parameterType="NoticeVO">
-		
+		update notice_board
+			<set>
+				notice_title = #{noticeTitle},
+				notice_content = #{noticeContent},
+				board_upddate = sysdate,
+				coordinate = #{coordinate}
+			</set>
+		where notice_id = #{noticeId}
 	</update>
 	
 <!-- 삭제 -->
