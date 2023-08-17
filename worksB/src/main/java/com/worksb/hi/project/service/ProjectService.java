@@ -18,4 +18,5 @@ public interface ProjectService {
 	
 	
 	//주현
+	public List<ProjectVO> searchPrj(String companyId);
 }
