@@ -71,10 +71,10 @@ body {
 
 .profile-modal__content {
 	position: absolute;
-	width: 10%;
-	height: 21%;
-	right: 5%;
-	top: 7%;
+	width: 7%;
+	height: 17%;
+	right: 4%;
+	top: 4%;
 	background-color: white;
 	border: 1px solid black;
 	border-radius: 10px;
@@ -93,10 +93,34 @@ body {
 	align-items: center;
 	margin-bottom: 10px;
 }
-
 #profile-modal p {
 	margin-top: 5px;
 }
+
+#profile-modal p:hover {
+	background-color: var(--color-light-blue);
+}
+
+#my-profile-modal {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.1);
+	font-size: 12px;
+	display: none;
+	left: 0;
+	top: 0;
+}
+
+.my-profile-modal__content {
+	position: absolute;
+	background-color: white;
+	width: 30%;
+	height: 30%;
+	top:50%;
+	left: 50%;
+}
+
 
 .modal-visible {
 	display: block !important;

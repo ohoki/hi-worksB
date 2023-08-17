@@ -36,7 +36,6 @@
 				class="header__profile">
 			</a>
 			</c:if>
-			
 			<div id="profile-modal">
 				<div class="profile-modal__content">
 					<div class="profile-modal__title">
@@ -44,7 +43,7 @@
 						<div>${memberInfo.memberName }</div>
 					</div>
 					<p>
-						<a href="#">프로필 수정</a>
+						<a href="#" data-type="my-profile">내 프로필</a>
 					</p>
 					<p>
 						<a href="#">상태변경</a>
@@ -57,11 +56,26 @@
 					</form>
 				</div>			
 			</div>
+			<div id="my-profile-modal">
+				<div class="my-profile-modal__content">
+					<div class="my-profile-modal__title">
+						<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="modal-logo">
+						<div>${memberInfo.memberName }</div>
+						<ul>
+							<i class="fa-regular fa-compass"></i><li>${companyInfo.companyName }</li>
+							<i class="fa-regular fa-compass"></i><li>${memberInfo.memberId }</li>
+							<i class="fa-regular fa-compass"></i><li>${memberInfo.memberPhone }</li>
+							<i class="fa-regular fa-compass"></i><li>${memberInfo.deptId }</li>
+						</ul>
+						<button type="button">정보 수정</button>
+				</div>			
+			</div>
 		</div>
 	</header>
 <script>
 	//모달페이지 출력
 	$('a').on('click', function(e) {
+		e.stopPropagation();
 		let type = e.currentTarget.dataset.type;
 		
 		if(type == 'profile') {
@@ -69,6 +83,9 @@
 			$('body').css('overflow', 'hidden');
 		}else if(type == 'logout') {
 			$('#logout').submit();
+		}else if(type == 'my-profile') {
+			$('#my-profile-modal').addClass('modal-visible');
+			$('body').css('overflow', 'hidden');
 		}
 	});
 	

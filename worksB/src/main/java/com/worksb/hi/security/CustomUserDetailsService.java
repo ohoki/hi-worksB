@@ -19,6 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService{
 		member.setMemberId(memberId);
 		
 		MemberVO vo = memberMapper.selectMember(member);
-		return vo == null ? null : new CustomUser(vo);
+		
+		if(vo == null) {
+			throw new UsernameNotFoundException("아이디를 찾을 수 없습니다.");
+		}
+		
+		return new CustomUser(vo);
 	}
 }
