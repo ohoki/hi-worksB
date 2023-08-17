@@ -8,9 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -117,11 +116,20 @@ public class ProjectController {
 	
 	
 	//주현
+	//프로젝트리스트출력
 	@GetMapping("/projectList")
 	public String projectList(Model m,HttpSession session) {
-		Integer companyId = (Integer)session.getAttribute("companyId");
+		Integer companyId = (Integer)((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		
 		m.addAttribute("projectList",projectService.searchPrj(companyId));
 		return"prj/projectList";
+	}
+	
+	@GetMapping("/projectGrid")
+	public String projectGrid(Model m,HttpSession session) {
+		Integer companyId =  (Integer)((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+		
+		m.addAttribute("projectList",projectService.searchPrj(companyId));
+		return"prj/projectGrid";
 	}
 }
