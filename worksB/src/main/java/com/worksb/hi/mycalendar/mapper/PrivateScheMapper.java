@@ -10,7 +10,7 @@ public interface PrivateScheMapper {
 	public PrivateScheVO selectPsche(PrivateScheVO privateScheVO);
 	
 	//전체조회
-	public List<PrivateScheVO> selectAllPche(PrivateScheVO privateScheVO);
+	public List<PrivateScheVO> selectAllPsche(PrivateScheVO privateScheVO);
 	
 	//일정등록
 	public int insertPsche(PrivateScheVO privateScheVO);
