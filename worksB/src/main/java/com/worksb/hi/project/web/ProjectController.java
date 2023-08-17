@@ -117,4 +117,11 @@ public class ProjectController {
 	
 	
 	//주현
+	@GetMapping("/projectList")
+	public String projectList(Model m,HttpSession session) {
+		String companyId = (String) session.getAttribute("companyId");
+		
+		m.addAttribute("projectList",projectService.searchPrj(companyId));
+		return"prj/projectList";
+	}
 }
