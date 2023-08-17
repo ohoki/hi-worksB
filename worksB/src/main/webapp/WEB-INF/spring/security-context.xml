@@ -5,35 +5,43 @@
 	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+<bean id="customLoginSuccess" class="com.worksb.hi.security.CustomLoginSuccessHandler" />
+<bean id="customLogoutSuccess" class="com.worksb.hi.security.CustomLogoutSuccessHandler" />
+<bean id="CustomUserDetailsService" class="com.worksb.hi.security.CustomUserDetailsService" />
+<bean id="CumstomPasswordEncoder" class="com.worksb.hi.security.CumstomPasswordEncoder" />
 
 	<security:http pattern="/resources/**" security="none"/>
    	<security:http pattern="/**/tiles/**" security="none"/>
 	<security:http pattern="/" security="none" />
 	<security:http pattern="/home" security="none" />
-	<security:http pattern="/**" security="none" />
 	
-	<!-- <security:http use-expressions="true">
+	<!-- H1(관리자), H2(사원), H3(게스트)  -->
+	<security:http use-expressions="true">
 		<security:intercept-url pattern="/loginForm" access="permitAll" />
-		<security:intercept-url pattern="/**" access="permitAll"/>	
-		<security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
+		<security:intercept-url pattern="/registerForm" access="permitAll" />
+		<security:intercept-url pattern="/admin/**" access="hasRole('H1')"/>
+		<security:intercept-url pattern="/**" access="hasAnyRole('H1', 'H2', 'H3')"/>	
 		<security:form-login 
 			username-parameter="memberId"
 			password-parameter="memberPw"
 			login-page="/loginForm"
-			login-processing-url="/loginMember"
+			authentication-success-handler-ref="customLoginSuccess"
 		/>
+		<security:logout 
+			success-handler-ref="customLogoutSuccess" 
+			invalidate-session="true" 
+			delete-cookies="remember-me,JSESSION_ID"
+			/>
+		<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
 		<security:csrf disabled="true" />
 		<security:session-management>
                   <security:concurrency-control max-sessions="1" />
             </security:session-management>
-	</security:http> -->
-	
+	</security:http>
+
 	<security:authentication-manager>
-		<security:authentication-provider>
-			<security:user-service>
-				<security:user name="user" password="{noop}1234" authorities="ROLE_USER" />
-				<security:user name="admin" password="{noop}1234" authorities="ROLE_ADMIN" />
-			</security:user-service>
+		<security:authentication-provider user-service-ref="CustomUserDetailsService">
+			<security:password-encoder ref="CumstomPasswordEncoder"/>
 		</security:authentication-provider>
 	</security:authentication-manager>
 </beans>
