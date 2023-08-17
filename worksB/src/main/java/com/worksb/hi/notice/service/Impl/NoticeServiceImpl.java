@@ -51,7 +51,10 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public int noticeUpdate(NoticeVO noticeVO) {
-		
+		int result = noticeMapper.noticeUpdate(noticeVO);
+		if(result == 1) {
+			return noticeVO.getNoticeId();
+		}
 		return 0;
 	}
 

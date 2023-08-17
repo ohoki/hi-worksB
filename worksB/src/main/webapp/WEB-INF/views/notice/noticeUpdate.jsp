@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <title>Insert title here</title>
 <style>
 body {
@@ -107,16 +105,15 @@ div h2 {
 </head>
 <body>
 	<div class="top">
-		<h2>공지사항 작성</h2>
+		<h2>공지사항 수정</h2>
 	</div>
 	<div class="body">
-		<form action="noticeInsert" method="post">
+		<form action="noticeUpdate">
 			<table class="table">
 				<thead>
 					<tr class="main__p">
 						<th class="table__title">
-							<label id="noticeTitle">제목 </label>
-							<input type="text" name="noticeTitle">
+							<input type="text" name="noticeTitle" value="${noticeInfo.noticeTitle }">
 						</th>
 					</tr>
 				</thead>
@@ -124,14 +121,14 @@ div h2 {
 					<tr>
 						<td>
 							<div class="content">
-								<input type="text" name="noticeContent">
+								<input type="text" name="noticeContent" value="${noticeInfo.noticeContent }">
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input type="hidden" name="memberId" value="${memberId }">
-							<input type="hidden" name="companyId" value="${companyId}">
+							<input type="hidden" value="${sysdate }">
+							<input type="hidden" value="${noticeInfo.noticeId }">
 						</td>
 					</tr>
 				</tbody>
@@ -140,5 +137,40 @@ div h2 {
 			<button type="submit">작성</button>
 		</form>
 	</div>
+	<script>
+		$('form').on('submit', function(e){
+			
+			let objData = serializeObject();
+			
+			$.ajax({
+				url : 'noticeUpdate',
+				method : 'post',
+				data : objData
+			})
+			.done(data => {
+				let message = '수정이 완료되었습니다.';
+				alert(message);
+			})
+			.fail(reject => console.log(reject));
+			
+			return false;
+		});
+		
+		
+		function serializeObject(){
+			let formData = $('form').serializeArray();
+		
+			
+			let formObject = {};
+			$.each(formData, function(idx, obj){
+				let field = obj.name;
+				let val = obj.value;
+				
+				formObject[field] = val;
+			});
+			
+			return formObject;
+		}
+	</script>
 </body>
 </html>
