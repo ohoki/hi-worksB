@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
 
@@ -39,6 +40,21 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertVote(VoteVO voteVO) {
 		int result = boardMapper.insertVote(voteVO);
+    	// 투표 항목 등록
+    	String[] listContentArr = voteVO.getListContent().split(",");
+    	
+    	for(int i=0; i<listContentArr.length; i++) {
+    		voteVO.setListContent(listContentArr[i]);
+    		boardMapper.insertVoteList(voteVO);
+    	}
+	
+		return result;
+
+	}
+
+	@Override
+	public int insertVoteList(VoteVO voteVO) {
+		int result = boardMapper.insertVoteList(voteVO);
 		if(result == 1) {
 			return voteVO.getPrjBoardId();
 		}else {
@@ -47,10 +63,10 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int insertVoteList(VoteVO voteVO) {
-		int result = boardMapper.insertVoteList(voteVO);
+	public int insertSche(ScheVO scheVO) {
+		int result = boardMapper.insertSche(scheVO);
 		if(result == 1) {
-			return voteVO.getPrjBoardId();
+			return scheVO.getPrjBoardId();
 		}else {
 			return -1;
 		}

@@ -13,8 +13,8 @@
 		<p class="side__menu__cate">프로젝트 관리</p>
 		<div class="side__menu">
 			<ul class="side__menu__items">
-				<li class="side__menu__item"><a>내 프로젝트</a></li>
-				<li class="side__menu__item"><a>전체 프로젝트</a></li>
+				<li class="side__menu__item"><a href="projectList">내 프로젝트</a></li>
+				<li class="side__menu__item"><a href="SelectFromCompany">전체 프로젝트</a></li>
 				<li class="side__menu__item"><a>미확인 업무</a></li>
 			</ul>
 		</div>
@@ -28,7 +28,7 @@
 			</ul>
 		</div>
 		<!-- 마이 공간 -->
-		<p class="side__menu__cate">${memberId }의 공간</p>
+		<p class="side__menu__cate">${memberInfo.memberName }님의 공간</p>
 		<div class="side__menu">
 			<ul class="side__menu__items">
 				<li class="side__menu__item"><a href="privateSche">마이 캘린더</a></li>

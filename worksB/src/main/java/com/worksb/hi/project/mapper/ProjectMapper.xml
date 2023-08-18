@@ -68,42 +68,92 @@
 		WHERE project_id = #{projectId}
 	</update>
 	
-	<!-- 프로젝트 삭제 -->
+	<!-- 프로젝트 삭제  프로시저로 수정@@!!!-->
 	<delete id="deleteProject" parameterType="int">
 		DELETE FROM project
 		WHERE project_id = #{projectId}
 	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<!-- 주현 -->
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-<!-- 	주현 -->
+<!-- 개별 프로젝트 조회 -->
 <select id="searchPrj" parameterType="String" resultType="ProjectVO">
-    SELECT p.project_id,
-    p.project_name,
-    (SELECT find_subcode(project_access) FROM project) project_access,
-    (SELECT find_subcode(manager_accp) FROM project) manager_accp,
-    (SELECT find_subcode(write_access) FROM project) write_access,
-    (SELECT find_subcode(update_access) FROM project) update_access,
-    (SELECT find_subcode(board_access) FROM project) board_access,
-    (SELECT find_subcode(file_access) FROM project) file_access,
-    (SELECT find_subcode(comment_access) FROM project) comment_access, 
-    (SELECT count(*)from prj_particir pp where p.project_id=pp.project_id) particir_num,
-    dept_id,
-    project_cls
-    FROM project p INNER JOIN (SELECT DISTINCT project_id from prj_particir) pp ON p.project_id=pp.project_id 
-    WHERE dept_id=(SELECT dept_id FROM department WHERE company_id=#{companyId})
 
+
+<!-- !!!!!!!!!!!!!!!!!!!!!!!고쳐야함!!!!!!!!!!!!!!!!이거는 프로젝트참여자수, 프로젝트좋아요 따로 두지 않음!!! -->
+	SELECT
+	    p.project_id,
+	    p.project_name,
+	    find_subcode(p.project_access) AS project_access,
+	    find_subcode(p.manager_accp) AS manager_accp,
+	    find_subcode(p.write_access) AS write_access,
+	    find_subcode(p.update_access) AS update_access,
+	    find_subcode(p.board_access) AS board_access,
+	    find_subcode(p.file_access) AS file_access,
+	    find_subcode(p.comment_access) AS comment_access, 
+	    prj_particir_num,
+	    project_markup,
+	    p.dept_id,
+	    p.project_cls
+	FROM
+	    project p
+	JOIN (
+	    SELECT
+	        project_id,
+	        member_id,
+	        COUNT(*) AS prj_particir_num,
+	        MAX(project_markup) AS project_markup
+	    FROM
+	        prj_particir
+	    GROUP BY
+	        project_id, member_id  
+	) pp ON (p.project_id = pp.project_id AND pp.member_id=#{memberId})
+	WHERE
+	    pp.member_id=#{memberId}
 </select>
+
+
+<!-- 회사별 프로젝트 조회 -->
+<select id="selectFromCompany" parameterType="int" resultType="com.worksb.hi.project.service.ProjectVO">
+SELECT
+	    DISTINCT p.project_id,
+	    p.project_name,
+	    find_subcode(p.project_access) AS project_access,
+	    find_subcode(p.manager_accp) AS manager_accp,
+	    find_subcode(p.write_access) AS write_access,
+	    find_subcode(p.update_access) AS update_access,
+	    find_subcode(p.board_access) AS board_access,
+	    find_subcode(p.file_access) AS file_access,
+	    find_subcode(p.comment_access) AS comment_access, 
+        (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num,
+	    p.dept_id,
+	    p.project_cls
+	FROM
+	    project p
+	WHERE
+	    BOARD_ACCESS='J1' 
+	    AND  dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})    
+</select>
+
+<!-- 즐겨찾기 갱신 -->
+<update id="updateStar" parameterType="ProjectVO">
+	UPDATE prj_particir SET 
+	       project_markup=#{projectMarkup}
+	 WHERE project_id=#{projectId} 
+	   AND member_id=#{memberId}
+</update>
 </mapper>

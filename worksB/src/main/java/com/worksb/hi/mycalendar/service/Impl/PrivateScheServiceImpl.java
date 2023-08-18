@@ -17,19 +17,22 @@ public class PrivateScheServiceImpl implements PrivateScheService {
 	
 	@Override
 	public PrivateScheVO selectPsche(PrivateScheVO privateScheVO) {
-		// TODO Auto-generated method stub
-		return null;
+		return privateScheMapper.selectPsche(privateScheVO.getScheId());
 	}
 
 	@Override
-	public List<PrivateScheVO> selectAllPsche(PrivateScheVO privateScheVO) {
-		return privateScheMapper.selectAllPsche(privateScheVO);
+	public List<PrivateScheVO> selectAllPsche(String memberId) {
+		return privateScheMapper.selectAllPsche(memberId);
 	}
 
 	@Override
 	public int insertPsche(PrivateScheVO privateScheVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = privateScheMapper.insertPsche(privateScheVO);
+		if(result ==1) {
+			return privateScheVO.getScheId();
+		}else {
+			return -1;
+		}
 	}
 
 	@Override
