@@ -24,14 +24,14 @@
 			<div class="container">
 				<ul>
 					<li>
-						<span>${list.projectId }</span>
+						<span hidden>${list.projectId }</span>
 						<c:choose>
 							<c:when test="${list.projectAccess eq 'YES' }">
 								<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
 							</c:when>
 							<c:when test="${list.projectAccess eq 'NO' }">${list.projectName}</c:when>
 						</c:choose>
-						<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prj_particir_num }
+						<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }
 						<c:if test="${list.projectAccess eq 'YES'}">
 							<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
 						</c:if>

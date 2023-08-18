@@ -22,20 +22,7 @@ public interface ProjectMapper {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	//주현
 	public List<ProjectVO> searchPrj(String memberId);
