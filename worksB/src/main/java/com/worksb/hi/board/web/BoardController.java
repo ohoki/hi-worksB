@@ -19,8 +19,9 @@ import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
+import com.worksb.hi.member.service.MemberVO;
 
-// 이진 0818 게시판관리
+// 이진 0818 게시판관리 - 게시글,업무,일정,투표 등록
 
 @Controller
 public class BoardController {
@@ -58,20 +59,24 @@ public class BoardController {
 	    		subBoardVO.setMemberId(boardVO.getMemberId());
 	    		subBoardVO.setProjectId(boardVO.getProjectId());
 	    		subBoardVO.setBoardType(boardVO.getBoardType());
+	    		subBoardVO.setInspYn("E2");
 	    		boardService.insertBoard(subBoardVO);
 	    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
 	    		subtaskVO.setHighTaskId(taskVO.getTaskId());
+	    		subtaskVO.setState("ggggg");
 	    		boardService.insertTask(subtaskVO);
 	    	}
     	}
-    	return "ok";
+    	return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
     }
     
 	//게시글 등록  --ajax
 	@PostMapping("/boardInsert")
 	public String boardInsertProcess(BoardVO boardVO, TaskVO taskVO, VoteVO voteVO, ScheVO scheVO, HttpSession session) {
 		
-		String memberId = (String) session.getAttribute("memberId");
+		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
+		String memberId = member.getMemberId();
+		
         boardVO.setMemberId(memberId);
 		
         String boardType = boardVO.getBoardType();
@@ -81,14 +86,7 @@ public class BoardController {
         
 		int prjBoardId = boardVO.getPrjBoardId();
 		
-        if(boardType.equals("C8")) {
-        	// 업무 prj_task
-        	//board테이블의 id -> task테이블에도 넣기
-        	taskVO.setPrjBoardId(prjBoardId);
-        	
-        	boardService.insertTask(taskVO);
-        	
-        }else if(boardType.equals("C6")) {
+        if(boardType.equals("C6")) {
         	// 일정
         	scheVO.setPrjBoardId(prjBoardId);
         	
