@@ -103,6 +103,7 @@ a {
 </head>
 <body>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+
 <div class="modal modalBoard" tabindex="-1" id="boardInsertModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -113,11 +114,13 @@ a {
             		<li>일정</li>
             		<li>투표</li>
             	</ul>
+            	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
             	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            
+            <!-- 게시글 작성 폼 시작!!! 지도 추가해야됨-->
             <div class="modal-body boardForm visible" id="board">
                 <form action="boardInsert" method="post">
-                    <!-- 게시글 작성 폼!!! 지도 추가해야됨-->
 					<div>
 						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
 					</div>
@@ -140,10 +143,12 @@ a {
 		            </div>
 				</form>
             </div>
+             <!-- 게시글 작성 폼 끝!!! 지도 추가해야됨-->
+             
             
+            <!-- 상위 업무 작성 폼!!! -->
             <div class="modal-body boardForm" id="task">
-                <form action="boardInsert" method="post">
-                    <!-- 상위 업무 작성 폼!!! -->
+                <form id="boardInsert" method="post">
                     <!-- 시작일자 마감일자 우선순위 진척도 추가!!!! 하위업무-->
 					<div>
 						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
@@ -215,9 +220,71 @@ a {
 							<option value="F1">긴급</option>
 						</select>
 					</div>
+					</form>
 						
 					<!-- 하위 업무 -->	
-					
+					<div class="task-add">
+						<input type="text" name="prjBoardTitle">
+						<div>
+							<label for="endDate">마감일 추가</label>
+							<input type="text" name="endDate" class="date-input endDate">
+						</div>
+						<div class="select-priority">
+							<select name="priority">
+								<option value="">우선 순위</option>
+								<option value="F3">낮음</option>
+								<option value="F2">보통</option>
+								<option value="F1">긴급</option>
+							</select>
+						</div>
+						<div class="form-check">
+							<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
+							<label class="btn btn-outline-info" for="option1">요청</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G2" id="option2" autocomplete="off">
+							<label class="btn btn-outline-success" for="option2">진행</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G3" id="option3" autocomplete="off">
+							<label class="btn btn-outline-warning" for="option3">피드백</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G4" id="option4" autocomplete="off">
+							<label class="btn btn-outline-primary" for="option4">완료</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G5" id="option5" autocomplete="off">
+							<label class="btn btn-outline-danger" for="option5">보류</label>
+						</div>
+					</div>
+					<div class="task-add">
+						<input type="text" name="prjBoardTitle">
+						<div>
+							<label for="endDate">마감일 추가</label>
+							<input type="text" name="endDate" class="date-input endDate">
+						</div>
+						<div class="select-priority">
+							<select name="priority">
+								<option value="">우선 순위</option>
+								<option value="F3">낮음</option>
+								<option value="F2">보통</option>
+								<option value="F1">긴급</option>
+							</select>
+						</div>
+						<div class="form-check">
+							<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
+							<label class="btn btn-outline-info" for="option1">요청</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G2" id="option2" autocomplete="off">
+							<label class="btn btn-outline-success" for="option2">진행</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G3" id="option3" autocomplete="off">
+							<label class="btn btn-outline-warning" for="option3">피드백</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G4" id="option4" autocomplete="off">
+							<label class="btn btn-outline-primary" for="option4">완료</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G5" id="option5" autocomplete="off">
+							<label class="btn btn-outline-danger" for="option5">보류</label>
+						</div>
+					</div>
 					
 					<div>
 						<label>공개 범위</label>
@@ -229,15 +296,16 @@ a {
 		            <div class="modal-footer form__button">
 		            	<input type="hidden" name="boardType" value="C8">
 		            	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		                <button type="submit" class="btn btn-primary">등록</button>
+		                <button type="button" class="btn btn-primary" id="btnAddTask">등록</button>
 		                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 		            </div>
-				</form>
+				
             </div>
             
+            
+            <!-- 일정 작성 폼!!! -->
             <div class="modal-body boardForm" id="sche">
                 <form action="boardInsert" method="post">
-                    <!-- 일정 작성 폼!!! -->
 					<div>
 					<label>일정일정</label>
 						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
@@ -274,9 +342,10 @@ a {
 				</form>
             </div>
             
+            
+             <!-- 투표 작성 폼!!! -->
             <div class="modal-body boardForm" id="vote">
                 <form action="boardInsert" method="post">
-                    <!-- 투표 작성 폼!!! -->
 					<div>
 						<label>투표투표</label>
 						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
@@ -336,7 +405,6 @@ a {
 	$('ul.modal-title li').click(function(e){
 		let target = e.currentTarget.textContent;
 		let visibleDiv = $('.visible');
-		
 		if(target == '글') {
 			visibleDiv.removeClass('visible');
 			$('#board').addClass('visible');
@@ -441,7 +509,45 @@ a {
     });
 	
 	
-	
+	$('#btnAddTask').on('click', function(){
+		let data={}
+		let prjBoardTitle = $('#task #boardInsert').find('[name=prjBoardTitle]').val();
+		let prjBoardSubject = $('#task #boardInsert').find('[name=prjBoardSubject]').val();
+		let state = $('#task #boardInsert').find('[name=state]:checked').val();
+		let inspYn = $('#task #boardInsert').find('[name=inspYn]:selected').val();
+		let projectId = $('#task #boardInsert').find('[name=projectId]').val();
+		let startDate = $('#task #boardInsert').find('[name=startDate]').val();
+		let endDate = $('#task #boardInsert').find('[name=endDate]').val();
+		let priority = $('#task #boardInsert').find('[name=priority]:selected').val();
+		let boardType = 'C7';
+		let memberId = $('#memberId').val();
+		console.log(memberId);
+		
+		let boardVO = {prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId}
+		let taskVO = {state, startDate, endDate, priority}
+		
+		let subTask = [];
+		$('.task-add').each(function(index,item){
+			console.log(item)
+			let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
+			let state = $(item).find('[name=state]:checked').val();
+			let endDate = $(item).find('[name=endDate]').val();
+			let priority = $(item).find('[name=priority]:selected').val();
+			subTask.push({prjBoardTitle, state, endDate, priority})
+		})
+		console.log(JSON.stringify({boardVO, taskVO, subTask}));
+		$.ajax({
+			url:'taskInsert',
+			type:'post',
+			data:JSON.stringify({boardVO, taskVO, subTask}),
+			contentType:'application/json',
+			success:function(data){
+				console.log(data);
+			},error: function(reject) {
+				console.log(reject);
+			}
+		});
+	})
 	
 </script>
 </html>
