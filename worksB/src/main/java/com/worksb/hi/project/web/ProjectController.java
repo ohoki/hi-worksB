@@ -7,15 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
-//이진 프로젝트 관리 - 등록, 수정, 삭제
-
+// 주현  :  즐겨찾기, 프로젝트 리스트 출력(개별, 회사별)
+// 이진 프로젝트 관리 - 등록, 수정, 삭제
 @Controller
 public class ProjectController {
 	
@@ -114,11 +116,42 @@ public class ProjectController {
 	
 	
 	//주현
+	
+	//회사 전체 프로젝트출력
+	@GetMapping("/SelectFromCompany")
+	public String SelectCom(Model m,HttpSession session) {
+		Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+		m.addAttribute("projectList",projectService.selectFromCompany(companyId));
+		return "prj/selectFromCompany";
+	}
+	
+	
+	
+	//개인 프로젝트리스트출력(리스트형식)
 	@GetMapping("/projectList")
 	public String projectList(Model m,HttpSession session) {
-		String companyId = (String) session.getAttribute("companyId");
-		
-		m.addAttribute("projectList",projectService.searchPrj(companyId));
+		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+		m.addAttribute("projectList",projectService.searchPrj(memberId));
 		return"prj/projectList";
+	}
+	
+	//개인 프로젝트리스트출력(그리드형식)
+	@GetMapping("/projectGrid")
+	public String projectGrid(Model m,HttpSession session) {
+		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+		m.addAttribute("projectList",projectService.searchPrj(memberId));
+		return"prj/projectGrid";
+	}
+	
+	
+	//즐겨찾기갱신
+	@PostMapping("/updateStar")
+	@ResponseBody
+	public String removeStar(@RequestBody ProjectVO starInfo,HttpSession session) {
+		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+		starInfo.setMemberId(memberId);
+		
+		projectService.updateStar(starInfo);
+		return"ok";
 	}
 }
