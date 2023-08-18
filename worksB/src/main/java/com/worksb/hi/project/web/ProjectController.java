@@ -14,9 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
-/*
- * 이진 프로젝트 관리
- */
+//이진 프로젝트 관리 - 등록, 수정, 삭제
+
 @Controller
 public class ProjectController {
 	

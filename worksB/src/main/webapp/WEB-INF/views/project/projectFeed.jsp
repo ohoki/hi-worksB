@@ -83,17 +83,14 @@
 	transition: width 0.3s ease-in-out;
 }
 
-.date-input{
+.date-input,
+.vote-add-buttons input
+.task-add input {
 	border: 1px solid var(--color-light-white);
     border-radius: var(--size-border-radius);
     margin: 5px;
 }
 
-.vote-add-buttons input{
-	border: 1px solid var(--color-light-white);
-    border-radius: var(--size-border-radius);
-    margin: 5px;
-}
 
 a {
     text-decoration: none;
@@ -115,6 +112,7 @@ a {
             		<li>투표</li>
             	</ul>
             	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
+            	<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
             	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
@@ -122,11 +120,11 @@ a {
             <div class="modal-body boardForm visible" id="board">
                 <form action="boardInsert" method="post">
 					<div>
-						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
+						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
 					</div>
 
 					<div>
-						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
+						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요."></textarea>
 					</div>
 					
 					<div>
@@ -143,7 +141,7 @@ a {
 		            </div>
 				</form>
             </div>
-             <!-- 게시글 작성 폼 끝!!! 지도 추가해야됨-->
+             <!-- 게시글 작성 폼 끝!!! -->
              
             
             <!-- 상위 업무 작성 폼!!! -->
@@ -286,7 +284,7 @@ a {
 						</div>
 					</div>
 					
-					<div>
+					<div class="task-inspYn">
 						<label>공개 범위</label>
 						<select class="form__select" name="inspYn">
 							<option value="E2">전체 공개</option>
@@ -514,17 +512,18 @@ a {
 		let prjBoardTitle = $('#task #boardInsert').find('[name=prjBoardTitle]').val();
 		let prjBoardSubject = $('#task #boardInsert').find('[name=prjBoardSubject]').val();
 		let state = $('#task #boardInsert').find('[name=state]:checked').val();
-		let inspYn = $('#task #boardInsert').find('[name=inspYn]:selected').val();
-		let projectId = $('#task #boardInsert').find('[name=projectId]').val();
+		let inspYn = $('.task-inspYn').find('[name=inspYn]').val();
 		let startDate = $('#task #boardInsert').find('[name=startDate]').val();
 		let endDate = $('#task #boardInsert').find('[name=endDate]').val();
-		let priority = $('#task #boardInsert').find('[name=priority]:selected').val();
-		let boardType = 'C7';
+		let priority = $('#task #boardInsert').find('[name=priority]').val();
+		let processivity = $('#task #boardInsert').find('[name=processivity]').val();
+		let boardType = 'C8';
 		let memberId = $('#memberId').val();
+		let projectId = $('#projectId').val();
 		console.log(memberId);
 		
 		let boardVO = {prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId}
-		let taskVO = {state, startDate, endDate, priority}
+		let taskVO = {state, startDate, endDate, priority, processivity}
 		
 		let subTask = [];
 		$('.task-add').each(function(index,item){
@@ -532,7 +531,7 @@ a {
 			let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
 			let state = $(item).find('[name=state]:checked').val();
 			let endDate = $(item).find('[name=endDate]').val();
-			let priority = $(item).find('[name=priority]:selected').val();
+			let priority = $(item).find('[name=priority]').val();
 			subTask.push({prjBoardTitle, state, endDate, priority})
 		})
 		console.log(JSON.stringify({boardVO, taskVO, subTask}));
