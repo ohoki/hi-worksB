@@ -1,8 +1,6 @@
 package com.worksb.hi.notice.web;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,15 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.notice.service.NoticeService;
 import com.worksb.hi.notice.service.NoticeVO;
 
-import oracle.jdbc.proxy.annotation.Post;
 // 2023.08.18 이동민 공지사항
 @Controller
 public class NoticeController {
@@ -72,24 +67,7 @@ public class NoticeController {
 		NoticeVO findVO = noticeService.getNoticeInfo(noticeVO);
 		model.addAttribute("noticeInfo", findVO);
 		return "notice/noticeUpdate";
-	
-	// 게시글 수정
-	@PostMapping("/noticeUpdate")
-
-	@ResponseBody
-	public Map<String, Object> noticeUpdate(NoticeVO noticeVO) {
-		boolean result = false;
-		
-		int noticeId = noticeService.noticeUpdate(noticeVO);
-		if(noticeId > -1 ) {
-			result = false;
-		}
-		Map<String, Object> map = new HashMap<>();
-		
-		map.put("result", result);
-		map.put("noticeInfo", noticeVO);
-		
-		return map;
+	}
 	
 	// 게시글 삭제
 	@GetMapping("/noticeDelete")
