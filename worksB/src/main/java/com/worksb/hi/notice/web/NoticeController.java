@@ -10,13 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.common.PagingVO;
+import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.notice.service.NoticeService;
 import com.worksb.hi.notice.service.NoticeVO;
 
 import oracle.jdbc.proxy.annotation.Post;
-
+// 2023.08.18 이동민 공지사항
 @Controller
 public class NoticeController {
 	
@@ -26,11 +29,13 @@ public class NoticeController {
 	//페이징 전체조회
 	@GetMapping("noticeList")
 	public String noticeList(Model model
+						, SearchVO searchVO
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
-						, @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
-		int total = noticeService.noticeCount();
+						, @RequestParam(value="cntPerPage", defaultValue ="20") Integer cntPerPage) {
+		
+		int total = noticeService.noticeCount(searchVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO);
+		List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO,searchVO);
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("paging", pagingVO);
@@ -71,12 +76,13 @@ public class NoticeController {
 	
 	// 게시글 수정
 	@PostMapping("/noticeUpdate")
+	@ResponseBody
 	public Map<String, Object> noticeUpdate(NoticeVO noticeVO) {
 		boolean result = false;
 		
 		int noticeId = noticeService.noticeUpdate(noticeVO);
-		if(noticeId > -1) {
-			result = true;
+		if(noticeId > -1 ) {
+			result = false;
 		}
 		Map<String, Object> map = new HashMap<>();
 		
@@ -84,7 +90,6 @@ public class NoticeController {
 		map.put("noticeInfo", noticeVO);
 		
 		return map;
-		
 	}
 	
 	// 게시글 삭제
@@ -93,13 +98,15 @@ public class NoticeController {
 		noticeService.noticeDelete(noticeId);
 		return "redirect:noticeList";
 	}
-	/*
-	  // 좋아요 기능
-	  
-	  @GetMapping("/noticeInfo") 
-	  public void findLike(int notice_id, String member_id, Model model) { 
-	  model.addAttribute("findLike",
-	  service.findLike(notice_id) ); 
-	  }
-	 */
+	 
+	/* 수정중
+	// 좋아요 기능
+	@GetMapping("/noticeInfo") public void findLike(int notice_id, String member_id, Model model) { 
+	model.addAttribute("findLike", service.findLike(notice_id) );
+
+	ComLikeVO comLike = new ComLikeVO();
+	 
+	 comeLike.setboard_id(notice_id)
+	}*/
+	
 }

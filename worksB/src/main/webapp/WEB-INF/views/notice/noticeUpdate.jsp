@@ -127,8 +127,7 @@ div h2 {
 					</tr>
 					<tr>
 						<td>
-							<input type="hidden" value="${sysdate }">
-							<input type="hidden" value="${noticeInfo.noticeId }">
+							<input type="hidden" name="noticeId" value="${noticeInfo.noticeId }">
 						</td>
 					</tr>
 				</tbody>
@@ -138,7 +137,7 @@ div h2 {
 		</form>
 	</div>
 	<script>
-		$('form').on('submit', function(e){
+$('form').on('submit', function(e){
 			
 			let objData = serializeObject();
 			
@@ -171,6 +170,7 @@ div h2 {
 			
 			return formObject;
 		}
+		
 	</script>
 </body>
 </html>
