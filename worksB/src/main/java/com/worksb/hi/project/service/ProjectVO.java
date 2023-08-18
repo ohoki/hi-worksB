@@ -18,7 +18,6 @@ FILE_ACCESS    NOT NULL VARCHAR2(100)
 DEPARTMENT_ID  NOT NULL NUMBER        
 PROJECT_CLS             VARCHAR2(5)
  */
-	
 	private int projectId;
 	private String projectName;
 	private String projectAccess;
@@ -31,15 +30,12 @@ PROJECT_CLS             VARCHAR2(5)
 	private int deptId;
 	private String projectCls;
 	
-	private String memberId;
-	
-	
-	
-	
-	//주현
 	private int prj_particir_num;
 	private String projectMarkup;
 	private String memberId;
 	
-	///여기에 이거를 넣어도 되는가???
+	
+	
+	//주현
+	
 }
