@@ -40,7 +40,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertVote(VoteVO voteVO) {
 		int result = boardMapper.insertVote(voteVO);
-    	// 투표항목 등록
+    	// 투표 항목 등록
     	String[] listContentArr = voteVO.getListContent().split(",");
     	
     	for(int i=0; i<listContentArr.length; i++) {

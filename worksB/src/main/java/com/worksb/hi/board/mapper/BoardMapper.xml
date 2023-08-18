@@ -14,10 +14,14 @@
 						(
 							prj_board_id
 							, prj_board_title
+							<if test="prjBoardSubject !=null and !prjBoardSubject.equals('')">
 							, prj_board_subject
+							</if>
 							, prj_board_regdate
 							, member_id
+							<if test="inspYn !=null and !inspYn.equals('')">
 							, insp_yn
+							</if>
 							, board_type
 							, project_id
 							<if test="coordinate !=null">
@@ -28,10 +32,14 @@
 						(
 							#{prjBoardId}
 							, #{prjBoardTitle}
+							<if test="prjBoardSubject !=null and !prjBoardSubject.equals('')">
 							, #{prjBoardSubject}
+							</if>
 							, sysdate
 							, #{memberId}
+							<if test="inspYn !=null and !inspYn.equals('')">
 							, #{inspYn}
+							</if>
 							, #{boardType}
 							, #{projectId}
 							<if test="coordinate !=null">
