@@ -7,6 +7,6 @@
 	<select id="findLike" resultType="int">
 		select count(*)
 		  from com_like
-		 where like_id = #{likeId } and board_type = #{boardType } and member_id = #{memberId }
+		 where board_id = #{noticeId} and  board_type = #{boardType } and member_id = #{memberId }
 	</select>
 </mapper>

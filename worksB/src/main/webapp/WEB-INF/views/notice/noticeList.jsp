@@ -8,8 +8,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </head>
 <style>
 body {
@@ -175,7 +173,7 @@ form {
 			<!-- 이전 -->
 			<c:if test="${paging.startPage != 1 }">
 				<a
-					href="noticeList?nowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage }">&lt
+					href="javascript:search(${paging.startPage - 1 })">&lt
 					이전</a>
 			</c:if>
 			<!-- View 안에 보여지는 페이지들 -->
@@ -186,30 +184,36 @@ form {
 						<b>${p }</b>
 					</c:when>
 					<c:otherwise>
-						<a
-							href="noticeList?nowPage=${p }&cntPerPage=${paging.cntPerPage }">${p }</a>
+						<a href="javascript:search(${p})">${p }</a>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 
 			<!-- 다음 -->
 			<c:if test="${paging.endPage != paging.lastPage }">
-				<a href="noticeList?nowPage=${paging.endPage + 1 }&cntPerPage=${paging.cntPerPage }">다음&gt</a>
+				<a href="javascript:search(${paging.endPage + 1 })">다음&gt</a>
 			</c:if>
 			<!-- 페이징 끝 -->
 
 		</div>
-		<form action="" method="">
+		<form action="noticeList" name="searchform">
 			<div class="search__search">
-				<select name="검색" class="search__select">
-					<option value="">제목</option>
-					<option value="">내용</option>
-					<option value="">작성자</option>
-					<option value="">제목+내용</option>
-				</select> <input type="text" class="search__input">
+			<input type="hidden" name="nowPage" value="1">
+				<select name="searchtype" class="search__select">
+					<option value="1" <c:if test="${searchVO.searchtype==1}"> selected   </c:if>>제목</option>
+					<option value="2" <c:if test="${searchVO.searchtype==2}"> selected   </c:if>>내용</option>
+					<option value="3" <c:if test="${searchVO.searchtype==3}"> selected   </c:if>>작성자</option>
+					<option value="4" <c:if test="${searchVO.searchtype==4}"> selected   </c:if>>제목+내용</option>
+				</select> <input type="text" name="searchkeyword" class="search__input" value="${searchVO.searchkeyword}">
 				<button type="submit" class="search__submit">검색</button>
 			</div>
 		</form>
 	</div>
+	<script>
+		function search(p){
+			searchform.nowPage.value=p;
+			searchform.submit();
+		}
+	</script>
 </body>
 </html>

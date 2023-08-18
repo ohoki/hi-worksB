@@ -2,16 +2,19 @@ package com.worksb.hi.notice.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.worksb.hi.common.PagingVO;
+import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.notice.service.NoticeVO;
 
 public interface NoticeMapper {
 	
 	// 페이징 게시물 총 갯수
-	public int getTotalCount();
+	public int getTotalCount(SearchVO searchVO);
 	
 	// 페이징 게시글 전체 조회
-	public List<NoticeVO> selectNoticeAll(PagingVO pagingVO);
+	public List<NoticeVO> selectNoticeAll(@Param("pagingVO") PagingVO pagingVO, @Param("searchVO")SearchVO searchVO);
 	
 	// 공지 목록
 	public List<NoticeVO> getNoticeList();
