@@ -78,7 +78,7 @@ public class memberController {
 			return "member/practiceCompany";
 		} else { // 회사가 등록된 회원
 			//회사 승인 여부
-			if("A2".equals(member.getCompanyAccp())) { // 승인 NO
+			if("A2".equals(member.getCompanyAccp()) || member.getCompanyAccp() == null) { // 승인 NO
 				session.setAttribute("memberInfo", member);
 				return "member/accpWait";
 			}else { // 승인 YES

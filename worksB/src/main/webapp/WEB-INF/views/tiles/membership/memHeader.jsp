@@ -52,11 +52,11 @@
 			</div>
 		</div>
 		<div class="index-header_btns">
-			<c:if test="${memberId eq null}">
+			<c:if test="${memberInfo eq null}">
 				<button type="button" class="index-header_btn active" id="loginBtn" value="로그인">로그인</button>
 				<button type="button" class="index-header_btn" id="registerBtn" value="회원가입">회원가입</button>
 			</c:if>
-			<c:if test="${memberId ne null}">
+			<c:if test="${memberInfo ne null}">
 			<form action="${pageContext.request.contextPath }/logout" method="post" id="logout">
 				<button type="submit" class="index-header_btn active" id="logoutBtn" value="로그아웃">로그아웃</button>
 				<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
