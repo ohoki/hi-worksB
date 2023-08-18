@@ -31,7 +31,7 @@ PROJECT_CLS             VARCHAR2(5)
 	private int deptId;
 	private String projectCls;
 	
-	
+	private String memberId;
 	
 	
 	
