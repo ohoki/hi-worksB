@@ -2,6 +2,8 @@ package com.worksb.hi.project.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.worksb.hi.project.service.ProjectVO;
 
 public interface ProjectMapper {
@@ -36,5 +38,7 @@ public interface ProjectMapper {
 	
 	
 	//주현
-	public List<ProjectVO> searchPrj(String companyId);
+	public List<ProjectVO> searchPrj(String memberId);
+	public List<ProjectVO> selectFromCompany(int companyId);
+	public void updateStar(ProjectVO vo);
 }

@@ -65,17 +65,17 @@ public class NoticeController {
 		noticeService.noticeInsert(noticeVO);
 		return "redirect:noticeList";
 	}
-	
+
 	// 게시글 수정 폼
 	@GetMapping("/noticeUpdate")
 	public String noticeUpdateForm(NoticeVO noticeVO, Model model) {
 		NoticeVO findVO = noticeService.getNoticeInfo(noticeVO);
 		model.addAttribute("noticeInfo", findVO);
 		return "notice/noticeUpdate";
-	}
 	
 	// 게시글 수정
 	@PostMapping("/noticeUpdate")
+
 	@ResponseBody
 	public Map<String, Object> noticeUpdate(NoticeVO noticeVO) {
 		boolean result = false;
@@ -90,7 +90,6 @@ public class NoticeController {
 		map.put("noticeInfo", noticeVO);
 		
 		return map;
-	}
 	
 	// 게시글 삭제
 	@GetMapping("/noticeDelete")

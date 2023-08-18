@@ -5,9 +5,9 @@
 <meta charset="UTF-8">
 <link href="${pageContext.request.contextPath }/resources/css/main.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
-<script src="https://kit.fontawesome.com/f322160cc3.js" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 <style>
 .header{
 	height: 60px;
@@ -86,11 +86,6 @@
     color: #303030;
 }
 
-.fa-regular {
-    margin-right: 10px;
-}
-
-
 span{
 	font-size: 25px;
 	margin-left: 20px;
@@ -105,14 +100,18 @@ ol, ul {
     padding-left: 0;
 }
 
-
+.icon{
+	width: 20px;
+	color: #4d4d4d;
+	margin-right: 10px;
+}
 </style>
 </head>
 <body>
 <div class="project__header">
 	<div class="project__setting">
-		<i class="fa-regular fa-star empty-star " style="color: #4d4d4d;" ></i>
-    	<i class="fa-solid fa-bars fa-xl" style="color: #4d4d4d;" data-bs-toggle="modal" data-bs-target="#firstModal"></i>
+		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
+		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/bars-solid.svg" data-bs-toggle="modal" data-bs-target="#firstModal">
     	<span>${projectInfo.projectName}</span>
     </div>
 		<div class="modal" tabindex="-1" id="firstModal">

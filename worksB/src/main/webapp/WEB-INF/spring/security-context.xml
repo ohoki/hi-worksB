@@ -9,6 +9,7 @@
 <bean id="customLogoutSuccess" class="com.worksb.hi.security.CustomLogoutSuccessHandler" />
 <bean id="CustomUserDetailsService" class="com.worksb.hi.security.CustomUserDetailsService" />
 <bean id="CumstomPasswordEncoder" class="com.worksb.hi.security.CumstomPasswordEncoder" />
+<bean id="CustomLoginFailure" class="com.worksb.hi.security.CustomLoginFailureHandler" />
 
 	<security:http pattern="/resources/**" security="none"/>
    	<security:http pattern="/**/tiles/**" security="none"/>
@@ -17,15 +18,18 @@
 	
 	<!-- H1(관리자), H2(사원), H3(게스트)  -->
 	<security:http use-expressions="true">
+		<security:intercept-url pattern="/selectMember" access="permitAll" />
 		<security:intercept-url pattern="/loginForm" access="permitAll" />
 		<security:intercept-url pattern="/registerForm" access="permitAll" />
 		<security:intercept-url pattern="/admin/**" access="hasRole('H1')"/>
-		<security:intercept-url pattern="/**" access="hasAnyRole('H1', 'H2', 'H3')"/>	
+		<security:intercept-url pattern="/member/**" access="hasAnyRole('H1', 'H2', 'H3')"/>
+		<security:intercept-url pattern="/**" access="permitAll"/>	
 		<security:form-login 
 			username-parameter="memberId"
 			password-parameter="memberPw"
 			login-page="/loginForm"
 			authentication-success-handler-ref="customLoginSuccess"
+			authentication-failure-handler-ref="CustomLoginFailure"
 		/>
 		<security:logout 
 			success-handler-ref="customLogoutSuccess" 

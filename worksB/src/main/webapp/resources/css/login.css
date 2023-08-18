@@ -10,6 +10,14 @@
 	font-size: var(--font-regular);
 }
 
+.error-message {
+	margin: 5px 0;
+	font-size: var(--font-micro);
+	color: rgba(230, 78, 57);
+	padding: 3px 0;
+	
+}
+
 .login-form {
 	width: 20%;
 	margin: 0 auto;
