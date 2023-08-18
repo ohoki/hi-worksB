@@ -68,12 +68,12 @@
 		WHERE project_id = #{projectId}
 	</update>
 	
-	<!-- 프로젝트 삭제 -->
+	<!-- 프로젝트 삭제  프로시저로 수정@@!!!-->
 	<delete id="deleteProject" parameterType="int">
 		DELETE FROM project
 		WHERE project_id = #{projectId}
 	</delete>
-
+	
 	
 	
 	

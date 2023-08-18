@@ -1,6 +1,7 @@
 package com.worksb.hi.board.mapper;
 
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
 
@@ -12,4 +13,10 @@ public interface BoardMapper {
 	
 	public int insertVote(VoteVO voteVO);
 	public int insertVoteList(VoteVO voteVO);
+	
+	public int insertSche(ScheVO scheVO);
+	
+	
+	
+	
 }
