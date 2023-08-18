@@ -5,6 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+	<style type="text/css">
+		a{
+			text-decoration: none;
+		}
+	</style>
 </head>
 <body>
 	<!-- header -->

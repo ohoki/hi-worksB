@@ -3,9 +3,50 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.mycalendar.mapper.PrivateScheMapper">
-	<select id="selectAllPsche" resultType="PrivateScheVO">
+	
+	<!-- 개인일정 전체조회 -->
+	<select id="selectAllPsche" resultType="PrivateScheVO" parameterType="String">
 		SELECT *
 		FROM private_sche
 		WHERE member_id = #{memberId}
+		ORDER BY sche_id
 	</select>
+	<!-- 개인일정 상세조회 -->
+	<select id="selectPsche" resultType="PrivateScheVO">
+		select *
+		FROM private_sche
+		WHERE sche_id = #{scheId}
+	</select>
+	<!-- 개인일정 입력 -->
+	<insert id="insertPsche" parameterType="PrivateScheVO">
+		<selectKey keyProperty="scheId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(sche_id),0)+1
+			FROM private_sche
+		</selectKey>
+		INSERT INTO private_sche(
+								sche_id
+								, sche_title
+								, sche_content
+								, sche_regdate
+								, coordinate
+								, start_date
+								, end_date
+								, member_id
+								, alarm_date
+								)
+						VALUES (
+								#{scheId}
+								, #{scheTitle}
+								, #{scheContent}
+								, sysdate
+								, #{coordinate}
+								, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS')
+								, TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
+								, #{memberId}
+								, #{alarmDate}
+								)
+	</insert>
+	<delete id="">
+	
+	</delete>
 </mapper>
