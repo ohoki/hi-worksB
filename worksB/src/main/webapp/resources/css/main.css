@@ -27,7 +27,7 @@ body {
   border: 1px solid var(--color-dark-white);
   padding: 0 15px;
   padding-left: 50px;
-  background-image: url(../img/search-icon.png);
+  background-image: url(../icon/search-icon.png);
   background-repeat: no-repeat;
   background-size: 20px;
   background-position: 15px;
@@ -58,7 +58,7 @@ body {
 }
 
 /* modal */
-#profile-modal {
+#profile-modal, #my-profile-modal, #alarm-modal {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -71,7 +71,7 @@ body {
 
 .profile-modal__content {
 	position: absolute;
-	width: 7%;
+	width: 6%;
 	height: 17%;
 	right: 4%;
 	top: 4%;
@@ -94,43 +94,36 @@ body {
 	margin-bottom: 10px;
 }
 #profile-modal p {
-	margin-top: 5px;
+	padding: 5px 0;
+	margin: 5px 0;
 }
 
 #profile-modal p:hover {
 	background-color: var(--color-light-blue);
 }
 
-#my-profile-modal {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,0.1);
-	font-size: 12px;
-	display: none;
-	left: 0;
-	top: 0;
-}
-
 .my-profile-modal__content {
 	position: absolute;
 	background-color: white;
-	width: 20%;
-	height: 80%;
+	width: 17%;
+	height: 60%;
 	top:50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	border-radius: 5px;
-}
-
-.my-profile-modal__content {
 	text-align: center;
+	padding: 30px 0 15px 0;
 }
 
 .my-profile-logo {
-	width: 100%;
-	height: 20%;
+	width: 80%;
+	height: 270px;
 	max-height: 20%;
+	border-radius: 5px;
+}
+
+.my-profile-modal__name {
+	margin-bottom: 20px;
 }
 
 .my-profile-item {
@@ -139,7 +132,13 @@ body {
 	justify-content: space-between;
 }
 
+.item-icon {
+	width: 5%;
+	display: inline-block;
+}
+
 .my-profile__btn {
+	margin-top:30px;
 	background-color: rgb(174, 213, 245);
 	width: 80%;
 	height: 50px;
@@ -150,8 +149,37 @@ body {
 	border-radius: 5px;
 }
 
+.alarm-modal__content {
+	position: absolute;
+	right: 0;
+	top: 62px;
+	height: 100%;
+	width: 20%;
+	background-color: white;
+	font-size: 12px;
+	padding: 0 15px;
+}
+
+.alarm__title {
+	font-size: 15px;
+	
+}
+
+.alarm_search-icon {
+	display: block;
+	width: 97%;
+	height: 30px;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+
 .modal-visible {
 	display: block !important;
+}
+
+.flex {
+	display: flex;
+	justify-content: space-between;
 }
 
 /* side */
