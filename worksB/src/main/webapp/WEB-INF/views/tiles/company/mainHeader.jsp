@@ -88,22 +88,22 @@
 			<div id="alarm-modal">
 				<div class="alarm-modal__content">
 					<div class="flex alarm__title">
-						<h1>알림</h1>
-						<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg">
+						<span>알림</span>
+						<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
 					</div>
-					<div class="flex">
+					<div class="flex alarm__subtitle">
 						<div >
-							<span>미확인</span>
-							<span>전체</span>
+							<span class="alarm__subtitle__item cursor">미확인</span>
+							<span class="alarm__subtitle__item cursor">전체</span>
 						</div>
-						<div>모두읽음</div>
+						<div class="alarm__subtitle__item cursor">모두읽음</div>
 					</div>
-					<input type="text" class="alarm_search-icon">
-					<ul class="flex">
-						<li>전체</li>
-						<li>프로젝트</li>
-						<li>사내게시판</li>
-						<li>개인일정</li>
+					<input type="text" class="alarm_search-input" placeholder="검색">
+					<ul class="flex alarm-category">
+						<li class="category-list cursor">전체</li>
+						<li class="category-list cursor">프로젝트</li>
+						<li class="category-list cursor">사내게시판</li>
+						<li class="category-list cursor">개인일정</li>
 					</ul>
 					<div class="flex">
 						알림내역
@@ -136,6 +136,10 @@
 	$('[id*=modal]').on('click', function() {
 		$('.modal-visible').removeClass('modal-visible');
 		$('body').css('overflow', 'visible');
+	})
+	
+	$('.my-profile__btn').on('click', function() {
+		location.href='${pageContext.request.contextPath}/member/updateForm';
 	})
 </script>
 </html>

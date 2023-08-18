@@ -138,6 +138,12 @@ public class memberController {
 		return "member/emailAuthSuccess";
 	}// emailConfirm
 
+//================== 회원 정보 수정 =================================
+	@GetMapping("member/updateForm")
+	public String updateForm() {
+		return "company/updateForm";
+	}
+	
 //========== 회사 등록 ==================
 	@GetMapping("/member/companyRegisterForm")
 	public String companyRegisterForm() {
