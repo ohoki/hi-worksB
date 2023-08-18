@@ -67,8 +67,7 @@ public class CompanyController {
 		
 		companyService.insertCompany(companyVO);
 		
-		MemberVO member = new MemberVO();
-		member.setMemberId((String)session.getAttribute("memberId"));
+		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
 		member.setCompanyId(companyVO.getCompanyId());
 		member.setCompanyAccp("A1");
 		member.setMemberGrade("H1");
