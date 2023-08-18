@@ -71,7 +71,7 @@
 <body>
 	<div class="register-form-box">
 		<h1 class="register-form-box__title">회사정보</h1>
-		<form action="insertCompany" method="post" enctype="multipart/form-data" class="register-form">
+		<form action="member/insertCompany" method="post" enctype="multipart/form-data" class="register-form">
 			<label for="companyName">회사명
 				<input type="text" placeholder="회사명" name="companyName" required >
 			</label>
