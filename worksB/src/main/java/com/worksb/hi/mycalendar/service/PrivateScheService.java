@@ -1,6 +1,7 @@
 package com.worksb.hi.mycalendar.service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PrivateScheService {
 	
@@ -8,7 +9,7 @@ public interface PrivateScheService {
 	public PrivateScheVO selectPsche(PrivateScheVO privateScheVO);
 	
 	//전체조회
-	public List<PrivateScheVO> selectAllPsche(PrivateScheVO privateScheVO);
+	public List<PrivateScheVO> selectAllPsche(String memberId);
 	
 	//일정등록
 	public int insertPsche(PrivateScheVO privateScheVO);
