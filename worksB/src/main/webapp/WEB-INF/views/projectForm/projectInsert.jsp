@@ -37,12 +37,12 @@
 			
             <div>
                 <label>회사 공개로 설정</label>
-                <input type="checkbox" class="form__checkbox" name="projectAccess">
+                <input type="checkbox" class="form__checkbox" name="projectAccess" value="A1">
             </div>
 
             <div>
                 <label>관리자 승인 후 참여 가능</label>
-                <input type="checkbox" class="form__checkbox" name="managerAccp">
+                <input type="checkbox" class="form__checkbox" name="managerAccp" value="A1">
             </div>
         </div>
 		

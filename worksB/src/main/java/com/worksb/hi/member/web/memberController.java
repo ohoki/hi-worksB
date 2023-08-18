@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.common.UserSha256;
@@ -30,18 +31,18 @@ public class memberController {
 
 	@GetMapping("/selectMember")
 	@ResponseBody
-	public String selectMember(MemberVO memberVO) {
-		String result = "no";
+	public int selectMember(MemberVO memberVO) {
+		int result = 0;
 
 		memberVO = memberService.selectMember(memberVO);
 
-		if (memberVO == null) { // 아이디 중복 X -> 아이디 사용가능
-			result = "yes";
+		if (memberVO == null) { // 아이디 사용가능
+			result = 1;
 		}
 		return result;
 	}// selectMember
 
-	@GetMapping("/loginForm")
+	@RequestMapping("/loginForm")
 	public String loginForm() {
 		return "member/loginForm";
 	}//loginForm
@@ -54,6 +55,7 @@ public class memberController {
 		Cookie[] cookies = request.getCookies();
 		String cookieMemberId = null;
 		MemberVO member = new MemberVO();
+		MemberVO sessionMember = (MemberVO)session.getAttribute("memberInfo");
 		CompanyVO company = new CompanyVO();
 		
 		//쿠키값 가져오기
@@ -63,30 +65,29 @@ public class memberController {
 			}
 		}
 		
-		if(cookieMemberId == null && session.getAttribute("memberId") == null) { // 둘 다 null
+		if(cookieMemberId == null && sessionMember == null) { // 둘 다 null
 			return "redirect:/loginForm";
 		}
 		
 		//둘 중 하나라도 null이 아니라면 해당 회원 찾아오기
-		member.setMemberId(cookieMemberId != null ? cookieMemberId : (String)session.getAttribute("memberId"));
+		member.setMemberId(cookieMemberId != null ? cookieMemberId : sessionMember.getMemberId());
 		member = memberService.selectMember(member);
 	
 		if(member.getCompanyId() == null) { // 회사가 등록되지 않은 회원
-			session.setAttribute("memberId", member.getMemberId());
+			session.setAttribute("memberInfo", member);
 			return "member/practiceCompany";
 		} else { // 회사가 등록된 회원
-			session.setAttribute("memberId", member.getMemberId());
-			session.setAttribute("companyId", member.getCompanyId());
 			//회사 승인 여부
 			if("A2".equals(member.getCompanyAccp())) { // 승인 NO
+				session.setAttribute("memberInfo", member);
 				return "member/accpWait";
 			}else { // 승인 YES
 				//해당 회사 정보 가져오기
 				company.setCompanyId(member.getCompanyId());
 				company = companyService.getCompanyById(company);
-				
-				model.addAttribute("memberInfo", member);
-				model.addAttribute("companyInfo", company);
+				//세션 저장
+				session.setAttribute("memberInfo", member);
+				session.setAttribute("companyInfo", company);
 				return "company/companyMain";
 			} 
 		}
@@ -138,7 +139,7 @@ public class memberController {
 	}// emailConfirm
 
 //========== 회사 등록 ==================
-	@GetMapping("companyRegisterForm")
+	@GetMapping("/member/companyRegisterForm")
 	public String companyRegisterForm() {
 		return "member/companyRegisterForm";
 	}

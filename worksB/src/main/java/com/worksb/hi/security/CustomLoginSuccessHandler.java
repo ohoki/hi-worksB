@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.worksb.hi.company.mapper.CompanyMapper;
+import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.mapper.MemberMapper;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
@@ -19,20 +21,30 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 	
 	@Autowired
 	MemberMapper memberMapper;
+	@Autowired
+	CompanyMapper companyMapper;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 		
+		//멤버찾기
 		MemberVO member = new MemberVO();
 		member.setMemberId(authentication.getName());
 		
 		member = memberMapper.selectMember(member);
+		
+		if(member.getCompanyId() != null) {
+			//회사찾기
+			CompanyVO company = new CompanyVO();
+			company.setCompanyId(member.getCompanyId());
+			company = companyMapper.getCompanyById(company);
 			
-		request.getSession().setAttribute("memberId", authentication.getName());
-		request.getSession().setAttribute("companyId", member.getCompanyId());
+			request.getSession().setAttribute("companyInfo", company);
+		}
+		
+		request.getSession().setAttribute("memberInfo", member);
 		
 		response.sendRedirect("start");
 	}
-
 }

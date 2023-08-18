@@ -53,11 +53,12 @@
 				url: 'selectMember?memberId='+id,
 				type: 'get',
 				success : function(data) {
-					if(data == 'yes') {
+					if(data == 1) {
 						alert('사용가능한 아이디 입니다.');
 						checkIdBtn.val(1);
 					} else {
 						alert('중복된 아이디 입니다.');
+						checkIdBtn.val(0);
 					}
 				},
 				error : function(reject) {
