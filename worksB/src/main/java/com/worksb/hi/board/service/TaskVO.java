@@ -30,4 +30,5 @@ COMPANY_ID   NOT NULL NUMBER
 	private int prjBoardId;
 	private int taskId;
 	private int companyId;
+	private String prjBoardTitle;
 }
