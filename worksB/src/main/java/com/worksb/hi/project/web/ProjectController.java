@@ -14,8 +14,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
+/*
+ * 이진 프로젝트 관리
+ */
 @Controller
 public class ProjectController {
+	
 	@Autowired
 	//이진
 	ProjectService projectService;
@@ -31,8 +35,6 @@ public class ProjectController {
 	@GetMapping("/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
 
-		String memberId = (String) session.getAttribute("memberId");
-
 		//해당 회사의 부서이름 받아와야함!!
 		// companyId -> departmentId, departmentName 
 		
@@ -44,8 +46,8 @@ public class ProjectController {
 	public String projectInsertProcess(ProjectVO projectVO, HttpSession session) {
 		
 		//A1 : Yes, A2 : No
-		projectVO.setProjectAccess("on".equals(projectVO.getProjectAccess())? "A1" : "A2");
-		projectVO.setManagerAccp("on".equals(projectVO.getManagerAccp())? "A1" : "A2");
+		projectVO.setProjectAccess(projectVO.getProjectAccess()!=null ? "A1" : "A2");
+		projectVO.setManagerAccp(projectVO.getManagerAccp()!=null? "A1" : "A2");
 		
 		// 부서번호 -> 부서이름 !!!
 		
@@ -54,7 +56,7 @@ public class ProjectController {
 		
 		String memberId = (String) session.getAttribute("memberId");
 		
-		
+		projectVO.setMemberId(memberId);
 		projectService.insertProject(projectVO);
 		
 	    
@@ -67,7 +69,6 @@ public class ProjectController {
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	    
 	    model.addAttribute("projectInfo", projectInfo);
-	    model.addAttribute("projectId", projectId);
 	    //부서번호 -> 부서이름 추가해야함
 	    
 	    return "projectForm/projectUpdate";
@@ -76,9 +77,6 @@ public class ProjectController {
 	//프로젝트 수정
 	@PostMapping("/projectUpdate")
 	public String projectUpdate(ProjectVO projectVO) {
-		int projectId = projectVO.getProjectId();
-		
-		projectVO.setProjectId(projectId);
 		
 		//A1 : Yes, A2 : No
 		projectVO.setProjectAccess("on".equals(projectVO.getProjectAccess())? "A1" : "A2");
