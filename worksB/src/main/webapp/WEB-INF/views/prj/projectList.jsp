@@ -71,7 +71,7 @@
 							<img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-id="${list.projectId }">
 		
 							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prj_particir_num }
+							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }
 							<c:if test="${list.projectAccess eq 'YES'}">
 									<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
 							</c:if>
@@ -102,7 +102,7 @@
 							<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
 		
 							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prj_particir_num }
+							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }
 							<c:if test="${list.projectAccess eq 'YES'}">
 								<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
 							</c:if>

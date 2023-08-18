@@ -92,10 +92,7 @@
 
 <!-- 개별 프로젝트 조회 -->
 <select id="searchPrj" parameterType="String" resultType="ProjectVO">
-
-
-<!-- !!!!!!!!!!!!!!!!!!!!!!!고쳐야함!!!!!!!!!!!!!!!!이거는 프로젝트참여자수, 프로젝트좋아요 따로 두지 않음!!! -->
-	SELECT
+  SELECT
 	    p.project_id,
 	    p.project_name,
 	    find_subcode(p.project_access) AS project_access,
@@ -105,8 +102,8 @@
 	    find_subcode(p.board_access) AS board_access,
 	    find_subcode(p.file_access) AS file_access,
 	    find_subcode(p.comment_access) AS comment_access, 
-	    prj_particir_num,
-	    project_markup,
+	    pp1.prj_particir_num,
+	    pp2.project_markup,
 	    p.dept_id,
 	    p.project_cls
 	FROM
@@ -114,22 +111,29 @@
 	JOIN (
 	    SELECT
 	        project_id,
-	        member_id,
-	        COUNT(*) AS prj_particir_num,
-	        MAX(project_markup) AS project_markup
+	        COUNT(*)  AS prj_particir_num
 	    FROM
 	        prj_particir
 	    GROUP BY
-	        project_id, member_id  
-	) pp ON (p.project_id = pp.project_id AND pp.member_id=#{memberId})
+	        project_id
+	) pp1 ON (p.project_id = pp1.project_id)
+    JOIN(
+        SELECT
+            project_markup,
+            project_id,
+            member_id
+        FROM
+            prj_particir
+    )pp2 ON(pp1.project_id=pp2.project_id)
 	WHERE
-	    pp.member_id=#{memberId}
+	    pp2.member_id=#{memberId}
+
 </select>
 
 
 <!-- 회사별 프로젝트 조회 -->
 <select id="selectFromCompany" parameterType="int" resultType="com.worksb.hi.project.service.ProjectVO">
-SELECT
+	SELECT
 	    DISTINCT p.project_id,
 	    p.project_name,
 	    find_subcode(p.project_access) AS project_access,
@@ -146,7 +150,7 @@ SELECT
 	    project p
 	WHERE
 	    BOARD_ACCESS='J1' 
-	    AND  dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})    
+	    AND dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})    
 </select>
 
 <!-- 즐겨찾기 갱신 -->
