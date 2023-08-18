@@ -37,4 +37,9 @@ PROJECT_CLS             VARCHAR2(5)
 	
 	
 	//주현
+	private int prj_particir_num;
+	private String projectMarkup;
+	private String memberId;
+	
+	///여기에 이거를 넣어도 되는가???
 }

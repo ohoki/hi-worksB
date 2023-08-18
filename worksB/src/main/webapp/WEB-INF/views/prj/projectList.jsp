@@ -7,113 +7,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document</title>
-<script src="https://kit.fontawesome.com/f322160cc3.js"
-	crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <%-- 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/projectList.css"> --%>
 <style>
-/* .colored-icon{ */
-/*     width: 20px; */
-/*     height: 20px; */
-/*     background-color: red; */
-/*     display: inline-block; */
-/*     border-radius: 3px; */
-/* } */
-/* h4{ */
-/*     display: inline-block; */
-/* } */
-
-/* .fa-globe{ */
-/*     text-align: right; */
-/* } */
-/* .fa-user{ */
-/*     width:30px; */
-/* } */
-/* .fa-bars, .fa-microsoft{ */
-/*     float: right; */
-/*     width: 80px; */
-/* } */
-
-/* .sort-icons { */
-/*     display: flex; */
-/*     justify-content: right; */
-/*     align-items: center; */
-/*     height: 50px; */
-
-/* } */
-
-/* .project-main{ */
-/*     display: inline-flex; */
-/*     border-radius: 18px; */
-/*     background-color: #fffae0; */
-/*     width: 300px; */
-/*     height: 150px; */
-/*     margin-bottom: 20px; */
-/*     margin-left: 10px; */
-/* } */
-
-/* .bar{ */
-/*     border-top-left-radius: 13px; */
-/*     border-bottom-left-radius: 13px; */
-/*     background-color: black; */
-/*     width: 20px; */
-/*     height: 150px; */
-/*     float: left; */
-/*     margin-right: 10px; */
-/* } */
-
-/* .project__content { */
-/*     display: flex; */
-/*     flex-direction: column; */
-/*     justify-content: center; */
-/* } */
-
-/* .select-box{ */
-/*     display: block; */
-/*     margin-bottom: 20px; */
-/* } */
-
-/* .unread-project{ */
-/*     border-radius: 50px; */
-/*     display: inline-block; */
-/*     background-color: red; */
-/*     width: 30px; */
-/*     height: 30px; */
-/*     text-align: center; */
-/*     color: white; */
-/*     margin-left: 30px; */
-/* } */
-/* .create-project-list-view{ */
-/*     width: 260px; */
-/*     background-color: #9fdbf5; */
-/*     height: 100px; */
-/*     border-radius: 30px; */
-/*     text-align: center; */
-/*     position: absolute; */
-/*     bottom: 87%; */
-/*     left: 76%; */
-/*     line-height: 100px; */
-/* } */
-
-/* .create-project-tiled-view{ */
-/*     width: 260px; */
-/*     background-color: #9fdbf5; */
-/*     height: 100px; */
-/*     border-radius: 30px; */
-/*     text-align: center; */
-/*     position: absolute; */
-/*     bottom: 79%; */
-/*     left: 76%; */
-/*     line-height: 100px; */
-/* } */
-/* .colored-star{ */
-/*     color: #ffd43b; */
-/* } */
-/* .empty-star{ */
-/*     color: #394521; */
-/* } */
 .icon{
 	width: 30px;
 	height: 30px;
+}
+.icons{
+	
 }
 
 .tiled, .list {
@@ -127,159 +29,165 @@
 .block {
 	margin-left: 50px;
 }
+.create-project-list-view{
+    width: 230px;
+    background-color: #9fdbf5;
+    height: 82px;
+    border-radius: 30px;
+    text-align: center;
+    position: absolute;
+    bottom: 81%;
+    left: 70%;
+    line-height: 80px;
+}
+.unread-project{
+    border-radius: 50px;
+    display: inline-block;
+    background-color: red;
+    width: 30px;
+    height: 30px;
+    line-height:30px;
+    text-align: center;
+    color: white;
+    margin-left: 30px;
+}
 </style>
 </head>
 <body>
 	<div class="block">
 		<h3>내프로젝트</h3>
 		<br> 
-		<img class="tiled icon" alt="타일형으로 보기" src="${pageContext.request.contextPath }/resources/icon/microsoft.svg">
-		<img class="list icon" alt="리스트로 보기" src="${pageContext.request.contextPath }/resources/icon/list.svg">
-		<h4 class="star-list">즐겨찾기</h4>
-		<c:forEach items="projectList" var="list">
-			<div class="container">
-				<ul class="draggable" draggable="true">
-					<li><img class="colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/star.svg">
-<!-- 					<i class="fa-solid fa-star colored-star"></i> -->
-					<div class="colored-icon"></div>
-					<p onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</p> 
-					<img class="icon" alter="참여자수 아이콘" src="${PatgeContext.request.contextPath }/resources/icon/user.svg">${list.!!!!! }
-<!-- 					<i class="fa-solid fa-user">6</i> -->
-					<div class="unread-project">1</div></li>
-			</ul>
+		<div class="icons">
+			<a href="projectTiled"><img class="tiled icon" alt="타일형으로 보기" src="${pageContext.request.contextPath }/resources/icon/microsoft.svg"></a>
+			<a href="projectList"><img class="list icon" alt="리스트로 보기" src="${pageContext.request.contextPath }/resources/icon/list.svg"></a>
 		</div>
+		<h4 class="star-list">즐겨찾기</h4>
+		<c:forEach items="${projectList }" var="list">
+			<c:if test="${list.projectMarkup eq 'Y' }">
+				<div class="likeContainer">
+					<ul class="draggable" draggable="true">
+						<li>
+					
+							<img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-id="${list.projectId }">
+		
+							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
+							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prj_particir_num }
+							<c:if test="${list.projectAccess eq 'YES'}">
+									<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
+							</c:if>
+<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! -->
+							<span class="unread-project">1</span>
+						</li>
+					</ul>
+				</div>
+			</c:if>
 		</c:forEach>
 		<hr>
 
 		<br>
-		<h4 class="none-star">참여중</h4>
-		<div class="container">
-			<c:forEach items="projectList" var="list"></c:forEach>
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
 
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i>
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i></li>
-			</ul>
-
-
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i>
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i></li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">50</i></li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
-
-			<ul class="draggable" draggable="true">
-				<li><i class="fa-regular fa-star empty-star"></i> <!--<i class="fa-solid fa-star" style="color: #e5ff66;"></i>-->
-					<div class="colored-icon"></div>
-					<h4>
-						<a href="https://www.naver.com">titletitle</a>
-					</h4> <i class="fa-solid fa-user">6</i> <i class="fa-solid fa-globe"></i>
-				</li>
-			</ul>
+		<div class="disLikeContainer">
+			<c:forEach items="${projectList }" var="list">
+				<c:if test="${list.projectMarkup eq 'N'}">
+					<div class="none-star">
+						<h4></h4>
+						<select class="selectList">
+							<option value="status1">참여중</option>
+							<option value="status2">만료</option>
+						</select>
+					</div>
+					<ul class="draggable" draggable="true">
+						<li>
+							<p class="project-id" hidden>${list.projectId }</p>
+							<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
+		
+							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
+							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prj_particir_num }
+							<c:if test="${list.projectAccess eq 'YES'}">
+								<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
+							</c:if>
+						</li>
+					</ul>
+				</c:if>
+			</c:forEach>
 		</div>
 	</div>
+	
 
-	<div class="create-project-list-view">새 프로젝트 생성</div>
+	<div class="create-project-list-view"><a href="projectInsert">새 프로젝트 생성</a></div>
 
+
+</body>
 	<script>
-    
-//즐찾해제와 추가
-    document.addEventListener("click",(e)=>{
-        
+	//프로젝트 상태 불러오기
+	//$('#testSelect').val('test2').prop("selected",true);
+	
+	
+   
+//즐찾해제
+    document.addEventListener("click",(e)=>{     
+       
         if(e.target.className.includes('colored-star')){
-            e.preventDefault()
-            let remove=document.getElementsByClassName('colored-star')
-            for(let i=0;i<remove.length;i++){
-                remove[i].addEventListener("click",
-                function(e){
-                    e.preventDefault();
-                    let stared=this;
-                    stared.classList.remove('colored-star','fa-solid')
-                    stared.className+=' '+'empty-star'+' '+'fa-regular'
-                    let none=document.getElementsByClassName('none-star')[0].nextSibling.nextSibling
-                    console.log(none)
-                    let pn=this.parentNode;
-                    console.log(pn)
-                    none.appendChild(pn)
-                })
-            }
+            e.preventDefault()  
+                    
+            let stared=e.target;
+            let markup='N'
+            let prjId=$(empty).data("id");
+            updateStar(markup,prjId)
+            
+            stared.src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg"
+            
 
-        }else if(e.target.className.includes('empty-star'))
+            let none=document.querySelector('.likeContainer')
+            
+            let pn=stared.parentNode;
+
+            none.appendChild(pn)
+   
+//즐찾추가
+        } 
+        else if(e.target.className.includes('empty-star')){
             e.preventDefault()
-            let add=document.getElementsByClassName('empty-star');
-            for(let i=0;i<add.length;i++){
-                add[i].addEventListener("click",
-                    function(event){
-                        event.preventDefault();
-                        let empty=this;
-                        empty.classList.remove('empty-star','fa-regular')
-                        empty.className+=' '+'colored-star'+' '+'fa-solid'
-                        //empty.classList.replace('fa-regular fa-star empty-star','fa-regular fa-star colored-star')
-                        let starList=document.getElementsByClassName('star-list')[0].nextSibling.nextSibling
-                        let pn=this.parentNode;
-                        starList.appendChild(pn)
-                })
+
+            let empty=e.target
+            
+            let markup='Y'
+            let prjId=$(empty).data("id");
+            updateStar(markup,prjId)
+            
+            //let title;
+            
+            empty.src="${pageContext.request.contextPath }/resources/icon/star.svg"
+
+            let none=document.querySelector('.disLikeContainer')
+
+            let pn=empty.parentNode;
+
+            starList.appendChild(pn)
             }
         
     })
+    //즐겨찾기 관련 정보를 DB에 연동
+    function updateStar(markup,projectId){
+    	var data = {
+    	        projectMarkup: markup,
+    	        projectId: projectId
+    	    }
+		$.ajax({
+			url:'updateStar',
+			type:'post',
+			contentType:'application/json',
+			data:JSON.stringify(data)
+		})
+		.done(data=>{
+			console.log(data)
+		})
+		.fail(reject=>{
+			console.log(reject)
+			alert('즐겨찾기 갱신에 실패하였습니다')
+			//window.location.reload()	
+		})
+}
 
     
 
@@ -287,5 +195,4 @@
     
     </script>
 
-</body>
 </html>
