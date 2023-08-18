@@ -3,47 +3,57 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.notice.mapper.NoticeMapper">
+
 <!-- 페이징 -->
 	<!-- 게시판 총 갯수 -->
 	<select id="getTotalCount" resultType="int">
 		SELECT count(*)
 		FROM notice_board
+		<if test="searchkeyword != null and searchkeyword !=''">
+			<choose>
+				<when test="searchtype == 1 ">
+					WHERE notice_title like '%' || #{searchkeyword } || '%'
+				</when>
+				<when test="searchtype == 2 ">
+					WHERE notice_content like '%' || #{searchkeyword } || '%'
+				</when>
+				<when test="searchtype == 3 ">
+					WHERE member_name like  '%${searchkeyword }%'
+				</when>
+				<when test="searchtype == 4 ">
+					WHERE ( notice_title like '%${searchkeyword }%' or notice_content like '%${searchkeyword }%')
+				</when>
+			</choose>
+		</if> 
 	</select>
 	
-	
-
-	
 <!-- 게시글 전체 조회 -->
-	<select id="selectNoticeAll" parameterType="NoticeVO" resultType="NoticeVO">
+	<select id="selectNoticeAll" resultType="NoticeVO">
 		select *
 		from (  select rownum rn, a.*
         		from (select *
-              		  from notice_board n LEFT JOIN member m
+              		  from notice_board n JOIN member m
               		  on n.member_id = m.member_id
-              		  where board_type = 'C2' <!-- and title like '%' || '${keyword }' || '%'  검색 --> 
+              		  where board_type = 'C2' 
+					<if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
+					<choose>
+					<when test="searchVO.searchtype == 1 ">
+						and notice_title like '%' || #{searchVO.searchkeyword } || '%'
+					</when>
+					<when test="searchVO.searchtype == 2 ">
+						and notice_content like '%' || #{searchVO.searchkeyword } || '%'
+					</when>
+					<when test="searchVO.searchtype == 3 ">
+						and member_name like  '%${searchVO.searchkeyword }%'
+					</when>
+					<when test="searchVO.searchtype == 4 ">
+						and( notice_title like '%${searchVO.searchkeyword }%' or notice_content like '%${searchVO.searchkeyword }%')
+					</when>
+					</choose>
+					</if>               		  
               	      order by notice_id desc ) a )
-		where rn between #{start } and #{end}
+		where rn between #{pagingVO.start} and #{pagingVO.end}
 	</select>
-	
-<!-- 전체 조회 member추가버전-->
-	<!--<select id="getNoticeList" resultType="NoticeVO">
-		SELECT n.notice_id,
-			   n.notice_title,
-			   n.notice_content,
-			   n.member_id,
-			   n.board_regdate,
-			   n.board_upddate,
-			   n.coordinate,
-			   n.board_hit,
-			   n.board_type,
-			   n.company_id,
-               m.member_name
-               
-		  FROM notice_board n join member m 
-                    on(n.member_id = m.member_id)
-         WHERE board_type = 'N'
-	  ORDER BY notice_id DESC
-	</select> -->
 
 <!-- 단건 조회 test버전 -->
  	<select id="getNoticeInfo" resultType="NoticeVO">
@@ -58,15 +68,16 @@
 			   n.board_type,
 			   n.company_id,
                m.member_name
-		  FROM notice_board n join member m 
-                    on(n.member_id = m.member_id)
+		  FROM notice_board n 
+		  join member m 
+            on (n.member_id = m.member_id)
 		 WHERE notice_id = #{noticeId}
 	</select>
 
 <!-- 등록 -->
 	<insert id="noticeInsert" parameterType="NoticeVO">
 		<selectKey keyProperty="noticeId" resultType="int" order="BEFORE">
-			SELECT NVL(MAX(noticeId), 0) + 1
+			SELECT NVL(MAX(notice_id), 0) + 1
 			  FROM notice_board
 		</selectKey>
 		INSERT INTO notice_board (
@@ -87,18 +98,25 @@
 			   					  ,#{noticeTitle}
 			   				  	  ,#{noticeContent}
 			   				 	  ,#{memberId}
-			   					  ,#{boardRegdate}
 			   					  ,sysdate
+			   					  ,#{boardUpddate}
 			   					  ,#{coordinate}
 			   					  ,0
 			   					  ,'C2'
-			   					  ,{companyId}
+			   					  ,#{companyId}
 			   					  )
 	</insert>
 
 <!-- 수정 -->
 	<update id="noticeUpdate" parameterType="NoticeVO">
-		
+		update notice_board
+			<set>
+				notice_title = #{noticeTitle},
+				notice_content = #{noticeContent},
+				board_upddate = sysdate,
+				coordinate = #{coordinate}
+			</set>
+		where notice_id = #{noticeId}
 	</update>
 	
 <!-- 삭제 -->

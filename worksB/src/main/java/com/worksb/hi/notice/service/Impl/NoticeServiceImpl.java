@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksb.hi.common.PagingVO;
+import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.notice.mapper.NoticeMapper;
 import com.worksb.hi.notice.service.NoticeService;
 import com.worksb.hi.notice.service.NoticeVO;
@@ -18,21 +19,15 @@ public class NoticeServiceImpl implements NoticeService {
 	
 	// 게시글 갯수
 	@Override
-	public int noticeCount() {
-		return noticeMapper.getTotalCount();
+	public int noticeCount(SearchVO searchVO) {
+		return noticeMapper.getTotalCount(searchVO);
 	}
 
 	// 페이징 전체 글 조회
 	@Override
-	public List<NoticeVO> getNoticeList(PagingVO pagingVO) {
-		return noticeMapper.selectNoticeAll(pagingVO);
+	public List<NoticeVO> getNoticeList(PagingVO pagingVO,SearchVO searchVO) {
+		return noticeMapper.selectNoticeAll(pagingVO, searchVO);
 	}
-	
-	
-	/*
-	 * @Override public List<NoticeVO> getNoticeList() { return
-	 * noticeMapper.getNoticeList(); }
-	 */
 
 	@Override
 	public NoticeVO getNoticeInfo(NoticeVO noticeVO) {
@@ -51,7 +46,10 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public int noticeUpdate(NoticeVO noticeVO) {
-		
+		int result = noticeMapper.noticeUpdate(noticeVO);
+		if(result == 1) {
+			return noticeVO.getNoticeId();
+		}
 		return 0;
 	}
 
