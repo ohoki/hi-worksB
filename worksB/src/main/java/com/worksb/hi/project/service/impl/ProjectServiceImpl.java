@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksb.hi.project.mapper.ProjectMapper;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -23,12 +24,17 @@ public class ProjectServiceImpl implements ProjectService {
 	//이진
 	@Override
 	public int insertProject(ProjectVO projectVO) {
+		//프로젝트 등록
 		int result = projectMapper.insertProject(projectVO);
-		if(result == 1) {
-			return projectVO.getProjectId();
-		}else {
-			return -1 ;
-		}
+		
+		//참여자 등록
+		PrjParticirVO particirVO = new PrjParticirVO();
+		particirVO.setProjectId(projectVO.getProjectId());
+		particirVO.setMemberId(projectVO.getMemberId());
+		particirVO.setManager("A2");
+		
+		
+		return result;
 	}
 
 
@@ -59,6 +65,8 @@ public class ProjectServiceImpl implements ProjectService {
 			return -1;
 		}
 	}
+	
+
 
 
 	
@@ -88,6 +96,8 @@ public class ProjectServiceImpl implements ProjectService {
 	public void updateStar(ProjectVO vo) {
 		projectMapper.updateStar(vo);
 	}
+
+
 
 
 

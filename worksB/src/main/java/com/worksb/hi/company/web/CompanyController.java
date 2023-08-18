@@ -36,7 +36,7 @@ public class CompanyController {
 	MemberService memberService;
 	
 	//회사정보 등록
-	@PostMapping("/insertCompany")
+	@PostMapping("/member/insertCompany")
 	public String insertCompnay(CompanyVO companyVO, @RequestPart MultipartFile logo, HttpSession session, Model model) {
 		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
 		String message = null;
@@ -67,8 +67,7 @@ public class CompanyController {
 		
 		companyService.insertCompany(companyVO);
 		
-		MemberVO member = new MemberVO();
-		member.setMemberId((String)session.getAttribute("memberId"));
+		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
 		member.setCompanyId(companyVO.getCompanyId());
 		member.setCompanyAccp("A1");
 		member.setMemberGrade("H1");
@@ -99,7 +98,7 @@ public class CompanyController {
 	}
 	
 	//회사 참여
-	@PostMapping("practiceCompany")
+	@PostMapping("/member/practiceCompany")
 	public String practiceCompany(CompanyVO companyVO, HttpSession session) {
 		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
 		MemberVO member = new MemberVO();

@@ -8,4 +8,11 @@ public interface BoardService {
 	
 	public int insertVote(VoteVO voteVO);
 	public int insertVoteList(VoteVO voteVO);
+	
+	public int insertSche(ScheVO scheVO);
+	
+	
+	
+	
+	
 }
