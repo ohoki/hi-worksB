@@ -14,7 +14,7 @@
 		<div class="side__menu">
 			<ul class="side__menu__items">
 				<li class="side__menu__item"><a href="projectList">내 프로젝트</a></li>
-				<li class="side__menu__item"><a>전체 프로젝트</a></li>
+				<li class="side__menu__item"><a href="SelectFromCompany">전체 프로젝트</a></li>
 				<li class="side__menu__item"><a>미확인 업무</a></li>
 			</ul>
 		</div>

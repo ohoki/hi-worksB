@@ -2,6 +2,8 @@ package com.worksb.hi.project.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface ProjectService {
 	//이진
 	public int insertProject(ProjectVO projectVO);
@@ -18,5 +20,7 @@ public interface ProjectService {
 	
 	
 	//주현
-	public List<ProjectVO> searchPrj(Integer companyId);
+	public List<ProjectVO> searchPrj(String memberId);
+	public List<ProjectVO> selectFromCompany(int companyId);
+	public void updateStar(ProjectVO vo);
 }
