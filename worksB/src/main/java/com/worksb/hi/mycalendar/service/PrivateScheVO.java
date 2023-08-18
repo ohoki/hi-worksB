@@ -1,5 +1,7 @@
 package com.worksb.hi.mycalendar.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -16,11 +18,15 @@ public class PrivateScheVO {
 //			ALARM_DATE            DATE       
 	
 	private int scheId;
+	@JsonProperty(value = "title")
 	private String scheTitle;
 	private String ScheContent;
 	private String scheRegdate;
 	private String coordinate;
+	
+	@JsonProperty(value = "start")
 	private String startDate;
+	@JsonProperty(value = "end")
 	private String endDate;
 	private String memberId;
 	private String alarmDate;

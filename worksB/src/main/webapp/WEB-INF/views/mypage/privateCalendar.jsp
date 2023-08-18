@@ -47,7 +47,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">일정입력</h5>
+                    <h5 class="modal-title" id="scheModalLabel">일정입력</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -69,9 +69,24 @@
             </div>
         </div>
     </div>
-    <!-- 알림모달 -->
-    <div>
-    </div>
+    <!-- 상세조회 Modal -->
+	<div class="modal fade" id="selectModal" tabindex="-1" aria-labelledby="selectModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="selectModalLabel">Modal title</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
 <script>
 	//입력성공시 메세지
@@ -82,8 +97,10 @@
 		alert(msg);
 	}
 
-	//모달창 띄우기
+	//입력모달창 띄우기
 	var myModal = new bootstrap.Modal(document.getElementById('scheModal'))
+	var selectModal = new bootstrap.Modal(document.getElementById('selectModal'))
+	
 	
 	//dateTimePicker
 	jQuery.datetimepicker.setLocale('kr');
@@ -104,6 +121,13 @@
 
 	}
 	
+	//단건조회
+	function priScheSelect(){
+		
+	}
+	
+	
+	var calendar ;
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
 		//로그인한 사용자의 개인스케줄 정보를 ajax를 통해 json형식으로 가져옴
@@ -112,11 +136,10 @@
 			  method: "GET",
 			  dataType: "json"
 			}); 
-		
 		request.done(function(data){
 			console.log(data)
 			var calendarEl = document.getElementById('calendar');
-			var calendar = new FullCalendar.Calendar(calendarEl, {
+			calendar = new FullCalendar.Calendar(calendarEl, {
 
 				dayMaxEventRows : true, // for all non-TimeGrid views
 				views : {
@@ -166,7 +189,6 @@
 				select : function(arg) {
 					//모달창 띄우기
 			        myModal.show();
-					console.log(arg)
 					//해당 날짜가져오기
 					$('#datetimepicker1').val(arg.startStr);
 					$('#datetimepicker2').val(arg.endStr);
@@ -174,7 +196,21 @@
 					calendar.unselect()
 				},
 				//ajax로 db데이터 화면에 뿌리기
-				events: data
+				events: data,
+				eventClick:function(info){
+					console.log(info.event.id)
+					$.ajax({
+						url:"selectPsche",
+						method:"GET",
+						data: info.event.id,
+						success:function(data){
+							selectModal.show();
+						},
+						error:function(error){
+							console.log(error)
+						}
+					});
+				}
 			});
 			calendar.render();
 		});

@@ -8,7 +8,7 @@ import com.worksb.hi.mycalendar.service.PrivateScheVO;
 public interface PrivateScheMapper {
 	
 	//단건조회
-	public PrivateScheVO selectPsche(PrivateScheVO privateScheVO);
+	public PrivateScheVO selectPsche(int scheId);
 	
 	//전체조회
 	public List<PrivateScheVO> selectAllPsche(String memberId);

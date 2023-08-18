@@ -17,8 +17,7 @@ public class PrivateScheServiceImpl implements PrivateScheService {
 	
 	@Override
 	public PrivateScheVO selectPsche(PrivateScheVO privateScheVO) {
-		// TODO Auto-generated method stub
-		return null;
+		return privateScheMapper.selectPsche(privateScheVO.getScheId());
 	}
 
 	@Override

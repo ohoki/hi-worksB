@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
 
+//2023-08-18 김정현 개인일정관리
+
 @Controller
 public class PrivateScheController {
 	
@@ -29,9 +31,9 @@ public class PrivateScheController {
 	@SuppressWarnings("unchecked")
 	@GetMapping("privateScheList")
 	@ResponseBody
-	public List<Map<String, Object>> myCalendar(HttpServletRequest request) {
+	public List<Map<String, Object>> myCalendar(HttpSession session) {
+		
 		//session에서 사용자 id값 가져와서 개인일정 검색
-		HttpSession session = request.getSession();
 		String memberId = (String) session.getAttribute("memberId");
 		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(memberId);
 		
@@ -41,6 +43,7 @@ public class PrivateScheController {
 		HashMap<String, Object> hash = new HashMap<String, Object>();
 		
 		for(int i=0;i<priScheList.size();i++) {
+			hash.put("id", priScheList.get(i).getScheId());//단건조회용 sche_id 입력
 			hash.put("title", priScheList.get(i).getScheTitle()); //제목
 			hash.put("start", priScheList.get(i).getStartDate()); //시작일자
 			hash.put("end", priScheList.get(i).getEndDate()); //종료일자
@@ -71,8 +74,19 @@ public class PrivateScheController {
 			resultMsg = "등록성공";
 		}
 		model.addAttribute("result", resultMsg);
-		return "mypage/privateCalendar";
+		return "redirect:privateSche";
 	}
+	
+	//개인일정 단건조회
+	@GetMapping("selectPsche")
+	@ResponseBody
+	public PrivateScheVO viewPsche(int scheId) {
+		PrivateScheVO vo = new PrivateScheVO();
+		vo.setScheId(scheId);
+		vo = privateScheService.selectPsche(vo);
+		return vo;
+	}
+	
 	
 	
 }
