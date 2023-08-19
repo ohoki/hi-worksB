@@ -1,6 +1,14 @@
 package com.worksb.hi.member.web;
 
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.UUID;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,27 +16,39 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.worksb.hi.common.UserSha256;
 import com.worksb.hi.company.service.CompanyService;
 import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.company.service.DepartmentVO;
+import com.worksb.hi.company.service.JobVO;
+import com.worksb.hi.company.web.CompanyController;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 
 @Controller
 public class memberController {
-
+	
+	@Value("${file.upload.path}")
+	private String uploadPath;
+	
 	@Autowired
 	MemberService memberService;
 	@Autowired
 	CompanyService companyService;
-
+	
+	@Autowired
+	CompanyController cc;
+	
 	@GetMapping("/selectMember")
 	@ResponseBody
 	public int selectMember(MemberVO memberVO) {
@@ -140,13 +160,74 @@ public class memberController {
 
 //================== 회원 정보 수정 =================================
 	@GetMapping("member/updateForm")
-	public String updateForm() {
+	public String updateForm(HttpSession session, Model model) {
+		CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
+		
+		//부서, 직급 정보 가져오기
+		List<DepartmentVO> deptList = companyService.getDepartment(company);
+		List<JobVO> jobList = companyService.getJob(company);
+		
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("jobList", jobList);
 		return "company/updateForm";
-	}
+	}//updateForm
 	
+	@PostMapping("member/updateMember")
+	@ResponseBody
+	public boolean updateMember(MemberVO memberVO, HttpSession session) {
+		int result = memberService.updateMember(memberVO);
+		
+		if(result == 0) {
+			return false;
+		}
+		
+		MemberVO updatedMember = memberService.selectMember(memberVO);
+		session.setAttribute("memberInfo", updatedMember);
+		return true;
+	}//updateMember
+	
+	//프로필 사진 수정
+	@PostMapping("/member/updateProfile")
+	@ResponseBody
+	public boolean updateProfile(MemberVO memberVO, @RequestPart MultipartFile image, HttpSession session) {
+		MemberVO dbMember = memberService.selectMember(memberVO);
+		
+		if(dbMember != null) {
+			String originalName = image.getOriginalFilename();	
+			String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+			String folderPath = cc.makeFolder();
+			String uuid = UUID.randomUUID().toString();
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			String saveName = uploadPath + File.separator + uploadFileName;
+			Path savePath = Paths.get(saveName);
+			
+			//로컬에 이미지 저장
+			try {
+				image.transferTo(savePath);
+			} catch (Exception e) {
+				return false;
+			}
+			//DB 저장
+			memberVO.setProfilePath(fileName);
+			memberVO.setRealProfilePath(cc.setImagePath(uploadFileName));
+			
+			int result = memberService.updateMember(memberVO);
+			
+			if(result == 0) {
+				return false;
+			}
+			
+			//수정된 db정보 불러오기
+			dbMember = memberService.selectMember(memberVO);
+			session.setAttribute("memberInfo", dbMember);
+			return true;
+		} 
+		return false;
+	}//updateProfile
+
 //========== 회사 등록 ==================
 	@GetMapping("/member/companyRegisterForm")
 	public String companyRegisterForm() {
 		return "member/companyRegisterForm";
-	}
+	}//companyRegisterForm
 }

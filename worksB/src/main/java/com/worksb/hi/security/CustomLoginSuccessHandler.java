@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 import com.worksb.hi.company.mapper.CompanyMapper;
 import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.member.mapper.MemberMapper;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
@@ -31,7 +32,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 		//멤버찾기
 		MemberVO member = new MemberVO();
 		member.setMemberId(authentication.getName());
-		
 		member = memberMapper.selectMember(member);
 		
 		if(member.getCompanyId() != null) {
@@ -42,7 +42,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 			
 			request.getSession().setAttribute("companyInfo", company);
 		}
-		
 		request.getSession().setAttribute("memberInfo", member);
 		
 		response.sendRedirect("start");
