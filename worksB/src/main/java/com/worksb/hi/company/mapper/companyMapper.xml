@@ -40,4 +40,22 @@
   		 ,#{companyAddr}
   		)
   </insert>
+  
+  <!-- 부서조회 -->
+  <select id="getDepartment" resultType="DepartmentVO">
+  	SELECT dept_id,
+  			dept_name,
+  			company_id
+  	FROM department
+  	WHERE company_id = #{companyId}    
+  </select>
+
+  <!-- 직급조회 -->
+  <select id="getJob" resultType="JobVO">
+ 	SELECT job_id,
+ 			job_name,
+ 			company_id
+ 	FROM job
+ 	WHERE company_id = #{companyId}    
+  </select>
   </mapper>
