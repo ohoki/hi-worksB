@@ -63,7 +63,7 @@ public class BoardController {
 	    		boardService.insertBoard(subBoardVO);
 	    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
 	    		subtaskVO.setHighTaskId(taskVO.getTaskId());
-	    		subtaskVO.setState("ggggg");
+	    		subtaskVO.setState(taskVO.getState());
 	    		boardService.insertTask(subtaskVO);
 	    	}
     	}

@@ -16,7 +16,7 @@
     <form class="project-create-form" action="projectUpdate" method="post">
     	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
         <div>
-            <input type="text" class="form__input-title" name="projectName" value="${projectInfo.projectName }">
+            <input type="text" class="form__input-title" name="projectName" value="${realProjectName}">
         </div>
 
         <div class="form__divide">
