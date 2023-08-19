@@ -1,5 +1,7 @@
 package com.worksb.hi.project.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.DeptVO;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -36,8 +40,11 @@ public class ProjectController {
 	@GetMapping("/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
 
-		//해당 회사의 부서이름 받아와야함!!
-		// companyId -> departmentId, departmentName 
+		// 소속 회사의 부서정보 받아오기
+		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
+		int companyId = member.getCompanyId();
+		List<DeptVO> department = projectService.getDeptInfo(companyId);
+		model.addAttribute("department", department);
 		
 		return "projectForm/projectInsert";
 	}
@@ -50,17 +57,31 @@ public class ProjectController {
 		projectVO.setProjectAccess(projectVO.getProjectAccess()!=null ? "A1" : "A2");
 		projectVO.setManagerAccp(projectVO.getManagerAccp()!=null? "A1" : "A2");
 		
-		// 부서번호 -> 부서이름 !!!
-		
+		// 부서 정보
 		// 프로젝트명 = 부서이름 + 프로젝트명
-//		projectVO.setProjectName(departmentName + "_" + projectVO.getProjectName());
+		int deptId = projectVO.getDeptId();
+	    DeptVO department = projectService.getDeptInfoByDeptId(deptId);
+	    String newName = department.getDeptName() + "_" + projectVO.getProjectName();
+	    projectVO.setProjectName(newName);
 		
-		String memberId = (String) session.getAttribute("memberId");
-		
+	    // 프로젝트 등록
+	    projectService.insertProject(projectVO);
+
+	    // 멤버 정보
+	    MemberVO member = (MemberVO)session.getAttribute("memberInfo");
+		String memberId = member.getMemberId();
 		projectVO.setMemberId(memberId);
-		projectService.insertProject(projectVO);
 		
-	    
+		PrjParticirVO participant = new PrjParticirVO();
+		participant.setMemberId(memberId);
+		// 관리자 여부 A1 : YES
+		// 프로젝트 등록자 -> 관리자
+		participant.setManager("A1");
+		participant.setProjectId(projectVO.getProjectId());
+		
+		// 참여자 등록
+		projectService.insertParticipant(participant);
+		
 		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 	
@@ -70,7 +91,11 @@ public class ProjectController {
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	    
 	    model.addAttribute("projectInfo", projectInfo);
-	    //부서번호 -> 부서이름 추가해야함
+	    
+	    // 부서 정보
+	    int deptId = projectInfo.getDeptId();
+	    DeptVO  department = projectService.getDeptInfoByDeptId(deptId);
+	    model.addAttribute("department", department); 
 	    
 	    return "projectForm/projectUpdate";
 	}
