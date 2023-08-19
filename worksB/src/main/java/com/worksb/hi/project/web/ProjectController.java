@@ -61,7 +61,7 @@ public class ProjectController {
 		// 프로젝트명 = 부서이름 + 프로젝트명
 		int deptId = projectVO.getDeptId();
 	    DeptVO department = projectService.getDeptInfoByDeptId(deptId);
-	    String newName = department.getDeptName() + "_" + projectVO.getProjectName();
+	    String newName = department.getDeptName() + " / " + projectVO.getProjectName();
 	    projectVO.setProjectName(newName);
 		
 	    // 프로젝트 등록
@@ -70,10 +70,10 @@ public class ProjectController {
 	    // 멤버 정보
 	    MemberVO member = (MemberVO)session.getAttribute("memberInfo");
 		String memberId = member.getMemberId();
-		projectVO.setMemberId(memberId);
 		
 		PrjParticirVO participant = new PrjParticirVO();
 		participant.setMemberId(memberId);
+		
 		// 관리자 여부 A1 : YES
 		// 프로젝트 등록자 -> 관리자
 		participant.setManager("A1");
@@ -88,9 +88,15 @@ public class ProjectController {
 	//프로젝트 수정폼
 	@GetMapping("/projectUpdate")
 	public String projectUpdateForm(@RequestParam int projectId, Model model) {
+		//기존 프로젝트 정보 가져오기
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	    
 	    model.addAttribute("projectInfo", projectInfo);
+	    
+	    // 프로젝트 이름 -> 부서명 잘라내기
+	    String projectName = projectInfo.getProjectName();
+	    String realProjectName = projectName.substring(projectName.indexOf("/") + 2);
+	    model.addAttribute("realProjectName", realProjectName);
 	    
 	    // 부서 정보
 	    int deptId = projectInfo.getDeptId();
@@ -108,12 +114,17 @@ public class ProjectController {
 		projectVO.setProjectAccess("on".equals(projectVO.getProjectAccess())? "A1" : "A2");
 		projectVO.setManagerAccp("on".equals(projectVO.getManagerAccp())? "A1" : "A2");
 		
+		// 부서 정보
+		// 프로젝트명 = 부서이름 + 프로젝트명
+		int deptId = projectVO.getDeptId();
+	    DeptVO department = projectService.getDeptInfoByDeptId(deptId);
+	    String newName = department.getDeptName() + " / " + projectVO.getProjectName();
+	    projectVO.setProjectName(newName);
+		
 		projectService.updateProject(projectVO);
 
 		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
 	}
-	
-
 
 	// 프로젝트 삭제
 	@GetMapping("/projectDelete")
