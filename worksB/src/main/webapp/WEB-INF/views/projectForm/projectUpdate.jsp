@@ -23,13 +23,12 @@
             <div>
             	<!-- 부서선택값 수정!!!!! -->
                 <label>부서 선택</label>
-                <select class="form__select" name="deptId" id="deptId">
-                
-                    <option value="">부서를 선택하세요.</option>
-                    <option value="1">부서1</option>
-                    <option value="2">부서2</option>
-                    <option value="3">부서3</option>
-                </select>
+				<select class="form__select" name="deptId" required>
+					<option value="">부서를 선택하세요.</option>
+					<option value="${department.deptId}"  ${department.deptId eq projectInfo.deptId ? 'selected' : ''}>
+						${department.deptName}
+					</option>
+				</select>
             </div>
 
             <div>
