@@ -16,7 +16,7 @@
 	<header class="header">
 		<!-- 회사 로고 -->
 		<div>
-			<a href="start"><img src="${pageContext.request.contextPath}/images/${companyInfo.realLogoPath }" alt="회사 로고"
+			<a href="${pageContext.request.contextPath}/start"><img src="${pageContext.request.contextPath}/images/${companyInfo.realLogoPath }" alt="회사 로고"
 				class="header__logo"></a>
 		</div>
 		<!-- 검색창 -->
@@ -46,7 +46,12 @@
 			<div id="profile-modal">
 				<div class="profile-modal__content">
 					<div class="profile-modal__title">
-						<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="modal-logo">
+						<c:if test="${memberInfo.realProfilePath eq null }">
+							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="modal-logo">
+						</c:if>
+						<c:if test="${memberInfo.realProfilePath ne null }">
+							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="modal-logo">
+						</c:if>
 						<div>${memberInfo.memberName }</div>
 					</div>
 					<p>
@@ -67,7 +72,12 @@
 			<div id="my-profile-modal">
 				<div class="my-profile-modal__content">
 					<div class="my-profile-modal__title">
-						<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="my-profile-logo">
+						<c:if test="${memberInfo.realProfilePath eq null }">
+							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="my-profile-logo">
+						</c:if>
+						<c:if test="${memberInfo.realProfilePath ne null }">
+							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="my-profile-logo">
+						</c:if>	
 						<div class="my-profile-modal__name">${memberInfo.memberName }</div>
 						<ul>
 							<li class="my-profile-item"><img alt="소속 회사" src="${pageContext.request.contextPath}/resources/icon/building-solid.svg" class="item-icon"><span>${companyInfo.companyName }</span></li>
@@ -77,7 +87,7 @@
 								<img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/circle-info-solid.svg" class="item-icon">
 								<span>
 									<c:if test="${memberInfo.deptId eq 0}">-</c:if>
-									<c:if test="${memberInfo.deptId ne 0}">${memberInfo.deptId }</c:if>
+									<c:if test="${memberInfo.deptId ne 0}">${memberInfo.deptName }</c:if>
 								</span></li>
 						</ul>
 						<button type="button" class="my-profile__btn">정보 수정</button>

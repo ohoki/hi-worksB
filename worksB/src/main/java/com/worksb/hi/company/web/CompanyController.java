@@ -28,7 +28,6 @@ public class CompanyController {
 	@Value("${file.upload.path}")
 	private String uploadPath;
 	
-	
 	@Autowired
 	CompanyService companyService;
 	
@@ -80,7 +79,7 @@ public class CompanyController {
 	}//insertCompnay
 	
 	//폴더생성
-	private String makeFolder() {
+	public String makeFolder() {
 		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 		
 		String folderPath = str.replace("/", File.separator);
@@ -93,7 +92,7 @@ public class CompanyController {
 		return folderPath;
 	}
 	
-	private String setImagePath(String uploadFileName) {
+	public String setImagePath(String uploadFileName) {
 		return uploadFileName.replace(File.separator, "/");
 	}
 	
@@ -113,5 +112,5 @@ public class CompanyController {
 		memberService.updateMember(member);
 		session.setAttribute("companyId", dbCompany.getCompanyId());
 		return "redirect:/start";
-	}	
+	}
 }
