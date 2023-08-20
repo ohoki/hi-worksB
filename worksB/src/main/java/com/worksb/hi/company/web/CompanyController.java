@@ -112,5 +112,5 @@ public class CompanyController {
 		memberService.updateMember(member);
 		session.setAttribute("companyId", dbCompany.getCompanyId());
 		return "redirect:/start";
-	}	
+	}
 }
