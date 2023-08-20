@@ -84,7 +84,7 @@
 }
 
 .date-input,
-.vote-add-buttons input
+.vote-add-buttons input,
 .task-add input {
 	border: 1px solid var(--color-light-white);
     border-radius: var(--size-border-radius);
@@ -145,7 +145,7 @@ a {
              
             
             <!-- 상위 업무 작성 폼!!! -->
-            <div class="modal-body boardForm" id="task">
+             <div class="modal-body boardForm" id="task">
                 <form id="boardInsert" method="post">
                     <!-- 시작일자 마감일자 우선순위 진척도 추가!!!! 하위업무-->
 					<div>
@@ -182,6 +182,16 @@ a {
 						<input type="text" name="endDate" class="date-input endDate">
 					</div>
 					
+					<!-- 우선 순위 -->
+					<div class="select-priority">
+						<select name="priority">
+							<option value="">우선 순위</option>
+							<option value="F3">낮음</option>
+							<option value="F2">보통</option>
+							<option value="F1">긴급</option>
+						</select>
+					</div>
+					
 					<!-- 진척도 -->
 					<!-- 진척도 전체 프로그레스-->
 					<div class="js-progress create-content-cell">
@@ -209,80 +219,13 @@ a {
 				    <!-- 진척도 값 넘길때 -->
 				    <input type="hidden" name="processivity" value="0">
 				    
-				    <!-- 우선 순위 -->
-					<div class="select-priority">
-						<select name="priority">
-							<option value="">우선 순위</option>
-							<option value="F3">낮음</option>
-							<option value="F2">보통</option>
-							<option value="F1">긴급</option>
-						</select>
-					</div>
 					</form>
 						
 					<!-- 하위 업무 -->	
 					<div class="task-add">
-						<input type="text" name="prjBoardTitle">
-						<div>
-							<label for="endDate">마감일 추가</label>
-							<input type="text" name="endDate" class="date-input endDate">
-						</div>
-						<div class="select-priority">
-							<select name="priority">
-								<option value="">우선 순위</option>
-								<option value="F3">낮음</option>
-								<option value="F2">보통</option>
-								<option value="F1">긴급</option>
-							</select>
-						</div>
-						<div class="form-check">
-							<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
-							<label class="btn btn-outline-info" for="option1">요청</label>
-							
-							<input type="radio" class="btn-check" name="state" value="G2" id="option2" autocomplete="off">
-							<label class="btn btn-outline-success" for="option2">진행</label>
-							
-							<input type="radio" class="btn-check" name="state" value="G3" id="option3" autocomplete="off">
-							<label class="btn btn-outline-warning" for="option3">피드백</label>
-							
-							<input type="radio" class="btn-check" name="state" value="G4" id="option4" autocomplete="off">
-							<label class="btn btn-outline-primary" for="option4">완료</label>
-							
-							<input type="radio" class="btn-check" name="state" value="G5" id="option5" autocomplete="off">
-							<label class="btn btn-outline-danger" for="option5">보류</label>
-						</div>
+					    <button type="button" class="btn btn-secondary btn-add-subtask">하위업무 추가</button>
 					</div>
-					<div class="task-add">
-						<input type="text" name="prjBoardTitle">
-						<div>
-							<label for="endDate">마감일 추가</label>
-							<input type="text" name="endDate" class="date-input endDate">
-						</div>
-						<div class="select-priority">
-							<select name="priority">
-								<option value="">우선 순위</option>
-								<option value="F3">낮음</option>
-								<option value="F2">보통</option>
-								<option value="F1">긴급</option>
-							</select>
-						</div>
-						<div class="form-check">
-							<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
-							<label class="btn btn-outline-info" for="option1">요청</label>
-							
-							<input type="radio" class="btn-check" name="state" value="G2" id="option2" autocomplete="off">
-							<label class="btn btn-outline-success" for="option2">진행</label>
-							
-							<input type="radio" class="btn-check" name="state" value="G3" id="option3" autocomplete="off">
-							<label class="btn btn-outline-warning" for="option3">피드백</label>
-							
-							<input type="radio" class="btn-check" name="state" value="G4" id="option4" autocomplete="off">
-							<label class="btn btn-outline-primary" for="option4">완료</label>
-							
-							<input type="radio" class="btn-check" name="state" value="G5" id="option5" autocomplete="off">
-							<label class="btn btn-outline-danger" for="option5">보류</label>
-						</div>
-					</div>
+					<!-- 하위 업무 끝 -->
 					
 					<div class="task-inspYn">
 						<label>공개 범위</label>
@@ -294,7 +237,7 @@ a {
 		            <div class="modal-footer form__button">
 		            	<input type="hidden" name="boardType" value="C8">
 		            	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		                <button type="button" class="btn btn-primary" id="btnAddTask">등록</button>
+		                <button type="button" class="btn btn-primary" id="btnAddTask" data-bs-dismiss="modal">등록</button>
 		                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 		            </div>
 				
@@ -400,6 +343,7 @@ a {
 <script>
 	// 이진
 	// 게시글 유형 폼 선택
+	
 	$('ul.modal-title li').click(function(e){
 		let target = e.currentTarget.textContent;
 		let visibleDiv = $('.visible');
@@ -507,6 +451,42 @@ a {
     });
 	
 	
+	// 하위 업무 추가하기
+	$(document).ready(function () {
+    $('.btn-add-subtask').click(function (event) {
+        event.stopPropagation();
+        var subtaskForm = `
+            <div class="task-add">
+                <input type="text" name="prjBoardTitle">
+                <div>
+                    <label for="endDate">마감일 추가</label>
+                    <input type="text" name="endDate" class="date-input endDate">
+                </div>
+                <div class="select-priority">
+                    <select name="priority">
+                        <option value="">우선 순위</option>
+                        <option value="F3">낮음</option>
+                        <option value="F2">보통</option>
+                        <option value="F1">긴급</option>
+                    </select>
+                </div>
+                <div class="select-state">
+                    <select name="state" class="task-select">
+                        <option value="G1">요청</option>
+                        <option value="G2">진행</option>
+                        <option value="G3">피드백</option>
+                        <option value="G4">완료</option>
+                        <option value="G5">보류</option>
+                    </select>
+                </div>
+            </div>`;
+        
+        $('.task-add:last').prev().after(subtaskForm);
+    	});
+	});
+
+	
+	// 업무 등록하기
 	$('#btnAddTask').on('click', function(){
 		let data={}
 		let prjBoardTitle = $('#task #boardInsert').find('[name=prjBoardTitle]').val();
@@ -529,11 +509,19 @@ a {
 		$('.task-add').each(function(index,item){
 			console.log(item)
 			let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
-			let state = $(item).find('[name=state]:checked').val();
-			let endDate = $(item).find('[name=endDate]').val();
-			let priority = $(item).find('[name=priority]').val();
-			subTask.push({prjBoardTitle, state, endDate, priority})
+			if (prjBoardTitle !== "") {
+                let state = $(item).find('[name=state]:checked').val();
+                let endDate = $(item).find('[name=endDate]').val();
+                let priority = $(item).find('[name=priority]').val();
+                subTask.push({ prjBoardTitle, state, endDate, priority });
+            }
 		})
+		
+		// 빈객체 지우기
+		if (subTask.length > 0 && !subTask[subTask.length - 1].prjBoardTitle) {
+        	subTask.pop();
+   		}
+		
 		console.log(JSON.stringify({boardVO, taskVO, subTask}));
 		$.ajax({
 			url:'taskInsert',
@@ -547,6 +535,7 @@ a {
 			}
 		});
 	})
+	
 	
 </script>
 </html>

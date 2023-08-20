@@ -16,19 +16,20 @@
     <form class="project-create-form" action="projectUpdate" method="post">
     	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
         <div>
-            <input type="text" class="form__input-title" name="projectName" value="${projectInfo.projectName }">
+            <input type="text" class="form__input-title" name="projectName" value="${realProjectName}">
         </div>
 
         <div class="form__divide">
             <div>
             	<!-- 부서선택값 수정!!!!! -->
                 <label>부서 선택</label>
-                <select class="form__select" name="deptId" id="deptId">
-                
+                <select class="form__select" name="deptId" required>
                     <option value="">부서를 선택하세요.</option>
-                    <option value="1">부서1</option>
-                    <option value="2">부서2</option>
-                    <option value="3">부서3</option>
+                    <c:forEach items="${departments}" var="dept">
+						<option value="${dept.deptId}" ${dept.deptId == projectInfo.deptId ? 'selected' : ''}>
+							<c:out value="${dept.deptName}" />
+						</option>
+					</c:forEach>
                 </select>
             </div>
 
