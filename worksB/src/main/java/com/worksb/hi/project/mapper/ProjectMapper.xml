@@ -103,7 +103,8 @@
 	    find_subcode(p.file_access) AS file_access,
 	    find_subcode(p.comment_access) AS comment_access, 
 	    pp1.prj_particir_num,
-	    pp2.project_markup,
+	    find_subcode(pp2.project_markup) AS project_markup, 
+	    find_subcode(pp2.particir_accp) AS particir_accp,
 	    p.dept_id,
 	    p.project_cls
 	FROM
@@ -121,13 +122,14 @@
         SELECT
             project_markup,
             project_id,
-            member_id
+            member_id,
+            particir_accp
         FROM
             prj_particir
     )pp2 ON(pp1.project_id=pp2.project_id)
 	WHERE
 	    pp2.member_id=#{memberId}
-
+	ORDER BY p.project_id  
 </select>
 
 
@@ -144,13 +146,24 @@
 	    find_subcode(p.file_access) AS file_access,
 	    find_subcode(p.comment_access) AS comment_access, 
         (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num,
+  		pp.member_id AS member_id,
+  		find_subcode(pp.particir_accp) AS particir_accp,
 	    p.dept_id,
-	    p.project_cls
+	    find_subcode(p.project_cls) AS project_cls
 	FROM
 	    project p
+    JOIN(
+        SELECT 
+            member_id,
+            project_id,
+            particir_accp
+        FROM
+            prj_particir
+    )pp ON (p.project_id=pp.project_id)
 	WHERE
 	    BOARD_ACCESS='J1' 
-	    AND dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})    
+	    AND dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})  
+	ORDER BY p.project_id  
 </select>
 
 <!-- 즐겨찾기 갱신 -->
