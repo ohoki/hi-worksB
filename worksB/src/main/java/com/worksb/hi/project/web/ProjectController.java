@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.DeptVO;
@@ -141,9 +142,10 @@ public class ProjectController {
 	@GetMapping("/projectFeed")
     public String projectFeed(@RequestParam int projectId, Model model) {
         ProjectVO projectInfo = projectService.getProjectInfo(projectId);
-         
+        List<BoardVO> boards = projectService.getBoardList(projectInfo);
+        
         model.addAttribute("projectInfo", projectInfo);
-
+        model.addAttribute("boards", boards);
         return "project/projectFeed";
     }
 	
