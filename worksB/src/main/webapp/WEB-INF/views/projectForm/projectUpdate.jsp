@@ -23,12 +23,14 @@
             <div>
             	<!-- 부서선택값 수정!!!!! -->
                 <label>부서 선택</label>
-				<select class="form__select" name="deptId" required>
-					<option value="">부서를 선택하세요.</option>
-					<option value="${department.deptId}"  ${department.deptId eq projectInfo.deptId ? 'selected' : ''}>
-						${department.deptName}
-					</option>
-				</select>
+                <select class="form__select" name="deptId" required>
+                    <option value="">부서를 선택하세요.</option>
+                    <c:forEach items="${departments}" var="dept">
+						<option value="${dept.deptId}" ${dept.deptId == projectInfo.deptId ? 'selected' : ''}>
+							<c:out value="${dept.deptName}" />
+						</option>
+					</c:forEach>
+                </select>
             </div>
 
             <div>
