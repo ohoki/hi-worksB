@@ -3,6 +3,33 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.member.mapper.MemberMapper">
+	<!-- 전체조회 -->
+	<select id="getMemberListByCompany" resultType="MemberVO">
+		SELECT MEMBER_ID,
+				MEMBER_NAME,
+				MEMBER_PW,
+				MEMBER_PHONE,
+				PROFILE_PATH,
+				REAL_PROFILE_PATH,
+				'ROLE_' || MEMBER_GRADE member_grade,
+				CON_IP,
+				job_id,
+				dept_id,
+				(SELECT job_name FROM job WHERE job_id = member.job_id) job_name,
+				(SELECT dept_name FROM department WHERE dept_id = member.dept_id) dept_name,
+				EMP_STATUS,
+				CON_STATUS,
+				COMPANY_ID,
+				LOGIN_FAIL,
+				LOGIN_LOCK,
+				MAIL_KEY,
+				MAIL_AUTH,
+				COMPANY_ACCP 
+		FROM member
+		WHERE company_id = #{companyId}	
+	</select>
+
+
 	<!-- 단건조회 -->
 	<select id="selectMember" resultType="MemberVO">
 		SELECT MEMBER_ID,

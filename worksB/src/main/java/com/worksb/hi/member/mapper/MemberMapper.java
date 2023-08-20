@@ -1,8 +1,13 @@
 package com.worksb.hi.member.mapper;
 
+import java.util.List;
+
 import com.worksb.hi.member.service.MemberVO;
 
 public interface MemberMapper {
+	//전체조회
+	public List<MemberVO> getMemberListByCompany(MemberVO memberVO);
+	
 	//단건조회
 	public MemberVO selectMember(MemberVO memberVO);
 	
