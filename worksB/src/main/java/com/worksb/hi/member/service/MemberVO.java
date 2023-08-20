@@ -31,8 +31,10 @@ public class MemberVO {
 	private String realProfilePath;
 	private String memberGrade;
 	private String conIp;
-	private int jobId;
-	private int deptId;
+	private Integer jobId;
+	private String jobName;
+	private Integer deptId;
+	private String deptName;
 	private String empStatus;
 	private String conStatus;
 	private Integer companyId;
