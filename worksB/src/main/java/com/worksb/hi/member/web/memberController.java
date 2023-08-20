@@ -1,3 +1,4 @@
+
 package com.worksb.hi.member.web;
 
 
@@ -9,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
+import javax.mail.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -175,6 +177,11 @@ public class memberController {
 	@PostMapping("member/updateMember")
 	@ResponseBody
 	public boolean updateMember(MemberVO memberVO, HttpSession session) {
+		//비밀번호가 수정됐다면 암호화
+		if(memberVO.getMemberPw() != null) {
+			memberVO.setMemberPw(UserSha256.encrypt(memberVO.getMemberPw()));
+		}
+		
 		int result = memberService.updateMember(memberVO);
 		
 		if(result == 0) {
@@ -224,7 +231,26 @@ public class memberController {
 		} 
 		return false;
 	}//updateProfile
-
+	
+	//패스워드 변경 페이지
+	@GetMapping("/member/updatePwForm")
+	public String updatePwForm() {
+		return "company/updatePwForm";
+	}//updatePwForm
+	
+	//패스워드 확인
+	@PostMapping("/member/pwCheck")
+	@ResponseBody
+	public boolean pwCheck(HttpSession session, String memberPw) {
+		String oldPw = UserSha256.encrypt(memberPw);
+		MemberVO sessionMember = (MemberVO)session.getAttribute("memberInfo");
+		
+		if(oldPw.equals(sessionMember.getMemberPw())) {
+			return true;
+		}
+		return false;
+	}//pwCheck
+	
 //========== 회사 등록 ==================
 	@GetMapping("/member/companyRegisterForm")
 	public String companyRegisterForm() {
