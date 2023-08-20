@@ -98,6 +98,7 @@ body{
 
 a {
     text-decoration: none;
+    color: var(--color-dark-beige);
 }
 
 .board-container{
@@ -106,11 +107,12 @@ a {
     width : 1000px;
     background-color : #ffffff;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 50px 0 50px 80px;
+    margin: 50px auto;
     padding: 30px;
 }
 .board-header{
 	display: flex;
+	align-items: center;
 }
 .board-headder-info{
 	margin-left: 80px;
@@ -122,10 +124,13 @@ a {
 }
 .divide{
 	border-bottom: 1px solid var(--color-light-white);
+	margin: 20px 0;
 }
 .board-comment{
 	background-color : var(--color-light-blue);
-	height: 100px;
+	height: 80px;
+	padding: 10px;
+	
 }
 .board-title{
 	font-size: 30px;
@@ -165,14 +170,59 @@ a {
 					</div>
 				</div>
 			</c:if>
+			<!-- C6 일정-->
 			<c:if test="${board.boardType eq 'C6'}">
-				C6 양식
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+					</div>
+					<div class="board-title divide">
+						${board.prjBoardTitle }
+					</div>
+					<div class="board-sub divide">
+						${board.prjBoardSubject }
+					</div>
+					<div class="board-comment">
+						댓글공간
+					</div>
+				</div>
 			</c:if>
+			<!-- C7 투표 -->
 			<c:if test="${board.boardType eq 'C7'}">
-				C7 양식
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+					</div>
+					<div class="board-title divide">
+						${board.prjBoardTitle }
+					</div>
+					<div class="board-sub divide">
+						${board.prjBoardSubject }
+					</div>
+					<div class="board-comment">
+						댓글공간
+					</div>
+				</div>
 			</c:if>
+			<!-- C8 업무 -->
 			<c:if test="${board.boardType eq 'C8'}">
-				C8 양식
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+					</div>
+					<div class="board-title divide">
+						${board.prjBoardTitle }
+					</div>
+					<div class="board-sub divide">
+						${board.prjBoardSubject }
+					</div>
+					<div class="board-comment">
+						댓글공간
+					</div>
+				</div>
 			</c:if>
 		</c:forEach>		
 	</div>
@@ -187,18 +237,55 @@ a {
 		for(let i=0; i<boardList.length; i++) {
 			if(boardList[i].dataset.type == 'C5') {
 				$.ajax({
-					url : 'C5게시글의 데이터를 찾아오는 URL',
+					url : '/getBoardInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
 					succes : function(C5data) {
-						let 넣고자하는 태그
-						태그.value = C5data; 
-					}, error : function() {
-						
+						/* let 넣고자하는 태그
+						태그.value = C5data;  */
+					}, error : function(reject) {
+						console.log(reject);
 					}
-				})
+				});
 			} else if (boardList[i].dataset.type == 'C6') {
-				
+				//일정
+				$.ajax({
+					url : '/getScheInfo',
+					type : 'GET',
+					data : {'prjBoardId' : boardList[i].dataset.id},
+					succes : function() {
+						
+					}, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			} else if (boardList[i].dataset.type == 'C7') {
+				//투표
+				$.ajax({
+					url : '/getVoteInfo',
+					type : 'GET',
+					data : {'prjBoardId' : boardList[i].dataset.id},
+					succes : function(voteData) {
+						let endDate = `<div>투표 종료일: ${voteData.endDate}</div>`;
+						
+						$(boardList[i]).find('.board-sub.divide').append(endDate);
+						
+					}, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			} else if (boardList[i].dataset.type == 'C8') {
+				//업무
+				$.ajax({
+					url : '/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : boardList[i].dataset.id},
+					succes : function() {
+						
+					}, error : function(reject) {
+						console.log(reject);
+					}
+				});
 			}
 		}
 	});
