@@ -37,6 +37,7 @@ public class BoardController {
 		return "project/boardInsert";
 	}
     
+    // 업무글 등록
     @PostMapping("taskInsert")
     @ResponseBody
     public String taskInsert(@RequestBody BoardRequestVO brVO) {

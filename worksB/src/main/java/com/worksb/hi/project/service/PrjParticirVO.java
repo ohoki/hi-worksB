@@ -12,6 +12,7 @@ MANAGER                  VARCHAR2(5)  프로젝트 관리자 여부
 PROJECT_ID      NOT NULL NUMBER       
 ALARM_YN        NOT NULL VARCHAR2(5)  
 PROJECT_MARKUP           VARCHAR2(5)  즐겨찾기
+particir_accp 
  */
 	private int prjParticirId;
 	private String memberId;
@@ -19,4 +20,5 @@ PROJECT_MARKUP           VARCHAR2(5)  즐겨찾기
 	private int projectId;
 	private String alarmYn;
 	private String projectMarkup;
+	private String particirAccp;
 }

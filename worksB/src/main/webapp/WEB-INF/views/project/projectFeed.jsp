@@ -182,6 +182,16 @@ a {
 						<input type="text" name="endDate" class="date-input endDate">
 					</div>
 					
+					<!-- 우선 순위 -->
+					<div class="select-priority">
+						<select name="priority">
+							<option value="">우선 순위</option>
+							<option value="F3">낮음</option>
+							<option value="F2">보통</option>
+							<option value="F1">긴급</option>
+						</select>
+					</div>
+					
 					<!-- 진척도 -->
 					<!-- 진척도 전체 프로그레스-->
 					<div class="js-progress create-content-cell">
@@ -209,23 +219,13 @@ a {
 				    <!-- 진척도 값 넘길때 -->
 				    <input type="hidden" name="processivity" value="0">
 				    
-				    <!-- 우선 순위 -->
-					<div class="select-priority">
-						<select name="priority">
-							<option value="">우선 순위</option>
-							<option value="F3">낮음</option>
-							<option value="F2">보통</option>
-							<option value="F1">긴급</option>
-						</select>
-					</div>
 					</form>
 						
 					<!-- 하위 업무 -->	
-					<!-- HTML 코드 -->
-<div class="task-add">
-    <button type="button" class="btn btn-secondary btn-add-subtask">하위업무 추가</button>
-</div>
-
+					<div class="task-add">
+					    <button type="button" class="btn btn-secondary btn-add-subtask">하위업무 추가</button>
+					</div>
+					<!-- 하위 업무 끝 -->
 					
 					<div class="task-inspYn">
 						<label>공개 범위</label>

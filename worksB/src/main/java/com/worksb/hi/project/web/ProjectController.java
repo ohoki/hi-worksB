@@ -61,9 +61,9 @@ public class ProjectController {
 		// 프로젝트명 = 부서이름 + 프로젝트명
 		int deptId = projectVO.getDeptId();
 	    DeptVO department = projectService.getDeptInfoByDeptId(deptId);
-	    String newName = department.getDeptName() + " / " + projectVO.getProjectName();
+	    String newName = "[" + department.getDeptName() + "]" + projectVO.getProjectName();
 	    projectVO.setProjectName(newName);
-		
+	    
 	    // 프로젝트 등록
 	    projectService.insertProject(projectVO);
 
@@ -77,6 +77,8 @@ public class ProjectController {
 		// 관리자 여부 A1 : YES
 		// 프로젝트 등록자 -> 관리자
 		participant.setManager("A1");
+		// 참여 승인 여부
+		participant.setParticirAccp("A1");
 		participant.setProjectId(projectVO.getProjectId());
 		
 		// 참여자 등록
@@ -87,7 +89,7 @@ public class ProjectController {
 	
 	//프로젝트 수정폼
 	@GetMapping("/projectUpdate")
-	public String projectUpdateForm(@RequestParam int projectId, Model model) {
+	public String projectUpdateForm(@RequestParam int projectId, Model model, HttpSession session) {
 		//기존 프로젝트 정보 가져오기
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	    
@@ -95,13 +97,15 @@ public class ProjectController {
 	    
 	    // 프로젝트 이름 -> 부서명 잘라내기
 	    String projectName = projectInfo.getProjectName();
-	    String realProjectName = projectName.substring(projectName.indexOf("/") + 2);
+	    String realProjectName = projectName.substring(projectName.indexOf("]") + 1);
 	    model.addAttribute("realProjectName", realProjectName);
 	    
 	    // 부서 정보
-	    int deptId = projectInfo.getDeptId();
-	    DeptVO  department = projectService.getDeptInfoByDeptId(deptId);
-	    model.addAttribute("department", department); 
+	    MemberVO member = (MemberVO)session.getAttribute("memberInfo");
+		int companyId = member.getCompanyId();
+		List<DeptVO> departments = projectService.getDeptInfo(companyId);
+		model.addAttribute("departments", departments);
+		   
 	    
 	    return "projectForm/projectUpdate";
 	}
@@ -118,7 +122,7 @@ public class ProjectController {
 		// 프로젝트명 = 부서이름 + 프로젝트명
 		int deptId = projectVO.getDeptId();
 	    DeptVO department = projectService.getDeptInfoByDeptId(deptId);
-	    String newName = department.getDeptName() + " / " + projectVO.getProjectName();
+	    String newName = "[" + department.getDeptName() + "]" + projectVO.getProjectName();
 	    projectVO.setProjectName(newName);
 		
 		projectService.updateProject(projectVO);

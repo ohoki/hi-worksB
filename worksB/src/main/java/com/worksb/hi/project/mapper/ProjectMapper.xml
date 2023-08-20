@@ -21,7 +21,8 @@
 							board_access,
 							comment_access,
 							file_access,
-							dept_id	
+							dept_id,
+							project_cls
 						)
 						
 				VALUES 	(
@@ -35,6 +36,7 @@
 						#{commentAccess},
 						#{fileAccess},
 						#{deptId}
+						'A2'
 						)
 	</insert>
 	
@@ -102,13 +104,15 @@
 										member_id,
 										manager,
 										project_id,
-										alarm_yn)
+										alarm_yn,
+										particir_accp)
 							VALUES
 									(	#{prjParticirId}, 
 										#{memberId},
 										#{manager},
 										#{projectId},
-										'A1')
+										'A1',
+										#{particirAccp})
 	</insert>
 	
 	
