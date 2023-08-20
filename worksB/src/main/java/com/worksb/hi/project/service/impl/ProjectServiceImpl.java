@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.project.mapper.ProjectMapper;
 import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.PrjParticirVO;
@@ -67,7 +68,10 @@ public class ProjectServiceImpl implements ProjectService {
 			return -1;
 		}
 	}
-	
+	//프로젝트 게시글 리스트
+		public List<BoardVO> getBoardList(ProjectVO projectVO) {
+			return projectMapper.getBoardList(projectVO);
+		}
 	// 부서 정보 - 회사 번호 기준
 	@Override
 	public List<DeptVO> getDeptInfo(int companyId) {

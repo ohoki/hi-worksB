@@ -25,7 +25,7 @@ COORDINATE                 VARCHAR2(60)
 	private String memberId;
 	private String inspYn;
 	private String pinYn;
-	private String BoardType;
+	private String boardType;
 	private int projectId;
 	private String coordinate;
 	

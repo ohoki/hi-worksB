@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,6 +101,47 @@ a {
 </head>
 <body>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+<c:forEach items="${boards }" var="board">
+	<c:if test="${board.boardType eq 'C5'}">
+		<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }">
+			gg
+		</div>
+	</c:if>
+	<c:if test="${board.boardType eq 'C6'}">
+		C6 양식
+	</c:if>
+	<c:if test="${board.boardType eq 'C7'}">
+		C7 양식
+	</c:if>
+	<c:if test="${board.boardType eq 'C8'}">
+		C8 양식
+	</c:if>
+</c:forEach>
+
+<script>
+	$(window).on('DOMContentLoaded', function() {
+		let boardList = $('[data-list="board"]');
+		
+		for(let i=0; i<boardList.length; i++) {
+			if(boardList[i].dataset.type == 'C5') {
+				$.ajax({
+					url : 'C5게시글의 데이터를 찾아오는 URL',
+					type : 'GET',
+					data : {'prjBoardId' : boardList[i].dataset.id},
+					succes : function(C5data) {
+						let 넣고자하는 태그
+						태그.value = C5data; 
+					}, error : function() {
+						
+					}
+				})
+			} else if (boardList[i].dataset.type == 'C6') {
+				
+			}
+		}
+	});
+</script>
+
 
 <div class="modal modalBoard" tabindex="-1" id="boardInsertModal">
     <div class="modal-dialog modal-lg">
