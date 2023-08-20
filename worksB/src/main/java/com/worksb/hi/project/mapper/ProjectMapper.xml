@@ -90,6 +90,7 @@
 				COORDINATE
 		FROM prj_board
 		WHERE project_id = #{projectId}  
+		ORDER BY prj_board_regdate DESC
 	</select>
 	
 	<!-- 부서 정보 조회 (회사 번호)-->

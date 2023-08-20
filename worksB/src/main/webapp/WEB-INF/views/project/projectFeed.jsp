@@ -15,6 +15,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
 <style>
+body{
+	background-color : #f7fafd;
+}
 .form__select,
 .form__input-title,
 .form__textarea {
@@ -97,27 +100,86 @@ a {
     text-decoration: none;
 }
 
+.board-container{
+	border: 1px solid var(--color-dark-white);
+    border-radius: var(--size-border-radius);
+    width : 1000px;
+    background-color : #ffffff;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 50px 0 50px 80px;
+    padding: 30px;
+}
+.board-header{
+	display: flex;
+}
+.board-headder-info{
+	margin-left: 80px;
+}
+.board-sub{
+	height:350px;
+	margin-top: 20px;
+	font-size: var(--font-small);
+}
+.divide{
+	border-bottom: 1px solid var(--color-light-white);
+}
+.board-comment{
+	background-color : var(--color-light-blue);
+	height: 100px;
+}
+.board-title{
+	font-size: 30px;
+	margin-top: 20px;
+	color: var(--color-dark-grey);
+    font-weight: var(--weight-bold);
+}
+.regdate{
+	color: var(--color-dark-white);
+	font-size: var(--font-small);
+}
+.memberName{
+	font-size: var(--font-regular);
+	color: var(--color-dark-grey);
+}
 </style>
 </head>
 <body>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
-<c:forEach items="${boards }" var="board">
-	<c:if test="${board.boardType eq 'C5'}">
-		<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }">
-			gg
-		</div>
-	</c:if>
-	<c:if test="${board.boardType eq 'C6'}">
-		C6 양식
-	</c:if>
-	<c:if test="${board.boardType eq 'C7'}">
-		C7 양식
-	</c:if>
-	<c:if test="${board.boardType eq 'C8'}">
-		C8 양식
-	</c:if>
-</c:forEach>
-
+<div style="display : flex;">
+	<div style="width: 70%;">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+		<c:forEach items="${boards }" var="board">
+			<c:if test="${board.boardType eq 'C5'}">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+					</div>
+					<div class="board-title divide">
+						${board.prjBoardTitle }
+					</div>
+					<div class="board-sub divide">
+						${board.prjBoardSubject }
+					</div>
+					<div class="board-comment">
+						댓글공간
+					</div>
+				</div>
+			</c:if>
+			<c:if test="${board.boardType eq 'C6'}">
+				C6 양식
+			</c:if>
+			<c:if test="${board.boardType eq 'C7'}">
+				C7 양식
+			</c:if>
+			<c:if test="${board.boardType eq 'C8'}">
+				C8 양식
+			</c:if>
+		</c:forEach>		
+	</div>
+	<div style="width: 25%;">
+		<h1>북마크 공간~~</h1>
+	</div>
+</div>
 <script>
 	$(window).on('DOMContentLoaded', function() {
 		let boardList = $('[data-list="board"]');
