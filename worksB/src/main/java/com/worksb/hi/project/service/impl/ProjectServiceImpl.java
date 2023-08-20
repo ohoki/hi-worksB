@@ -88,6 +88,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 
+
 	@Override
 	public List<ProjectVO> selectFromCompany(int companyId,String memberId) {
 		List<ProjectVO> vo=projectMapper.selectFromCompany(companyId);
@@ -103,7 +104,7 @@ public class ProjectServiceImpl implements ProjectService {
 		        uniqueProjectIds.add(project.getProjectId());
 
 		        if (memberId.equals(project.getMemberId())) {
-		            sessionMatchingProjectIds.add(project.getProjectId());
+		        	sessionMatchingProjectIds.add(project.getProjectId());
 		        }
 		    }
 		}
@@ -111,8 +112,8 @@ public class ProjectServiceImpl implements ProjectService {
 		// 결과 리스트에 중복된 프로젝트 중 세션과 일치하는 것만 추가
 		for(ProjectVO project:vo) {
 		    if (uniqueProjectIds.contains(project.getProjectId())) {
+		    	result.add(project);
 		        uniqueProjectIds.remove(project.getProjectId()); // 중복 제거한 프로젝트는 세트에서 제거
-		        result.add(project);
 		    }
 		}
 
@@ -122,6 +123,7 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return result;
 	}
+
 
 
 	@Override
