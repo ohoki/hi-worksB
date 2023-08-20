@@ -1,7 +1,10 @@
 package com.worksb.hi.member.service;
 
+import java.util.List;
 
 public interface MemberService {
+	//전체조회
+	public List<MemberVO> getMemberListByCompany(MemberVO memberVO);
 	//단건조회
 	public MemberVO selectMember(MemberVO memberVO);
 	
