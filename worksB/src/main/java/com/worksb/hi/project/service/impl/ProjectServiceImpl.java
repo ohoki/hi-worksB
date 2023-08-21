@@ -95,7 +95,7 @@ public class ProjectServiceImpl implements ProjectService {
 		List<ProjectVO> result = new ArrayList<>();
 
 		Set<Integer> uniqueProjectIds = new HashSet<>();
-		Set<Integer> sessionMatchingProjectIds = new HashSet<>();
+		//Set<Integer> sessionMatchingProjectIds = new HashSet<>();
 
 		for(int i=vo.size()-1;i >= 0;i--){
 		    ProjectVO project = vo.get(i);
@@ -104,7 +104,9 @@ public class ProjectServiceImpl implements ProjectService {
 		        uniqueProjectIds.add(project.getProjectId());
 
 		        if (memberId.equals(project.getMemberId())) {
-		        	sessionMatchingProjectIds.add(project.getProjectId());
+		        	uniqueProjectIds.add(project.getProjectId());
+		        }else {
+		        	
 		        }
 		    }
 		}
