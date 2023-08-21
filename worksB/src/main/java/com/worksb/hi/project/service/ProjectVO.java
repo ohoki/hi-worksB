@@ -30,12 +30,12 @@ PROJECT_CLS             VARCHAR2(5)
 	private int deptId;
 	private String projectCls;
 	
-	private int prj_particir_num;
+	private int prjParticirNum;
 	private String projectMarkup;
 	private String memberId;
 	
 	
 	
 	//주현
-	
+	private String particirAccp;
 }

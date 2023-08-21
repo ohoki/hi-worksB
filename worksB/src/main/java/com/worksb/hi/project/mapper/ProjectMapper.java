@@ -29,20 +29,17 @@ public interface ProjectMapper {
 	
 	// 프로젝트 참여자 등록
 	public int insertParticipant(PrjParticirVO participant);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 	//주현
 	public List<ProjectVO> searchPrj(String memberId);
 	public List<ProjectVO> selectFromCompany(int companyId);

@@ -2,6 +2,8 @@ package com.worksb.hi.project.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.worksb.hi.board.service.BoardVO;
@@ -33,6 +35,6 @@ public interface ProjectService {
 	
 	//주현
 	public List<ProjectVO> searchPrj(String memberId);
-	public List<ProjectVO> selectFromCompany(int companyId);
+	public List<ProjectVO> selectFromCompany(int companyId,String memberId);
 	public void updateStar(ProjectVO vo);
 }
