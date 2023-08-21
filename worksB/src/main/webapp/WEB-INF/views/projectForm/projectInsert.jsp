@@ -24,14 +24,11 @@
                 <label>부서 선택</label>
                 <select class="form__select" name="deptId" required>
                     <option value="">부서를 선택하세요.</option>
-                    <!-- 
-                    <c:forEach items="${department}">
-        				<option value="${department.deptId}">${department.deptName}</option>
-    				</c:forEach>
-    				 -->
-    				<option value="1">부서1</option>
-                    <option value="2">부서2</option>
-                    <option value="3">부서3</option>
+                    <c:forEach items="${department}" var="dept">
+						<option value="${dept.deptId}">
+							<c:out value="${dept.deptName}" />
+						</option>
+					</c:forEach>
                 </select>
             </div>
 			
@@ -110,9 +107,7 @@
         </div>
     </form>
     <script>
-    document.getElementById('submit').onclick = function() {
-        document.querySelector('input[type=checkbox][name=gender]:checked').value;
-    }
+
     </script>
 </body>
 </html>

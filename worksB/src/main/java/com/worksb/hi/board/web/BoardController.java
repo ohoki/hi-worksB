@@ -37,6 +37,7 @@ public class BoardController {
 		return "project/boardInsert";
 	}
     
+    // 업무글 등록
     @PostMapping("taskInsert")
     @ResponseBody
     public String taskInsert(@RequestBody BoardRequestVO brVO) {
@@ -63,7 +64,7 @@ public class BoardController {
 	    		boardService.insertBoard(subBoardVO);
 	    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
 	    		subtaskVO.setHighTaskId(taskVO.getTaskId());
-	    		subtaskVO.setState("ggggg");
+	    		subtaskVO.setState(taskVO.getState());
 	    		boardService.insertTask(subtaskVO);
 	    	}
     	}

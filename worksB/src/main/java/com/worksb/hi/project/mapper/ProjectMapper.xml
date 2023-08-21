@@ -21,7 +21,8 @@
 							board_access,
 							comment_access,
 							file_access,
-							dept_id	
+							dept_id,
+							project_cls
 						)
 						
 				VALUES 	(
@@ -35,6 +36,7 @@
 						#{commentAccess},
 						#{fileAccess},
 						#{deptId}
+						'A2'
 						)
 	</insert>
 	
@@ -74,6 +76,44 @@
 		WHERE project_id = #{projectId}
 	</delete>
 	
+	<!-- 부서 정보 조회 (회사 번호)-->
+	<select id="getDeptInfo" parameterType="int" resultType="DeptVO">
+		SELECT	dept_id,
+				dept_name
+		FROM	department
+		WHERE	company_id = #{companyId}
+		ORDER BY	dept_id
+	</select>
+	
+	<!-- 부서 정보 조회 (부서 번호)-->
+	<select id="getDeptInfoByDeptId" parameterType="int" resultType="DeptVO">
+		SELECT	dept_id,
+				dept_name
+		FROM	department
+		WHERE	dept_id = #{deptId}
+	</select>
+	
+	<!-- 프로젝트 참여자 등록 -->
+	<insert id="insertParticipant" parameterType="PrjParticirVO">
+		<selectKey keyProperty="prjParticirId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(prj_particir_id), 0) + 1
+			FROM prj_particir
+		</selectKey>
+			INSERT INTO prj_particir
+									(	prj_particir_id,
+										member_id,
+										manager,
+										project_id,
+										alarm_yn,
+										particir_accp)
+							VALUES
+									(	#{prjParticirId}, 
+										#{memberId},
+										#{manager},
+										#{projectId},
+										'A1',
+										#{particirAccp})
+	</insert>
 	
 	
 	
