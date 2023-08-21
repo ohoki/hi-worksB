@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <title>Insert title here</title>
 <style>
 body {
@@ -107,16 +105,15 @@ div h2 {
 </head>
 <body>
 	<div class="top">
-		<h2>공지사항 작성</h2>
+		<h2>카풀 수정</h2>
 	</div>
 	<div class="body">
-		<form action="noticeInsert" method="post">
+		<form action="carpoolUpdate">
 			<table class="table">
 				<thead>
 					<tr class="main__p">
 						<th class="table__title">
-							<label id="noticeTitle">제목 </label>
-							<input type="text" name="noticeTitle">
+							<input type="text" name="boardTitle" value="${carpoolInfo.carpoolTitle }">
 						</th>
 					</tr>
 				</thead>
@@ -124,20 +121,30 @@ div h2 {
 					<tr>
 						<td>
 							<div class="content">
-								<input type="text" name="noticeContent">
+								<input type="text" name="boardContent" value="${carpoolInfo.carpoolContent }">
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input type="hidden" name="memberId" value="${memberInfo.memberId }">
-							<input type="hidden" name="companyId" value="${memberInfo.companyId}">
+							<label>출발</label>
+							<input type="text" name="departure" value="${carpoolInfo.departure }">
+							<label>도착</label>
+							<input type="text" name="arrival" value="${carpoolInfo.arrival }">
+							<label>날짜</label>
+							<input type="text" name="departureDate" value="${carpoolInfo.departureDate }">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="hidden" name="category" value="B1" ><!-- 나중에 바꿔야됨 -->
+							<input type="hidden" name="boardId" value="${carpoolInfo.boardId }">
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<button type="button" onclick="location.href='noticeList'">목록</button>
-			<button type="submit">작성</button>
+			<button type="button" onclick="location.href='carpoolList'">목록</button>
+			<button type="submit">수정</button>
 		</form>
 	</div>
 </body>

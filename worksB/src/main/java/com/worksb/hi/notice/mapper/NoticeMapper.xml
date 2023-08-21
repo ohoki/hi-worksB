@@ -34,20 +34,19 @@
         		from (select *
               		  from notice_board n JOIN member m
               		  on n.member_id = m.member_id
-              		  where board_type = 'C2' 
 					<if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
 					<choose>
 					<when test="searchVO.searchtype == 1 ">
-						and notice_title like '%' || #{searchVO.searchkeyword } || '%'
+						WHERE notice_title like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 2 ">
-						and notice_content like '%' || #{searchVO.searchkeyword } || '%'
+						WHERE notice_content like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 3 ">
-						and member_name like  '%${searchVO.searchkeyword }%'
+						WHERE member_name like  '%${searchVO.searchkeyword }%'
 					</when>
 					<when test="searchVO.searchtype == 4 ">
-						and( notice_title like '%${searchVO.searchkeyword }%' or notice_content like '%${searchVO.searchkeyword }%')
+						WHERE ( notice_title like '%${searchVO.searchkeyword }%' or notice_content like '%${searchVO.searchkeyword }%')
 					</when>
 					</choose>
 					</if>               		  
