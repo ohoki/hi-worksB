@@ -21,6 +21,12 @@ public interface BoardService {
 	public List<VoteVO> getVoteInfo(VoteVO voteVO);
 	// 투표 항목 조회
 	public List<VoteVO> getVoteList(VoteVO voteVO);
+	// 상위 업무 조회
+	public List<TaskVO> getHighTask(TaskVO taskVO);
+	// 상위 업무 taskId 조회
+	public int getHighTaskId(TaskVO taskVO);
+	// 하위 업무 조회
+	public List<TaskVO> getSubTask(int TaskId);
 	
 	
 	

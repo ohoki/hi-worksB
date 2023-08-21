@@ -56,15 +56,19 @@ public class BoardController {
     	List<TaskVO> taskList = brVO.getSubTask();
     	if(taskList != null){
     		TaskVO subtaskVO ;
-	    	for(int i=0;i<taskList.size(); i++) {
+	    	for(int i=0; i < taskList.size(); i++) {
 	    		BoardVO subBoardVO = new BoardVO();
-	    		subtaskVO =taskList.get(i);
+	    		subtaskVO = taskList.get(i);
+	    		
+	    		// 하위 업무 - 게시글 테이블 저장
 	    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
 	    		subBoardVO.setMemberId(boardVO.getMemberId());
 	    		subBoardVO.setProjectId(boardVO.getProjectId());
 	    		subBoardVO.setBoardType(boardVO.getBoardType());
 	    		subBoardVO.setInspYn("E2");
 	    		boardService.insertBoard(subBoardVO);
+	    		
+	    		// 하위 업무 - 업무 테이블 저장
 	    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
 	    		subtaskVO.setHighTaskId(taskVO.getTaskId());
 	    		subtaskVO.setState(taskVO.getState());
@@ -74,7 +78,7 @@ public class BoardController {
     	return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
     }
     
-	//게시글 등록  --ajax
+	//게시글 등록 - 게시글, 일정, 투표
 	@PostMapping("/boardInsert")
 	public String boardInsertProcess(BoardVO boardVO, TaskVO taskVO, VoteVO voteVO, ScheVO scheVO, HttpSession session) {
 		
@@ -141,7 +145,29 @@ public class BoardController {
         return resultMap;
 	}
 
-	
+	// 업무 조회
+	@GetMapping("getTaskInfo")
+	@ResponseBody
+	public Map<String, List<TaskVO>> getTaskInfo(@RequestParam("prjBoardId") int prjBoardId) {
+	    Map<String, List<TaskVO>> resultMap = new HashMap<>();
+	    
+	    TaskVO taskVO = new TaskVO();
+	    taskVO.setPrjBoardId(prjBoardId);
+	    
+	    // 상위 업무
+	    List<TaskVO> highTask = boardService.getHighTask(taskVO);
+	    
+	    int taskId = boardService.getHighTaskId(taskVO);
+	    // 하위 업무
+	    List<TaskVO> subTask = boardService.getSubTask(taskId);
+	    
+	    resultMap.put("highTask", highTask);
+	    resultMap.put("subTask", subTask);
+
+	    return resultMap;
+	}
+
+
 	
 	
 	
