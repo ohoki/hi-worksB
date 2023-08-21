@@ -112,40 +112,40 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public List<ProjectVO> selectFromCompany(int companyId,String memberId) {
+	public List<ProjectVO> selectFromCompany(int companyId) {
 		List<ProjectVO> vo=projectMapper.selectFromCompany(companyId);
-		List<ProjectVO> result = new ArrayList<>();
-
-		Set<Integer> uniqueProjectIds = new HashSet<>();
-		//Set<Integer> sessionMatchingProjectIds = new HashSet<>();
-
-		for(int i=vo.size()-1;i >= 0;i--){
-		    ProjectVO project = vo.get(i);
-
-		    if (!uniqueProjectIds.contains(project.getProjectId())) {
-		        uniqueProjectIds.add(project.getProjectId());
-
-		        if (memberId.equals(project.getMemberId())) {
-		        	uniqueProjectIds.add(project.getProjectId());
-		        }else {
-		        	
-		        }
-		    }
-		}
-
-		// 결과 리스트에 중복된 프로젝트 중 세션과 일치하는 것만 추가
-		for(ProjectVO project:vo) {
-		    if (uniqueProjectIds.contains(project.getProjectId())) {
-		    	result.add(project);
-		        uniqueProjectIds.remove(project.getProjectId()); // 중복 제거한 프로젝트는 세트에서 제거
-		    }
-		}
-
-		// 결과 출력
-		for(ProjectVO project:result){
-		    System.out.println(project.getProjectName());
-		}
-		return result;
+//		List<ProjectVO> result = new ArrayList<>();
+//
+//		Set<Integer> uniqueProjectIds = new HashSet<>();
+//		//Set<Integer> sessionMatchingProjectIds = new HashSet<>();
+//
+//		for(int i=vo.size()-1;i >= 0;i--){
+//		    ProjectVO project = vo.get(i);
+//
+//		    if (!uniqueProjectIds.contains(project.getProjectId())) {
+//		        uniqueProjectIds.add(project.getProjectId());
+//
+//		        if (memberId.equals(project.getMemberId())) {
+//		        	uniqueProjectIds.add(project.getProjectId());
+//		        }else {
+//		        	
+//		        }
+//		    }
+//		}
+//
+//		// 결과 리스트에 중복된 프로젝트 중 세션과 일치하는 것만 추가
+//		for(ProjectVO project:vo) {
+//		    if (uniqueProjectIds.contains(project.getProjectId())) {
+//		    	result.add(project);
+//		        uniqueProjectIds.remove(project.getProjectId()); // 중복 제거한 프로젝트는 세트에서 제거
+//		    }
+//		}
+//
+//		// 결과 출력
+//		for(ProjectVO project:result){
+//		    System.out.println(project.getProjectName());
+//		}
+		return vo;
 	}
 
 
@@ -153,6 +153,11 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public void updateStar(ProjectVO vo) {
 		projectMapper.updateStar(vo);
+	}
+	
+	@Override
+	public List<PrjParticirVO> selectAllparticier(String memberId){
+		return projectMapper.selectAllparticier(memberId);
 	}
 
 

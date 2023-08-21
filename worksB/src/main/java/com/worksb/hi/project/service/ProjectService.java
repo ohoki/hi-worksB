@@ -2,10 +2,6 @@ package com.worksb.hi.project.service;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.worksb.hi.board.service.BoardVO;
 
 public interface ProjectService {
@@ -33,8 +29,13 @@ public interface ProjectService {
 	
 	
 	
-	//주현
+//주현
+	//내가 참여하는 프로젝트 보기
 	public List<ProjectVO> searchPrj(String memberId);
-	public List<ProjectVO> selectFromCompany(int companyId,String memberId);
+	//내 회사의 프로젝트 전체 보기
+	public List<ProjectVO> selectFromCompany(int companyId);
+	//즐찾갱신
 	public void updateStar(ProjectVO vo);
+	//로그인된 아이디가 참여하고 있는 프로젝트를 출력
+	public List<PrjParticirVO> selectAllparticier(String memberId);
 }

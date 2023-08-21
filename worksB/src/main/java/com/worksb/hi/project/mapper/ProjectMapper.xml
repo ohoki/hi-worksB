@@ -193,34 +193,25 @@
 <!-- 회사별 프로젝트 조회 -->
 <select id="selectFromCompany" parameterType="int" resultType="com.worksb.hi.project.service.ProjectVO">
 	SELECT
-	    DISTINCT p.project_id,
-	    p.project_name,
-	    find_subcode(p.project_access) AS project_access,
-	    find_subcode(p.manager_accp) AS manager_accp,
-	    find_subcode(p.write_access) AS write_access,
-	    find_subcode(p.update_access) AS update_access,
-	    find_subcode(p.board_access) AS board_access,
-	    find_subcode(p.file_access) AS file_access,
-	    find_subcode(p.comment_access) AS comment_access, 
-        (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num,
-  		pp.member_id AS member_id,
-  		find_subcode(pp.particir_accp) AS particir_accp,
-	    p.dept_id,
-	    find_subcode(p.project_cls) AS project_cls
-	FROM
-	    project p
-    JOIN(
-        SELECT 
-            member_id,
-            project_id,
-            particir_accp
-        FROM
-            prj_particir
-    )pp ON (p.project_id=pp.project_id)
-	WHERE
-	    BOARD_ACCESS='J1' 
-	    AND dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})  
-	ORDER BY p.project_id  
+       p.project_id,
+       p.project_name,
+       find_subcode(p.project_access) AS project_access,
+       find_subcode(p.manager_accp) AS manager_accp,
+       find_subcode(p.write_access) AS write_access,
+       find_subcode(p.update_access) AS update_access,
+       find_subcode(p.board_access) AS board_access,
+       find_subcode(p.file_access) AS file_access,
+       find_subcode(p.comment_access) AS comment_access, 
+       p.dept_id,
+       find_subcode(p.project_cls) AS project_cls,
+        (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num
+   FROM
+       project p
+   WHERE
+      dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})  
+      AND
+      p.project_cls='A2'
+   ORDER BY p.project_id
 </select>
 
 <!-- 즐겨찾기 갱신 -->
@@ -230,4 +221,18 @@
 	 WHERE project_id=#{projectId} 
 	   AND member_id=#{memberId}
 </update>
+
+<!-- 로그인된 아이디가 참여하고 있는 프로젝트 -->
+<select id="selectAllparticier" parameterType="String" resultType="PrjParticirVO">
+	SELECT
+		prj_particir_id 
+		,member_id
+		,find_subcode(manager) AS manager  
+		,project_id         
+		,find_subcode(alarm_yn) AS alarm_yn
+		,find_subcode(project_markup) AS project_markup
+		,find_subcode(particir_accp) AS particir_accp
+	FROM prj_particir
+	WHERE member_id=#{memberId}
+</select>
 </mapper>
