@@ -243,7 +243,7 @@ a {
 					succes : function(C5data) {
 						/* let 넣고자하는 태그
 						태그.value = C5data;  */
-					}, error : function(reject) {
+					}, error : function() {
 						console.log(reject);
 					}
 				});

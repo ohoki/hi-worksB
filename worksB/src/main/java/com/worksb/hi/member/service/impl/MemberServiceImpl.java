@@ -1,5 +1,7 @@
 package com.worksb.hi.member.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,11 @@ public class MemberServiceImpl implements MemberService {
 	MemberMapper memberMapper;
 	@Autowired
 	JavaMailSender mailSender;
+	
+	//전체조회
+	public List<MemberVO> getMemberListByCompany(MemberVO memberVO) {
+		return memberMapper.getMemberListByCompany(memberVO);
+	};
 	
 	//단건 조회
 	@Override

@@ -51,6 +51,13 @@ public class memberController {
 	@Autowired
 	CompanyController cc;
 	
+	@GetMapping("/member/memberList")
+	@ResponseBody
+	public List<MemberVO> getMemberList(MemberVO memberVO) {
+		System.out.println("====================" + memberVO);
+		return memberService.getMemberListByCompany(memberVO);
+	}
+	
 	@GetMapping("/selectMember")
 	@ResponseBody
 	public int selectMember(MemberVO memberVO) {
