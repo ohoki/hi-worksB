@@ -29,6 +29,7 @@
 	.user-information {
 		border: 1px solid var(--color-dark-white);
 		border-radius: 5px;
+		padding-bottom: 30px;
 	}
 	
 	.title-font {
@@ -52,6 +53,11 @@
   		font-size: 12px;
   		display: block;
   		text-align: center;
+  	}
+  	
+  	.image-box {
+  		width: 200px;
+  		height: 200px;
   	}
   	
   	input[type=file] {
@@ -79,6 +85,7 @@
 		align-items: center;
 		justify-content: space-between;
 		border-bottom: 1px solid var(--color-dark-white);
+		padding-right: 30px;
 	}
 	
 	.user-information__content {
@@ -86,7 +93,7 @@
 		padding: 0 30px;
 	}
 	
-	button[type=button], button[type=submit] {
+	#updatePw, button[type=submit] {
 		width: 100px;
 		height: 40px;
 		margin-left: 20px;
@@ -94,6 +101,15 @@
 		border-radius: 5px;
 		color: var(--color-white);
 		font-weight: var(--weight-bold);
+	}
+	
+	#memberName, #memberPhone, select {
+		width: 200px;
+		height: 30px;
+		border-radius: 2px;
+		border:  1px solid var(--color-dark-white);
+		padding-left: 10px;
+		box-sizing: border-box;
 	}
 	
 	.b_bt {
@@ -137,7 +153,7 @@
 			<div class="user-information">
 				<div class="user-information__title">
 					<h1 class="title-font">회원 정보</h1>
-					<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/updatePwForm'">비밀번호 변경</button>
+					<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/updatePwForm'" id="updatePw">비밀번호 변경</button>
 				</div>
 				<div class="user-information__content">
 					<p>
