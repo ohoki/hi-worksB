@@ -58,7 +58,7 @@ body {
 }
 
 /* modal */
-#profile-modal, #my-profile-modal, #alarm-modal {
+#profile-modal, #my-profile-modal, #alarm-modal, #employees-modal {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -149,7 +149,7 @@ body {
 	border-radius: 5px;
 }
 
-.alarm-modal__content {
+.alarm-modal__content, .employees-modal__content {
 	position: absolute;
 	right: 0;
 	top: 62px;
@@ -161,7 +161,7 @@ body {
 	border: 1px solid var(--color-dark-white);
 }
 
-.alarm__title {
+.alarm__title, .employees__title {
 	font-size: 15px;
 	justify-content: space-between;
 	font-weight: var(--weight-bold);
@@ -171,7 +171,7 @@ body {
 	cursor: pointer;
 }
 
-.alarm_search-input {
+.alarm_search-input, .employees_search-input {
 	display: block;
 	width: 83%;
 	height: 30px;
@@ -203,6 +203,17 @@ body {
 	padding: 10px;
 }
 
+.employee {
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--color-dark-white);
+	padding: 0 20px 0 5px;
+}
+
+.employee-img {
+	width: 40px;
+	height: 40px;
+}
 .modal-visible {
 	display: block !important;
 }

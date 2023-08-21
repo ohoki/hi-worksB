@@ -120,6 +120,18 @@
 					</div>
 				</div>			
 			</div>
+			<!-- 구성원 모달 -->
+			<div id="employees-modal">
+				<div class="employees-modal__content">
+					<div class="flex employees__title">
+						<span>구성원</span>
+						<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+					</div>
+					<input type="text" class="employees_search-input" placeholder="검색">
+					<div id="employees">	
+					</div>
+				</div>			
+			</div>
 		</div>
 	</header>
 <script>
@@ -139,6 +151,47 @@
 		}else if(type == 'alarm') {
 			$('#alarm-modal').addClass('modal-visible');
 			$('body').css('overflow', 'hidden');
+		}else if(type == 'employees') {
+			$('#employees-modal').addClass('modal-visible');
+			$('body').css('overflow', 'hidden');
+			//구성원 리스트 출력
+			let employeesDiv = $('#employees');
+			employeesDiv.empty();
+			$.ajax({
+				url : '${pageContext.request.contextPath}/member/memberList',
+				type : 'GET',
+				data : {'companyId' : "${memberInfo.companyId}"},
+				success : function(members) {
+					let employeesDiv = $('#employees');
+					//멤버 리스트 태그 만들기
+					for(let i=0; i<members.length; i++) {
+						//div태그
+						let employeeDiv = document.createElement('div');
+						employeeDiv.classList.add('flex');
+						employeeDiv.classList.add('employee');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(members[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+members[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = members[i].memberName;
+						//태그 삽입
+						employeeDiv.append(employeeProfile);
+						employeeDiv.append(span);
+						
+						employeesDiv.append(employeeDiv);
+					}
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
 		}
 	});
 	
