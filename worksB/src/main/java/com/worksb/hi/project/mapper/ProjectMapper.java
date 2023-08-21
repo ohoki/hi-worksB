@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectVO;
@@ -16,8 +17,10 @@ public interface ProjectMapper {
 	public int updateProject(ProjectVO projectVO);
 	// 프로젝트 정보조회 - 수정폼에 불러오기
 	public ProjectVO getProjectInfo(int projectId);
-	
+	// 프로젝트 삭제 - 미완성
 	public int deleteProject(int projectId);
+	//프로젝트 게시글 리스트
+	public List<BoardVO> getBoardList(ProjectVO projectVO);
 	
 	// 부서 정보 - 회사 번호 기준
 	public List<DeptVO> getDeptInfo(int companyId);
