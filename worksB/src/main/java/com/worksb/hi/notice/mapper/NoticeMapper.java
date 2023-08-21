@@ -16,9 +16,6 @@ public interface NoticeMapper {
 	// 페이징 게시글 전체 조회
 	public List<NoticeVO> selectNoticeAll(@Param("pagingVO") PagingVO pagingVO, @Param("searchVO")SearchVO searchVO);
 	
-	// 공지 목록
-	public List<NoticeVO> getNoticeList();
-	
 	// 공지 자세히보기
 	public NoticeVO getNoticeInfo(NoticeVO noticeVO);
 	

@@ -29,11 +29,13 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeMapper.selectNoticeAll(pagingVO, searchVO);
 	}
 
+	// 게시글 상세보기
 	@Override
 	public NoticeVO getNoticeInfo(NoticeVO noticeVO) {
 		return noticeMapper.getNoticeInfo(noticeVO);
 	}
 
+	// 게시글 등록
 	@Override
 	public int noticeInsert(NoticeVO noticeVO) {
 		int result = noticeMapper.noticeInsert(noticeVO);
@@ -44,6 +46,7 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 	}
 
+	// 공지사항 수정
 	@Override
 	public int noticeUpdate(NoticeVO noticeVO) {
 		int result = noticeMapper.noticeUpdate(noticeVO);
@@ -53,6 +56,7 @@ public class NoticeServiceImpl implements NoticeService {
 		return 0;
 	}
 
+	// 공지사항 삭제
 	@Override
 	public int noticeDelete(int noticeId) {
 		int result = noticeMapper.noticeDelete(noticeId);

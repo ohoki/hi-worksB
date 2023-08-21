@@ -26,7 +26,7 @@ public class NoticeController {
 	public String noticeList(Model model
 						, SearchVO searchVO
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
-						, @RequestParam(value="cntPerPage", defaultValue ="20") Integer cntPerPage) {
+						, @RequestParam(value="cntPerPage", defaultValue ="15") Integer cntPerPage) {
 		
 		int total = noticeService.noticeCount(searchVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
