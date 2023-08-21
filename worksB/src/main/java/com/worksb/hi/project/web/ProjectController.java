@@ -65,6 +65,9 @@ public class ProjectController {
 	    String newName = "[" + department.getDeptName() + "]" + projectVO.getProjectName();
 	    projectVO.setProjectName(newName);
 	    
+	    // 프로젝트 만료 여부 NO
+	    projectVO.setProjectCls("A2");
+	    
 	    // 프로젝트 등록
 	    projectService.insertProject(projectVO);
 
