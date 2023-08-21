@@ -1,11 +1,28 @@
 @import "root.css";
 
 body {
-	background-color: rgba(174, 213, 245, 0.1);
+	background-color: rgba(174, 213, 245, 0.1) !important;
+	line-height: inherit !important;
 }
 
+*, ::after, ::before {
+    box-sizing: content-box !important;
+}
+
+button, input, optgroup, select, textarea {
+    
+}
+
+dl, ol, ul {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+body {
+	font-family: 'Noto Sans KR', sans-serif !important;
+}
 /* header */
-.header {
+.company-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,6 +49,8 @@ body {
   background-size: 20px;
   background-position: 15px;
   cursor: pointer;
+  font-family: sans-serif !important;
+  font-size: var(--font-micro) !important;
 }
 
 .header__icon{

@@ -13,7 +13,7 @@
 </head>
 <body>
 	<!-- header -->
-	<header class="header">
+	<header class="company-header">
 		<!-- 회사 로고 -->
 		<div>
 			<a href="${pageContext.request.contextPath}/start"><img src="${pageContext.request.contextPath}/images/${companyInfo.realLogoPath }" alt="회사 로고"
