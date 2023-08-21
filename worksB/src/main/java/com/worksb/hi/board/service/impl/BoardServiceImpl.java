@@ -1,5 +1,7 @@
 package com.worksb.hi.board.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +72,21 @@ public class BoardServiceImpl implements BoardService {
 		}else {
 			return -1;
 		}
+	}
+
+	@Override
+	public ScheVO getScheInfo(ScheVO scheVO) {
+		return boardMapper.getScheInfo(scheVO);
+	}
+
+	@Override
+	public List<VoteVO> getVoteInfo(VoteVO voteVO) {
+		return boardMapper.getVoteInfo(voteVO);
+	}
+
+	@Override
+	public List<VoteVO> getVoteList(VoteVO voteVO) {
+		return boardMapper.getVoteList(voteVO);
 	}
 
 }

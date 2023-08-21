@@ -1,9 +1,12 @@
 package com.worksb.hi.board.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.type.BlobByteObjectArrayTypeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,4 +111,42 @@ public class BoardController {
         
 		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
 	}
+	
+	
+	// 일정 조회
+	@GetMapping("getScheInfo")
+	@ResponseBody
+	public ScheVO getScheInfo(ScheVO scheVO) {
+		return boardService.getScheInfo(scheVO);
+	}
+	
+	// 투표 조회
+	@GetMapping("getVoteInfo")
+	@ResponseBody
+	public Map<String, List<VoteVO>> getVoteInfo(@RequestParam("prjBoardId") int prjBoardId) {
+		
+        Map<String, List<VoteVO>> resultMap = new HashMap<>();
+        
+        VoteVO voteVO = new VoteVO();
+        voteVO.setPrjBoardId(prjBoardId);
+        
+        // 투표글
+        List<VoteVO> voteInfo = boardService.getVoteInfo(voteVO);
+        // 투표 항목
+        List<VoteVO> voteList = boardService.getVoteList(voteVO);
+        
+        resultMap.put("voteInfo", voteInfo);
+        resultMap.put("voteList", voteList);
+        		
+        return resultMap;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
 }

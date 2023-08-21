@@ -110,12 +110,14 @@ a {
     margin: 50px auto;
     padding: 30px;
 }
-.board-header{
+.board-header,
+.lowTask-content{
 	display: flex;
 	align-items: center;
 }
-.board-headder-info{
-	margin-left: 80px;
+.board-headder-info,
+.task-info{
+	margin-left: 60px;
 }
 .board-sub{
 	height:350px;
@@ -125,6 +127,9 @@ a {
 .divide{
 	border-bottom: 1px solid var(--color-light-white);
 	margin: 20px 0;
+}
+.divide2{
+	border-bottom: 1px solid var(--color-light-white);
 }
 .board-comment{
 	background-color : var(--color-light-blue);
@@ -138,13 +143,35 @@ a {
 	color: var(--color-dark-grey);
     font-weight: var(--weight-bold);
 }
-.regdate{
+.regdate,
+.compnoVote{
 	color: var(--color-dark-white);
 	font-size: var(--font-small);
 }
 .memberName{
 	font-size: var(--font-regular);
 	color: var(--color-dark-grey);
+}
+.vote-sub,
+.task_sub{
+	height:200px;
+}
+
+.voteEndDate{
+	color: var(--color-dark-white);
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+.voteList,
+.lowTask-content{
+	border-radius: var(--size-border-radius);
+	background-color: #f7fafd;
+	height: 30px;
+	margin-bottom: 10px;
+	padding-left: 15px;
+}
+.task-detail{
+	font-size: 15px;
 }
 </style>
 </head>
@@ -172,13 +199,17 @@ a {
 			</c:if>
 			<!-- C6 일정-->
 			<c:if test="${board.boardType eq 'C6'}">
-				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container" id="scheInfo">
 					<div class="board-header">
 						<div class="board-headder-info memberName">${board.memberId } </div>
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
 						${board.prjBoardTitle }
+					</div>
+					<div class="sche-date divide">
+						<div class="sche-startDate" id="sche-startDate">일정시작일</div>
+						<div class="sche-endDate" id="sche-endDate">일정종료일</div>
 					</div>
 					<div class="board-sub divide">
 						${board.prjBoardSubject }
@@ -197,9 +228,16 @@ a {
 					</div>
 					<div class="board-title divide">
 						${board.prjBoardTitle }
+						<span class="compnoVote">(복수투표여부)</span>
 					</div>
-					<div class="board-sub divide">
+					<div class="board-sub divide vote-sub">
 						${board.prjBoardSubject }
+					</div>
+					<div class="voteEndDate">투표마감일</div>
+					<div class="voteContent">
+						<div class="voteList">1. 투표항목</div>
+						<div class="voteList">2. 투표항목</div>
+						<div class="voteList">3. 투표항목</div>
 					</div>
 					<div class="board-comment">
 						댓글공간
@@ -216,8 +254,29 @@ a {
 					<div class="board-title divide">
 						${board.prjBoardTitle }
 					</div>
-					<div class="board-sub divide">
+					<div class="taskState">업무상태</div>
+					<div class="task-detail">
+						<div class="task-startDate">업무시작일</div>
+						<div class="task-endDate">업무종료일</div>
+						<div class="task-priority">우선순위</div>
+						<div class="task-processivity">진척도</div>
+					</div>
+					<div class="board-sub task_sub divide2">
 						${board.prjBoardSubject }
+					</div>
+					<div class="low-task">
+						<div class="lowTask-content">
+							<div class="lowTask-state task-info">업무상태</div>
+							<div class="lowTask-title task-info">하위업무</div>
+						</div>
+						<div class="lowTask-content">
+							<div class="lowTask-state task-info">업무상태</div>
+							<div class="lowTask-title task-info">하위업무</div>
+						</div>
+						<div class="lowTask-content">
+							<div class="lowTask-state task-info">업무상태</div>
+							<div class="lowTask-title task-info">하위업무</div>
+						</div>
 					</div>
 					<div class="board-comment">
 						댓글공간
@@ -235,60 +294,69 @@ a {
 		let boardList = $('[data-list="board"]');
 		
 		for(let i=0; i<boardList.length; i++) {
-			if(boardList[i].dataset.type == 'C5') {
-				$.ajax({
-					url : '/getBoardInfo',
-					type : 'GET',
-					data : {'prjBoardId' : boardList[i].dataset.id},
-					succes : function(C5data) {
-						/* let 넣고자하는 태그
-						태그.value = C5data;  */
-					}, error : function() {
-						console.log(reject);
-					}
-				});
-			} else if (boardList[i].dataset.type == 'C6') {
+			if (boardList[i].dataset.type == 'C6') {
 				//일정
 				$.ajax({
-					url : '/getScheInfo',
+					url : '${pageContext.request.contextPath}/getScheInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
-					succes : function() {
-						let content = `<div>${startDate}</div>
-										<div>
-										`;
+					success : function(sche) {
+						 let startDate = $(boardList[i]).find('.sche-startDate');
+		                 let endDate = $(boardList[i]).find('.sche-endDate');
+
+		                 startDate.text(sche.startDate);
+		                 endDate.text(sche.endDate);
 					}, error : function(reject) {
 						console.log(reject);
 					}
-				});
-			} else if (boardList[i].dataset.type == 'C7') {
+				})
+			}else if (boardList[i].dataset.type == 'C7') {
 				//투표
 				$.ajax({
-					url : '/getVoteInfo',
+					url : '${pageContext.request.contextPath}/getVoteInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
-					succes : function(voteData) {
-						let endDate = `<div>투표 종료일: ${voteData.endDate}</div>`;
+					success : function(voteData) {
+						// 종료일, 복수투표여부, 투표 항목
 						
-						$(boardList[i]).find('.board-sub').append(endDate);
+						/* // 투표글 정보
+						let content = `<div class="voteEnd">투표 종료일: ${voteData.endDate}</div>
+										<div class="voteAnony">{$voteData.anonyVote}</div>
+										<div class="voteList"></div>`;
+						
+						$(boardList[i]).find('.board-sub').after(content);
+						
+						// 투표 항목
+						let voteList = ${voteData.listContent};
+						for(let i=0; i < voteList.length; i++){
+							let voteContent = `<div class="voteContent">voteList[i]</div>`;
+							$(boardList[i]).find('.voteContent').append(voteContent);
+						}; */
+						
+						console.log(voteData)
+
+						let endDate = $(boardList[i]).find('.voteEndDate');
+						let compnoVote = $(boardList[i]).find('.compnoVote');
+						
+						
 						
 					}, error : function(reject) {
 						console.log(reject);
 					}
 				});
-			} else if (boardList[i].dataset.type == 'C8') {
+			} /* else if (boardList[i].dataset.type == 'C8') {
 				//업무
 				$.ajax({
 					url : '/getTaskInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
-					succes : function() {
+					success : function() {
 						
 					}, error : function(reject) {
 						console.log(reject);
 					}
 				});
-			}
+			} */
 		}
 	});
 </script>
