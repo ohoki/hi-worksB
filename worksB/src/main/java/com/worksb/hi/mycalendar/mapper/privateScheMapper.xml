@@ -6,14 +6,33 @@
 	
 	<!-- 개인일정 전체조회 -->
 	<select id="selectAllPsche" resultType="PrivateScheVO" parameterType="String">
-		SELECT *
+		SELECT  sche_id
+				, sche_title
+				, sche_content
+				, sche_regdate
+				, coordinate
+				, start_date
+				, end_date
+				, member_id
+				, alarm_date
+				
 		FROM private_sche
 		WHERE member_id = #{memberId}
 		ORDER BY sche_id
 	</select>
 	<!-- 개인일정 상세조회 -->
 	<select id="selectPsche" resultType="PrivateScheVO">
-		select *
+		select 
+				sche_id
+				, sche_title
+				, sche_content
+				, sche_regdate
+				, coordinate
+				, start_date
+				, end_date
+				, member_id
+				, alarm_date
+				
 		FROM private_sche
 		WHERE sche_id = #{scheId}
 	</select>
@@ -43,7 +62,7 @@
 								, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS')
 								, TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
 								, #{memberId}
-								, #{alarmDate}
+								, TO_DATE(#{alarmDate}, 'YYYY-MM-DD HH24:MI')
 								)
 	</insert>
 	<delete id="">

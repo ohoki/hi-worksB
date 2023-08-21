@@ -15,16 +15,19 @@ public class PrivateScheServiceImpl implements PrivateScheService {
 	@Autowired
 	PrivateScheMapper privateScheMapper;
 	
+	//단건조회
 	@Override
 	public PrivateScheVO selectPsche(PrivateScheVO privateScheVO) {
 		return privateScheMapper.selectPsche(privateScheVO.getScheId());
 	}
-
+	
+	//전체조회
 	@Override
 	public List<PrivateScheVO> selectAllPsche(String memberId) {
 		return privateScheMapper.selectAllPsche(memberId);
 	}
-
+	
+	//일정입력
 	@Override
 	public int insertPsche(PrivateScheVO privateScheVO) {
 		int result = privateScheMapper.insertPsche(privateScheVO);

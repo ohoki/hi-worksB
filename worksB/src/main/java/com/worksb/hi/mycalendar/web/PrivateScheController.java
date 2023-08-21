@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
 
@@ -34,8 +34,8 @@ public class PrivateScheController {
 	public List<Map<String, Object>> myCalendar(HttpSession session) {
 		
 		//session에서 사용자 id값 가져와서 개인일정 검색
-		String memberId = (String) session.getAttribute("memberId");
-		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(memberId);
+		MemberVO vo = (MemberVO) session.getAttribute("memberInfo");
+		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(vo.getMemberId());
 		
 		//json객체 리스트화
 		JSONObject jsonObj = new JSONObject();
@@ -80,11 +80,18 @@ public class PrivateScheController {
 	//개인일정 단건조회
 	@GetMapping("selectPsche")
 	@ResponseBody
-	public PrivateScheVO viewPsche(int scheId) {
-		PrivateScheVO vo = new PrivateScheVO();
-		vo.setScheId(scheId);
-		vo = privateScheService.selectPsche(vo);
-		return vo;
+	public PrivateScheVO viewPsche(PrivateScheVO vo, Model model) {
+		PrivateScheVO scheVO = new PrivateScheVO();
+		scheVO.setScheId(vo.getScheId());
+		scheVO = privateScheService.selectPsche(scheVO);
+		model.addAttribute("priSche", scheVO);
+		return scheVO;
+	}
+	
+	@PostMapping("updatePsche")
+	public String updatePsche() {
+		
+		return "";
 	}
 	
 	
