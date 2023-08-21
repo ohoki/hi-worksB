@@ -51,6 +51,9 @@
     color: white;
     margin-left: 30px;
 }
+.selected-status{
+	display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -62,54 +65,54 @@
 			<a href="projectList"><img class="list icon" alt="리스트로 보기" src="${pageContext.request.contextPath }/resources/icon/list.svg"></a>
 		</div>
 		<h4 class="star-list">즐겨찾기</h4>
-		<c:forEach items="${projectList }" var="list">
-			<c:if test="${list.projectMarkup eq 'Y' }">
-				<div class="likeContainer">
-					<ul class="draggable" draggable="true">
+		
+		<ul>
+			<c:forEach items="${projectList }" var="list">
+				<c:if test="${list.projectMarkup eq 'YES' }">
+					<div class="like-container">
 						<li>
-					
-							<img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-id="${list.projectId }">
+							<img class="icon colored-star draggable" alt="즐겨찾기 별" draggable="true" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-id="${list.projectId }">
 		
 							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prj_particir_num }
+							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }
 							<c:if test="${list.projectAccess eq 'YES'}">
 									<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
 							</c:if>
 <!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! -->
 							<span class="unread-project">1</span>
 						</li>
-					</ul>
-				</div>
-			</c:if>
-		</c:forEach>
+					</div>
+				</c:if>
+			</c:forEach>
+		</ul>
 		<hr>
 
 		<br>
 
-		<div class="disLikeContainer">
-			<c:forEach items="${projectList }" var="list">
-				<c:if test="${list.projectMarkup eq 'N'}">
-					<div class="none-star">
-						<h4></h4>
-						<select class="selectList">
-							<option value="status1">참여중</option>
-							<option value="status2">만료</option>
-						</select>
-					</div>
-					<ul class="draggable" draggable="true">
-						<li>
-							<p class="project-id" hidden>${list.projectId }</p>
-							<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
-		
-							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prj_particir_num }
-							<c:if test="${list.projectAccess eq 'YES'}">
-								<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
-							</c:if>
-						</li>
-					</ul>
-				</c:if>
-			</c:forEach>
+		<div class="disLike-container">
+			<ul>
+				<c:forEach items="${projectList }" var="list">
+					<c:if test="${list.projectMarkup eq 'NO'}">
+						<div class="none-star">
+							<h4 class="selected-status">참여중&nbsp;</h4>
+							<select class="select-list">
+								<option value="status1">참여중</option>
+								<option value="status2">만료</option>
+							</select>
+						</div>
+							<li>
+								<p class="project-id draggable" hidden draggable="true">${list.projectId }</p>
+								<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
+			
+								<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
+								<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }
+								<c:if test="${list.projectAccess eq 'YES'}">
+									<img class="icon" alt="전체공개이미지"  src="${pageContext.request.contextPath }/resources/icon/globe.svg">
+								</c:if>
+							</li>
+					</c:if>
+				</c:forEach>
+			</ul>
 		</div>
 	</div>
 	
@@ -119,8 +122,14 @@
 
 </body>
 	<script>
-	//프로젝트 상태 불러오기
-	//$('#testSelect').val('test2').prop("selected",true);
+		//프로젝트 상태 불러오기
+	$(document).ready(function(){
+		let status=document.querySelector('.selected-status')
+		$("select[class=select-list]").change(function(){
+			status.text()
+		})
+		
+	})
 	
 	
    
@@ -131,14 +140,14 @@
             e.preventDefault()  
                     
             let stared=e.target;
-            let markup='N'
+            let markup='A2'
             let prjId=$(empty).data("id");
             updateStar(markup,prjId)
             
             stared.src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg"
             
 
-            let none=document.querySelector('.likeContainer')
+            let none=document.querySelector('.like-container')
             
             let pn=stared.parentNode;
 
@@ -151,7 +160,7 @@
 
             let empty=e.target
             
-            let markup='Y'
+            let markup='A1'
             let prjId=$(empty).data("id");
             updateStar(markup,prjId)
             
@@ -159,11 +168,11 @@
             
             empty.src="${pageContext.request.contextPath }/resources/icon/star.svg"
 
-            let none=document.querySelector('.disLikeContainer')
+           	let none=document.querySelector('.like-container')
+			let pn=empty.parentNode;
+            console.log(pn)
 
-            let pn=empty.parentNode;
-
-            starList.appendChild(pn)
+            none.appendChild(pn)
             }
         
     })

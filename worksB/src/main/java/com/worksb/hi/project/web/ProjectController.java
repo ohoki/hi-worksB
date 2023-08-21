@@ -161,7 +161,9 @@ public class ProjectController {
 	@GetMapping("/SelectFromCompany")
 	public String SelectCom(Model m,HttpSession session) {
 		Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
-		m.addAttribute("projectList",projectService.selectFromCompany(companyId));
+		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+		m.addAttribute("projectList",projectService.selectFromCompany(companyId,memberId));
+		m.addAttribute("memberId", memberId);
 		return "prj/selectFromCompany";
 	}
 	
