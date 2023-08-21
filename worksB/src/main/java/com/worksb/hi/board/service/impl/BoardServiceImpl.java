@@ -74,19 +74,42 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	// 일정 조회
 	@Override
 	public ScheVO getScheInfo(ScheVO scheVO) {
 		return boardMapper.getScheInfo(scheVO);
 	}
-
+	
+	// 투표 조회
 	@Override
 	public List<VoteVO> getVoteInfo(VoteVO voteVO) {
 		return boardMapper.getVoteInfo(voteVO);
 	}
-
+	
+	// 투표 항목 조회
 	@Override
 	public List<VoteVO> getVoteList(VoteVO voteVO) {
 		return boardMapper.getVoteList(voteVO);
 	}
+	
+	// 상위 업무 조회
+	@Override
+	public List<TaskVO> getHighTask(TaskVO taskVO) {
+		return boardMapper.getHighTask(taskVO);
+	}
+	
+	// 상위 업무 taskId 조회
+	@Override
+	public int getHighTaskId(TaskVO taskVO) {
+		return boardMapper.getHighTaskId(taskVO);
+	}
+	
+	//하위 업무 조회
+	@Override
+	public List<TaskVO> getSubTask(int TaskId) {
+		return boardMapper.getSubTask(TaskId);
+	}
+
+	
 
 }

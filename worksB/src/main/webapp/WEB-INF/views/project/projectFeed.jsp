@@ -104,14 +104,14 @@ a {
 .board-container{
 	border: 1px solid var(--color-dark-white);
     border-radius: var(--size-border-radius);
-    width : 900px;
+    width : 750px;
     background-color : #ffffff;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     margin: 50px auto;
     padding: 30px;
 }
 .board-header,
-.lowTask-content{
+.subTask-content{
 	display: flex;
 	align-items: center;
 }
@@ -120,7 +120,7 @@ a {
 	margin-left: 60px;
 }
 .board-sub{
-	height:350px;
+	height:250px;
 	margin-top: 20px;
 	font-size: var(--font-small);
 }
@@ -154,7 +154,7 @@ a {
 }
 .vote-sub,
 .task_sub{
-	height:200px;
+	height:120px;
 }
 
 .voteEndDate{
@@ -163,7 +163,7 @@ a {
 	margin-bottom: 10px;
 }
 .voteList,
-.lowTask-content{
+.subTask-content{
 	border-radius: var(--size-border-radius);
 	background-color: #f7fafd;
 	height: 30px;
@@ -235,9 +235,6 @@ a {
 					</div>
 					<div class="voteEndDate">투표마감일</div>
 					<div class="voteContent">
-						<div class="voteList">1. 투표항목</div>
-						<div class="voteList">2. 투표항목</div>
-						<div class="voteList">3. 투표항목</div>
 					</div>
 					<div class="board-comment">
 						댓글공간
@@ -264,19 +261,7 @@ a {
 					<div class="board-sub task_sub divide2">
 						${board.prjBoardSubject }
 					</div>
-					<div class="low-task">
-						<div class="lowTask-content">
-							<div class="lowTask-state task-info">업무상태</div>
-							<div class="lowTask-title task-info">하위업무</div>
-						</div>
-						<div class="lowTask-content">
-							<div class="lowTask-state task-info">업무상태</div>
-							<div class="lowTask-title task-info">하위업무</div>
-						</div>
-						<div class="lowTask-content">
-							<div class="lowTask-state task-info">업무상태</div>
-							<div class="lowTask-title task-info">하위업무</div>
-						</div>
+					<div class="subTask">
 					</div>
 					<div class="board-comment">
 						댓글공간
@@ -317,26 +302,26 @@ a {
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
 					success : function(voteData) {
-						// 종료일, 복수투표여부, 투표 항목
+						let voteEndDate = $(boardList[i]).find('.voteEndDate');
+						let compnoVote = $(boardList[i]).find('.compnoVote');
+						let voteContent = $(boardList[i]).find('.voteContent');
 						
-						/* // 투표글 정보
-						let content = `<div class="voteEnd">투표 종료일: ${voteData.endDate}</div>
-										<div class="voteAnony">{$voteData.anonyVote}</div>
-										<div class="voteList"></div>`;
+						// 종료일
+						let endDate = new Date(voteData.voteInfo[0].endDate);
+						voteEndDate.text('투표마감일: ' + endDate.toDateString());
 						
-						$(boardList[i]).find('.board-sub').after(content);
+						// 복수 투표 여부
+						if (voteData.voteInfo[0].compnoVote == 'A1') {
+							compnoVote.text('(복수 투표)');
+						} else if (voteData.voteInfo[0].compnoVote == 'A2') {
+							compnoVote.text('');
+						}
 						
 						// 투표 항목
-						let voteList = ${voteData.listContent};
-						for(let i=0; i < voteList.length; i++){
-							let voteContent = `<div class="voteContent">voteList[i]</div>`;
-							$(boardList[i]).find('.voteContent').append(voteContent);
-						}; */
-						
-						console.log(voteData)
-
-						let endDate = $(boardList[i]).find('.voteEndDate');
-						let compnoVote = $(boardList[i]).find('.compnoVote');
+						for (let j = 0; j < voteData.voteList.length; j++) {
+						let voteItem = $('<div>').addClass('voteList').text((j + 1) + '. ' + voteData.voteList[j].listContent);
+						voteContent.append(voteItem);
+						}
 						
 						
 						
@@ -344,19 +329,73 @@ a {
 						console.log(reject);
 					}
 				});
-			} /* else if (boardList[i].dataset.type == 'C8') {
+			} else if (boardList[i].dataset.type == 'C8') {
 				//업무
 				$.ajax({
-					url : '/getTaskInfo',
+					url : '${pageContext.request.contextPath}/getTaskInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
-					success : function() {
-						
-					}, error : function(reject) {
+					success : function(taskData) {
+						let taskInfo = $(boardList[i]);
+						// 상위 업무
+						let highTask = taskData.highTask[0];
+						// 하위 업무리스트
+						let subTasks = taskData.subTask;
+
+						// 우선 순위 priority 구분
+				        function getPriority(priority) {
+	                        switch (priority) {
+	                            case 'F3':
+	                                return '낮음';
+	                            case 'F2':
+	                                return '보통';
+	                            case 'F1':
+	                                return '긴급';
+	                            default:
+	                                return priority;
+	                        }
+                    	}
+				        
+				        // 업무 상태 state 구분
+				        function getState(state) {
+	                        switch (state) {
+	                            case 'G1':
+	                                return '요청';
+	                            case 'G2':
+	                                return '진행';
+	                            case 'G3':
+	                                return '피드백';
+	                            case 'G4':
+	                                return '완료';
+	                            case 'G5':
+	                                return '보류';
+	                            default:
+	                                return state;
+	                        }
+	                    }
+				        
+				        // 상위 업무 정보
+				        taskInfo.find(".task-startDate").text(highTask.startDate);
+				        taskInfo.find(".task-endDate").text(highTask.endDate);
+				        taskInfo.find(".task-priority").text(getPriority(highTask.priority));
+				        taskInfo.find(".task-processivity").text(highTask.processivity);
+				        taskInfo.find(".taskState").text(getState(highTask.state));
+
+				        // 하위 업무 리스트
+				        let subTasksInfo = taskInfo.find(".subTask");
+
+				        for (let j = 0; j < subTasks.length; j++) {
+				        	let subTask = subTasks[j];
+				        	let subTaskContent = $('<div class="subTask-content"></div>');
+				            subTaskContent.append('<div class="subTask-state task-info">' + getState(subTask.state) + '</div>');
+				            subTaskContent.append('<div class="subTask-title task-info">' + subTask.prjBoardTitle + '</div>');
+				            subTasksInfo.append(subTaskContent);
+				        }
+				    }, error : function(reject) {
 						console.log(reject);
 					}
 				});
-			} */
+			}
 		}
 	});
 </script>
