@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.worksb.hi.board.service.BoardVO;
+
 public interface ProjectService {
 	//이진
 	// 프로젝트 등록
@@ -16,7 +18,8 @@ public interface ProjectService {
 	public ProjectVO getProjectInfo(int projectId);
 	
 	public int deleteProject(int projectId);
-	
+	//프로젝트 게시글 리스트
+	public List<BoardVO> getBoardList(ProjectVO projectVO);
 	// 부서 정보 - 회사 번호 기준
 	public List<DeptVO> getDeptInfo(int companyId);
 	// 부서 정보 - 부서 번호 기준

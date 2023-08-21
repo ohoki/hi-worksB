@@ -76,6 +76,23 @@
 		WHERE project_id = #{projectId}
 	</delete>
 	
+	<!-- 프로젝트 게시글 리스트 -->
+	<select id="getBoardList" resultType="BoardVO">
+		SELECT PRJ_BOARD_ID,        
+				PRJ_BOARD_TITLE,     
+				PRJ_BOARD_SUBJECT,  
+				PRJ_BOARD_REGDATE,            
+				MEMBER_ID,            
+				INSP_YN,              
+				PIN_YN,                
+				BOARD_TYPE,           
+				PROJECT_ID,                 
+				COORDINATE
+		FROM prj_board
+		WHERE project_id = #{projectId}  
+		ORDER BY prj_board_regdate DESC
+	</select>
+	
 	<!-- 부서 정보 조회 (회사 번호)-->
 	<select id="getDeptInfo" parameterType="int" resultType="DeptVO">
 		SELECT	dept_id,

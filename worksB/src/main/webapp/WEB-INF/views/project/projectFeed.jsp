@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 
 <style>
+body{
+	background-color : #f7fafd;
+}
 .form__select,
 .form__input-title,
 .form__textarea {
@@ -94,12 +98,201 @@
 
 a {
     text-decoration: none;
+    color: var(--color-dark-beige);
 }
 
+.board-container{
+	border: 1px solid var(--color-dark-white);
+    border-radius: var(--size-border-radius);
+    width : 900px;
+    background-color : #ffffff;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 50px auto;
+    padding: 30px;
+}
+.board-header{
+	display: flex;
+	align-items: center;
+}
+.board-headder-info{
+	margin-left: 80px;
+}
+.board-sub{
+	height:350px;
+	margin-top: 20px;
+	font-size: var(--font-small);
+}
+.divide{
+	border-bottom: 1px solid var(--color-light-white);
+	margin: 20px 0;
+}
+.board-comment{
+	background-color : var(--color-light-blue);
+	height: 80px;
+	padding: 10px;
+	
+}
+.board-title{
+	font-size: 27px;
+	margin-top: 20px;
+	color: var(--color-dark-grey);
+    font-weight: var(--weight-bold);
+}
+.regdate{
+	color: var(--color-dark-white);
+	font-size: var(--font-small);
+}
+.memberName{
+	font-size: var(--font-regular);
+	color: var(--color-dark-grey);
+}
 </style>
 </head>
 <body>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+<div style="display : flex;">
+	<div style="width: 70%;">
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+		<c:forEach items="${boards }" var="board">
+			<c:if test="${board.boardType eq 'C5'}">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+					</div>
+					<div class="board-title divide">
+						${board.prjBoardTitle }
+					</div>
+					<div class="board-sub divide">
+						${board.prjBoardSubject }
+					</div>
+					<div class="board-comment">
+						댓글공간
+					</div>
+				</div>
+			</c:if>
+			<!-- C6 일정-->
+			<c:if test="${board.boardType eq 'C6'}">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+					</div>
+					<div class="board-title divide">
+						${board.prjBoardTitle }
+					</div>
+					<div class="board-sub divide">
+						${board.prjBoardSubject }
+					</div>
+					<div class="board-comment">
+						댓글공간
+					</div>
+				</div>
+			</c:if>
+			<!-- C7 투표 -->
+			<c:if test="${board.boardType eq 'C7'}">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+					</div>
+					<div class="board-title divide">
+						${board.prjBoardTitle }
+					</div>
+					<div class="board-sub divide">
+						${board.prjBoardSubject }
+					</div>
+					<div class="board-comment">
+						댓글공간
+					</div>
+				</div>
+			</c:if>
+			<!-- C8 업무 -->
+			<c:if test="${board.boardType eq 'C8'}">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+					</div>
+					<div class="board-title divide">
+						${board.prjBoardTitle }
+					</div>
+					<div class="board-sub divide">
+						${board.prjBoardSubject }
+					</div>
+					<div class="board-comment">
+						댓글공간
+					</div>
+				</div>
+			</c:if>
+		</c:forEach>		
+	</div>
+	<div style="width: 25%;">
+		<h1>북마크 공간~~</h1>
+	</div>
+</div>
+<script>
+	$(window).on('DOMContentLoaded', function() {
+		let boardList = $('[data-list="board"]');
+		
+		for(let i=0; i<boardList.length; i++) {
+			if(boardList[i].dataset.type == 'C5') {
+				$.ajax({
+					url : '/getBoardInfo',
+					type : 'GET',
+					data : {'prjBoardId' : boardList[i].dataset.id},
+					succes : function(C5data) {
+						/* let 넣고자하는 태그
+						태그.value = C5data;  */
+					}, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			} else if (boardList[i].dataset.type == 'C6') {
+				//일정
+				$.ajax({
+					url : '/getScheInfo',
+					type : 'GET',
+					data : {'prjBoardId' : boardList[i].dataset.id},
+					succes : function() {
+						let content = `<div>${startDate}</div>
+										<div>
+										`;
+					}, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			} else if (boardList[i].dataset.type == 'C7') {
+				//투표
+				$.ajax({
+					url : '/getVoteInfo',
+					type : 'GET',
+					data : {'prjBoardId' : boardList[i].dataset.id},
+					succes : function(voteData) {
+						let endDate = `<div>투표 종료일: ${voteData.endDate}</div>`;
+						
+						$(boardList[i]).find('.board-sub').append(endDate);
+						
+					}, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			} else if (boardList[i].dataset.type == 'C8') {
+				//업무
+				$.ajax({
+					url : '/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : boardList[i].dataset.id},
+					succes : function() {
+						
+					}, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			}
+		}
+	});
+</script>
+
 
 <div class="modal modalBoard" tabindex="-1" id="boardInsertModal">
     <div class="modal-dialog modal-lg">
