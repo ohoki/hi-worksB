@@ -113,10 +113,6 @@
 					<c:if test="${memberInfo.realProfilePath ne null }">
 						<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="image-box">
 					</c:if>
-					<label for="logo" class="upload-btn">
-		      			<input type="file" accept=".png" name="logo" id="logo"/>
-		      			<span>Upload Image</span>
-					</label>
 				</div>	      			
 				<div class="profile-content">
 					<p><span>회사</span>${companyInfo.companyName }</p>
@@ -133,146 +129,111 @@
 				</div>
 			</div>
 		</div>
-		<form id="updateForm">
+		<form>
 			<div class="user-information">
 				<div class="user-information__title">
-					<h1 class="title-font">회원 정보</h1>
-					<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/updatePwForm'">비밀번호 변경</button>
+					<h1 class="title-font">비밀번호 변경</h1>
 				</div>
 				<div class="user-information__content">
 					<p>
-						<span>이름</span>
-						<label for="memberName">
-							<input type="text" name="memberName" id="memberName" value="${memberInfo.memberName }">
+						<span>현재 비밀번호</span>
+						<label for="oldPw">
+							<input type="password" name="oldPw" id="oldPw">
+						</label>
+						<button type="button" id="checkPwBtn">확인하기</button>
+					</p>
+					<p>
+						<span>새 비밀번호</span>
+						<label for="newPw">
+							<input type="password" name="memberPw" id="newPw" disabled>
 						</label>
 					</p>
 					<p>
-					<span>연락처</span>
-					<label for="memberPhone">
-						<input type="text" name="memberPhone" id="memberPhone" value="${memberInfo.memberPhone }">
-					</label>
-					</p>
-					<p>
-						<span>부서</span>
-						<label for="deptId">
-							<select name="deptId" id="deptId">
-								<option value="" >-</option>
-								<c:forEach items="${deptList }" var="dept">
-									<option value="${dept.deptId }">${dept.deptName }</option>
-								</c:forEach>
-							</select>
+						<span>새 비밀번호 확인</span>
+						<label for="pwCheck">
+							<input type="password" name="pwCheck" id="pwCheck" disabled>
 						</label>
 					</p>
-					<p>
-					<span>직책</span>
-						<label for="deptId">
-							<select name="jobId" id="jobId">
-								<option value="" >-</option>
-								<c:forEach items="${jobList }" var="job">
-									<option value="${job.jobId }">${job.jobName }</option>
-								</c:forEach>
-							</select>
-						</label>
-					</p>
-				</div>
-				<input type="hidden" id="memberId" name="memberId" value="${memberInfo.memberId }">
-				<button type="submit">수정하기</button>
-			</div>
+					<button type="button" id="updatePwBtn">변경하기</button>
+				</div>	
+			</div>	
 		</form>
 	</div>
 </body>
 <script>
-	//셀렉트 박스 값 설정
-	$(window).on('load', function() {
-		let dept = $('#deptId option');
-		let job = $('#jobId option');
+	//비밀번호 확인
+	$('#checkPwBtn').on('click', function() {
+		let pw = $('#oldPw').val();
 		
-		//부서
-		for(let i = 0; dept.length; i++) {
-			if(dept[i].value == "${memberInfo.deptId}") {
-				dept[0].removeAttribute('selected');
-				dept[i].setAttribute('selected', '');
-				break;
-			}
+		if(pw.length == 0) {
+			alert('현재 비밀번호를 입력해주세요.');
+			return false;
 		}
 		
-		//직급
-		for(let i = 0; job.length; i++) {
-			if(job[i].value == "${memberInfo.jobId}") {
-				job[0].removeAttribute('selected');
-				job[i].setAttribute('selected', '');
-				break;
-			}
-		}
-	});
-
-	//정보 수정
-	$('#updateForm').on('submit', function(e) {
-		let objData = serializeObject();
-
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/updateMember',
-			method : 'POST',
-			data : objData,
+			url : '${pageContext.request.contextPath}/member/pwCheck',
+			type : 'POST',
+			data : {'memberPw' : pw},
 			success : function(data) {
 				if(data) {
-					alert('회원 정보가 정상적으로 수정되었습니다.');
+					alert('확인되었습니다.');
+					$('#oldPw').attr('disabled', true);
+					$('#newPw').attr('disabled', false);
+					$('#pwCheck').attr('disabled', false);
+					$('#newPw').focus();
 				} else {
-					alert('다시 시도해주세요.');
-				}
-			},
-			error : function(reject) {
-				console.log(reject);
-			}
-		})
-		return false;
-	});
-	
-	//form데이터 객체로 변환
-	function serializeObject() {
-		let formData = $('form').serializeArray();
-		let formObject = {};
-		
-		$.each(formData, function(idx, obj) {
-			let field = obj.name;
-			let val = obj.value;
-			
-			formObject[field] = val;
-		})
-		return formObject;
-	}
-	
-	//비동기 방식으로 이미지 파일 미리보기 + 이미지 저장
-	const fileDOM = document.querySelector('#logo');
-	const preview = document.querySelector('.image-box');
-	
-	fileDOM.addEventListener('change', function() {
-		let memberId = $('#memberId').val();
-		let image = fileDOM.files[0];
-		let formData = new FormData();
-		
-		formData.append("memberId", memberId);
-		formData.append("image", image);
-		
-		$.ajax({
-			url : '${pageContext.request.contextPath}/member/updateProfile',
-			type : 'POST',
-			processData : false,
-			contentType : false,
-			data : formData,
-			success : function(result) {
-				if(result) {
-					//미리보기 이미지 출력
-					preview.src = URL.createObjectURL(image);
-				}else {
-					alert('이미지 업로드에 실패했습니다.');
+					alert('비밀번호가 일치하지 않습니다.');
+					$('#oldPw').val('');
+					$('#oldPw').focus();
 				}
 			},
 			error : function(reject) {
 				console.log(reject);
 			}
 		});
-	});
+	})
 	
+	//비밀번호 변경
+	$('#updatePwBtn').on('click', function() {
+		//현재 비밀번호 확인 여부
+		if($('#oldPw').attr('disabled') != 'disabled') {
+			alert('현재 비밀번호를 확인해주세요.');
+			$('#oldPw').focus();
+			return false;
+		}
+		//새 비밀번호 일치 여부
+		let newPw = $('#newPw').val();
+		let pwCheck = $('#pwCheck').val();
+		
+		if(newPw != pwCheck) {
+			alert('비밀번호가 일치하지 않습니다.');
+			$('#newPw').val('');
+			$('#pwCheck').val('');
+			$('#newPw').focus();
+			return false;
+		}
+		//비밀번호 변경
+		$.ajax({
+			url : '${pageContext.request.contextPath}/member/updateMember',
+			type : 'POST',
+			data : {'memberId' : '${memberInfo.memberId}', 'memberPw' : newPw},
+			success : function(data) {
+				if(data) {
+					alert('비밀번호가 정상적으로 변경되었습니다.');
+				} else {
+					alert('비밀번호가 변경되지않았습니다. 다시 시도해주세요.');
+				}
+				$('#oldPw').val('');
+				$('#newPw').val('');
+				$('#pwCheck').val('');
+				$('#oldPw').attr('disabled', false);
+				$('#newPw').attr('disabled', true);
+				$('#pwCheck').attr('disabled', true);
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		});
+	});
 </script>
 </html>

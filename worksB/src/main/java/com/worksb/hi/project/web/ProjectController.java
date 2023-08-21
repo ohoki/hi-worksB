@@ -1,5 +1,7 @@
 package com.worksb.hi.project.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.DeptVO;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -36,8 +40,11 @@ public class ProjectController {
 	@GetMapping("/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
 
-		//해당 회사의 부서이름 받아와야함!!
-		// companyId -> departmentId, departmentName 
+		// 소속 회사의 부서정보 받아오기
+		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
+		int companyId = member.getCompanyId();
+		List<DeptVO> department = projectService.getDeptInfo(companyId);
+		model.addAttribute("department", department);
 		
 		return "projectForm/projectInsert";
 	}
@@ -50,27 +57,55 @@ public class ProjectController {
 		projectVO.setProjectAccess(projectVO.getProjectAccess()!=null ? "A1" : "A2");
 		projectVO.setManagerAccp(projectVO.getManagerAccp()!=null? "A1" : "A2");
 		
-		// 부서번호 -> 부서이름 !!!
-		
+		// 부서 정보
 		// 프로젝트명 = 부서이름 + 프로젝트명
-//		projectVO.setProjectName(departmentName + "_" + projectVO.getProjectName());
-		
-		String memberId = (String) session.getAttribute("memberId");
-		
-		projectVO.setMemberId(memberId);
-		projectService.insertProject(projectVO);
-		
+		int deptId = projectVO.getDeptId();
+	    DeptVO department = projectService.getDeptInfoByDeptId(deptId);
+	    String newName = "[" + department.getDeptName() + "]" + projectVO.getProjectName();
+	    projectVO.setProjectName(newName);
 	    
+	    // 프로젝트 등록
+	    projectService.insertProject(projectVO);
+
+	    // 멤버 정보
+	    MemberVO member = (MemberVO)session.getAttribute("memberInfo");
+		String memberId = member.getMemberId();
+		
+		PrjParticirVO participant = new PrjParticirVO();
+		participant.setMemberId(memberId);
+		
+		// 관리자 여부 A1 : YES
+		// 프로젝트 등록자 -> 관리자
+		participant.setManager("A1");
+		// 참여 승인 여부
+		participant.setParticirAccp("A1");
+		participant.setProjectId(projectVO.getProjectId());
+		
+		// 참여자 등록
+		projectService.insertParticipant(participant);
+		
 		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 	
 	//프로젝트 수정폼
 	@GetMapping("/projectUpdate")
-	public String projectUpdateForm(@RequestParam int projectId, Model model) {
+	public String projectUpdateForm(@RequestParam int projectId, Model model, HttpSession session) {
+		//기존 프로젝트 정보 가져오기
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	    
 	    model.addAttribute("projectInfo", projectInfo);
-	    //부서번호 -> 부서이름 추가해야함
+	    
+	    // 프로젝트 이름 -> 부서명 잘라내기
+	    String projectName = projectInfo.getProjectName();
+	    String realProjectName = projectName.substring(projectName.indexOf("]") + 1);
+	    model.addAttribute("realProjectName", realProjectName);
+	    
+	    // 부서 정보
+	    MemberVO member = (MemberVO)session.getAttribute("memberInfo");
+		int companyId = member.getCompanyId();
+		List<DeptVO> departments = projectService.getDeptInfo(companyId);
+		model.addAttribute("departments", departments);
+		   
 	    
 	    return "projectForm/projectUpdate";
 	}
@@ -83,12 +118,17 @@ public class ProjectController {
 		projectVO.setProjectAccess("on".equals(projectVO.getProjectAccess())? "A1" : "A2");
 		projectVO.setManagerAccp("on".equals(projectVO.getManagerAccp())? "A1" : "A2");
 		
+		// 부서 정보
+		// 프로젝트명 = 부서이름 + 프로젝트명
+		int deptId = projectVO.getDeptId();
+	    DeptVO department = projectService.getDeptInfoByDeptId(deptId);
+	    String newName = "[" + department.getDeptName() + "]" + projectVO.getProjectName();
+	    projectVO.setProjectName(newName);
+		
 		projectService.updateProject(projectVO);
 
 		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
 	}
-	
-
 
 	// 프로젝트 삭제
 	@GetMapping("/projectDelete")

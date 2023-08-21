@@ -12,6 +12,8 @@ import com.worksb.hi.member.service.MemberVO;
 
 public class CustomUser implements UserDetails {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private MemberVO member;
 	
 	public CustomUser(MemberVO member) {
