@@ -41,7 +41,12 @@ public interface ProjectMapper {
   
   
 	//주현
-	public List<ProjectVO> searchPrj(String memberId);
-	public List<ProjectVO> selectFromCompany(int companyId);
-	public void updateStar(ProjectVO vo);
+		//내가 참여하는 프로젝트 보기
+		public List<ProjectVO> searchPrj(String memberId);
+		//내 회사의 프로젝트 전체 보기
+		public List<ProjectVO> selectFromCompany(int companyId);
+		//즐찾갱신
+		public void updateStar(ProjectVO vo);
+		//로그인된 아이디가 참여하고 있는 프로젝트를 출력
+		public List<PrjParticirVO> selectAllparticier(String memberId);
 }
