@@ -104,7 +104,7 @@ a {
 .board-container{
 	border: 1px solid var(--color-dark-white);
     border-radius: var(--size-border-radius);
-    width : 1000px;
+    width : 900px;
     background-color : #ffffff;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     margin: 50px auto;
@@ -133,7 +133,7 @@ a {
 	
 }
 .board-title{
-	font-size: 30px;
+	font-size: 27px;
 	margin-top: 20px;
 	color: var(--color-dark-grey);
     font-weight: var(--weight-bold);
@@ -254,7 +254,9 @@ a {
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
 					succes : function() {
-						
+						let content = `<div>${startDate}</div>
+										<div>
+										`;
 					}, error : function(reject) {
 						console.log(reject);
 					}
@@ -268,7 +270,7 @@ a {
 					succes : function(voteData) {
 						let endDate = `<div>투표 종료일: ${voteData.endDate}</div>`;
 						
-						$(boardList[i]).find('.board-sub.divide').append(endDate);
+						$(boardList[i]).find('.board-sub').append(endDate);
 						
 					}, error : function(reject) {
 						console.log(reject);
