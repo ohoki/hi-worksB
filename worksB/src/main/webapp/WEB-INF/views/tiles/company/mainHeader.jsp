@@ -142,18 +142,14 @@
 		
 		if(type == 'profile') {
 			$('#profile-modal').addClass('modal-visible');
-			$('body').css('overflow', 'hidden');
 		}else if(type == 'logout') {
 			$('#logout').submit();
 		}else if(type == 'my-profile') {
 			$('#my-profile-modal').addClass('modal-visible');
-			$('body').css('overflow', 'hidden');
 		}else if(type == 'alarm') {
 			$('#alarm-modal').addClass('modal-visible');
-			$('body').css('overflow', 'hidden');
 		}else if(type == 'employees') {
 			$('#employees-modal').addClass('modal-visible');
-			$('body').css('overflow', 'hidden');
 			//구성원 리스트 출력
 			let employeesDiv = $('#employees');
 			employeesDiv.empty();
@@ -198,7 +194,6 @@
 	//여백 누르면 모달페이지 종료
 	$('[id*=modal]').on('click', function() {
 		$('.modal-visible').removeClass('modal-visible');
-		$('body').css('overflow', 'visible');
 	})
 	
 	$('.my-profile__btn').on('click', function() {

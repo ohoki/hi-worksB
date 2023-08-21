@@ -21,10 +21,17 @@
 	}
 	#aside{
 		width: 10%;
-		height: 100vh;
+		height: 93vh;
 	}
 	#main{
 		width: 90%;
+		height: 93vh;
+		overflow: scroll;
+		overflow-x: hidden
+	}
+	body {
+		height: 100vh;
+		overflow: hidden;
 	}
 </style>		
 </head>
