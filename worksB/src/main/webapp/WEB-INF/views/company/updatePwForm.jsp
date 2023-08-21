@@ -29,6 +29,7 @@
 	.user-information {
 		border: 1px solid var(--color-dark-white);
 		border-radius: 5px;
+		padding-bottom: 20px;
 	}
 	
 	.title-font {
@@ -52,6 +53,11 @@
   		font-size: 12px;
   		display: block;
   		text-align: center;
+  	}
+  	
+  	.image-box {
+  		width: 200px;
+  		height: 200px;
   	}
   	
   	input[type=file] {
@@ -84,9 +90,19 @@
 	.user-information__content {
 		text-align: left;
 		padding: 0 30px;
+		
 	}
 	
-	button[type=button], button[type=submit] {
+	#oldPw, #newPw, #pwCheck {
+		width: 200px;
+		height: 30px;
+		border-radius: 2px;
+		border:  1px solid var(--color-dark-white);
+		padding-left: 10px;
+		box-sizing: border-box;
+	}
+	
+	#checkPwBtn, #updatePwBtn {
 		width: 100px;
 		height: 40px;
 		margin-left: 20px;
@@ -94,6 +110,11 @@
 		border-radius: 5px;
 		color: var(--color-white);
 		font-weight: var(--weight-bold);
+	}
+	
+	#updatePwBtn {
+		display: block;
+		margin: 0 auto;
 	}
 	
 	.b_bt {
