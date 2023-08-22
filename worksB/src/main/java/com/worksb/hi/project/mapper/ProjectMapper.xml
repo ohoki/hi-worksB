@@ -168,7 +168,7 @@
 	
 <!-- 주현 -->
 
-<!-- 개별 프로젝트 조회 -->
+<!-- 북마크가 된 개별 프로젝트 조회 승인된 것만 출력 -->
 <select id="searchPrj" parameterType="String" resultType="ProjectVO">
   SELECT
 	    p.project_id,
@@ -184,7 +184,7 @@
 	    find_subcode(pp2.project_markup) AS project_markup, 
 	    find_subcode(pp2.particir_accp) AS particir_accp,
 	    p.dept_id,
-	    p.project_cls
+	    find_subcode(p.project_cls) AS project_cls
 	FROM
 	    project p
 	JOIN (
@@ -207,7 +207,57 @@
     )pp2 ON(pp1.project_id=pp2.project_id)
 	WHERE
 	    pp2.member_id=#{memberId}
+ 	AND
+        pp2.project_markup='A1'
+    AND
+        pp2.particir_accp='A1'
 	ORDER BY p.project_id  
+</select>
+
+<!-- 북마크가 안 된 개별 프로젝트 조회--> 
+<select id="searchPrjCls" parameterType="String" resultType="ProjectVO">
+	   SELECT
+	    p.project_id,
+	    p.project_name,
+	    find_subcode(p.project_access) AS project_access,
+	    find_subcode(p.manager_accp) AS manager_accp,
+	    find_subcode(p.write_access) AS write_access,
+	    find_subcode(p.update_access) AS update_access,
+	    find_subcode(p.board_access) AS board_access,
+	    find_subcode(p.file_access) AS file_access,
+	    find_subcode(p.comment_access) AS comment_access, 
+	    pp1.prj_particir_num,
+	    find_subcode(pp2.project_markup) AS project_markup, 
+	    find_subcode(pp2.particir_accp) AS particir_accp,
+	    p.dept_id,
+	    find_subcode(p.project_cls) AS project_cls
+	FROM
+	    project p
+	JOIN (
+	    SELECT
+	        project_id,
+	        COUNT(*)  AS prj_particir_num
+	    FROM
+	        prj_particir
+	    GROUP BY
+	        project_id
+	) pp1 ON (p.project_id = pp1.project_id)
+    JOIN(
+        SELECT
+            project_markup,
+            project_id,
+            member_id,
+            particir_accp
+        FROM
+            prj_particir
+    )pp2 ON(pp1.project_id=pp2.project_id)
+	WHERE
+	    pp2.member_id=#{id}
+        AND
+        pp2.project_markup='A2'
+        AND
+        pp2.particir_accp='A1'
+	ORDER BY p.project_id
 </select>
 
 
@@ -225,7 +275,7 @@
        find_subcode(p.comment_access) AS comment_access, 
        p.dept_id,
        find_subcode(p.project_cls) AS project_cls,
-        (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num
+       (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num
    FROM
        project p
    WHERE

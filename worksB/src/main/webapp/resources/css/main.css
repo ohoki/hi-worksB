@@ -183,15 +183,15 @@ body {
 }
 
 .green {
-	background-color: #00ff40;
+	background-color: var(--color-green);
 }
 
 .yellow {
-	background-color: #ffff00;
+	background-color: var(--color-orange);
 }
 
 .red {
-	background-color : #ff8080;
+	background-color: var(--color-red);
 }
 
 .my-profile-modal__name, .employee-modal__name {
