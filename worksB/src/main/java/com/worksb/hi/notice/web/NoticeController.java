@@ -1,6 +1,8 @@
 package com.worksb.hi.notice.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ public class NoticeController {
 	public String noticeList(Model model
 						, SearchVO searchVO
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
-						, @RequestParam(value="cntPerPage", defaultValue ="15") Integer cntPerPage) {
+						, @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
 		
 		int total = noticeService.noticeCount(searchVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
@@ -67,6 +69,13 @@ public class NoticeController {
 		NoticeVO findVO = noticeService.getNoticeInfo(noticeVO);
 		model.addAttribute("noticeInfo", findVO);
 		return "notice/noticeUpdate";
+	}
+	
+	//게시글 수정
+	@PostMapping("/noticeUpdate")
+	public String noticeUpdate(NoticeVO noticeVO){
+		noticeService.noticeUpdate(noticeVO);
+		return "redirect:noticeList";
 	}
 	
 	// 게시글 삭제

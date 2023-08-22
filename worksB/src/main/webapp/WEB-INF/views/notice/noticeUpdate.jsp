@@ -147,8 +147,10 @@ $('form').on('submit', function(e){
 				data : objData
 			})
 			.done(data => {
+				let url = notice/noticeInfo?noticeId=${notice.noticeId}
 				let message = '수정이 완료되었습니다.';
 				alert(message);
+				
 			})
 			.fail(reject => console.log(reject));
 			

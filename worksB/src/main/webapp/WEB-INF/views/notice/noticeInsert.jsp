@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <title>Insert title here</title>
 <style>
 body {
@@ -103,42 +102,96 @@ div h2 {
 	height: 25px;
 }
 
+	.ck.ck-editor {
+    	width: 817px;
+    	margin: 0 auto;
+    	board: 0;
+	}
+	.ck-editor__editable {
+		margin: 0 auto;
+	    min-height: 300px;
+	    width: 800px;
+	}
+
+
 </style>
 </head>
 <body>
 	<div class="top">
 		<h2>공지사항 작성</h2>
 	</div>
-	<div class="body">
-		<form action="noticeInsert" method="post">
-			<table class="table">
-				<thead>
-					<tr class="main__p">
-						<th class="table__title">
-							<label id="noticeTitle">제목 </label>
-							<input type="text" name="noticeTitle">
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<div class="content">
-								<input type="text" name="noticeContent">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="hidden" name="memberId" value="${memberInfo.memberId }">
-							<input type="hidden" name="companyId" value="${memberInfo.companyId}">
-						</td>
-					</tr>
-				</tbody>
-			</table>
+		<!-- 에디터 사용 -->
+		<form action="noticeInsert" method="POST">
+			<label id="noticeTitle">제목 </label>
+			<input type="text" name="noticeTitle">
+			<textarea name="noticeContent" id="editor"></textarea>
+			
+		    <!-- hidden -->
+		    <input type="hidden" name="memberId" value="${memberInfo.memberId }">
+			<input type="hidden" name="companyId" value="${memberInfo.companyId}">
+			
 			<button type="button" onclick="location.href='noticeList'">목록</button>
-			<button type="submit">작성</button>
-		</form>
-	</div>
+		    <input type="submit" value="작성">
+    	</form>
+    		<!-- api -->
+			<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+			<!-- 한글 적용 -->
+			<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+		<script>
+		  ClassicEditor
+		    .create( document.querySelector( '#editor' )
+		    		
+		    		
+		    		
+		    		
+		    		
+		    		
+		    		
+		    		
+		    		
+		    		/* , {
+		    	language: 'ko' ,
+		    	toolbar:{
+		    		items:[
+		    			'heading'
+		    			'|'
+		    			'fontSize',
+		    			'fontFamily',
+		    			'fontColor',
+		    			'fontBackgroundColor'
+		    		]
+		    	},
+		    	fontFamily: {
+		    		option:[
+		    			'default',
+		    			'궁서체',
+		    			'바탕',
+		    			'돋움'
+		    		]
+		    		
+		    	}
+		    }) */
+		    /* 플러그 작동이 안됨... 나중에 추가 */
+/* 		    .catch( error => {
+		      console.error( error );
+		    } ); */
+
+/* 		 , {
+			 ckfinder: {
+					uploadUrl: '/ajax/image.do'
+				},
+				toolbar:{
+					items:[
+						'heading',
+						'|',
+						'fontSize',
+						'fontColor',
+						'fontFamily',
+						'fontBackgroundColor'
+					]
+				
+				}
+		 }; */
+		</script>
 </body>
 </html>
