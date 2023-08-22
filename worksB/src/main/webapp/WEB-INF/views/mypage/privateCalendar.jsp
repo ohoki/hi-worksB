@@ -183,7 +183,9 @@
         }
         
     });
-	
+	//var today = new Date();
+	//var month = ('0'+(today.getMonth()+1)).substr(-2);
+	//var day = ('0'+today.getDate()).substr(-2);
 	var calendar 
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
@@ -234,7 +236,7 @@
 		calendar.render();
 		loadPriSche();
 		
-		//전체 일정 조회
+		//전체 일정 조회/재조회
 		function loadPriSche(){
 			var calendarAjaxCall = $.ajax({
 				  url: "privateScheList",
@@ -242,8 +244,9 @@
 				  dataType: "json"
 			}).done(function(data){
 				calendar.removeAllEvents();
-				calendar.addEventSource(data)
-				calendar.refetchEvents();
+				calendar.addEventSource(data);
+				console.log(calendar.addEventSource(data))
+				//calendar.refetchEvents();
 			}).fail(function( jqXHR, textStatus ) {
 				  alert( "Request failed: " + textStatus );
 			});
@@ -425,12 +428,12 @@
 				success : function(result){
 					console.log(result);
 					//캘린더 event 업데이트
-					loadPriSche();
 				},
 				error : function(err){
 					console.log(err);
 				}
 			});
+			loadPriSche();
 			//삭제버튼 삭제
 			$('#updateBtn').prev('button').remove();
 			//모달창 닫기
