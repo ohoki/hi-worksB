@@ -168,7 +168,7 @@
 						<c:if test="${list.particirAccp eq 'NO' }">
 							<span><a onclick="accp('${list.projectId}','Y')">${list.projectName}(미승인)</a></span>
 						</c:if>
-						<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
+						<!-- particirAccp(승인여부)null(참여신청을 하지 않았다는 의미) -->
 						<c:if test="${list.particirAccp eq null }">
 							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
 						</c:if>
@@ -204,7 +204,10 @@
 						<c:if test="${list.particirAccp eq 'NO' }">
 							<span class="project-name gray finger" title="입장권한이 없습니다"><a onclick="accp('${list.projectId}','N')">${list.projectName}(미승인)</a></span>
 						</c:if>
-						<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
+            
+            <!--ajax를 이용해서 부서별 조회도 가능하도록 구현하는 것도 추후에....ㅠ -->
+						
+            <!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
 						<c:if test="${list.particirAccp eq null }">
 							<span class="project-name gray" title="입장권한이 없습니다">${list.projectName}</span>
 						</c:if>
@@ -220,7 +223,7 @@
 						<c:if test="${list.particirAccp eq 'NO' }">
 							<button type="button" class="list-btn yellow">승인대기</button>
 						</c:if>
-						<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
+						<!-- particirAccp(승인여부)null(참여신청을 하지 않았다는 의미) -->
 						<c:if test="${list.particirAccp eq null }">
 							<button type="button" class="list-btn green point">참여하기</button>
 						</c:if>
@@ -231,12 +234,5 @@
 	</div>
 </body>
 <script>
-// alert창띄우기(particirAccp가NO인 경우)
-	function accp(id,accp){
-		alert('승인되지 않은 프로젝트입니다')
-		if(accp=='Y'){
-			window.location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id
-		}
-	}
 </script>
 </html>
