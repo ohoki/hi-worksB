@@ -97,6 +97,7 @@
 		width: 100px;
 		height: 40px;
 		margin-left: 20px;
+		/* background-color: var(--color-light-blue); */
 		background-color: rgb(174, 213, 245);
 		border-radius: 5px;
 		color: var(--color-white);
