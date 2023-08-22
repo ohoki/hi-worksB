@@ -1,6 +1,7 @@
 package com.worksb.hi.project.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -167,8 +168,19 @@ public class ProjectController {
 	public String SelectCom(Model m,HttpSession session) {
 		Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
-		m.addAttribute("projectList",projectService.selectFromCompany(companyId,memberId));
-		m.addAttribute("memberId", memberId); 
+		
+		List<PrjParticirVO> myList = projectService.selectAllparticier(memberId);
+		List<ProjectVO>list=projectService.selectFromCompany(companyId);
+		
+		for(ProjectVO vo :list) {
+			Optional<PrjParticirVO>op= myList.stream().filter(part -> part.getProjectId() ==vo.getProjectId() ).findAny();
+			if(!op.isEmpty())
+				vo.setParticirAccp(op.get().getParticirAccp());
+		}
+		m.addAttribute("projectList",list);
+		
+		//m.addAttribute("particirList",myList);
+    
 		return "prj/selectFromCompany";
 	}
 	

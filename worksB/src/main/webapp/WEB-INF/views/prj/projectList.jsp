@@ -90,16 +90,16 @@
 		<br>
 
 		<div class="disLike-container">
+			<div class="none-star">
+				<h4 class="selected-status">참여중&nbsp;</h4>
+				<select class="select-list">
+					<option value="status1">참여중</option>
+					<option value="status2">만료</option>
+				</select>
+			</div>
 			<ul>
 				<c:forEach items="${projectList }" var="list">
 					<c:if test="${list.projectMarkup eq 'NO'}">
-						<div class="none-star">
-							<h4 class="selected-status">참여중&nbsp;</h4>
-							<select class="select-list">
-								<option value="status1">참여중</option>
-								<option value="status2">만료</option>
-							</select>
-						</div>
 							<li>
 								<p class="project-id draggable" hidden draggable="true">${list.projectId }</p>
 								<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
@@ -132,7 +132,7 @@
 	})
 	
 	
-   
+    
 //즐찾해제
     document.addEventListener("click",(e)=>{     
        
