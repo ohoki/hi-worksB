@@ -72,6 +72,9 @@
 </style>
 </head>
 <body>
+
+<!-- !!!!!!!!!!!!!!!!!!!미확인알림 안해뜸!!!!!!!!!!!!!!!!!!!! -->
+
 	<div class="block">
 		<h3>내프로젝트</h3>
 		<br>
@@ -81,8 +84,8 @@
 			<a href="${pageContext.request.contextPath }/projectList"><img class="list icon" alt="리스트로 보기"
 				src="${pageContext.request.contextPath }/resources/icon/list.svg"></a>
 		</div>
+		<!-- 좋아요를 누른 프로젝트 -->
 		<h4 class="star-list">즐겨찾기</h4>
-
 		<div class="like-container">
 			<ul>
 				<c:forEach items="${bookmarked }" var="list">
@@ -130,8 +133,8 @@
 
 </body>
 <script>
-
-//즐찾해제
+//즐겨찾기
+	//즐찾해제
     document.addEventListener("click",(e)=>{     
        
         if(e.target.className.includes('colored-star')){
@@ -149,7 +152,7 @@
     	    console.log(parent);
     	    dislikeC.appendChild(parent);
    
-//즐찾추가
+	//즐찾추가
         } 
         else if(e.target.className.includes('empty-star')){
         	let empty = e.target;
@@ -190,7 +193,7 @@
 		})
 }
 
-    
+
 
     //drag event
     
