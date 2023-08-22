@@ -40,14 +40,14 @@ public class PrivateScheServiceImpl implements PrivateScheService {
 
 	@Override
 	public int updatePsche(PrivateScheVO privateScheVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = privateScheMapper.updatePsche(privateScheVO);
+		return result;
 	}
 
 	@Override
-	public int deletePsche(PrivateScheVO privateScheVO) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deletePsche(int scheId) {
+		int result = privateScheMapper.deletePsche(scheId);
+		return result;
 	}
 
 }
