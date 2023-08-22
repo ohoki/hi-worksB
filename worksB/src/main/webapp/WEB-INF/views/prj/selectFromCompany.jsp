@@ -58,25 +58,25 @@
 	<div class="block">
 		<h3>회사 전체 프로젝트</h3>
 		<br>
-
+<!-- 프로젝트리스트 전체(particirAccp가 Y,N,null로 나뉨) -->
 				<c:forEach items="${projectList }" var="list">
 				
-				
+<!-- 				회사전체공개프로젝트의 경우 -->
 					<c:if test="${list.projectAccess eq 'YES' }">
 						<img class="icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe.svg">
-						
+						<!-- 						particirAccp(승인여부)Y -->
 						<c:if test="${list.particirAccp eq 'YES' }">
 							<span class="project-name finger" onclick="location.href='projectFeed?projectId=${list.projectId}'">&nbsp;${list.projectName}</span> 
 							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }&nbsp; 
 							<hr>
 						</c:if>
-						
+						<!-- 						particirAccp(승인여부)Y -->
 						<c:if test="${list.particirAccp eq 'NO' }">
 							<span class="project-name finger"><a onclick="accp('${list.projectId}','Y')">&nbsp;${list.projectName}(미승인)</a></span>
 							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }&nbsp; 
 							<hr>
 						</c:if>
-						
+						<!-- 						particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
 						<c:if test="${list.particirAccp eq null }">
 							<span class="project-name finger" onclick="location.href='projectFeed?projectId=${list.projectId}'">&nbsp;${list.projectName}</span> 
 							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }&nbsp; 
@@ -85,22 +85,22 @@
 						</c:if>
 					</c:if>
 					
-					
+<!-- 					비공개프로젝트의 경우 -->
 					<c:if test="${list.projectAccess eq 'NO' }">
 						<span class="blank"></span>
-							
+							<!-- 						particirAccp(승인여부)Y -->
 						<c:if test="${list.particirAccp eq 'YES' }">
 							<span class="project-name finger" onclick="location.href='projectFeed?projectId=${list.projectId}'">&nbsp;${list.projectName}</span> 
 							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }&nbsp; 
 							<hr>
 						</c:if>
-						
+						<!-- 						particirAccp(승인여부)Y -->
 						<c:if test="${list.particirAccp eq 'NO' }">
 							<span class="project-name gray finger" title="입장권한이 없습니다"><a onclick="accp('${list.projectId}','N')">&nbsp;${list.projectName}(미승인)</a></span>
 							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }&nbsp; 
 							<hr>
 						</c:if>
-						
+						<!-- 						particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
 						<c:if test="${list.particirAccp eq null }">
 							<span class="project-name gray" title="입장권한이 없습니다">&nbsp;${list.projectName}</span>
 							<img class="icon finger" alt="참여하기" title="프로젝트에 참여하기" src="${pageContext.request.contextPath }/resources/icon/signPrj.svg">
@@ -120,6 +120,7 @@
 	
 </body>
 <script>
+// alert창띄우기(particirAccp가NO인 경우)
 	function accp(id,accp){
 		alert('승인되지 않은 프로젝트입니다')
 		if(accp=='Y'){
