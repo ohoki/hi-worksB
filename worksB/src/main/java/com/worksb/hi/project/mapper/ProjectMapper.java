@@ -29,7 +29,8 @@ public interface ProjectMapper {
 	
 	// 프로젝트 참여자 등록
 	public int insertParticipant(PrjParticirVO participant);
-
+	// 프로젝트 참여자 조회
+	public List<PrjParticirVO> getParticirList(int projectId);
   
   
   

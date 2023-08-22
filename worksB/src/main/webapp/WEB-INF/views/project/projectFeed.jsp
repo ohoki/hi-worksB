@@ -11,8 +11,8 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 
 <style>
 body{
@@ -170,8 +170,27 @@ a {
 	margin-bottom: 10px;
 	padding-left: 15px;
 }
-.task-detail{
+.task-detail,
+.prjParticir_title span{
 	font-size: 15px;
+}
+
+.prjParticir {
+	width: 200px;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--color-dark-white);
+	padding: 0 20px 0 5px;
+	cursor: pointer;
+}
+
+.prjParticir:nth-child(1) {
+	border-top: 1px solid var(--color-dark-white);
+}
+
+.prjParticir-img {
+	width: 40px;
+	height: 40px;
 }
 </style>
 </head>
@@ -179,6 +198,7 @@ a {
 <div style="display : flex;">
 	<div style="width: 70%;">
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+		<!-- 게시글 조회 -->
 		<c:forEach items="${boards }" var="board">
 			<c:if test="${board.boardType eq 'C5'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
@@ -270,11 +290,13 @@ a {
 			</c:if>
 		</c:forEach>		
 	</div>
+	<!-- 게시글 조회 끝 -->
 	<div style="width: 25%;">
 		<h1>북마크 공간~~</h1>
 	</div>
 </div>
 <script>
+	// 게시글 조회
 	$(window).on('DOMContentLoaded', function() {
 		let boardList = $('[data-list="board"]');
 		
@@ -400,7 +422,7 @@ a {
 	});
 </script>
 
-
+<!-- 게시글 작성 -->
 <div class="modal modalBoard" tabindex="-1" id="boardInsertModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -469,6 +491,28 @@ a {
 						<label class="btn btn-outline-danger" for="option5">보류</label>
 					</div>
 						
+					<!-- 업무 담당자 -->
+					<div>
+						<button type="button" class="btn-add-taskManager" data-bs-toggle="modal" data-bs-target="#add-taskManager">담당자 추가</button>
+						<div id="add-taskManager" class="modal" tabindex="-1">
+						 	<div class="modal-dialog">
+						 		<div class="modal-content prjParticir">
+							 		<div class="modal-body">
+										<div class="prjParticir_title">
+											<span>프로젝트 참여자</span>
+										</div>
+										<div id="particir">	
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="taskManager">
+							
+						</div>
+					</div>
+					<!-- 업무 담당자 끝 -->
+					
 					<div>
 						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
 					</div>
@@ -639,6 +683,7 @@ a {
         </div>
     </div>
 </div>
+<!-- 게시글 작성 끝-->
 </body>
 <script>
 	// 이진
@@ -836,6 +881,69 @@ a {
 		});
 	})
 	
+	// 프로젝트 참여자 조회
+	$('.btn-add-taskManager').click(function(e){
+	    let particirDiv = $('#particir');
+	    $.ajax({
+	    	url : '${pageContext.request.contextPath}/particirList',
+	        type: 'GET',
+	        data: {'projectId': "${projectInfo.projectId}"},
+	        success: function(particir){
+	            console.log(particir)
+	            let particirList = $('#particir');
+	            particirList.empty();
+	            
+	            for(let i=0; i<particir.length; i++) {
+					//div태그
+					let particirInfo = document.createElement('div');
+					particirInfo.classList.add('flex');
+					particirInfo.classList.add('prjParticir');
+					//이미지 태그
+					let employeeProfile = document.createElement('img');
+					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.classList.add('employee-img');
+					if(particir[i].realProfilePath != null) {
+						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
+					}else {
+						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					}
+					//스팬 태그
+					let span = document.createElement('span');
+					span.innerText = particir[i].memberName;
+					//히든 인풋 태그 (멤버id값)
+					let input = document.createElement('input');
+					input.setAttribute('type', 'hidden');
+					input.value = particir[i].memberId;
+					//태그 삽입
+					particirInfo.append(employeeProfile);
+					particirInfo.append(span);
+					particirInfo.append(input);
+					
+					particirList.append(particirInfo);
+				}
+	            
+	        },
+	        error: function(reject){
+	            console.log(reject);
+	        }
+	    });
+	});
+
+	/*
+	// 업무담당자 
+	$(document).on("click", ".prjParticir",function(e){
+		e.stopPropagation();
+		
+		$('.taskManager').append(
+			'<input type="text" name="memberName"> <input type="button" class="btnRmVManager" value="X"><br>'
+		);
+		$('.btnRmVManager').on('click', function(){
+			$(this).prev().remove ();
+	        $(this).next().remove ();
+	        $(this).remove();
+		});
+    });                                           
+	*/
 	
 </script>
 </html>
