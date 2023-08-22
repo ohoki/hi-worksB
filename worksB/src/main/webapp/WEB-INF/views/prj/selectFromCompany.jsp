@@ -63,7 +63,7 @@ ${list.memberId }
 
 						<c:choose>		
 						    <c:when test="${list.projectAccess eq 'YES'}">
-						    	<c:if test="${list.memberId eq memberId}">
+						    	<c:if test="${list.memberId eq memberInfo.memberId}">
 							    	<c:if test="${list.particirAccp eq 'YES'}">
 							            <span class="project-name finger" onclick="location.href='projectFeed?projectId=${list.projectId}'">&nbsp;${list.projectName}</span> 
 							        </c:if>

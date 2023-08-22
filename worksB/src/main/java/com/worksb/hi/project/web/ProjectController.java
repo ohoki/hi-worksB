@@ -168,7 +168,7 @@ public class ProjectController {
 		Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
 		m.addAttribute("projectList",projectService.selectFromCompany(companyId,memberId));
-		m.addAttribute("memberId", memberId);
+		m.addAttribute("memberId", memberId); 
 		return "prj/selectFromCompany";
 	}
 	

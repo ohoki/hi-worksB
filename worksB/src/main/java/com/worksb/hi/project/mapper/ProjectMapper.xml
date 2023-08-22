@@ -222,8 +222,7 @@
             prj_particir
     )pp ON (p.project_id=pp.project_id)
 	WHERE
-	    BOARD_ACCESS='J1' 
-	    AND dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})  
+		dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})  
 	ORDER BY p.project_id  
 </select>
 
