@@ -224,5 +224,6 @@
 		JOIN	prj_board b
 		ON		t.prj_board_id = b.prj_board_id
 		WHERE	high_task_id = #{taskId}
+		ORDER BY t.task_id
 	</select>
 </mapper>
