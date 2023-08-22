@@ -146,12 +146,21 @@ public class ProjectController {
 	@GetMapping("/projectFeed")
     public String projectFeed(@RequestParam int projectId, Model model) {
         ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+        // 게시글 리스트
         List<BoardVO> boards = projectService.getBoardList(projectInfo);
         
         model.addAttribute("projectInfo", projectInfo);
         model.addAttribute("boards", boards);
         return "project/projectFeed";
     }
+	
+	// 프로젝트 참여자 조회
+	@GetMapping("particirList")
+	@ResponseBody
+	public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
+		System.out.println("===========================================================");
+		return projectService.getParticirList(projectId);
+	}
 	
 	
 	
