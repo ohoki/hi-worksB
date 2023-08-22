@@ -11,105 +11,223 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.icon {
-	width: 30px;
-	height: 30px;
+.list-title {
+	font-size: var(--font-regular);
+	padding: 0 30px;
+	margin-bottom: 15px;
 }
 
-.block {
-	margin-left: 50px;
+.list-box {
+	width: 70%;
+	margin: 0 auto;	
+	font-size: 18px; 
+	font-weight: var(--weight-semi-bold);
+}
+
+.list {
+	padding: 10px 40px;
+	margin: 5px 0;
+	background-color: rgba(174, 213, 245, 0.1);
+	border-radius: 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.list-option {
+	display: flex;
+	align-items: center;
+	margin: 20px 0 30px;
+	justify-content: space-between;
+}
+
+.list-option select {
+	width: 100px;
+	height: 30px;
+	border-radius: 4px;
+  	border: 1px solid var(--color-light-blue);
+  	outline: none;
+}
+
+.list-option select:focus{
+	outline: none;
 }
 
 .project-name {
-	display: inline-block;
-	width: 550px;
+	margin-right: 50px;
+	height: 30px;
+	line-height: 30px;
+	display: flex;
+	align-items: center;
 }
 
-.blank {
-	display: inline-block;
-	width: 30px;
+.project-info {
+	display: flex;
+	align-items: center;
+	margin-right: 80px;
 }
 
-.finger {
+.dept-list {
+	display: flex;
+	justify-content: flex-start;
+	font-size: 16px; 
+	color: var(--color-light-grey);
+}
+
+.list-count {
+	font-size: var(--font-small); 
+	font-weight: var(--weight-bold);
+}
+
+.list-count span {
+	color: var(--color-red);
+	margin-left: 5px;
+}
+
+.dept-list li {
+	padding: 10px 10px;
+	border-radius: 10px;
+	margin-right: 10px;
+	cursor: pointer;
+	border: 1px solid rgba(174, 213, 245, 0);
+}
+
+.dept-list li:hover {
+	border: 1px solid rgb(174, 213, 245);
+	background-color: rgb(174, 213, 245);
+	color: white;	
+}
+
+.icon {
+	width : 30px;
+	height : 30px;
+}
+
+.prj-icon {
+	margin: 0 10px;
+	display: inline-block;
+}
+
+.list-btn {
+	width: 70px;
+	height: 34px;
+	border-radius: 17px;
+	color: white;
+	cursor: default;
+}
+.point {
 	cursor: pointer;
 }
-
-.gray {
-	color: gray;
+.green {
+	background-color: var(--color-green);
 }
+
+.yellow {
+	background-color: var(--color-orange);
+}
+
+.red {
+	background-color: var(--color-red);
+}
+
+
 </style>
 </head>
 
 <body>
-<!-- 	<div> -->
-<%-- 		<c:forEach items="${projectList }" var="list"> --%>
-<%-- ${list.projectName } --%>
-<%-- ${list.memberId } --%>
-<!-- <br> -->
-<%-- 		</c:forEach> --%>
-<%-- 		<c:forEach items="${particirList }" var="plist"> --%>
-<!-- 			<br> -->
-<%-- 	${plist.memberId } --%>
-<%-- 	${plist.particirAccp } --%>
-<!-- 	<br> -->
-<%-- 		</c:forEach> --%>
-<!-- 	</div> -->
-
-	<div class="block">
-		<h3>회사 전체 프로젝트</h3>
-		<br>
-<!-- 프로젝트리스트 전체(particirAccp가 Y,N,null로 나뉨) -->
-				<c:forEach items="${projectList }" var="list">
-				
-<!-- 				회사전체공개프로젝트의 경우 -->
-					<c:if test="${list.projectAccess eq 'YES' }">
-						<img class="icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe.svg">
-						<!-- 						particirAccp(승인여부)Y -->
+	<h3 class="list-title">회사 전체 프로젝트</h3>
+	<div style="padding: 5px 50px;">
+		<ul class="dept-list">
+			<c:forEach items="${deptList }" var="dept">
+				<li>${dept.deptName }</li>
+			</c:forEach>
+		</ul>
+	</div>
+	<div class="list-box">
+		<div class="list-option">
+			<div class="list-count">전체 <span>${projectList.size() }</span></div>
+			<div>
+				<select>
+					<option>진행중</option>
+					<option>만료</option>
+				</select>
+			</div>
+		</div>
+		<!-- 프로젝트리스트 전체(particirAccp가 Y,N,null로 나뉨) -->
+		<c:forEach items="${projectList }" var="list">
+			<div class="list">
+				<!-- 회사전체공개프로젝트의 경우 -->
+				<c:if test="${list.projectAccess eq 'YES' }">
+					<div class="project-name">
+						<img class="prj-icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg">
+						<!-- particirAccp(승인여부)Y -->
 						<c:if test="${list.particirAccp eq 'YES' }">
-							<span class="project-name finger" onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum } 
-							<hr>
+							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span>  
 						</c:if>
-						<!-- 						particirAccp(승인여부)N -->
+						<!-- particirAccp(승인여부)N -->
 						<c:if test="${list.particirAccp eq 'NO' }">
-							<span class="project-name finger"><a onclick="accp('${list.projectId}','Y')">${list.projectName}(미승인)</a></span>
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum } 
-							<hr>
+							<span><a onclick="accp('${list.projectId}','Y')">${list.projectName}(미승인)</a></span>
 						</c:if>
-            
-						<!-- 						particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
+						<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
 						<c:if test="${list.particirAccp eq null }">
-							<span class="project-name finger" onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }
-							<img class="icon finger" alt="참여하기" title="프로젝트에 참여하기" src="${pageContext.request.contextPath }/resources/icon/signPrj.svg">
-							<hr>
+							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
 						</c:if>
-					</c:if>
+					</div>
 					
-<!-- 					비공개프로젝트의 경우 -->
-					<c:if test="${list.projectAccess eq 'NO' }">
-						<span class="blank"></span>
-							<!-- 						particirAccp(승인여부)Y -->
+					<!-- 참여버튼 클릭 시 참여하기 기능 구현  필요함 -->
+					<div class="project-info">
+						${list.prjParticirNum }<img class="prj-icon" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+						<!-- particirAccp(승인여부)Y -->
+						<c:if test="${list.particirAccp eq 'YES' }">
+							<button type="button" class="list-btn red">참여중</button>  
+						</c:if>
+						<!-- particirAccp(승인여부)N -->
+						<c:if test="${list.particirAccp eq 'NO' }">
+							<button type="button" class="list-btn yellow">승인대기</button>
+						</c:if>
+						<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
+						<c:if test="${list.particirAccp eq null }">
+							<button type="button" class="list-btn green point">참여하기</button>
+						</c:if>
+					</div>
+				</c:if>
+				
+				<!-- 비공개프로젝트의 경우 -->
+				<c:if test="${list.projectAccess eq 'NO' }">
+					<div class="project-name">
+						<img class="prj-icon" alt="참여자공개이미지" title="참여자만 공개" src="${pageContext.request.contextPath }/resources/icon/lock-solid.svg">
+						<!-- particirAccp(승인여부)Y -->
 						<c:if test="${list.particirAccp eq 'YES' }">
 							<span class="project-name finger" onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum } 
-							<hr>
 						</c:if>
-						<!-- 						particirAccp(승인여부)N -->
+						<!-- particirAccp(승인여부)N -->
 						<c:if test="${list.particirAccp eq 'NO' }">
 							<span class="project-name gray finger" title="입장권한이 없습니다"><a onclick="accp('${list.projectId}','N')">${list.projectName}(미승인)</a></span>
-							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum } 
-							<hr>
 						</c:if>
-						<!-- 						particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
+						<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
 						<c:if test="${list.particirAccp eq null }">
 							<span class="project-name gray" title="입장권한이 없습니다">${list.projectName}</span>
-							<img class="icon finger" alt="참여하기" title="프로젝트에 참여하기" src="${pageContext.request.contextPath }/resources/icon/signPrj.svg">
-							<hr>
 						</c:if>
-					</c:if>
-				</c:forEach>
-<!-- 이자리에ul있었음 -->
+					</div>
+					
+					<div class="project-info">
+						${list.prjParticirNum }<img class="prj-icon" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+						<!-- particirAccp(승인여부)Y -->
+						<c:if test="${list.particirAccp eq 'YES' }">
+							<button type="button" class="list-btn red">참여중</button>  
+						</c:if>
+						<!-- particirAccp(승인여부)N -->
+						<c:if test="${list.particirAccp eq 'NO' }">
+							<button type="button" class="list-btn yellow">승인대기</button>
+						</c:if>
+						<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
+						<c:if test="${list.particirAccp eq null }">
+							<button type="button" class="list-btn green point">참여하기</button>
+						</c:if>
+					</div>
+				</c:if>
+			</div>
+		</c:forEach>
 	</div>
 </body>
 <script>

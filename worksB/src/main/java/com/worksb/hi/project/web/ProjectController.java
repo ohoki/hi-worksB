@@ -170,14 +170,16 @@ public class ProjectController {
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
 		
 		List<PrjParticirVO> myList = projectService.selectAllparticier(memberId);
-		List<ProjectVO>list=projectService.selectFromCompany(companyId);
-		
+		List<ProjectVO> list = projectService.selectFromCompany(companyId);
+		List<DeptVO> deptList = projectService.getDeptInfo(companyId); 
+				
 		for(ProjectVO vo :list) {
 			Optional<PrjParticirVO>op= myList.stream().filter(part -> part.getProjectId() ==vo.getProjectId() ).findAny();
 			if(!op.isEmpty())
 				vo.setParticirAccp(op.get().getParticirAccp());
 		}
 		m.addAttribute("projectList",list);
+		m.addAttribute("deptList", deptList);
 		
 		//m.addAttribute("particirList",myList);
     
