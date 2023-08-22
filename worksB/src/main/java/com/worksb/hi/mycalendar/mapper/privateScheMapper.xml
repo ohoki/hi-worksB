@@ -62,10 +62,36 @@
 								, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS')
 								, TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
 								, #{memberId}
-								, TO_DATE(#{alarmDate}, 'YYYY-MM-DD HH24:MI')
+								, TO_DATE(#{alarmDate}, 'YYYY-MM-DD HH24:MI:SS')
 								)
 	</insert>
-	<delete id="">
-	
+	<update id="updatePsche" parameterType="PrivateScheVO">
+		UPDATE private_sche
+		<set>
+			<if test="scheTitle != null and !scheTitle.equals('')">
+				sche_title = #{scheTitle},
+			</if>
+			<if test="scheContent != null and !scheContent.equals('')">
+				sche_content = #{scheContent},
+			</if>
+			<!-- Nullable이기 때문에 != null만 체크해줘도 된다!/사용자가 지우고 싶은 경우에 공백('')을 보내기 때문에 공백일 경우를 허용해줘야함! -->
+			<if test="coordinate != null">
+				coordinate = #{coordinate},
+			</if>
+			<if test="startDate != null and !startDate.equals('')">
+				start_date = TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS'),
+			</if>
+			<if test="endDate != null and !endDate.equals('')">
+				end_date = TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS'),
+			</if>
+			<if test="alarmDate != null and !alarmDate.equals('')">
+				alarm_date = TO_DATE(#{alarmDate}, 'YYYY-MM-DD HH24:MI:SS'),
+			</if>
+		</set>
+		WHERE sche_id = #{scheId}
+	</update>
+	<delete id="deletePsche" parameterType="int">
+		DELETE FROM private_sche
+		WHERE sche_id=#{scheId}
 	</delete>
 </mapper>

@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -89,11 +90,29 @@ public class PrivateScheController {
 	}
 	
 	@PostMapping("updatePsche")
-	public String updatePsche() {
-		
-		return "";
+	@ResponseBody
+	public String updatePsche(PrivateScheVO vo) {
+		int result = privateScheService.updatePsche(vo);
+		String resultMsg;
+		if(result==1) {
+			resultMsg = "success";
+		}else {
+			resultMsg = "fail";
+		}
+		return resultMsg;
 	}
 	
+	@GetMapping("deletePsche")
+	public String deletePshce(PrivateScheVO vo) {
+		int result = privateScheService.deletePsche(vo.getScheId());
+		String resultMsg;
+		if(result==1) {
+			resultMsg = "success";
+		}else {
+			resultMsg = "fail";
+		}
+		return resultMsg;
+	}
 	
 	
 }
