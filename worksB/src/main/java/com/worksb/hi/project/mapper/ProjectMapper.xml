@@ -78,18 +78,22 @@
 	
 	<!-- 프로젝트 게시글 리스트 -->
 	<select id="getBoardList" resultType="BoardVO">
-		SELECT PRJ_BOARD_ID,        
-				PRJ_BOARD_TITLE,     
-				PRJ_BOARD_SUBJECT,  
-				PRJ_BOARD_REGDATE,            
-				MEMBER_ID,            
-				INSP_YN,              
-				PIN_YN,                
-				BOARD_TYPE,           
-				PROJECT_ID,                 
-				COORDINATE
-		FROM prj_board
-		WHERE project_id = #{projectId}  
+		SELECT 	prj_board_id,        
+				prj_board_title,     
+				prj_board_subject,  
+				prj_board_regdate,            
+				member_id,            
+				insp_yn,              
+				pin_yn,                
+				board_type,           
+				project_id,                 
+				coordinate
+		FROM 	prj_board
+		WHERE 	prj_board_id
+		NOT IN 	(SELECT	prj_board_id
+				FROM	prj_task
+				WHERE	high_task_id IS NOT NULL)
+		AND		project_id = #{projectId}
 		ORDER BY prj_board_regdate DESC
 	</select>
 	
