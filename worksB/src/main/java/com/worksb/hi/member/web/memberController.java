@@ -70,7 +70,14 @@ public class memberController {
 		}
 		return result;
 	}// selectMember
-
+	
+	//회원 단건 조회
+	@GetMapping("/member/getMember")
+	@ResponseBody
+	public MemberVO getMember(MemberVO memberVO) {
+		return memberService.selectMember(memberVO);
+	}// getMember
+	
 	@RequestMapping("/loginForm")
 	public String loginForm() {
 		return "member/loginForm";
@@ -181,7 +188,7 @@ public class memberController {
 		return "company/updateForm";
 	}//updateForm
 	
-	@PostMapping("member/updateMember")
+	@RequestMapping("member/updateMember")
 	@ResponseBody
 	public boolean updateMember(MemberVO memberVO, HttpSession session) {
 		//비밀번호가 수정됐다면 암호화
