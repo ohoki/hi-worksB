@@ -153,6 +153,9 @@ div h2 {
 			<button type="submit">작성</button>
 		</form>
 	</div>
+	<!-- 지도  -->
+	<div id="map" style="width:500px;height:400px;"></div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d2a237b360646754fd5f20a66df56e27"></script>
 </body>
 <script>
 	$(document).ready(function(){
