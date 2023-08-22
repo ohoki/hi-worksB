@@ -21,4 +21,7 @@ particir_accp
 	private String alarmYn;
 	private String projectMarkup;
 	private String particirAccp;
+	
+	private String memberName;
+	private String realProfilePath;
 }

@@ -41,20 +41,6 @@
 </head>
 
 <body>
-<!-- 	<div> -->
-<%-- 		<c:forEach items="${projectList }" var="list"> --%>
-<%-- ${list.projectName } --%>
-<%-- ${list.memberId } --%>
-<!-- <br> -->
-<%-- 		</c:forEach> --%>
-<%-- 		<c:forEach items="${particirList }" var="plist"> --%>
-<!-- 			<br> -->
-<%-- 	${plist.memberId } --%>
-<%-- 	${plist.particirAccp } --%>
-<!-- 	<br> -->
-<%-- 		</c:forEach> --%>
-<!-- 	</div> -->
-
 	<div class="block">
 		<h3>회사 전체 프로젝트</h3>
 		<br>
@@ -104,6 +90,7 @@
 						<!-- 						particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
 						<c:if test="${list.particirAccp eq null }">
 							<span class="project-name gray" title="입장권한이 없습니다">${list.projectName}</span>
+							<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum } 
 							<img class="icon finger" alt="참여하기" title="프로젝트에 참여하기" src="${pageContext.request.contextPath }/resources/icon/signPrj.svg">
 							<hr>
 						</c:if>

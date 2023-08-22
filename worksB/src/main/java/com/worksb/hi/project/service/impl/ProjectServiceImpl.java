@@ -92,6 +92,13 @@ public class ProjectServiceImpl implements ProjectService {
 	public int insertParticipant(PrjParticirVO participant) {
 		return projectMapper.insertParticipant(participant);
 	}
+	// 프로젝트 참여자 조회
+	@Override
+	public List<PrjParticirVO> getParticirList(int projectId) {
+		return projectMapper.getParticirList(projectId);
+	}
+	
+	
 
 
 
@@ -159,6 +166,8 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<PrjParticirVO> selectAllparticier(String memberId){
 		return projectMapper.selectAllparticier(memberId);
 	}
+
+	
 
 
 

@@ -136,6 +136,23 @@
 										#{particirAccp})
 	</insert>
 	
+	<!-- 프로젝트 참여자 조회 -->
+	<select id="getParticirList" resultType="PrjParticirVO">
+		SELECT	p.prj_particir_id,
+				p.member_id,
+				p.manager,
+				p.project_id,
+				p.alarm_yn,
+				p.project_markup,
+				p.particir_accp,
+				m.member_name,
+				m.real_profile_path
+		FROM	prj_particir p
+		JOIN	member m
+		ON		p.member_id=m.member_id
+		WHERE	project_id = #{projectId}
+	</select>
+	
 	
 	
 	
