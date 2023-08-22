@@ -138,8 +138,9 @@
 	<h3 class="list-title">회사 전체 프로젝트</h3>
 	<div style="padding: 5px 50px;">
 		<ul class="dept-list">
+			<li class="view-dept" onclick='viewPart("all")'>전체보기</li>
 			<c:forEach items="${deptList }" var="dept">
-				<li>${dept.deptName }</li>
+				<li class="view-dept" onclick='viewPart("${dept.deptId }")' data-id="${dept.deptId }">${dept.deptName }</li>
 			</c:forEach>
 		</ul>
 	</div>
@@ -147,9 +148,9 @@
 		<div class="list-option">
 			<div class="list-count">전체 <span>${projectList.size() }</span></div>
 			<div>
-				<select>
-					<option>진행중</option>
-					<option>만료</option>
+				<select class="option">
+					<option value="select1">진행중</option>
+					<option value="select2">만료</option>
 				</select>
 			</div>
 		</div>
@@ -234,5 +235,40 @@
 	</div>
 </body>
 <script>
+	//부서별 출력
+	function viewPart(info){
+		//전체보기
+		if(info=='all'){
+			$.ajax({
+				url:'${pageContext.request.contextPath}/SelectFromCompany',
+				type:'GET',
+			})
+			.done(data=>{
+				console.log('success')
+			})
+			.fail(reject=>{
+				console.log(reject)
+			})
+		}
+		else{
+			
+		}
+	}
+	let deptInfo=$('.view-dept').val()
+	console.log(deptInfo)
+	$('.option').change(function() {
+		let value=$('.option').val()
+		//진행중프로젝트
+		if(value=='select1'){
+			$.ajax({
+				url:''
+			})
+		}
+		//만료된 프로젝트
+		else if(value=='select2'){
+			
+		}
+	})
+	
 </script>
 </html>
