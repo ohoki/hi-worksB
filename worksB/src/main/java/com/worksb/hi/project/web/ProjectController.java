@@ -179,14 +179,16 @@ public class ProjectController {
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
 		
 		List<PrjParticirVO> myList = projectService.selectAllparticier(memberId);
-		List<ProjectVO>list=projectService.selectFromCompany(companyId);
-		
+		List<ProjectVO> list = projectService.selectFromCompany(companyId);
+		List<DeptVO> deptList = projectService.getDeptInfo(companyId); 
+				
 		for(ProjectVO vo :list) {
 			Optional<PrjParticirVO>op= myList.stream().filter(part -> part.getProjectId() ==vo.getProjectId() ).findAny();
 			if(!op.isEmpty())
 				vo.setParticirAccp(op.get().getParticirAccp());
 		}
 		m.addAttribute("projectList",list);
+		m.addAttribute("deptList", deptList);
 		
 		//m.addAttribute("particirList",myList);
     
@@ -199,15 +201,24 @@ public class ProjectController {
 	@GetMapping("/projectList")
 	public String projectList(Model m,HttpSession session) {
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
-		m.addAttribute("projectList",projectService.searchPrj(memberId));
+		//북마크가 된 것만을 출력
+		m.addAttribute("bookmarked",projectService.searchPrj(memberId));
+		
+		//북마크기 되지 않은 것 중 만료여부에 따라 분류(Y:만료N:진행중)
+		m.addAttribute("noneBookmarked",projectService.searchPrjCls(memberId,"A1"));
 		return"prj/projectList";
 	}
+	
 	
 	//개인 프로젝트리스트출력(그리드형식)
 	@GetMapping("/projectGrid")
 	public String projectGrid(Model m,HttpSession session) {
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
-		m.addAttribute("projectList",projectService.searchPrj(memberId));
+		//북마크가 된 것만을 출력
+		m.addAttribute("bookmarked",projectService.searchPrj(memberId));
+				
+		//북마크기 되지 않은 것 중 만료여부에 따라 분류(Y:만료N:진행중)
+		m.addAttribute("noneBookmarked",projectService.searchPrjCls(memberId,"A1"));
 		return"prj/projectGrid";
 	}
 	

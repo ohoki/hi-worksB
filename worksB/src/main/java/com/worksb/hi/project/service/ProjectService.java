@@ -2,6 +2,8 @@ package com.worksb.hi.project.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.worksb.hi.board.service.BoardVO;
 
 public interface ProjectService {
@@ -34,6 +36,8 @@ public interface ProjectService {
 //주현
 	//내가 참여하는 프로젝트 보기
 	public List<ProjectVO> searchPrj(String memberId);
+	//내가 참여하는 프로젝트 중 즐겨찾기가 안 된 것의 만료여부
+	public List<ProjectVO> searchPrjCls(String memberId, String cls);
 	//내 회사의 프로젝트 전체 보기
 	public List<ProjectVO> selectFromCompany(int companyId);
 	//즐찾갱신

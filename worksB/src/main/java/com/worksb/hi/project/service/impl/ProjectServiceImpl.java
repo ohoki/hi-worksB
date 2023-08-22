@@ -105,6 +105,8 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	
 	//주현
+
+	// 개별조회
 	@Override
 	public List<ProjectVO> searchPrj(String memberId) {
 		List<ProjectVO> vo=projectMapper.searchPrj(memberId);
@@ -115,9 +117,15 @@ public class ProjectServiceImpl implements ProjectService {
 //		}
 		return vo;
 	}
+	
+	//북마크여부(NO)+만료여부에 따른 조회
+	@Override
+	public List<ProjectVO> searchPrjCls(String memberId, String cls) {
+		return projectMapper.searchPrjCls(memberId, cls);
+	}
 
 
-
+	//회사별조회
 	@Override
 	public List<ProjectVO> selectFromCompany(int companyId) {
 		List<ProjectVO> vo=projectMapper.selectFromCompany(companyId);
@@ -155,17 +163,20 @@ public class ProjectServiceImpl implements ProjectService {
 		return vo;
 	}
 
+	//로그인된 아이디가 참여하고 있는 프로젝트 
+	@Override
+	public List<PrjParticirVO> selectAllparticier(String memberId){
+		return projectMapper.selectAllparticier(memberId);
+	}
 
-
+	//즐겨찾기갱신
 	@Override
 	public void updateStar(ProjectVO vo) {
 		projectMapper.updateStar(vo);
 	}
 	
-	@Override
-	public List<PrjParticirVO> selectAllparticier(String memberId){
-		return projectMapper.selectAllparticier(memberId);
-	}
+
+
 
 	
 

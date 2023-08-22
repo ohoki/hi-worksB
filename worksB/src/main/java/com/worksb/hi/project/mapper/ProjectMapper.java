@@ -44,6 +44,8 @@ public interface ProjectMapper {
 	//주현
 		//내가 참여하는 프로젝트 보기
 		public List<ProjectVO> searchPrj(String memberId);
+		//내가 참여하는 프로젝트 중 즐겨찾기가 안 된 것의 만료여부
+		public List<ProjectVO> searchPrjCls(@Param("id")String memberId,@Param("cls") String cls);
 		//내 회사의 프로젝트 전체 보기
 		public List<ProjectVO> selectFromCompany(int companyId);
 		//즐찾갱신
