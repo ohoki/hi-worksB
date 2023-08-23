@@ -27,7 +27,7 @@ PROJECT_CLS             VARCHAR2(5)
 	private String boardAccess;
 	private String commentAccess;
 	private String fileAccess;
-	private int deptId;
+	private Integer deptId;
 	private String projectCls;
 	
 	private int prjParticirNum;
@@ -38,4 +38,5 @@ PROJECT_CLS             VARCHAR2(5)
 	
 	//주현
 	private String particirAccp;
+	private Integer companyId;
 }
