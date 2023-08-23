@@ -240,6 +240,7 @@ public class ProjectController {
 		vo.setProjectId(projectId);
 		vo.setManager("A2");
 		vo.setParticirAccp(accp);
+		vo.setProjectMarkup("A2");
 		projectService.insertParticipant(vo);
 		
 		return "prj/selectFromCompany";
@@ -248,12 +249,14 @@ public class ProjectController {
 	@PostMapping("/signOnly")
 	@ResponseBody
 	public String signOnly
-	(@RequestBody int projectId,HttpSession session,@RequestBody String particirAccp) {
+	(int projectId,HttpSession session, String particirAccp) {
 		PrjParticirVO vo= new PrjParticirVO();
 		vo.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
 		vo.setProjectId(projectId);
 		vo.setManager("A2");
 		vo.setParticirAccp(particirAccp);
+		vo.setProjectMarkup("A2");
+		projectService.insertParticipant(vo);
 		
 		return "success";
 	}
