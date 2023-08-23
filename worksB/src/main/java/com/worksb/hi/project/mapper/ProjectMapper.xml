@@ -279,9 +279,11 @@
    FROM
        project p
    WHERE
-      dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})  
-      AND
-      p.project_cls='A2'
+      dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})       
+      AND p.project_cls= nvl(#{projectCls},'A2')
+   	  <if test="deptId!=null">
+   	  	AND dept_id=#{deptId}
+   	  </if>
    ORDER BY p.project_id
 </select>
 
