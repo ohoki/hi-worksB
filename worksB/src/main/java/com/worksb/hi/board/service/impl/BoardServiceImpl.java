@@ -1,9 +1,12 @@
 package com.worksb.hi.board.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksb.hi.board.mapper.BoardMapper;
+import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.ScheVO;
@@ -71,5 +74,57 @@ public class BoardServiceImpl implements BoardService {
 			return -1;
 		}
 	}
+
+	// 일정 조회
+	@Override
+	public ScheVO getScheInfo(ScheVO scheVO) {
+		return boardMapper.getScheInfo(scheVO);
+	}
+	
+	// 투표 조회
+	@Override
+	public List<VoteVO> getVoteInfo(VoteVO voteVO) {
+		return boardMapper.getVoteInfo(voteVO);
+	}
+	
+	// 투표 항목 조회
+	@Override
+	public List<VoteVO> getVoteList(VoteVO voteVO) {
+		return boardMapper.getVoteList(voteVO);
+	}
+	
+	// 상위 업무 조회
+	@Override
+	public List<TaskVO> getHighTask(TaskVO taskVO) {
+		return boardMapper.getHighTask(taskVO);
+	}
+	
+	// 상위 업무 taskId 조회
+	@Override
+	public int getHighTaskId(TaskVO taskVO) {
+		return boardMapper.getHighTaskId(taskVO);
+	}
+	
+	// 하위 업무 조회
+	@Override
+	public List<TaskVO> getSubTask(int TaskId) {
+		return boardMapper.getSubTask(TaskId);
+	}
+
+	// 업무 담당자 등록
+	@Override
+	public int insertTaskManager(TaskVO taskVO) {
+		return boardMapper.insertTaskManager(taskVO);
+	}
+	
+	// 상위 업무 담당자 조회
+	@Override
+	public List<TaskVO> getHighManager(TaskVO taskVO) {
+		return boardMapper.getHighManager(taskVO);
+	}
+	
+	
+
+	
 
 }

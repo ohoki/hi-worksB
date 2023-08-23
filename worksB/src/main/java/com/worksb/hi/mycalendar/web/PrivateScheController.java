@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
@@ -12,10 +11,13 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
 
@@ -34,8 +36,8 @@ public class PrivateScheController {
 	public List<Map<String, Object>> myCalendar(HttpSession session) {
 		
 		//session에서 사용자 id값 가져와서 개인일정 검색
-		String memberId = (String) session.getAttribute("memberId");
-		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(memberId);
+		MemberVO vo = (MemberVO) session.getAttribute("memberInfo");
+		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(vo.getMemberId());
 		
 		//json객체 리스트화
 		JSONObject jsonObj = new JSONObject();
@@ -80,13 +82,39 @@ public class PrivateScheController {
 	//개인일정 단건조회
 	@GetMapping("selectPsche")
 	@ResponseBody
-	public PrivateScheVO viewPsche(int scheId) {
-		PrivateScheVO vo = new PrivateScheVO();
-		vo.setScheId(scheId);
-		vo = privateScheService.selectPsche(vo);
-		return vo;
+	public PrivateScheVO viewPsche(PrivateScheVO vo, Model model) {
+		PrivateScheVO scheVO = new PrivateScheVO();
+		scheVO.setScheId(vo.getScheId());
+		scheVO = privateScheService.selectPsche(scheVO);
+		model.addAttribute("priSche", scheVO);
+		return scheVO;
 	}
 	
+	@PostMapping("updatePsche")
+	@ResponseBody
+	public String updatePsche(PrivateScheVO vo) {
+		int result = privateScheService.updatePsche(vo);
+		String resultMsg;
+		if(result==1) {
+			resultMsg = "success";
+		}else {
+			resultMsg = "fail";
+		}
+		return resultMsg;
+	}
+	
+	@GetMapping("deletePsche")
+	@ResponseBody
+	public String deletePshce(PrivateScheVO vo) {
+		int result = privateScheService.deletePsche(vo.getScheId());
+		String resultMsg;
+		if(result==1) {
+			resultMsg = "success";
+		}else {
+			resultMsg = "fail";
+		}
+		return resultMsg;
+	}
 	
 	
 }

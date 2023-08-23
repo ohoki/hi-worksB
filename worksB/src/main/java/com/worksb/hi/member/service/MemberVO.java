@@ -43,4 +43,5 @@ public class MemberVO {
 	private String mailKey;
 	private int mailAuth;
 	private String companyAccp;
+	private String role;
 }

@@ -27,7 +27,7 @@ public class CustomUser implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> auth = new ArrayList<>();
-		auth.add(new SimpleGrantedAuthority(member.getMemberGrade()));
+		auth.add(new SimpleGrantedAuthority(member.getRole()));
 		return auth;
 	}
 

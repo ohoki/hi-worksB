@@ -1,18 +1,34 @@
 @import "root.css";
 
 body {
-	background-color: rgba(174, 213, 245, 0.1);
+	line-height: inherit !important;
 }
 
+*, ::after, ::before {
+    box-sizing: content-box !important;
+}
+
+button, input, optgroup, select, textarea {
+    
+}
+
+dl, ol, ul {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+body {
+	font-family: 'Noto Sans KR', sans-serif !important;
+}
 /* header */
-.header {
+.company-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-light-blue);
+  background-color: var(--color-beigie);
   padding: 10px 40px;
   height: 40px;
-  border: 1px solid var(--color-dark-white);
+  border: 1px solid var(--color-dark-beigie);
 }
 
 .header__logo {
@@ -24,7 +40,7 @@ body {
 .header__search {
   height: 30px;
   border-radius: 15px;
-  border: 1px solid var(--color-dark-white);
+  border: 1px solid var(--color-dark-beigie);
   padding: 0 15px;
   padding-left: 50px;
   background-image: url(../icon/search-icon.png);
@@ -32,6 +48,8 @@ body {
   background-size: 20px;
   background-position: 15px;
   cursor: pointer;
+  font-family: sans-serif !important;
+  font-size: var(--font-micro) !important;
 }
 
 .header__icon{
@@ -58,7 +76,7 @@ body {
 }
 
 /* modal */
-#profile-modal, #my-profile-modal, #alarm-modal, #employees-modal {
+#profile-modal, #my-profile-modal, #alarm-modal, #employees-modal, #status-modal, #employee-modal {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -76,9 +94,10 @@ body {
 	right: 4%;
 	top: 4%;
 	background-color: white;
-	border: 1px solid black;
+	border: 1px solid var(--color-dark-beigie);
 	border-radius: 10px;
 	padding: 5px 15px;
+	z-index: 10;
 }
 
 .modal-logo {
@@ -87,32 +106,37 @@ body {
 	border-radius: 10px;
 }
 
-.profile-modal__title {
+.profile-modal__title{
 	display: flex;
 	height: 50px;
 	align-items: center;
 	margin-bottom: 10px;
 }
 #profile-modal p {
-	padding: 5px 0;
-	margin: 5px 0;
+	padding: 7px 0;
+	margin: 0;
 }
 
 #profile-modal p:hover {
-	background-color: var(--color-light-blue);
+	background-color: var(--color-beigie);
 }
 
-.my-profile-modal__content {
+#profile-modal p a:hover {
+	color: black;
+}
+
+.my-profile-modal__content, .employee__content {
 	position: absolute;
 	background-color: white;
 	width: 17%;
 	height: 60%;
 	top:50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%); */
 	border-radius: 5px;
 	text-align: center;
 	padding: 30px 0 15px 0;
+	z-index: 10;
 }
 
 .my-profile-logo {
@@ -122,7 +146,60 @@ body {
 	border-radius: 5px;
 }
 
-.my-profile-modal__name {
+.status {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	position: absolute;
+	top: 37px;
+	right: 68px;
+	z-index: 1;
+}
+
+.status-modal__content {
+	width: 100px;
+	height: 80px;
+	border-radius: 50%;
+	position: absolute;
+	top: 100px;
+	right: 240px;
+	background-color: white;
+	border: 1px solid var(--color-dark-beigie);
+	border-radius: 10px;
+	padding: 10px 5px;
+	z-index: 10;
+}
+
+.status-modal__content li {
+	cursor: pointer;
+	padding: 5px 0;
+}
+
+.status-modal__content li:hover {
+	background-color: var(--color-beigie);
+}
+
+.status-modal__content li span {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+.status-green {
+	background-color: #00cc66;
+}
+
+.status-yellow {
+	background-color: #ff6b35;
+}
+
+.status-red {
+	background-color: #dd1c1a;
+}
+
+.my-profile-modal__name, .employee-modal__name {
 	margin-bottom: 20px;
 }
 
@@ -137,9 +214,10 @@ body {
 	display: inline-block;
 }
 
-.my-profile__btn {
+.my-profile__btn, .chat__btn {
 	margin-top:30px;
-	background-color: rgb(174, 213, 245);
+	background-color: var(--color-dark-red);
+	background-color: rgb(22, 66, 91, 0.8);
 	width: 80%;
 	height: 50px;
 	text-align: center;
@@ -158,7 +236,7 @@ body {
 	background-color: white;
 	font-size: 12px;
 	padding: 20px 15px;
-	border: 1px solid var(--color-dark-white);
+	z-index: 10;
 }
 
 .alarm__title, .employees__title {
@@ -175,7 +253,7 @@ body {
 	display: block;
 	width: 83%;
 	height: 30px;
-	border: 1px solid var(--color-dark-white);
+	border: 1px solid var(--color-dark-beigie);
 	border-radius: 5px;
 	background-image: url(../icon/search-icon.png);
 	background-repeat: no-repeat;
@@ -206,13 +284,22 @@ body {
 .employee {
 	align-items: center;
 	justify-content: space-between;
-	border-bottom: 1px solid var(--color-dark-white);
+	border-bottom: 1px solid var(--color-dark-beigie);
 	padding: 0 20px 0 5px;
+	cursor: pointer;
+}
+
+.employee:nth-child(1) {
+	border-top: 1px solid var(--color-dark-beigie);
 }
 
 .employee-img {
 	width: 40px;
 	height: 40px;
+}
+
+.employees_search-input {
+	margin: 10px 0;
 }
 .modal-visible {
 	display: block !important;
@@ -224,13 +311,13 @@ body {
 
 /* side */
 .side {
-  background-color: var(--color-light-blue);
+  background-color: var(--color-beigie);
   height: 100%;
   width: 100%;
-  border: 1px solid var(--color-dark-white);
+  border: 1px solid var(--color-dark-beigie);
   border-top:none ;
   padding-top: 10px;
-  text-align: right;
+  text-align: left;
   position: relative;
 }
 
@@ -243,32 +330,48 @@ body {
 
 .side__menu__cate {
   margin: 0;
-  background-color: rgb(174, 213, 245, 0.15);
+  font-weight: var(--weight-bold);
   font-size: var(--font-small);
   color: var(--color-dark-grey);
-  padding-right: 30px;
+  border-bottom: 1px solid var(--color-dark-beigie);
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center
+  
+}
+
+.side__menu__cate img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 }
 
 .side__menu__items {
   font-size: var(--font-small);
-  color: var(--color-dark-grey);
+  /* color: var(--color-dark-grey); */
+  color: var(--color-black);
 }
 
 .side__menu__item {
   font-size: var(--font-micro);
-  margin-top: 5px;
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-semi-bold);
   display: block;
-  padding-right: 30px;
+  padding: 5px 0 5px 50px;
 }
 
 .side__menu__item:hover {
-  background-color: rgba(174, 213, 245, 0.15);
-  color: black;
+  background-color: var(--color-dark-red);
+  color: white !important;
+}
+
+.side__menu__item a:hover {
+  color: white !important;
 }
 
 .side__menu__bottom {
-  background-color: rgba(174, 213, 245, 0.15);
+  background-color: rgb(253, 252, 220);
   padding: 20px 0;
   position: absolute;
   bottom: 0;
