@@ -22,6 +22,9 @@
 		text-decoration: none;
 		color : var(--color-dark-beige);
 	}
+	.fc .fc-button-group > .fc-button.fc-button-active, .fc .fc-button-group > .fc-button:active, .fc .fc-button-group > .fc-button:focus, .fc .fc-button-group > .fc-button:hover {
+    	z-index: 0 !important;
+	}
 </style>
 </head>
 <!-- full calendar  -->

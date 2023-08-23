@@ -86,7 +86,7 @@
     color: #303030;
 }
 
-span{
+.project__title{
 	font-size: 25px;
 	margin-left: 20px;
 }
@@ -112,7 +112,7 @@ ol, ul {
 	<div class="project__setting">
 		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
 		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/bars-solid.svg" data-bs-toggle="modal" data-bs-target="#firstModal">
-    	<span>${projectInfo.projectName}</span>
+    	<span class="project__title">${projectInfo.projectName}</span>
     </div>
 		<div class="modal" tabindex="-1" id="firstModal">
 			<div class="modal-dialog modal-sm">
