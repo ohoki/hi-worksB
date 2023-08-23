@@ -25,13 +25,11 @@
 		<div class="header__icon">
 			<!-- 구성원 -->
 			<a href="#" data-type="employees"> 
-				<i class="fa-solid fa-comments" style="color: var(--color-dark-red)"></i>
-			<%-- 	<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/comments-solid.svg" class="header__profile"> --%>
+			<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/comments-solid.svg" class="header__profile">
 			</a>
 			<!-- 알림 -->
 			<a href="#" data-type="alarm"> 
-				<i class="fa-solid fa-bell" style="color: #ffd100;"></i>
-				<%-- <img alt="알림 보기" src="${pageContext.request.contextPath}/resources/icon/bell-solid.svg" class="header__profile"> --%>
+				<img alt="알림 보기" src="${pageContext.request.contextPath}/resources/icon/bell-solid.svg" class="header__profile">
 			</a>
 			<!-- 프로필 -->
 			<c:if test="${memberInfo.realProfilePath eq null }">
