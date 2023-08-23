@@ -21,56 +21,50 @@
 	font-weight: var(--weight-bold);
 	border : 1px solid var(--color-dark-beigie);
 }
-
 .list-option button:hover {
 	background-color: var(--color-dark-red);
 	color: var(--color-white);
 	border : 1px solid var(--color-dark-red);
 }
-
 .list-title {
 	font-size: var(--font-regular);
+	padding: 0 30px;
+	margin-bottom: 15px;
 	color: var(--color-dark-grey);
 	padding: 0 80px 0 30px; 
 	margin-top: 30px;
 }
-
 .list-box {
 	width: 70%;
 	margin: 0 auto;	
 	font-size: 18px; 
 	font-weight: var(--weight-semi-bold);
 }
-
 .list {
 	padding: 10px 40px;
 	margin: 5px 0;
-	background-color: rgba(174, 213, 245, 0.1);
 	border-radius: 5px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	background-color: rgb(253, 252, 220, 0.2);
 }
-
 .list-option {
 	display: flex;
 	align-items: center;
 	margin: 20px 0 30px;
 	justify-content: space-between;
 }
-
 .list-option select {
 	width: 100px;
 	height: 30px;
 	border-radius: 4px;
-  	border: 1px solid var(--color-light-blue);
+  	border: 1px solid var(--color-dark-beigie);
   	outline: none;
 }
-
 .list-option select:focus{
 	outline: none;
 }
-
 .project-name {
 	margin-right: 50px;
 	height: 30px;
@@ -78,54 +72,45 @@
 	display: flex;
 	align-items: center;
 }
-
 .project-info {
 	display: flex;
 	align-items: center;
 	margin-right: 80px;
 }
-
 .dept-list {
 	display: flex;
 	justify-content: flex-start;
 	font-size: 16px; 
 	color: var(--color-light-grey);
 }
-
 .list-count {
 	font-size: var(--font-small); 
 	font-weight: var(--weight-bold);
 }
-
 .list-count span {
 	color: var(--color-red);
 	margin-left: 5px;
 }
-
 .dept-list li {
-	padding: 10px 10px;
+	padding: 7px 10px;
 	border-radius: 10px;
 	margin-right: 10px;
 	cursor: pointer;
 	border: 1px solid rgba(174, 213, 245, 0);
 }
-
 .dept-list li:hover {
-	border: 1px solid rgb(174, 213, 245);
-	background-color: rgb(174, 213, 245);
-	color: white;	
+	border: 1px solid var(--color-dark-beigie);
+	background-color: var(--color-dark-beigie);
+	color: var(--color-dark-red);	
 }
-
 .icon {
 	width : 30px;
 	height : 30px;
 }
-
 .prj-icon {
 	margin: 0 10px;
 	display: inline-block;
 }
-
 .list-btn {
 	width: 70px;
 	height: 34px;
@@ -137,18 +122,14 @@
 	cursor: pointer;
 }
 .green {
-	background-color: var(--color-green);
+	background-color: #29bf12;
 }
-
 .yellow {
 	background-color: var(--color-orange);
 }
-
 .red {
 	background-color: var(--color-red);
 }
-
-
 </style>
 </head>
 
