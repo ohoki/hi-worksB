@@ -210,7 +210,7 @@ a {
 			<c:if test="${board.boardType eq 'C5'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div class="board-headder-info memberName">${board.memberName } </div>
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
@@ -228,7 +228,7 @@ a {
 			<c:if test="${board.boardType eq 'C6'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container" id="scheInfo">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div class="board-headder-info memberName">${board.memberName } </div>
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
@@ -250,7 +250,8 @@ a {
 			<c:if test="${board.boardType eq 'C7'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div class="board-headder-info memberName">${board.memberName } </div>
+						
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
@@ -272,7 +273,7 @@ a {
 			<c:if test="${board.boardType eq 'C8'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div class="board-headder-info memberName">${board.memberName } </div>
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
@@ -284,6 +285,7 @@ a {
 						<div class="task-endDate">업무종료일</div>
 						<div class="task-priority">우선순위</div>
 						<div class="task-processivity">진척도</div>
+						<div class="task-manager">업무담당자 : </div>
 					</div>
 					<div class="board-sub task_sub divide2">
 						${board.prjBoardSubject }
@@ -368,6 +370,8 @@ a {
 						let taskInfo = $(boardList[i]);
 						// 상위 업무
 						let highTask = taskData.highTask[0];
+						// 상위 업무 담당자 리스트
+						let highManagers = taskData.highManager;
 						// 하위 업무리스트
 						let subTasks = taskData.subTask;
 
@@ -380,6 +384,8 @@ a {
 	                                return '보통';
 	                            case 'F1':
 	                                return '긴급';
+	                            case null:
+	                            	return '';
 	                            default:
 	                                return priority;
 	                        }
@@ -398,17 +404,37 @@ a {
 	                                return '완료';
 	                            case 'G5':
 	                                return '보류';
+	                            case null:
+	                            	return '';
 	                            default:
 	                                return state;
 	                        }
 	                    }
-				        
+
 				        // 상위 업무 정보
-				        taskInfo.find(".task-startDate").text(highTask.startDate);
-				        taskInfo.find(".task-endDate").text(highTask.endDate);
+				        // 시작일
+				        let startDate = highTask.startDate != null ? highTask.startDate : '';
+				        taskInfo.find(".task-startDate").text(startDate);
+						// 종료일
+				        let endDate = highTask.endDate != null ? highTask.endDate : '';
+				        taskInfo.find(".task-endDate").text(endDate);
+				        
+				        // 우선 순위
 				        taskInfo.find(".task-priority").text(getPriority(highTask.priority));
+				        
+				        // 진척도
 				        taskInfo.find(".task-processivity").text(highTask.processivity);
+				        
+				        // 업무상태
 				        taskInfo.find(".taskState").text(getState(highTask.state));
+				        
+				        // 상위 업무 담당자 리스트
+				        let highManagerList = taskInfo.find(".task-manager");
+				        for(let k=0; k<highManagers.length; k++){
+				        	let highManager = highManagers[k];
+				        	
+				        	highManagerList.append('<span class="highManagerInfo">' + highManager.memberName + '   </span>');
+				        }
 
 				        // 하위 업무 리스트
 				        let subTasksInfo = taskInfo.find(".subTask");
@@ -831,6 +857,7 @@ a {
                         <option value="G5">보류</option>
                     </select>
                 </div>
+                <div class="subTaskManager"></div>
             </div>`;
         
         $('.task-add:last').prev().after(subtaskForm);
@@ -854,18 +881,17 @@ a {
 		let projectId = $('#projectId').val();
 		
 		
+		let boardVO = {prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId}
+		let taskVO = {state, startDate, endDate, priority, processivity}
+		
+		// 상위 업무 담당자 리스트
 		let prjManager =[];
 		$('.taskManager input[name="prjParticirId"]').each(function(index, item){
 	        let prjParticirId = $(item).val();
 	        prjManager.push({prjParticirId});
 	    });
 		
-
-		
-		let boardVO = {prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId}
-		let taskVO = {state, startDate, endDate, priority, processivity}
-		
-		
+		// 하위 업무 리스트
 		let subTask = [];
 		$('.task-add').each(function(index,item){
 			console.log(item)
@@ -953,7 +979,7 @@ a {
 	                let prjParticirId = $(this).find("input[name='particirId']").val();
 	                let AddParticirId = '<input type="hidden" id="prjParticirId" name="prjParticirId" value="' + prjParticirId + '">';
 	                $('.taskManager').append(AddParticirId);
-	                
+	                 
 	                
 	                console.log(prjParticirId);
 	            });

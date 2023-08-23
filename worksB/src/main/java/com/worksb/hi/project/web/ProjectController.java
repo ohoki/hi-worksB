@@ -84,7 +84,10 @@ public class ProjectController {
 		participant.setManager("A1");
 		// 참여 승인 여부
 		participant.setParticirAccp("A1");
+		// 즐겨찾기 여부 A2
+		participant.setProjectMarkup("A2");
 		participant.setProjectId(projectVO.getProjectId());
+		
 		
 		// 참여자 등록
 		projectService.insertParticipant(participant);

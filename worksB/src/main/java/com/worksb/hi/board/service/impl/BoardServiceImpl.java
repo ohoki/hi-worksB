@@ -117,6 +117,12 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.insertTaskManager(taskVO);
 	}
 	
+	// 상위 업무 담당자 조회
+	@Override
+	public List<TaskVO> getHighManager(TaskVO taskVO) {
+		return boardMapper.getHighManager(taskVO);
+	}
+	
 	
 
 	
