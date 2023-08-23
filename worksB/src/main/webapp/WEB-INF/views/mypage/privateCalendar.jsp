@@ -52,29 +52,27 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-					<div>
-						<form id="scheForm" action="${pageContext.request.contextPath}/priScheInsert" method="post">
-							<input name="scheTitle" type="text" placeholder="제목을 입력하세요."> <br><hr>
-							<input name="startDate" type="text" id="datetimepicker1" autocomplete="off">---
-							<input name="endDate" type="text" id="datetimepicker2"  autocomplete="off">
-							<label for="alarmDate">알람시간 : </label>
-							<select class="alarmDate" name="alarmDate">
-						        <option value="">없음</option>
-						        <option value="10">10분 전 미리 알림</option>
-						        <option value="30">30분 전 미리 알림</option>
-						        <option value="60">1시간 전 미리 알림</option>
-						        <option value="120">2시간 전 미리 알림</option>
-						        <option value="1440">1일 전 미리 알림</option>
-							</select><br>
-							<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberInfo.memberId }" readonly="readonly"><br>
-							<label for="coordinate">장소 : </label><input id="coordinate" name="coordinate" type="text" ><br>
-							<label for="scheContent">내용 : </label><textarea id="scheContent" name="scheContent" rows="" cols="100%"></textarea>
-						</form>
-					</div>
+					<form id="scheForm" action="${pageContext.request.contextPath}/priScheInsert" method="post">
+						<input name="scheTitle" type="text" placeholder="제목을 입력하세요."> <br><hr>
+						<input name="startDate" type="text" id="datetimepicker1" autocomplete="off">---
+						<input name="endDate" type="text" id="datetimepicker2"  autocomplete="off">
+						<label for="alarmDate">알람시간 : </label>
+						<select class="alarmDate" name="alarmDate">
+					        <option value="">없음</option>
+					        <option value="10">10분 전 미리 알림</option>
+					        <option value="30">30분 전 미리 알림</option>
+					        <option value="60">1시간 전 미리 알림</option>
+					        <option value="120">2시간 전 미리 알림</option>
+					        <option value="1440">1일 전 미리 알림</option>
+						</select><br>
+						<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberInfo.memberId }" readonly="readonly"><br>
+						<label for="coordinate">장소 : </label><input id="coordinate" name="coordinate" type="text" ><br>
+						<label for="scheContent">내용 : </label><textarea id="scheContent" name="scheContent" rows="" cols="100%"></textarea>
+					</form>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" form="scheForm" class="btn btn-primary">일정 저장</button>
-                    <button type="reset" form="scheForm" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                    <button type="reset" form="scheForm" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>
         </div>
@@ -114,6 +112,30 @@
 	    </div>
 	  </div>
 	</div>
+	<!-- to-do-List Modal -->
+	<div class="modal fade" id="tdlModal" tabindex="-1" aria-labelledby="tdlModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="tdlModalLabel">To Do List</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="tdlBody">
+	      	<form id="tdlForm">
+		      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요"><hr>
+		      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker5"  autocomplete="off">
+		      	<div>
+		      	</div>
+		      	<button type="button" class="btn btn-primary" id="addTdlLine">To Do List 추가</button>
+	      	</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary">TDL 저장</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
 <script>
 	//입력성공시 메세지
@@ -123,18 +145,46 @@
 		if(msg == null || msg == '') return;
 		alert(msg);
 	}
-
+	
 	//입력모달창 띄우기
 	var scheModal = new bootstrap.Modal(document.getElementById('scheModal'))
 	var selectModal = new bootstrap.Modal(document.getElementById('selectModal'))
+	var tdlModal = new bootstrap.Modal(document.getElementById('tdlModal'))
 	
+	//모달 폼 리셋
+	$('#selectModal, #scheModal').on('hidden.bs.modal', function (e) {
+		$(this).find('form')[0].reset();
+        $(".alarmDate option:eq(0)").prop("selected", true);
+	});
 	
 	//dateTimePicker
 	jQuery.datetimepicker.setLocale('kr');
-	$('#datetimepicker1, #datetimepicker2').datetimepicker({
-	    format:'Y-m-d H:i',
-	    step: 30,
-	    lang:'kr'
+
+	$('#datetimepicker1').datetimepicker({
+		format:'Y-m-d H:i',
+		step: 30,
+		lang:'kr',
+		onShow:function( ct ){
+			this.setOptions({
+				maxDate:jQuery('#datetimepicker2').val()?jQuery('#datetimepicker2').val():false
+			})
+		}
+	});
+	$('#datetimepicker2').datetimepicker({
+		format:'Y-m-d H:i',
+		step: 30,
+		lang:'kr',
+		onShow:function( ct ){
+			this.setOptions({
+				minDate:$('#datetimepicker1').val()?jQuery('#datetimepicker1').val():false
+			})
+		}
+	});
+		
+	$('#datetimepicker5').datetimepicker({
+	    format:'Y-m-d',
+	    lang:'kr',
+	    timepicker:false
 	});
 	
 	//일정입력/수정 시 알람시간 부여
@@ -186,13 +236,31 @@
 	//var today = new Date();
 	//var month = ('0'+(today.getMonth()+1)).substr(-2);
 	//var day = ('0'+today.getDate()).substr(-2);
+	
+	//tdl line 추가
+	$('#addTdlLine').on('click',()=>{
+		let td = $('#addTdlLine').prev()
+		let lineInput = $(`<input type="text" name="content" placeholder="task를 입력하세요">
+						<img class="tdlLineDeleteBtn" src="${pageContext.request.contextPath }/resources/icon/minusCircleBtn.svg" alt="minus SVG" width="20" height="20"/><br>`)
+		td.append(lineInput)
+
+	});
+	
+	//todolist 줄 삭제
+	$(document).on('click', '.tdlLineDeleteBtn', function() {
+	  console.log('e');
+	  $(this).prev().remove(); // 클릭한 요소의 이전 요소 삭제
+	  $(this).next().remove(); 
+	  $(this).remove(); // 클릭한 요소만 삭제
+	});
+	
 	var calendar 
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
 		
 		//변수선언
 		var calendarEl = document.getElementById('calendar');
-		 calendar = new FullCalendar.Calendar(calendarEl, {
+		calendar = new FullCalendar.Calendar(calendarEl, {
 
 			dayMaxEventRows : true, // for all non-TimeGrid views
 			views : {
@@ -205,6 +273,10 @@
 				myCustomButton : {
 					text : '일정추가',
 					click : scheInsert
+				},
+				tdlBtn : {
+					text : 'to-do-List',
+					click : toDoListInsert
 				},
 				scheBtn : {
 					text : '일정필터',
@@ -222,7 +294,7 @@
 			headerToolbar : {
 				left : 'prev,today,next scheBtn,taskBtn',
 				center : 'title',
-				right : 'myCustomButton dayGridMonth,timeGridWeek'
+				right : 'tdlBtn,myCustomButton dayGridMonth,timeGridWeek'
 			},
 			locale : "ko",
 			navLinks : false, // can click day/week names to navigate views
@@ -238,14 +310,14 @@
 		
 		//전체 일정 조회/재조회
 		function loadPriSche(){
-			var calendarAjaxCall = $.ajax({
+			$.ajax({
 				  url: "privateScheList",
 				  method: "GET",
 				  dataType: "json"
 			}).done(function(data){
 				calendar.removeAllEvents();
 				calendar.addEventSource(data);
-				console.log(calendar.addEventSource(data))
+				calendar.getEventSources()
 				//calendar.refetchEvents();
 			}).fail(function( jqXHR, textStatus ) {
 				  alert( "Request failed: " + textStatus );
@@ -339,7 +411,12 @@
 			$('#datetimepicker1').val(nowTime);
 			$('#datetimepicker2').val(nowTimeAfter);
 			
-		}
+		};
+		
+		//todoList db입력
+		function toDoListInsert(){
+			tdlModal.show()
+		};
 		
 
 	
@@ -428,12 +505,12 @@
 				success : function(result){
 					console.log(result);
 					//캘린더 event 업데이트
+					loadPriSche();
 				},
 				error : function(err){
 					console.log(err);
 				}
 			});
-			loadPriSche();
 			//삭제버튼 삭제
 			$('#updateBtn').prev('button').remove();
 			//모달창 닫기
