@@ -158,7 +158,6 @@ public class ProjectController {
 	@GetMapping("particirList")
 	@ResponseBody
 	public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
-		System.out.println("===========================================================");
 		return projectService.getParticirList(projectId);
 	}
 	

@@ -192,6 +192,13 @@ a {
 	width: 40px;
 	height: 40px;
 }
+
+.btn-add-taskManager{
+	width: 100px;
+	height: 30px;
+	background-color : #c0e6f5;
+	color: var(--color-grey);
+}
 </style>
 </head>
 <body>
@@ -845,10 +852,19 @@ a {
 		let boardType = 'C8';
 		let memberId = $('#memberId').val();
 		let projectId = $('#projectId').val();
-		console.log(memberId);
+		
+		
+		let prjManager =[];
+		$('.taskManager input[name="prjParticirId"]').each(function(index, item){
+	        let prjParticirId = $(item).val();
+	        prjManager.push({prjParticirId});
+	    });
+		
+
 		
 		let boardVO = {prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId}
 		let taskVO = {state, startDate, endDate, priority, processivity}
+		
 		
 		let subTask = [];
 		$('.task-add').each(function(index,item){
@@ -867,11 +883,11 @@ a {
         	subTask.pop();
    		}
 		
-		console.log(JSON.stringify({boardVO, taskVO, subTask}));
+		console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager}));
 		$.ajax({
 			url:'taskInsert',
 			type:'post',
-			data:JSON.stringify({boardVO, taskVO, subTask}),
+			data:JSON.stringify({boardVO, taskVO, subTask, prjManager}),
 			contentType:'application/json',
 			success:function(data){
 				console.log(data);
@@ -910,17 +926,37 @@ a {
 					//스팬 태그
 					let span = document.createElement('span');
 					span.innerText = particir[i].memberName;
-					//히든 인풋 태그 (멤버id값)
+					//히든 인풋 태그 (프로젝트 참여자 id값)
 					let input = document.createElement('input');
 					input.setAttribute('type', 'hidden');
-					input.value = particir[i].memberId;
+					input.setAttribute('name', 'particirId');
+					input.value = particir[i].prjParticirId;
 					//태그 삽입
 					particirInfo.append(employeeProfile);
 					particirInfo.append(span);
 					particirInfo.append(input);
 					
 					particirList.append(particirInfo);
+					
 				}
+	            
+	            // 참여자 선택하여 업무 담당자 추가하기
+	            $(document).on("click", ".prjParticir", function (e) {
+	                e.stopPropagation();
+
+	                let memberName = $(this).find("span").text();
+	                let AddParticir = '<input type="text" name="memberName" value="' + memberName + '">';
+	                $('.taskManager').append(AddParticir);
+	                
+	                
+	                //prj_particir_id
+	                let prjParticirId = $(this).find("input[name='particirId']").val();
+	                let AddParticirId = '<input type="hidden" id="prjParticirId" name="prjParticirId" value="' + prjParticirId + '">';
+	                $('.taskManager').append(AddParticirId);
+	                
+	                
+	                console.log(prjParticirId);
+	            });
 	            
 	        },
 	        error: function(reject){
@@ -929,21 +965,5 @@ a {
 	    });
 	});
 
-	/*
-	// 업무담당자 
-	$(document).on("click", ".prjParticir",function(e){
-		e.stopPropagation();
-		
-		$('.taskManager').append(
-			'<input type="text" name="memberName"> <input type="button" class="btnRmVManager" value="X"><br>'
-		);
-		$('.btnRmVManager').on('click', function(){
-			$(this).prev().remove ();
-	        $(this).next().remove ();
-	        $(this).remove();
-		});
-    });                                           
-	*/
-	
 </script>
 </html>

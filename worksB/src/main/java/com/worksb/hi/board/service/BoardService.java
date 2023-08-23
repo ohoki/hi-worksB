@@ -28,6 +28,9 @@ public interface BoardService {
 	// 하위 업무 조회
 	public List<TaskVO> getSubTask(int TaskId);
 	
+	// 업무 담당자 등록
+	public int insertTaskManager(TaskVO taskVO);
+	
 	
 	
 	
