@@ -16,56 +16,66 @@
 </head>
 <body>
 <!-- !!!!!!!!!!!!!!!!!!!미확인알림 안해뜸!!!!!!!!!!!!!!!!!!!! -->
-	<div class="block">
-		<h1>내프로젝트</h1>
-		
-		</div>
+	<div class="prj-title">
+		<h1>내 프로젝트</h1>
 		<div class="icons">
-			<a href="${pageContext.request.contextPath }/projectList"><img class="tiled icon" alt="타일형으로 보기"
-				src="${pageContext.request.contextPath }/resources/icon/microsoft.svg"></a>
-			<a href="${pageContext.request.contextPath }/projectList"><img class="list icon" alt="리스트로 보기"
+			<a href="${pageContext.request.contextPath }/projectList"><img class="icon" alt="리스트로 보기"
 				src="${pageContext.request.contextPath }/resources/icon/list.svg"></a>
+			<a href="${pageContext.request.contextPath }/projectList"><img class="icon" alt="타일형으로 보기"
+				src="${pageContext.request.contextPath }/resources/icon/microsoft.svg"></a>
 		</div>
-		<!-- 좋아요를 누른 프로젝트 -->
-		<h2 class="star-list">즐겨찾기</h2>
+	</div>
+	<!-- 좋아요를 누른 프로젝트 -->
+	<div class="list-box">
+		<h2 class="list-title">즐겨찾기</h2>
 		<div class="like-container">
-			<ul>
-				<c:forEach items="${bookmarked }" var="list">
-					<li>
-						<img class="icon colored-star draggable" alt="즐겨찾기 별" draggable="true" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-id="${list.projectId }"> 
-						<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
-						<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }
-							<c:if test="${list.projectAccess eq 'YES'}">
-								<img class="icon" alt="전체공개이미지" src="${pageContext.request.contextPath }/resources/icon/globe.svg">
-							</c:if> <!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
-							<span class="unread-project">1</span>
-					</li>
-		</c:forEach>
-		</ul>
-		</div>
-
-		<!-- 좋아요를 누르지 않은 프로젝트 -->
-		<h2 class="none-star-list">프로젝트</h2>
-		<div class="dislike-container">
-			<ul>
-				<c:forEach items="${noneBookmarked }" var="list">
-					<li>
-						<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg" data-id="${list.projectId }" data-end="NO"> 
-						<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
-						<img class="icon" alt="참여자수 아이콘" src="${pageContext.request.contextPath }/resources/icon/user.svg">${list.prjParticirNum }
-						<c:if test="${list.projectAccess eq 'YES'}">
-							<img class="icon" alt="전체공개이미지" src="${pageContext.request.contextPath }/resources/icon/globe.svg">
-						</c:if> 
+			<c:forEach items="${bookmarked }" var="list">
+				<div class="list">
+					<div class="project-name">
+						<img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-id="${list.projectId }"> 
+					<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
+					<c:if test="${list.projectAccess eq 'YES' }">
+						<img class="icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg" style="margin-left: 20px;">
+					</c:if>
+					<c:if test="${list.projectAccess eq 'NO' }">
+						<img class="icon" alt="참여자공개이미지" title="참여자만 공개" src="${pageContext.request.contextPath }/resources/icon/lock-solid.svg" style="margin-left: 20px;">	
+					</c:if> 
+					</div>
+					<div class="project-info">
+						${list.prjParticirNum }<img class="icon" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 						<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
 						<span class="unread-project">1</span>
-					</li>
-				</c:forEach>
-			</ul>
+					</div>
+				</div>
+			</c:forEach>
 		</div>
 	</div>
 
-
-
+	<!-- 좋아요를 누르지 않은 프로젝트 -->
+	<div class="list-box">
+		<h2 class="list-title">프로젝트</h2>
+		<div class="dislike-container">
+			<c:forEach items="${noneBookmarked }" var="list">
+				<div class="list">
+					<div class="project-name">
+						<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg" data-id="${list.projectId }" data-end="NO"> 
+						<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
+						<c:if test="${list.projectAccess eq 'YES' }">
+							<img class="icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg" style="margin-left: 20px;">
+						</c:if>
+						<c:if test="${list.projectAccess eq 'NO' }">
+							<img class="icon" alt="참여자공개이미지" title="참여자만 공개" src="${pageContext.request.contextPath }/resources/icon/lock-solid.svg" style="margin-left: 20px;">	
+						</c:if> 
+					</div>
+					<div class="project-info">
+						${list.prjParticirNum }<img class="icon" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+						<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
+						<span class="unread-project">1</span>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
+	</div>
 </body>
 <script>
 //즐겨찾기
@@ -83,12 +93,10 @@
     	    star.className='icon empty-star';
 
     	    let dislikeC = document.querySelector('.dislike-container');
-    	    let parent = star.parentNode;
-    	    console.log(parent);
+    	    let parent = star.parentNode.parentNode;
+    	 
     	    dislikeC.appendChild(parent);
-   
-	//즐찾추가
-        } 
+        } //즐찾추가
         else if(e.target.className.includes('empty-star')){
         	let empty = e.target;
 
@@ -100,12 +108,12 @@
        	    empty.className='icon colored-star';
 
        	    let none = document.querySelector('.like-container');
-       	    let pn = empty.parentNode;
-       	    console.log(pn);
+       	    let pn = empty.parentNode.parentNode;
+      
        	    none.appendChild(pn);
-   
     	}
-    })
+    });
+    
     //즐겨찾기 관련 정보를 DB에 연동
     function updateStar(markup,projectId){
     	var data = {
@@ -118,15 +126,12 @@
 			contentType:'application/json',
 			data:JSON.stringify(data)
 		})
-		.done(data=>{
-			console.log(data)
-		})
 		.fail(reject=>{
-			console.log(reject)
-			alert('즐겨찾기 갱신에 실패하였습니다')
+			console.log(reject);
+			alert('즐겨찾기 갱신에 실패하였습니다');
 			//window.location.reload()	
-		})
-}
+		});
+};
 
 
 
