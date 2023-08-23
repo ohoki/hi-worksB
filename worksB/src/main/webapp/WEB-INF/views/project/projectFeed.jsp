@@ -827,8 +827,7 @@ a {
             });
         });                                           
     });
-	
-	
+	/*
 	// 하위 업무 추가하기
 	$(document).ready(function () {
     $('.btn-add-subtask').click(function (event) {
@@ -857,14 +856,13 @@ a {
                         <option value="G5">보류</option>
                     </select>
                 </div>
-                <div class="subTaskManager"></div>
             </div>`;
         
         $('.task-add:last').prev().after(subtaskForm);
     	});
 	});
+	*/
 
-	
 	// 업무 등록하기
 	$('#btnAddTask').on('click', function(){
 		let data={}
@@ -922,7 +920,7 @@ a {
 			}
 		});
 	})
-	
+	/*
 	// 프로젝트 참여자 조회
 	$('.btn-add-taskManager').click(function(e){
 	    let particirDiv = $('#particir');
@@ -990,6 +988,117 @@ a {
 	        }
 	    });
 	});
+	*/
+
+	$(document).ready(function () {
+	    function particirList(targetDiv) {
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/particirList',
+	            type: 'GET',
+	            data: { 'projectId': "${projectInfo.projectId}" },
+	            success: function (particir) {
+	            	console.log(particir)
+		            let particirList = $('#particir');
+		            particirList.empty();
+		            
+		            for(let i=0; i<particir.length; i++) {
+						//div태그
+						let particirInfo = document.createElement('div');
+						particirInfo.classList.add('flex');
+						particirInfo.classList.add('prjParticir');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(particir[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = particir[i].memberName;
+						//히든 인풋 태그 (프로젝트 참여자 id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.setAttribute('name', 'particirId');
+						input.value = particir[i].prjParticirId;
+						//태그 삽입
+						particirInfo.append(employeeProfile);
+						particirInfo.append(span);
+						particirInfo.append(input);
+						
+						particirList.append(particirInfo);
+						
+					}
+
+	                // 참여자 선택하여 업무 담당자 추가하기
+	                $(document).on("click", ".prjParticir", function (e) {
+	                    e.stopPropagation();
+
+	                    let memberName = $(this).find("span").text();
+	                    let AddParticir = '<input type="text" name="memberName" value="' + memberName + '">';
+	                    targetDiv.append(AddParticir);
+
+	                    let prjParticirId = $(this).find("input[name='particirId']").val();
+	                    let AddParticirId = '<input type="hidden" name="prjParticirId" value="' + prjParticirId + '">';
+	                    targetDiv.append(AddParticirId);
+
+	                    console.log(prjParticirId);
+	                });
+	            },
+	            error: function (reject) {
+	                console.log(reject);
+	            }
+	        });
+	    }
+
+	    $('.btn-add-taskManager').click(function (e) {
+	        e.stopPropagation();
+	        particirList($('.taskManager'));
+	    });
+
+	    $('.btn-add-subtask').click(function (event) {
+	        event.stopPropagation();
+	        var subtaskForm = `
+	            <div class="task-add">
+	                <input type="text" name="prjBoardTitle">
+	                <div>
+	                    <label for="endDate">마감일 추가</label>
+	                    <input type="text" name="endDate" class="date-input endDate">
+	                </div>
+	                <div class="select-priority">
+	                    <select name="priority">
+	                        <option value="">우선 순위</option>
+	                        <option value="F3">낮음</option>
+	                        <option value="F2">보통</option>
+	                        <option value="F1">긴급</option>
+	                    </select>
+	                </div>
+	                <div class="select-state">
+	                    <select name="state" class="task-select">
+	                        <option value="G1">요청</option>
+	                        <option value="G2">진행</option>
+	                        <option value="G3">피드백</option>
+	                        <option value="G4">완료</option>
+	                        <option value="G5">보류</option>
+	                    </select>
+	                </div>
+	                <!-- 하위 업무 참여자 추가 -->
+	                <button type="button" class="btn-add-taskManager" data-bs-toggle="modal" data-bs-target="#add-taskManager">담당자 추가</button>
+	            </div>`;
+	        
+	        $('.task-add:last').prev().after(subtaskForm);
+	    });
+	    $('.btn-add-taskManager-subtask').click(function (e) {
+	        e.stopPropagation();
+	        particirList($('.taskManager-subtask'));
+	    });
+
+	});
+	// 하위업무 선택시 이름추가 수정해야됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
 </script>
 </html>
