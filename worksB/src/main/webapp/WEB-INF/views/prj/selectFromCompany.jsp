@@ -15,7 +15,6 @@
 	font-size: var(--font-regular);
 	padding: 0 30px;
 	margin-bottom: 15px;
-	color: var(--color-dark-grey);
 }
 
 .list-box {
@@ -28,11 +27,11 @@
 .list {
 	padding: 10px 40px;
 	margin: 5px 0;
+	background-color: rgba(174, 213, 245, 0.1);
 	border-radius: 5px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: rgb(253, 252, 220, 0.2);
 }
 
 .list-option {
@@ -46,7 +45,7 @@
 	width: 100px;
 	height: 30px;
 	border-radius: 4px;
-  	border: 1px solid var(--color-dark-beigie);
+  	border: 1px solid var(--color-light-blue);
   	outline: none;
 }
 
@@ -86,7 +85,7 @@
 }
 
 .dept-list li {
-	padding: 7px 10px;
+	padding: 10px 10px;
 	border-radius: 10px;
 	margin-right: 10px;
 	cursor: pointer;
@@ -94,9 +93,9 @@
 }
 
 .dept-list li:hover {
-	border: 1px solid var(--color-dark-beigie);
-	background-color: var(--color-dark-beigie);
-	color: var(--color-dark-red);	
+	border: 1px solid rgb(174, 213, 245);
+	background-color: rgb(174, 213, 245);
+	color: white;	
 }
 
 .icon {
@@ -120,7 +119,7 @@
 	cursor: pointer;
 }
 .green {
-	background-color: #29bf12;
+	background-color: var(--color-green);
 }
 
 .yellow {
@@ -191,7 +190,14 @@
 							</c:if>
 							<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
 							<c:if test="${list.particirAccp eq null }">
-								<button type="button" class="list-btn green point">참여하기</button>
+<!-- 								매니저승인없이 가입할 수 있는 경우 -->
+								<c:if test="${list.managerAccp eq 'NO'}" >
+									<button type="button" title="버튼을 누르면 바로 참여가 가능합니다" class="list-btn green point" onclick="signup('${list.projectId}','${list.managerAccp}' )">참여하기</button>									
+								</c:if>
+								<!-- 								매니저승인이 필요한 경우 -->
+								<c:if test="${list.managerAccp ne 'NO'}">
+									<button type="button" title="승인이 필요한 프로젝트입니다" class="list-btn green point" onclick="signup('${list.projectId}','${list.managerAccp}' )">참여하기</button>									
+								</c:if>
 							</c:if>
 						</c:if>
 					</div>
@@ -207,14 +213,16 @@
 		let id=$(e.target).data("prjid")
 		let cls=$(e.target).data("cls")
 		//만료여부에 따른 분기
-		if(cls=='NO'){
+// 		if(cls=='NO'){
 			//공개여부(전체공개)		비공개이지만 승인받은 경우
 			if(access=='YES' || ( access=='NO' && accp=='YES')) {
 				location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id
 			}
-		}else if(cls=='YES'){
-			
-		}
+// 		}else if(cls=='YES'){
+// 			if(access=='YES'){
+// 				location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id
+// 			}
+// 		}
 		
 		
 	}))
@@ -234,6 +242,32 @@
 		$('.option').val("${projectVO.projectCls }")		
 	}
 
+	
+	//참여하기버튼
+	function signup(prjId,maccp){
+		if(maccp=='NO'){
+			alert('프로젝트의 일원이 되었습니다')
+			location.href='${pageContext.request.contextPath }/signIn?projectId='+prjId+'&accp=A1'
+		}else if(maccp='YES'){
+			alert('참여승인을 기다려 주세요')
+			let data={
+				projectId:prjId,
+				particirAccp:'A2'
+			}
+			$.ajax({
+				url:'${pageContext.request.contextPath }/signOnly',
+				tpye:'POST',
+				contentType:'application/json',
+				data:JSON.stringify(data)
+			})
+			.done(data=>{
+				console.log(data)
+			})
+			.fail(reject=>{
+				console.log(reject)
+			})
+		}
+	}
 	
 </script>
 </html>

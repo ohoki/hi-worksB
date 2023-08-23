@@ -79,7 +79,7 @@
 		<h3>내프로젝트</h3>
 		<br>
 		<div class="icons">
-			<a href="${pageContext.request.contextPath }/projectGrid"><img class="tiled icon" alt="타일형으로 보기"
+			<a href="${pageContext.request.contextPath }/projectList"><img class="tiled icon" alt="타일형으로 보기"
 				src="${pageContext.request.contextPath }/resources/icon/microsoft.svg"></a>
 			<a href="${pageContext.request.contextPath }/projectList"><img class="list icon" alt="리스트로 보기"
 				src="${pageContext.request.contextPath }/resources/icon/list.svg"></a>
@@ -178,7 +178,7 @@
     	        projectId: projectId
     	    }
 		$.ajax({
-			url:'updateStar',
+			url:'${pageContext.request.contextPath }/updateStar',
 			type:'post',
 			contentType:'application/json',
 			data:JSON.stringify(data)

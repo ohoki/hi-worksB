@@ -204,25 +204,11 @@ public class ProjectController {
 		//북마크가 된 것만을 출력
 		m.addAttribute("bookmarked",projectService.searchPrj(memberId));
 		
-		//북마크기 되지 않은 것 중 만료여부에 따라 분류(Y:만료N:진행중)
+		//북마크기 되지 않은 것
 		m.addAttribute("noneBookmarked",projectService.searchPrjCls(memberId,"A1"));
 		return"prj/projectList";
 	}
-	
-	
-	//개인 프로젝트리스트출력(그리드형식)
-	@GetMapping("/projectGrid")
-	public String projectGrid(Model m,HttpSession session) {
-		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
-		//북마크가 된 것만을 출력
-		m.addAttribute("bookmarked",projectService.searchPrj(memberId));
-				
-		//북마크기 되지 않은 것 중 만료여부에 따라 분류(Y:만료N:진행중)
-		m.addAttribute("noneBookmarked",projectService.searchPrjCls(memberId,"A1"));
-		return"prj/projectGrid";
-	}
-	
-	
+
 	//즐겨찾기갱신
 	@PostMapping("/updateStar")
 	@ResponseBody
@@ -231,6 +217,34 @@ public class ProjectController {
 		starInfo.setMemberId(memberId);
 		
 		projectService.updateStar(starInfo);
-		return"ok";
+		return"star updated";
+	}
+	
+	//프로젝트참여하기(requestparam형식)
+	@GetMapping("/signIn")
+	public String signIn(
+			@RequestParam int projectId,HttpSession session,
+			@RequestParam String accp) {
+		PrjParticirVO vo= new PrjParticirVO();
+		vo.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+		vo.setProjectId(projectId);
+		vo.setManager("A2");
+		vo.setParticirAccp(accp);
+		projectService.insertParticipant(vo);
+		
+		return "prj/selectFromCompany";
+	}
+	//프로젝트에 참여하기(ajax로)
+	@PostMapping("/signOnly")
+	@ResponseBody
+	public String signOnly
+	(@RequestBody int projectId,HttpSession session,@RequestBody String particirAccp) {
+		PrjParticirVO vo= new PrjParticirVO();
+		vo.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+		vo.setProjectId(projectId);
+		vo.setManager("A2");
+		vo.setParticirAccp(particirAccp);
+		
+		return "success";
 	}
 }
