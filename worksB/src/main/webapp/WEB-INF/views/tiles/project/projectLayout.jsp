@@ -28,6 +28,7 @@
 		height: 93vh;
 		overflow: scroll;
 		overflow-x: hidden;
+		background-color: white;
 	}
 	body {
 		height: 100vh;

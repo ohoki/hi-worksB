@@ -144,11 +144,17 @@ public class ProjectController {
 	
 	// 프로젝트 피드
 	@GetMapping("/projectFeed")
-    public String projectFeed(@RequestParam int projectId, Model model) {
+    public String projectFeed(@RequestParam int projectId, Model model, HttpSession session) {
         ProjectVO projectInfo = projectService.getProjectInfo(projectId);
         // 게시글 리스트
         List<BoardVO> boards = projectService.getBoardList(projectInfo);
+        //즐겨찾기 여부
+        PrjParticirVO particir = new PrjParticirVO();
+        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+        particir.setProjectId(projectId);
+        PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
         
+        model.addAttribute("particirInfo", particirInfo);
         model.addAttribute("projectInfo", projectInfo);
         model.addAttribute("boards", boards);
         return "project/projectFeed";
@@ -161,6 +167,7 @@ public class ProjectController {
 		return projectService.getParticirList(projectId);
 	}
 	
+	//
 	
 	
 	

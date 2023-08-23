@@ -1,9 +1,6 @@
 package com.worksb.hi.project.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,7 +94,10 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<PrjParticirVO> getParticirList(int projectId) {
 		return projectMapper.getParticirList(projectId);
 	}
-	
+	//프로젝트 즐겨찾기 여부
+	public PrjParticirVO getParticirByProject(PrjParticirVO particirVO) {
+		return projectMapper.getParticirByProject(particirVO);
+	}
 	
 
 
