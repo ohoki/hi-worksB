@@ -44,29 +44,27 @@ public class BoardController {
     @PostMapping("taskInsert")
     @ResponseBody
     public String taskInsert(@RequestBody BoardRequestVO brVO) {
-    	//게시글
+    	// 게시글 등록
     	BoardVO boardVO = brVO.getBoardVO();
     	boardService.insertBoard(brVO.getBoardVO());
-    	//상위업무
+    	// 상위 업무 등록
     	TaskVO taskVO = brVO.getTaskVO();
     	taskVO.setPrjBoardId(boardVO.getPrjBoardId());
     	boardService.insertTask(taskVO);
     	
-    	//업무 담당
+    	// 상위 업무 담당자 등록
     	List<TaskVO> managerList = brVO.getPrjManager();
     	if(managerList != null) {
     		for(int i=0; i < managerList.size(); i++) {
     			TaskVO taskManager = managerList.get(i);
-    			
+    			//게시글 id
     			taskManager.setPrjBoardId(taskVO.getPrjBoardId());
     			boardService.insertTaskManager(taskManager);
 
     		}
     	}
     	
-    	
-    	
-    	//하위업무
+    	// 하위 업무 등록
     	List<TaskVO> taskList = brVO.getSubTask();
     	if(taskList != null){
     		TaskVO subtaskVO ;
@@ -170,13 +168,16 @@ public class BoardController {
 	    
 	    // 상위 업무
 	    List<TaskVO> highTask = boardService.getHighTask(taskVO);
-	    
+	    // 상위 업무 담당자 리스트
+	    List<TaskVO> highManager = boardService.getHighManager(taskVO);
+	    // 상위 업무의 업무번호
 	    int taskId = boardService.getHighTaskId(taskVO);
-	    // 하위 업무
+	    // 해당 업무의 하위 업무 리스트
 	    List<TaskVO> subTask = boardService.getSubTask(taskId);
 	    
 	    resultMap.put("highTask", highTask);
 	    resultMap.put("subTask", subTask);
+	    resultMap.put("highManager", highManager);
 
 	    return resultMap;
 	}
