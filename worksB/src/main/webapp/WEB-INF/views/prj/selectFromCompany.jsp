@@ -11,10 +11,28 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+.list-option button{
+	width: 100px;
+	height: 40px;
+	margin-left: 20px;
+	background-color: var(--color-beigie);
+	border-radius: 5px;
+	color: var(--color-dark);
+	font-weight: var(--weight-bold);
+	border : 1px solid var(--color-dark-beigie);
+}
+
+.list-option button:hover {
+	background-color: var(--color-dark-red);
+	color: var(--color-white);
+	border : 1px solid var(--color-dark-red);
+}
+
 .list-title {
 	font-size: var(--font-regular);
-	padding: 0 30px;
-	margin-bottom: 15px;
+	color: var(--color-dark-grey);
+	padding: 0 80px 0 30px; 
+	margin-top: 30px;
 }
 
 .list-box {
@@ -139,7 +157,7 @@
     	<input type="hidden" name="deptId" value="${projectVO.deptId }">
     	<input type="hidden" name="projectCls" value="${projectVO.projectCls }">
     </form>
-	<h3 class="list-title">회사 전체 프로젝트</h3>
+    <h1 class="list-title">회사 전체 프로젝트</h1>
 	<div style="padding: 5px 50px;">
 		<ul class="dept-list">
 			<li class="view-dept" onclick="viewPart('')">전체보기</li>
@@ -156,6 +174,7 @@
 					<option value="A2" selected>진행중</option>
 					<option value="A1">만료</option>
 				</select>
+				<button onclick="location.href='${pageContext.request.contextPath }/projectInsert'">프로젝트 생성</button>
 			</div>
 		</div>
 		<!-- 프로젝트리스트 전체(particirAccp가 Y,N,null로 나뉨) -->
