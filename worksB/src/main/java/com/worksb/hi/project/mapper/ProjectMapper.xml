@@ -153,6 +153,19 @@
 		WHERE	project_id = #{projectId}
 	</select>
 	
+	<!-- 프로젝트 즐겨찾기 여부 -->
+	<select id="getParticirByProject" resultType="PrjParticirVO">
+		SELECT prj_particir_id,       
+				member_id,       
+				manager,                 
+				project_id,           
+				alarm_yn,        
+				project_markup,           
+				particir_accp       
+		FROM prj_particir
+		WHERE member_id = #{memberId} AND project_id = #{projectId}
+	</select>
+	
 	
 	
 	

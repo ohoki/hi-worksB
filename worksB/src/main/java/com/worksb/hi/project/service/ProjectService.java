@@ -2,8 +2,6 @@ package com.worksb.hi.project.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.worksb.hi.board.service.BoardVO;
 
 public interface ProjectService {
@@ -27,7 +25,8 @@ public interface ProjectService {
 	public int insertParticipant(PrjParticirVO participant);
 	// 프로젝트 참여자 조회
 	public List<PrjParticirVO> getParticirList(int projectId);
-	
+	//프로젝트 즐겨찾기 여부
+	public PrjParticirVO getParticirByProject(PrjParticirVO particirVO);
 	
 	
 	

@@ -32,7 +32,8 @@ public interface ProjectMapper {
 	// 프로젝트 참여자 조회
 	public List<PrjParticirVO> getParticirList(int projectId);
   
-  
+	//프로젝트 즐겨찾기 여부
+	public PrjParticirVO getParticirByProject(PrjParticirVO particirVO);
   
   
   
