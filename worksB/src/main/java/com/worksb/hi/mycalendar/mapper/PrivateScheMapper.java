@@ -20,6 +20,6 @@ public interface PrivateScheMapper {
 	public int updatePsche(PrivateScheVO privateScheVO);
 	
 	//일정삭제
-	public int deletePsche(PrivateScheVO privateScheVO);
+	public int deletePsche(int scheId);
 	
 }
