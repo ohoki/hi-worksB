@@ -15,6 +15,7 @@
 	font-size: var(--font-regular);
 	padding: 0 30px;
 	margin-bottom: 15px;
+	color: var(--color-dark-grey);
 }
 
 .list-box {
@@ -27,11 +28,11 @@
 .list {
 	padding: 10px 40px;
 	margin: 5px 0;
-	background-color: rgba(174, 213, 245, 0.1);
 	border-radius: 5px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	background-color: rgb(253, 252, 220, 0.2);
 }
 
 .list-option {
@@ -45,7 +46,7 @@
 	width: 100px;
 	height: 30px;
 	border-radius: 4px;
-  	border: 1px solid var(--color-light-blue);
+  	border: 1px solid var(--color-dark-beigie);
   	outline: none;
 }
 
@@ -85,7 +86,7 @@
 }
 
 .dept-list li {
-	padding: 10px 10px;
+	padding: 7px 10px;
 	border-radius: 10px;
 	margin-right: 10px;
 	cursor: pointer;
@@ -93,9 +94,9 @@
 }
 
 .dept-list li:hover {
-	border: 1px solid rgb(174, 213, 245);
-	background-color: rgb(174, 213, 245);
-	color: white;	
+	border: 1px solid var(--color-dark-beigie);
+	background-color: var(--color-dark-beigie);
+	color: var(--color-dark-red);	
 }
 
 .icon {
@@ -119,7 +120,7 @@
 	cursor: pointer;
 }
 .green {
-	background-color: var(--color-green);
+	background-color: #29bf12;
 }
 
 .yellow {

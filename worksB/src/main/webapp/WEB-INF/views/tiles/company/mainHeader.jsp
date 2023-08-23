@@ -25,11 +25,13 @@
 		<div class="header__icon">
 			<!-- 구성원 -->
 			<a href="#" data-type="employees"> 
-				<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/comments-solid.svg" class="header__profile">
+				<i class="fa-solid fa-comments" style="color: var(--color-dark-red)"></i>
+			<%-- 	<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/comments-solid.svg" class="header__profile"> --%>
 			</a>
 			<!-- 알림 -->
 			<a href="#" data-type="alarm"> 
-				<img alt="알림 보기" src="${pageContext.request.contextPath}/resources/icon/bell-solid.svg" class="header__profile">
+				<i class="fa-solid fa-bell" style="color: #ffd100;"></i>
+				<%-- <img alt="알림 보기" src="${pageContext.request.contextPath}/resources/icon/bell-solid.svg" class="header__profile"> --%>
 			</a>
 			<!-- 프로필 -->
 			<c:if test="${memberInfo.realProfilePath eq null }">
@@ -99,9 +101,9 @@
 			<div id="status-modal">
 				<div class="status-modal__content">
 					<ul>
-						<li><span class="green"></span>접속 중</li>
-						<li><span class="yellow"></span>자리 비움</li>
-						<li><span class="red"></span>접속 종료</li>
+						<li><span class="status-green"></span>접속 중</li>
+						<li><span class="status-yellow"></span>자리 비움</li>
+						<li><span class="status-red"></span>접속 종료</li>
 					</ul>
 				</div>			
 			</div>
@@ -170,11 +172,11 @@
 		let statusDiv = $('.status');
 		
 		if(status == 'S1') {
-			statusDiv.addClass('green');
+			statusDiv.addClass('status-green');
 		}else if(status == 'S2') {
-			statusDiv.addClass('yellow');
+			statusDiv.addClass('status-yellow');
 		}else if(status == 'S3') {
-			statusDiv.addClass('red');
+			statusDiv.addClass('status-red');
 		}
 	});
 	
@@ -260,18 +262,18 @@
 
 		if(value == '접속 중') {
 			value = 'S1';
-			statusDiv.removeClass('green yellow red');
-			statusDiv.addClass('green');
+			statusDiv.removeClass('status-green status-yellow status-red');
+			statusDiv.addClass('status-green');
 			$('.modal-visible').removeClass('modal-visible');
 		}else if(value == '자리 비움') {
 			value = 'S2';
-			statusDiv.removeClass('green yellow red');
-			statusDiv.addClass('yellow');
+			statusDiv.removeClass('status-green status-yellow status-red');
+			statusDiv.addClass('status-yellow');
 			$('.modal-visible').removeClass('modal-visible');
 		}else if(value == '접속 종료') {
 			value = 'S3';
-			statusDiv.removeClass('green yellow red');
-			statusDiv.addClass('red');
+			statusDiv.removeClass('status-green status-yellow status-red');
+			statusDiv.addClass('status-red');
 			$('.modal-visible').removeClass('modal-visible');
 		}
 		

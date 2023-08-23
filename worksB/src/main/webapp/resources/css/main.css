@@ -1,7 +1,6 @@
 @import "root.css";
 
 body {
-	background-color: rgba(174, 213, 245, 0.1) !important;
 	line-height: inherit !important;
 }
 
@@ -26,10 +25,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-light-blue);
+  background-color: var(--color-beigie);
   padding: 10px 40px;
   height: 40px;
-  border: 1px solid var(--color-dark-white);
+  border: 1px solid var(--color-dark-beigie);
 }
 
 .header__logo {
@@ -41,7 +40,7 @@ body {
 .header__search {
   height: 30px;
   border-radius: 15px;
-  border: 1px solid var(--color-dark-white);
+  border: 1px solid var(--color-dark-beigie);
   padding: 0 15px;
   padding-left: 50px;
   background-image: url(../icon/search-icon.png);
@@ -95,7 +94,7 @@ body {
 	right: 4%;
 	top: 4%;
 	background-color: white;
-	border: 1px solid var(--color-dark-white);
+	border: 1px solid var(--color-dark-beigie);
 	border-radius: 10px;
 	padding: 5px 15px;
 	z-index: 10;
@@ -114,12 +113,16 @@ body {
 	margin-bottom: 10px;
 }
 #profile-modal p {
-	padding: 5px 0;
-	margin: 5px 0;
+	padding: 7px 0;
+	margin: 0;
 }
 
 #profile-modal p:hover {
-	background-color: var(--color-light-blue);
+	background-color: var(--color-beigie);
+}
+
+#profile-modal p a:hover {
+	color: black;
 }
 
 .my-profile-modal__content, .employee__content {
@@ -129,10 +132,11 @@ body {
 	height: 60%;
 	top:50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%); */
 	border-radius: 5px;
 	text-align: center;
 	padding: 30px 0 15px 0;
+	z-index: 10;
 }
 
 .my-profile-logo {
@@ -160,9 +164,10 @@ body {
 	top: 100px;
 	right: 240px;
 	background-color: white;
-	border: 1px solid var(--color-dark-white);
+	border: 1px solid var(--color-dark-beigie);
 	border-radius: 10px;
 	padding: 10px 5px;
+	z-index: 10;
 }
 
 .status-modal__content li {
@@ -171,7 +176,7 @@ body {
 }
 
 .status-modal__content li:hover {
-	background-color: var(--color-light-blue);
+	background-color: var(--color-beigie);
 }
 
 .status-modal__content li span {
@@ -182,16 +187,16 @@ body {
 	margin-right: 10px;
 }
 
-.green {
-	background-color: var(--color-green);
+.status-green {
+	background-color: #00cc66;
 }
 
-.yellow {
-	background-color: var(--color-orange);
+.status-yellow {
+	background-color: #ff6b35;
 }
 
-.red {
-	background-color: var(--color-red);
+.status-red {
+	background-color: #dd1c1a;
 }
 
 .my-profile-modal__name, .employee-modal__name {
@@ -211,7 +216,8 @@ body {
 
 .my-profile__btn, .chat__btn {
 	margin-top:30px;
-	background-color: rgb(174, 213, 245);
+	background-color: var(--color-dark-red);
+	background-color: rgb(22, 66, 91, 0.8);
 	width: 80%;
 	height: 50px;
 	text-align: center;
@@ -230,7 +236,7 @@ body {
 	background-color: white;
 	font-size: 12px;
 	padding: 20px 15px;
-	border: 1px solid var(--color-dark-white);
+	z-index: 10;
 }
 
 .alarm__title, .employees__title {
@@ -247,7 +253,7 @@ body {
 	display: block;
 	width: 83%;
 	height: 30px;
-	border: 1px solid var(--color-dark-white);
+	border: 1px solid var(--color-dark-beigie);
 	border-radius: 5px;
 	background-image: url(../icon/search-icon.png);
 	background-repeat: no-repeat;
@@ -278,13 +284,13 @@ body {
 .employee {
 	align-items: center;
 	justify-content: space-between;
-	border-bottom: 1px solid var(--color-dark-white);
+	border-bottom: 1px solid var(--color-dark-beigie);
 	padding: 0 20px 0 5px;
 	cursor: pointer;
 }
 
 .employee:nth-child(1) {
-	border-top: 1px solid var(--color-dark-white);
+	border-top: 1px solid var(--color-dark-beigie);
 }
 
 .employee-img {
@@ -305,13 +311,13 @@ body {
 
 /* side */
 .side {
-  background-color: var(--color-light-blue);
+  background-color: var(--color-beigie);
   height: 100%;
   width: 100%;
-  border: 1px solid var(--color-dark-white);
+  border: 1px solid var(--color-dark-beigie);
   border-top:none ;
   padding-top: 10px;
-  text-align: right;
+  text-align: left;
   position: relative;
 }
 
@@ -324,32 +330,48 @@ body {
 
 .side__menu__cate {
   margin: 0;
-  background-color: rgb(174, 213, 245, 0.15);
+  font-weight: var(--weight-bold);
   font-size: var(--font-small);
   color: var(--color-dark-grey);
-  padding-right: 30px;
+  border-bottom: 1px solid var(--color-dark-beigie);
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center
+  
+}
+
+.side__menu__cate img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 }
 
 .side__menu__items {
   font-size: var(--font-small);
-  color: var(--color-dark-grey);
+  /* color: var(--color-dark-grey); */
+  color: var(--color-black);
 }
 
 .side__menu__item {
   font-size: var(--font-micro);
-  margin-top: 5px;
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-semi-bold);
   display: block;
-  padding-right: 30px;
+  padding: 5px 0 5px 50px;
 }
 
 .side__menu__item:hover {
-  background-color: rgba(174, 213, 245, 0.15);
-  color: black;
+  background-color: var(--color-dark-red);
+  color: white !important;
+}
+
+.side__menu__item a:hover {
+  color: white !important;
 }
 
 .side__menu__bottom {
-  background-color: rgba(174, 213, 245, 0.15);
+  background-color: rgb(253, 252, 220);
   padding: 20px 0;
   position: absolute;
   bottom: 0;
