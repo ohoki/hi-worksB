@@ -161,9 +161,19 @@ form {
 		<tbody>
 			<c:forEach items="${carpoolList}" var="carpool">
 				<tr onclick="location.href='carpoolInfo?boardId=${carpool.boardId}'">
+					
 					<td>${carpool.boardId }</td>
 					<td>
-						<p class="table__title">${carpool.boardTitle }</p><br>
+						<p class="table__title">
+						<c:choose>
+							<c:when test="${carpool.category eq 'B1' }">
+								[태워드립니다] 
+							</c:when>
+							<c:otherwise>
+								[태워주세요] 
+							</c:otherwise>
+						</c:choose>
+					${carpool.boardTitle }</p><br>
 						<P class="table__title">${carpool.departure } &#10142; ${carpool.arrival }</p>
 					</td>
 					<td>${carpool.memberName} </td>

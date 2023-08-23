@@ -117,6 +117,9 @@ div h2 {
 </style>
 </head>
 <body>
+	<!-- api -->
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>		
+<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<div class="top">
 		<h2>공지사항 작성</h2>
 	</div>
@@ -133,65 +136,27 @@ div h2 {
 			<button type="button" onclick="location.href='noticeList'">목록</button>
 		    <input type="submit" value="작성">
     	</form>
-    		<!-- api -->
-			<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-			<!-- 한글 적용 -->
-			<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
-		<script>
-		  ClassicEditor
-		    .create( document.querySelector( '#editor' )
-		    		
-		    		
-		    		
-		    		
-		    		
-		    		
-		    		
-		    		
-		    		
-		    		/* , {
-		    	language: 'ko' ,
-		    	toolbar:{
-		    		items:[
-		    			'heading'
-		    			'|'
-		    			'fontSize',
-		    			'fontFamily',
-		    			'fontColor',
-		    			'fontBackgroundColor'
-		    		]
-		    	},
-		    	fontFamily: {
-		    		option:[
-		    			'default',
-		    			'궁서체',
-		    			'바탕',
-		    			'돋움'
-		    		]
-		    		
-		    	}
-		    }) */
-		    /* 플러그 작동이 안됨... 나중에 추가 */
-/* 		    .catch( error => {
-		      console.error( error );
-		    } ); */
+	<script>
+		ClassicEditor.create( document.querySelector( '#editor' ), {
+		    ckfinder:{
+		    	uploadUrl: '${pageContext.request.contextPath}/ckuploadsAjax'
+		    },
+		 
+		    /* 폰트 설정 안됨. 죽이고싶음 */
+		    fontFamily:{
+		    	items:[
+		    		'default',
+		    		'Arial',
+		    		'궁서체',
+		    		'바탕',
+		    		'돋움'
+		    	],
+		    	supportAllValues: true
+		    }
+		  }
+		  
+		);
 
-/* 		 , {
-			 ckfinder: {
-					uploadUrl: '/ajax/image.do'
-				},
-				toolbar:{
-					items:[
-						'heading',
-						'|',
-						'fontSize',
-						'fontColor',
-						'fontFamily',
-						'fontBackgroundColor'
-					]
-				
-				}
-		 }; */
-		</script>
+	</script>
 </body>
 </html>

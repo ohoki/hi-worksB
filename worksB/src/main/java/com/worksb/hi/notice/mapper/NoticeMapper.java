@@ -27,4 +27,7 @@ public interface NoticeMapper {
 	
 	// 공지 삭제
 	public int noticeDelete(int noticeId);
+	
+	// 조회수 올리기
+	public int noticeHit(String noticeId);
 }

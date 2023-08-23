@@ -26,8 +26,6 @@ public class NoticeVO {
 	
 	private String memberName;
 	
-	
-	
 
 	
 }
