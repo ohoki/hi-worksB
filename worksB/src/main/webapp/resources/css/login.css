@@ -56,7 +56,7 @@ input:-webkit-autofill:active {
 }
 
 .login-form button {
-	background-color: rgb(174, 213, 245);
+	background-color: var(--color-dark-red);
 	height: 50px;
 	width: 100%;
 	border-radius: 5px;
