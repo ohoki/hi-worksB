@@ -10,11 +10,15 @@
   --color-black: #000000;
   --color-red: #E64E39;
   --color-dark-blue: #2A3B59;
-  --color-blue: #01BABD;
-  --color-light-blue: rgb(174, 213, 245, 0.3);
+  --color-blue: #0081a7;
+  --color-light-blue: #00afb9;
   --color-green: #9CBB3A;
   --color-orange: #F9A634;
-  --color-beigie: #ffe5d2;
+  --color-beigie: rgb(253, 252, 220, 0.6);
+  --color-dark-beigie: rgb(254, 217, 183, 0.5);
+  --color-light-red: rgb(240, 113, 103, 0.5);
+  --color-dark-red: rgb(240, 113, 103);
+  
 
   /* Font size */
   --font-large: 50px;
@@ -75,4 +79,8 @@ input {
   border: none;
   outline: none;
   padding: 0px;
+}
+
+select:focus {
+	outline: none;
 }

@@ -15,7 +15,7 @@
 	}
 	
 	.profile-form {
-		border: 1px solid var(--color-dark-white);
+		border: 1px solid var(--color-dark-beigie);
 		border-radius: 5px;
 		margin-bottom: 30px; 
 	}
@@ -27,7 +27,7 @@
 	}
 	
 	.user-information {
-		border: 1px solid var(--color-dark-white);
+		border: 1px solid var(--color-dark-beigie);
 		border-radius: 5px;
 		padding-bottom: 20px;
 	}
@@ -39,21 +39,6 @@
 		padding: 20px;
 		text-align: left;
 	}
-	
-	.upload-btn {
-	    border: 1px solid #ddd;
-	    padding: 6px 12px;
-	    display: block;
-	    cursor: pointer;
-	    width: 90%;
-	    border-radius: 5px;
-  	}
-  	
-  	.upload-btn span {
-  		font-size: 12px;
-  		display: block;
-  		text-align: center;
-  	}
   	
   	.image-box {
   		width: 200px;
@@ -78,13 +63,14 @@
 		display: inline-block;
 		font-weight: var(--weight-bold);
 		font-size: 17px;
+		color: var(--color-dark-red);
 	}
 	
 	.user-information__title {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		border-bottom: 1px solid var(--color-dark-white);
+		border: 1px solid var(--color-dark-beigie);
 	}
 	
 	.user-information__content {
@@ -97,7 +83,7 @@
 		width: 200px;
 		height: 30px;
 		border-radius: 2px;
-		border:  1px solid var(--color-dark-white);
+		border: 1px solid var(--color-dark-beigie);
 		padding-left: 10px;
 		box-sizing: border-box;
 	}
@@ -106,7 +92,7 @@
 		width: 100px;
 		height: 40px;
 		margin-left: 20px;
-		background-color: rgb(174, 213, 245);
+		background-color: rgb(22, 66, 91, 0.8);
 		border-radius: 5px;
 		color: var(--color-white);
 		font-weight: var(--weight-bold);
@@ -118,7 +104,7 @@
 	}
 	
 	.b_bt {
-		border-bottom: 1px solid var(--color-dark-white);
+		border: 1px solid var(--color-dark-beigie);
 	}
 </style>
 </head>
