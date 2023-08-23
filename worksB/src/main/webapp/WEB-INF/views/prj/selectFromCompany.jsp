@@ -1,6 +1,3 @@
-<!-- A1은 YEs A2는 NO -->
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -31,7 +28,6 @@
 	padding: 0 30px;
 	margin-bottom: 15px;
 	color: var(--color-dark-grey);
-	padding: 0 80px 0 30px; 
 	margin-top: 30px;
 }
 .list-box {
@@ -103,10 +99,6 @@
 	background-color: var(--color-dark-beigie);
 	color: var(--color-dark-red);	
 }
-.icon {
-	width : 30px;
-	height : 30px;
-}
 .prj-icon {
 	margin: 0 10px;
 	display: inline-block;
@@ -132,7 +124,7 @@
 }
 </style>
 </head>
-
+<!-- A1은 YES A2는 NO -->
 <body>
     <form name="deptInfo" action="${pageContext.request.contextPath }/SelectFromCompany">
     	<input type="hidden" name="deptId" value="${projectVO.deptId }">
@@ -162,18 +154,14 @@
 		<c:forEach items="${projectList }" var="list">
 			<div class="list">
 				<!-- 회사전체공개프로젝트의 경우 -->
-
 					<div class="project-name">
-					
 						<c:if test="${list.projectAccess eq 'YES' }">
 							<img class="prj-icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg">
 						</c:if>
 						<c:if test="${list.projectAccess eq 'NO' }">
 							<img class="prj-icon" alt="참여자공개이미지" title="참여자만 공개" src="${pageContext.request.contextPath }/resources/icon/lock-solid.svg">	
 						</c:if>
-						
-						<span class="prj-move" data-cls="${list.projectCls }" data-access="${list.projectAccess}" data-accp="${list.particirAccp}" data-prjid="${list.projectId }">${list.projectName}</span>  
-
+						<span class="prj-move" data-cls="${list.projectCls }" data-access="${list.projectAccess}" data-accp="${list.particirAccp}" data-prjid="${list.projectId }">${list.projectName}</span>
 					</div>
 					
 					<!-- 참여버튼 클릭 시 참여하기 기능 구현  필요함 -->
@@ -192,11 +180,11 @@
 							<c:if test="${list.particirAccp eq null }">
 <!-- 								매니저승인없이 가입할 수 있는 경우 -->
 								<c:if test="${list.managerAccp eq 'NO'}" >
-									<button type="button" title="버튼을 누르면 바로 참여가 가능합니다" class="list-btn green point" onclick="signup('${list.projectId}','${list.managerAccp}' )">참여하기</button>									
+									<button type="button" title="버튼을 누르면 바로 참여가 가능합니다" class="list-btn green point" onclick="signup('${list.projectId}','${list.managerAccp}', this)">참여하기</button>									
 								</c:if>
 								<!-- 								매니저승인이 필요한 경우 -->
-								<c:if test="${list.managerAccp ne 'NO'}">
-									<button type="button" title="승인이 필요한 프로젝트입니다" class="list-btn green point" onclick="signup('${list.projectId}','${list.managerAccp}' )">참여하기</button>									
+								<c:if test="${list.managerAccp eq 'YES'}">
+									<button type="button" title="승인이 필요한 프로젝트입니다" class="list-btn green point" onclick="signup('${list.projectId}','${list.managerAccp}', this)">참여하기</button>									
 								</c:if>
 							</c:if>
 						</c:if>
@@ -208,10 +196,10 @@
 <script>
 	//프로젝트div클릭시 피드로 이동
 	$('.prj-move').on('click',(e=>{
-		let access=$(e.target).data("access")
-		let accp=$(e.target).data("accp")
-		let id=$(e.target).data("prjid")
-		let cls=$(e.target).data("cls")
+		let access=$(e.target).data("access");
+		let accp=$(e.target).data("accp");
+		let id=$(e.target).data("prjid");
+		let cls=$(e.target).data("cls");
 		//만료여부에 따른 분기
 // 		if(cls=='NO'){
 			//공개여부(전체공개)		비공개이지만 승인받은 경우
@@ -223,8 +211,6 @@
 // 				location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id
 // 			}
 // 		}
-		
-		
 	}))
 	//부서정보를 컨트롤러에 넘김
 	function viewPart(dept){
@@ -234,40 +220,37 @@
 	
 	//select에 따른 데이터변동
 	$('.option').change(function() {
-		deptInfo.projectCls.value=$('.option').val()
+		deptInfo.projectCls.value=$('.option').val();
 		deptInfo.submit();	
 	})
 	//페이지가 바뀌어도 selectBox가 변동되지 않도록 하기 위함	
 	if("${projectVO.projectCls }"!=""){
-		$('.option').val("${projectVO.projectCls }")		
+		$('.option').val("${projectVO.projectCls }");		
 	}
 
 	
 	//참여하기버튼
-	function signup(prjId,maccp){
+	function signup(prjId,maccp, target){
 		if(maccp=='NO'){
-			alert('프로젝트의 일원이 되었습니다')
-			location.href='${pageContext.request.contextPath }/signIn?projectId='+prjId+'&accp=A1'
+			alert('프로젝트의 일원이 되었습니다');
+			location.href='${pageContext.request.contextPath }/signIn?projectId='+prjId+'&accp=A1';
 		}else if(maccp='YES'){
-			alert('참여승인을 기다려 주세요')
-			let data={
-				projectId:prjId,
-				particirAccp:'A2'
-			}
 			$.ajax({
 				url:'${pageContext.request.contextPath }/signOnly',
-				tpye:'POST',
-				contentType:'application/json',
-				data:JSON.stringify(data)
+				type:'POST',
+				data: {'projectId': prjId, 'particirAccp': 'A2'}
 			})
 			.done(data=>{
-				console.log(data)
+				if(data == 'success') {
+					alert('참여승인을 기다려 주세요');
+					$(target).text('승인대기');
+					target.className='list-btn yellow';
+				}
 			})
 			.fail(reject=>{
-				console.log(reject)
-			})
+				console.log(reject);
+			});
 		}
-	}
-	
+	};
 </script>
 </html>

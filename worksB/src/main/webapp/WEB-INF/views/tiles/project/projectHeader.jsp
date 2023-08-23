@@ -108,10 +108,10 @@
 <div class="project__header">
 	<div class="project__title">
 		<!-- 즐겨찾기 여부 -->
-		<c:if test="${particirInfo eq null or particirInfo.projectMarkup eq 'NO'}">
+		<c:if test="${particirInfo eq null or particirInfo.projectMarkup eq 'A2'}">
 			<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">	
 		</c:if>
-		<c:if test="${particirInfo.projectMarkup eq 'YES'}">
+		<c:if test="${particirInfo.projectMarkup eq 'A1'}">
 			<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg">	
 		</c:if>
 		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg" data-bs-toggle="modal" data-bs-target="#firstModal">
