@@ -9,75 +9,17 @@
 <title>Document</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<%-- 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/projectList.css"> --%>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/projectList.css">
 <style>
-.icon {
-	width: 30px;
-	height: 30px;
-}
 
-.icons {
-	
-}
-
-.tiled, .list {
-	float: right;
-	margin-left: 20px;
-	margin-right: 20px;
-}
-
-.tiled {
-	margin-right: 70px;
-}
-
-.block {
-	margin-left: 50px;
-}
-
-.create-project-list-view {
-	width: 230px;
-	background-color: #9fdbf5;
-	height: 82px;
-	border-radius: 30px;
-	text-align: center;
-	position: absolute;
-	bottom: 81%;
-	left: 70%;
-	line-height: 80px;
-}
-
-.unread-project {
-	border-radius: 50px;
-	display: inline-block;
-	background-color: red;
-	width: 30px;
-	height: 30px;
-	line-height: 30px;
-	text-align: center;
-	color: white;
-	margin-left: 30px;
-}
-
-.selected-status {
-	display: inline-block;
-}
-
-.none-visible {
-	display: none;
-}
-
-.visible {
-	display: block;
-}
 </style>
 </head>
 <body>
-
 <!-- !!!!!!!!!!!!!!!!!!!미확인알림 안해뜸!!!!!!!!!!!!!!!!!!!! -->
-
 	<div class="block">
-		<h3>내프로젝트</h3>
-		<br>
+		<h1>내프로젝트</h1>
+		
+		</div>
 		<div class="icons">
 			<a href="${pageContext.request.contextPath }/projectList"><img class="tiled icon" alt="타일형으로 보기"
 				src="${pageContext.request.contextPath }/resources/icon/microsoft.svg"></a>
@@ -85,7 +27,7 @@
 				src="${pageContext.request.contextPath }/resources/icon/list.svg"></a>
 		</div>
 		<!-- 좋아요를 누른 프로젝트 -->
-		<h4 class="star-list">즐겨찾기</h4>
+		<h2 class="star-list">즐겨찾기</h2>
 		<div class="like-container">
 			<ul>
 				<c:forEach items="${bookmarked }" var="list">
@@ -101,12 +43,9 @@
 		</c:forEach>
 		</ul>
 		</div>
-		<hr>
-
-		<br>
 
 		<!-- 좋아요를 누르지 않은 프로젝트 -->
-		<h4 class="none-star-list">프로젝트</h4>
+		<h2 class="none-star-list">프로젝트</h2>
 		<div class="dislike-container">
 			<ul>
 				<c:forEach items="${noneBookmarked }" var="list">
@@ -124,10 +63,6 @@
 			</ul>
 		</div>
 	</div>
-
-		<div onclick="location.href='${pageContext.request.contextPath }/projectInsert'" class="create-project-list-view">
-			새 프로젝트 생성
-		</div>
 
 
 

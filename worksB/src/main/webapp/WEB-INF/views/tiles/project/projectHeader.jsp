@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -9,9 +10,52 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 <style>
-.header{
-	height: 60px;
+.project__header {
+    padding: 0 30px;
+    width: 100%;
+    background-color: rgb(253, 252, 220, 0.1);
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
+
+.project__title {
+	display: flex;
+	justify-content: flex-start;
+	margin-bottom: 20px;
+	align-items: center;
+	color: var(--color-dark-grey);
+}
+
+.project__title {
+	font-size: var(--font-regular);
+	font-weight: var(--weight-bold);
+}
+
+.project__nav {
+	display: flex;
+}
+
+.project__nav li{
+	padding: 5px 20px 0 20px;
+	border-bottom: 3px solid transparent;
+}
+
+.project__nav li:hover{
+	color: var(--color-dark-red);
+	border-bottom: 3px solid var(--color-dark-red);
+	cursor: pointer;		
+}
+
+.project__nav a:hover{
+	color: var(--color-dark-red);	
+}
+
+
+
+
+
 
 .modal{
     position:absolute;
@@ -52,142 +96,28 @@
     color: #303030;
 }
 
-.project__header {
-    margin: 0 auto;
-    width: 100%;
-    background-color: aliceblue;
-}
-
-.project__nav {
-    list-style: none;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    margin-left: 50px;
-}
-
-.project__nav a {
-    text-decoration: none;
-    outline: none;
-    font-weight: var(--weight-bold);
-    color: var(--color-light-grey);
-    font-size: 16px;
-}
-
-.project__nav li {
-    font-size: 20px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
-.project__nav a:hover {
-    color: #303030;
-}
-
-.project__title{
-	font-size: 25px;
-	margin-left: 20px;
-}
-
-.project__setting{
-	margin-left: 30px;
-	margin-bottom: 10px;
-}
-
-ol, ul {
-    padding-left: 0;
-}
-
-.icon{
-	width: 20px;
-	color: #4d4d4d;
+.icon {
+	width: 30px;
+	height: 30px;
 	margin-right: 10px;
+	cursor: pointer;
 }
 </style>
 </head>
 <body>
 <div class="project__header">
-	<div class="project__setting">
-		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">
-		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/bars-solid.svg" data-bs-toggle="modal" data-bs-target="#firstModal">
-    	<span class="project__title">${projectInfo.projectName}</span>
+	<div class="project__title">
+		<!-- 즐겨찾기 여부 -->
+		<c:if test="${particirInfo eq null or particirInfo.projectMarkup eq 'NO'}">
+			<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">	
+		</c:if>
+		<c:if test="${particirInfo.projectMarkup eq 'YES'}">
+			<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg">	
+		</c:if>
+		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg" data-bs-toggle="modal" data-bs-target="#firstModal">
+    	<span>${projectInfo.projectName}</span>
     </div>
-		<div class="modal" tabindex="-1" id="firstModal">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-body">
-						<ul id="menuList">
-							<li data-toggle="modal" data-target="#subMenuModal11">알림설정</li>
-							<li data-toggle="modal" data-target="#subMenuModal12">프로젝트 나가기</li>
-							<li onclick="location.href='projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>
-							<li data-toggle="modal" data-target="#subMenuModal14">프로젝트 삭제</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal" tabindex="-1" id="subMenuModal11">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">알림설정</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>알림설정</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="modal" tabindex="-1" id="subMenuModal12">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">프로젝트 나가기</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>프로젝트 나가기</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="modal" tabindex="-1" id="subMenuModal13">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">프로젝트 수정</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>프로젝트 수정</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="modal secondModal" tabindex="-1" id="subMenuModal14">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">프로젝트 삭제</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>프로젝트 삭제</p>
-					</div>
-					<div class="modal-footer">
-					    <button type="button" class="btn btn-primary" onclick="location.href='projectDelete?projectId=${projectInfo.projectId}'">삭제</button>
-					    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div>
+    <div>
 		<ul class="project__nav">
 			<li><a href="#">피드</a></li>
 			<li><a href="#">업무</a></li>
@@ -195,9 +125,82 @@ ol, ul {
 			<li><a href="#">파일</a></li>
 		</ul>
 	</div>
-	
-	
 </div>
+<!-- 모달 -->
+<div class="modal" tabindex="-1" id="firstModal">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-body">
+				<ul id="menuList">
+					<li data-toggle="modal" data-target="#subMenuModal11">알림설정</li>
+					<li data-toggle="modal" data-target="#subMenuModal12">프로젝트 나가기</li>
+					<li onclick="location.href='projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>
+					<li data-toggle="modal" data-target="#subMenuModal14">프로젝트 삭제</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" tabindex="-1" id="subMenuModal11">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">알림설정</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>알림설정</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" tabindex="-1" id="subMenuModal12">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">프로젝트 나가기</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>프로젝트 나가기</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" tabindex="-1" id="subMenuModal13">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">프로젝트 수정</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>프로젝트 수정</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal secondModal" tabindex="-1" id="subMenuModal14">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">프로젝트 삭제</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>프로젝트 삭제</p>
+			</div>
+			<div class="modal-footer">
+			    <button type="button" class="btn btn-primary" onclick="location.href='projectDelete?projectId=${projectInfo.projectId}'">삭제</button>
+			    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$(document).ready(function() {
 		$('#menuList li').click(function() {
