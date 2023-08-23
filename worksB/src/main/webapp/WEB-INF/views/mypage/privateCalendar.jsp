@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,38 +55,86 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-					<div>
-						<form id="scheForm" action="priScheInsert" method="post">
-							<input name="scheTitle" type="text" placeholder="제목을 입력하세요." required="required"> <br><hr>
-							<input name="startDate" type="text" id="datetimepicker1" required="required" autocomplete="off">---
-							<input name="endDate" type="text" id="datetimepicker2" required="required" autocomplete="off"><br>
-							<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberId }" readonly="readonly"><br>
-							<label for="coordinate">장소 : </label><input id="coordinate" name="coordinate" type="text" ><br>
-							<label for="scheContent">내용 : </label><textarea id="scheContent" name="scheContent" rows="" cols="100%" required="required"></textarea>
-						</form>
-					</div>
+					<form id="scheForm" action="${pageContext.request.contextPath}/priScheInsert" method="post">
+						<input name="scheTitle" type="text" placeholder="제목을 입력하세요."> <br><hr>
+						<input name="startDate" type="text" id="datetimepicker1" autocomplete="off">---
+						<input name="endDate" type="text" id="datetimepicker2"  autocomplete="off">
+						<label for="alarmDate">알람시간 : </label>
+						<select class="alarmDate" name="alarmDate">
+					        <option value="">없음</option>
+					        <option value="10">10분 전 미리 알림</option>
+					        <option value="30">30분 전 미리 알림</option>
+					        <option value="60">1시간 전 미리 알림</option>
+					        <option value="120">2시간 전 미리 알림</option>
+					        <option value="1440">1일 전 미리 알림</option>
+						</select><br>
+						<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberInfo.memberId }" readonly="readonly"><br>
+						<label for="coordinate">장소 : </label><input id="coordinate" name="coordinate" type="text" ><br>
+						<label for="scheContent">내용 : </label><textarea id="scheContent" name="scheContent" rows="" cols="100%"></textarea>
+					</form>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" form="scheForm" class="btn btn-primary">일정 저장</button>
-                    <button type="reset" form="scheForm" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+                    <button type="reset" form="scheForm" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- 상세조회 Modal -->
 	<div class="modal fade" id="selectModal" tabindex="-1" aria-labelledby="selectModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="selectModalLabel">Modal title</h5>
+	        <h5 class="modal-title" id="selectModalLabel">일정 조회</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	        ...
+			<form id="scheViewForm" action="${pageContext.request.contextPath }/updateSche" method="post">
+				<input name="scheTitle" type="text"> <br><hr>
+				<input name="startDate" type="text" id="datetimepicker3"  autocomplete="off">---
+				<input name="endDate" type="text" id="datetimepicker4"  autocomplete="off"><br>
+				<label for="alarmDate">알람시간 : </label>
+					<select class="alarmDate" name="alarmDate">
+				        <option value="">없음</option>
+				        <option value="10">10분 전 미리 알림</option>
+				        <option value="30">30분 전 미리 알림</option>
+				        <option value="60">1시간 전 미리 알림</option>
+				        <option value="120">2시간 전 미리 알림</option>
+				        <option value="1440">1일 전 미리 알림</option>
+					</select><br>
+				<label for="memberId">작성자 : </label><input name="memberId" type="text" value=""><br>
+				<label for="coordinate">장소 : </label><input name="coordinate" type="text" ><br>
+				<input id="scheId" name="scheId" type="text" hidden="hidden">
+				<label for="scheContent">내용 : </label><textarea name="scheContent" rows="" cols="100%"></textarea>
+			</form>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
+	        <button type="button" class="btn btn-primary" id="updateBtn"></button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- to-do-List Modal -->
+	<div class="modal fade" id="tdlModal" tabindex="-1" aria-labelledby="tdlModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="tdlModalLabel">To Do List</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="tdlBody">
+	      	<form id="tdlForm">
+		      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요"><hr>
+		      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker5"  autocomplete="off">
+		      	<div>
+		      	</div>
+		      	<button type="button" class="btn btn-primary" id="addTdlLine">To Do List 추가</button>
+	      	</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary">TDL 저장</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	      </div>
 	    </div>
 	  </div>
@@ -99,129 +148,378 @@
 		if(msg == null || msg == '') return;
 		alert(msg);
 	}
-
-	//입력모달창 띄우기
-	var myModal = new bootstrap.Modal(document.getElementById('scheModal'))
-	var selectModal = new bootstrap.Modal(document.getElementById('selectModal'))
 	
+	//입력모달창 띄우기
+	var scheModal = new bootstrap.Modal(document.getElementById('scheModal'))
+	var selectModal = new bootstrap.Modal(document.getElementById('selectModal'))
+	var tdlModal = new bootstrap.Modal(document.getElementById('tdlModal'))
+	
+	//모달 폼 리셋
+	$('#selectModal, #scheModal').on('hidden.bs.modal', function (e) {
+		$(this).find('form')[0].reset();
+        $(".alarmDate option:eq(0)").prop("selected", true);
+	});
 	
 	//dateTimePicker
 	jQuery.datetimepicker.setLocale('kr');
-	$('#datetimepicker1, #datetimepicker2').datetimepicker({
-	    format:'Y-m-d H:i',
-	    step: 30,
-	    lang:'kr'
+
+	$('#datetimepicker1').datetimepicker({
+		format:'Y-m-d H:i',
+		step: 30,
+		lang:'kr',
+		onShow:function( ct ){
+			this.setOptions({
+				maxDate:jQuery('#datetimepicker2').val()?jQuery('#datetimepicker2').val():false
+			})
+		}
+	});
+	$('#datetimepicker2').datetimepicker({
+		format:'Y-m-d H:i',
+		step: 30,
+		lang:'kr',
+		onShow:function( ct ){
+			this.setOptions({
+				minDate:$('#datetimepicker1').val()?jQuery('#datetimepicker1').val():false
+			})
+		}
+	});
+		
+	$('#datetimepicker5').datetimepicker({
+	    format:'Y-m-d',
+	    lang:'kr',
+	    timepicker:false
 	});
 	
-/* 	// datepicker 선언
-	$("#dateEnd").datetimepicker({...옵션};
+	//일정입력/수정 시 알람시간 부여
+    $(".alarmDate").change(function(e) {
+        var selectedAlarm = $(this).val(); // 선택한 알람 시간 옵션 가져오기
+		var startDate;
+        if($(e.target).parent().attr('id')==='scheForm'){
+	        startDate = new Date($("#datetimepicker1").val()); // 시작일 가져오기
+        }else if($(e.target).parent().attr('id')==='scheViewForm'){
+        	startDate = new Date($("#datetimepicker3").val()); // 시작일 가져오기
+        }
+        var alarmDate = new Date(startDate); // 알람 시간 초기화
 
-	// datepicker 선택된 값 불러오기 (1.13 jquery UI datepicker 기준)
-	let selectDate = $("#dateEnd").datetimepicker("getDate"); */
+        if (selectedAlarm === "10") {
+            alarmDate.setMinutes(alarmDate.getMinutes() - 10); // 10분 전
+        } else if (selectedAlarm === "30") {
+            alarmDate.setMinutes(alarmDate.getMinutes() - 30); // 30분 전
+        } else if (selectedAlarm === "60") {
+            alarmDate.setHours(alarmDate.getHours() - 1); // 1시간 전
+        } else if (selectedAlarm === "120") {
+            alarmDate.setHours(alarmDate.getHours() - 2); // 2시간 전
+        } else if (selectedAlarm === "1440") {
+            alarmDate.setDate(alarmDate.getDate() - 1); // 1일 전
+        }
+        if (selectedAlarm !== "") {
+            var alarmYear = alarmDate.getFullYear();
+			var alarmMonth = alarmDate.getMonth()+1;
+			var alarmDay = alarmDate.getDate();
+			var alarmHours = alarmDate.getHours();
+			var alarmMinutes = alarmDate.getMinutes();
+			if(alarmMinutes<10){
+				alarmMinutes = '0'+alarmMinutes;
+			}
+			if(alarmHours <10){
+				alarmHours ='0'+alarmHours;
+			}
+			if(alarmDay <10){
+				alarmDay ='0'+alarmDay;
+			}
+			if(alarmMonth <10){
+				alarmMonth ='0'+alarmMonth;
+			}
+			var alarmTime = alarmYear+'-'+alarmMonth+'-'+alarmDay+'_'+alarmHours+':'+alarmMinutes;
+			let option = $(`<option selected hidden value=`+alarmTime+`>`+alarmTime+`</option>`);
+	        $(".alarmDate").append(option);
+        }
+        
+    });
+	//var today = new Date();
+	//var month = ('0'+(today.getMonth()+1)).substr(-2);
+	//var day = ('0'+today.getDate()).substr(-2);
 	
-	//일정입력
-	function priScheInsert(){
+	//tdl line 추가
+	$('#addTdlLine').on('click',()=>{
+		let td = $('#addTdlLine').prev()
+		let lineInput = $(`<input type="text" name="content" placeholder="task를 입력하세요">
+						<img class="tdlLineDeleteBtn" src="${pageContext.request.contextPath }/resources/icon/minusCircleBtn.svg" alt="minus SVG" width="20" height="20"/><br>`)
+		td.append(lineInput)
 
-	}
+	});
 	
-	//단건조회
-	function priScheSelect(){
-		
-	}
+	//todolist 줄 삭제
+	$(document).on('click', '.tdlLineDeleteBtn', function() {
+	  console.log('e');
+	  $(this).prev().remove(); // 클릭한 요소의 이전 요소 삭제
+	  $(this).next().remove(); 
+	  $(this).remove(); // 클릭한 요소만 삭제
+	});
 	
-	
-	var calendar ;
+	var calendar 
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
+		
+		//변수선언
+		var calendarEl = document.getElementById('calendar');
+		calendar = new FullCalendar.Calendar(calendarEl, {
+
+			dayMaxEventRows : true, // for all non-TimeGrid views
+			views : {
+				timeGrid : {
+					dayMaxEventRows : 6
+				// adjust to 6 only for timeGridWeek/timeGridDay
+				}
+			},
+			customButtons : {
+				myCustomButton : {
+					text : '일정추가',
+					click : scheInsert
+				},
+				tdlBtn : {
+					text : 'to-do-List',
+					click : toDoListInsert
+				},
+				scheBtn : {
+					text : '일정필터',
+					click : function(){
+						//일정필터 
+					}
+				},
+				taskBtn : {
+					text : '업무필터',
+					click : function(){
+						//업무필터
+					}
+				}
+			},
+			headerToolbar : {
+				left : 'prev,today,next scheBtn,taskBtn',
+				center : 'title',
+				right : 'tdlBtn,myCustomButton dayGridMonth,timeGridWeek'
+			},
+			locale : "ko",
+			navLinks : false, // can click day/week names to navigate views
+			selectable : true,
+			selectMirror : true,
+			select : addPrivateSche,
+			//ajax로 db데이터 화면에 뿌리기
+			//events: data,
+			eventClick:eventClickHandler
+		});
+		calendar.render();
+		loadPriSche();
+		
+		//전체 일정 조회/재조회
+		function loadPriSche(){
+			$.ajax({
+				  url: "privateScheList",
+				  method: "GET",
+				  dataType: "json"
+			}).done(function(data){
+				calendar.removeAllEvents();
+				calendar.addEventSource(data);
+				calendar.getEventSources()
+				//calendar.refetchEvents();
+			}).fail(function( jqXHR, textStatus ) {
+				  alert( "Request failed: " + textStatus );
+			});
+		};
+		
+		//날짜 클릭시 일정 입력
+		function addPrivateSche(arg) {
+			//모달창 띄우기
+	        scheModal.show();
+			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
+			$('#coordinate').prop("required", false);
+			$(".alarmDate option").prop("disabled", false);
+			//해당 날짜가져오기
+			$('#datetimepicker1').val(arg.startStr);
+			$('#datetimepicker2').val(arg.endStr);
+			calendar.unselect();
+		};
 		//로그인한 사용자의 개인스케줄 정보를 ajax를 통해 json형식으로 가져옴
-		var request = $.ajax({
-			  url: "privateScheList",
-			  method: "GET",
-			  dataType: "json"
-			}); 
-		request.done(function(data){
-			console.log(data)
-			var calendarEl = document.getElementById('calendar');
-			calendar = new FullCalendar.Calendar(calendarEl, {
-
-				dayMaxEventRows : true, // for all non-TimeGrid views
-				views : {
-					timeGrid : {
-						dayMaxEventRows : 6
-					// adjust to 6 only for timeGridWeek/timeGridDay
+		
+		
+		//이벤트 클릭시 상세보기
+		function eventClickHandler(info){
+			let scheId = info.event.id
+			let data = { "scheId" : scheId};
+			$.ajax({
+				url:"selectPsche",
+				method:"GET",
+				data: data,
+				dataType: "json",
+				success:function(result){
+					selectModal.show();
+					//삭제버튼 있을시 삭제
+					$('#updateBtn').prev('button').remove();
+					//버튼클릭이벤트 정지
+					$('#updateBtn').prop("type","button").off("click");
+					$('#scheViewForm input,textarea').prop("readonly", true);
+					$('#scheViewForm input').eq(0).val(result.title);
+					$('#scheViewForm input').eq(1).val(result.start).datetimepicker('destroy');
+					$('#scheViewForm input').eq(2).val(result.end).datetimepicker('destroy');
+					//알람시간 option태그 생성
+					if(result.alarmDate === null){
+						var none = "없음";
+					}else{
+						var none = result.alarmDate;
 					}
+					let option = $(`<option selected hidden value=`+none+`>`+none+`</option>`);
+			        $(".alarmDate").append(option);
+			        $(".alarmDate option").prop("disabled",true);
+			        
+					$('#scheViewForm input').eq(3).val(result.memberId);
+					$('#scheViewForm input').eq(4).val(result.coordinate);
+					$('#scheViewForm textarea').val(result.scheContent);
+					$('#scheId').val(result.scheId);
+					$('#updateBtn').text('수정/삭제').on("click", function(){updateScheForm(info)});
 				},
-				customButtons : {
-					myCustomButton : {
-						text : '일정추가',
-						click : function() {
-							//일정추가 버튼 클릭시 모달창 띄우기
-					        myModal.show();
-							//현재시간 입력
-							var now = new Date();
-							var nowYear = now.getFullYear();
-							var nowMonth = now.getMonth()+1;
-							var nowDate = now.getDate();
-							var hours = now.getHours();
-							var minutes = now.getMinutes();
-							$('#datetimepicker1').val(nowYear+'-'+nowMonth+'-'+nowDate+' '+hours+':'+minutes);
-						}
-					},
-					scheBtn : {
-						text : '일정필터',
-						click : function(){
-							//일정필터 
-						}
-					},
-					taskBtn : {
-						text : '업무필터',
-						click : function(){
-							//업무필터
-						}
-					}
-				},
-				headerToolbar : {
-					left : 'prev,today,next scheBtn,taskBtn',
-					center : 'title',
-					right : 'myCustomButton dayGridMonth,timeGridWeek'
-				},
-				locale : "ko",
-				navLinks : false, // can click day/week names to navigate views
-				selectable : true,
-				selectMirror : true,
-				select : function(arg) {
-					//모달창 띄우기
-			        myModal.show();
-					//해당 날짜가져오기
-					$('#datetimepicker1').val(arg.startStr);
-					$('#datetimepicker2').val(arg.endStr);
-
-					calendar.unselect()
-				},
-				//ajax로 db데이터 화면에 뿌리기
-				events: data,
-				eventClick:function(info){
-					console.log(info.event.id)
-					$.ajax({
-						url:"selectPsche",
-						method:"GET",
-						data: info.event.id,
-						success:function(data){
-							selectModal.show();
-						},
-						error:function(error){
-							console.log(error)
-						}
-					});
+				error:function(error){
+					alert("조회오류");
 				}
 			});
-			calendar.render();
-		});
+		}
 		
-		request.fail(function( jqXHR, textStatus ) {
-			  alert( "Request failed: " + textStatus );
-		});
+		//이벤트 등록모달
+		function scheInsert() {
+			//일정추가 버튼 클릭시 모달창 띄우기
+	        scheModal.show();
+			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
+			$('#coordinate').prop("required", false);
+			$(".alarmDate option").prop("disabled", false);
+			//현재시간 입력
+			var now = new Date();
+			var nowYear = now.getFullYear();
+			var nowMonth = now.getMonth()+1;
+			var nowDate = now.getDate();
+			var hours = now.getHours();
+			var minutes = now.getMinutes();
+			var after = now.getMinutes()+30;
+			if(minutes <10){
+				minutes = '0'+minutes;
+			}
+			var afterhours = hours;
+			if(after>59){
+				after = after-60;
+				if(after <10){
+					after = '0'+after
+				}
+				afterhours = hours+1;
+			}
+			var nowTime = nowYear+'-'+nowMonth+'-'+nowDate+' '+hours+':'+minutes;
+			var nowTimeAfter = nowYear+'-'+nowMonth+'-'+nowDate+' '+afterhours+':'+after;
+			$('#datetimepicker1').val(nowTime);
+			$('#datetimepicker2').val(nowTimeAfter);
+			
+		};
 		
+		//todoList db입력
+		function toDoListInsert(){
+			tdlModal.show()
+		};
+		
+
+	
+		//일정 수정폼
+		function updateScheForm(info){
+			$('#scheViewForm input,textarea').prop("readonly", false);
+			$('#scheViewForm input').eq(3).prop("readonly", true);
+			$('#scheViewForm input').eq(0).focus();
+			$('#datetimepicker3, #datetimepicker4').datetimepicker({
+			    format:'Y-m-d H:i',
+			    step: 30,
+			    lang:'kr'
+			});
+			//알람시간 활성화
+			$(".alarmDate option").prop("disabled",false);
+			
+			$('#updateBtn').text('수정완료');
+			let $btn = $('<button type="button" class="btn btn-primary" id="deleteBtn">삭제</button>');
+			let scheId = (info.event.id);
+			$btn.on("click", function(){deleteSche(scheId)})
+			$('#updateBtn').parent().prepend($btn);
+			$('#updateBtn').attr("form", "scheViewForm").off("click");
+			$('#updateBtn').on("click", function(){updateSche(event, info)});
+		};
+		
+		//일정 수정
+		function updateSche(e, info){
+			let doIt;
+			for(let i = 0; i < $('#scheViewForm input').length-1; i++){
+				if(i==4 && ($('#scheViewForm input').eq(4).val()=== null || $('#scheViewForm input').eq(4).val() === "")){
+					continue;
+				}else if($('#scheViewForm input').eq(i).val()=== null || $('#scheViewForm input').eq(i).val() === ""){
+					alert('필수값을 입력해주세요');
+					$('#scheViewForm input').eq(i).focus();
+					doIt = 1;
+					break;
+				}
+			}
+			
+			if(doIt != 1){
+				//폼태그 배열화
+				let obj = serializeObject();
+				
+				$.ajax({
+					url : 'updatePsche',
+					method : 'post',
+					data : obj,
+					success : function(result){
+						console.log(result);
+						//캘린더 event 업데이트
+						loadPriSche();
+					},
+					error : function(err){
+						console.log(err);
+					}
+				});
+				
+				//삭제버튼 삭제
+				$('#updateBtn').prev('button').remove();
+				//모달창 닫기
+				selectModal.hide();
+				
+			}
+			
+		};
+		
+		//form데이터 배열화
+		function serializeObject(){
+			let formData = $('#scheViewForm').serializeArray();
+			
+			let objectData = {};
+			$.each(formData, function(idx, obj){
+				objectData[obj.name] = obj.value;
+			});
+			
+			return objectData;
+		};
+
+		//일정 삭제
+		function deleteSche(scheId){
+			let id = {"scheId":scheId}
+			$.ajax({
+				url:'deletePsche',
+				method : 'get',
+				data : id,
+				success : function(result){
+					console.log(result);
+					//캘린더 event 업데이트
+					loadPriSche();
+				},
+				error : function(err){
+					console.log(err);
+				}
+			});
+			//삭제버튼 삭제
+			$('#updateBtn').prev('button').remove();
+			//모달창 닫기
+			selectModal.hide();
+		};
 	});
+	
 </script>
 </html>
