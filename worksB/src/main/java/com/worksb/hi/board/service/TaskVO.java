@@ -39,4 +39,6 @@ RESP_ID
  */
 	private int prjParticirId;
 	private int respId;
+	
+	private String memberName;
 }
