@@ -136,12 +136,16 @@
 </head>
 
 <body>
+    <form name="deptInfo" action="${pageContext.request.contextPath }/SelectFromCompany">
+    	<input type="hidden" name="deptId" value="${projectVO.deptId }">
+    	<input type="hidden" name="projectCls" value="${projectVO.projectCls }">
+    </form>
 	<h3 class="list-title">회사 전체 프로젝트</h3>
 	<div style="padding: 5px 50px;">
 		<ul class="dept-list">
-			<li class="view-dept" onclick='viewPart("all")'>전체보기</li>
+			<li class="view-dept" onclick="viewPart('')">전체보기</li>
 			<c:forEach items="${deptList }" var="dept">
-				<li class="view-dept" onclick='viewPart("${dept.deptId }")' data-id="${dept.deptId }">${dept.deptName }</li>
+				<li class="view-dept" onclick="viewPart('${dept.deptId}')" data-id="${dept.deptId }">${dept.deptName }</li>
 			</c:forEach>
 		</ul>
 	</div>
@@ -150,8 +154,8 @@
 			<div class="list-count">전체 <span>${projectList.size() }</span></div>
 			<div>
 				<select class="option">
-					<option value="select1">진행중</option>
-					<option value="select2">만료</option>
+					<option value="A2" selected>진행중</option>
+					<option value="A1">만료</option>
 				</select>
 			</div>
 		</div>
@@ -159,117 +163,77 @@
 		<c:forEach items="${projectList }" var="list">
 			<div class="list">
 				<!-- 회사전체공개프로젝트의 경우 -->
-				<c:if test="${list.projectAccess eq 'YES' }">
+
 					<div class="project-name">
-						<img class="prj-icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg">
-						<!-- particirAccp(승인여부)Y -->
-						<c:if test="${list.particirAccp eq 'YES' }">
-							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span>  
+					
+						<c:if test="${list.projectAccess eq 'YES' }">
+							<img class="prj-icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg">
 						</c:if>
-						<!-- particirAccp(승인여부)N -->
-						<c:if test="${list.particirAccp eq 'NO' }">
-							<span><a onclick="accp('${list.projectId}','Y')">${list.projectName}(미승인)</a></span>
+						<c:if test="${list.projectAccess eq 'NO' }">
+							<img class="prj-icon" alt="참여자공개이미지" title="참여자만 공개" src="${pageContext.request.contextPath }/resources/icon/lock-solid.svg">	
 						</c:if>
-						<!-- particirAccp(승인여부)null(참여신청을 하지 않았다는 의미) -->
-						<c:if test="${list.particirAccp eq null }">
-							<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-						</c:if>
+						
+						<span class="prj-move" data-cls="${list.projectCls }" data-access="${list.projectAccess}" data-accp="${list.particirAccp}" data-prjid="${list.projectId }">${list.projectName}</span>  
+
 					</div>
 					
 					<!-- 참여버튼 클릭 시 참여하기 기능 구현  필요함 -->
 					<div class="project-info">
 						${list.prjParticirNum }<img class="prj-icon" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
-						<!-- particirAccp(승인여부)Y -->
-						<c:if test="${list.particirAccp eq 'YES' }">
-							<button type="button" class="list-btn red">참여중</button>  
-						</c:if>
-						<!-- particirAccp(승인여부)N -->
-						<c:if test="${list.particirAccp eq 'NO' }">
-							<button type="button" class="list-btn yellow">승인대기</button>
-						</c:if>
-						<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
-						<c:if test="${list.particirAccp eq null }">
-							<button type="button" class="list-btn green point">참여하기</button>
-						</c:if>
-					</div>
-				</c:if>
-				
-				<!-- 비공개프로젝트의 경우 -->
-				<c:if test="${list.projectAccess eq 'NO' }">
-					<div class="project-name">
-						<img class="prj-icon" alt="참여자공개이미지" title="참여자만 공개" src="${pageContext.request.contextPath }/resources/icon/lock-solid.svg">
-						<!-- particirAccp(승인여부)Y -->
-						<c:if test="${list.particirAccp eq 'YES' }">
-							<span class="project-name finger" onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span> 
-						</c:if>
-						<!-- particirAccp(승인여부)N -->
-						<c:if test="${list.particirAccp eq 'NO' }">
-							<span class="project-name gray finger" title="입장권한이 없습니다"><a onclick="accp('${list.projectId}','N')">${list.projectName}(미승인)</a></span>
-						</c:if>
-            
-            <!--ajax를 이용해서 부서별 조회도 가능하도록 구현하는 것도 추후에....ㅠ -->
-						
-            <!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
-						<c:if test="${list.particirAccp eq null }">
-							<span class="project-name gray" title="입장권한이 없습니다">${list.projectName}</span>
+						<c:if test="${list.projectCls eq 'NO' }">						
+							<!-- particirAccp(승인여부)Y -->
+							<c:if test="${list.particirAccp eq 'YES' }">
+								<button type="button" class="list-btn red">참여중</button>  
+							</c:if>
+							<!-- particirAccp(승인여부)N -->
+							<c:if test="${list.particirAccp eq 'NO' }">
+								<button type="button" class="list-btn yellow">승인대기</button>
+							</c:if>
+							<!-- particirAccp(승인여부)null(승인신청을 하지 않았다는 의미) -->
+							<c:if test="${list.particirAccp eq null }">
+								<button type="button" class="list-btn green point">참여하기</button>
+							</c:if>
 						</c:if>
 					</div>
-					
-					<div class="project-info">
-						${list.prjParticirNum }<img class="prj-icon" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
-						<!-- particirAccp(승인여부)Y -->
-						<c:if test="${list.particirAccp eq 'YES' }">
-							<button type="button" class="list-btn red">참여중</button>  
-						</c:if>
-						<!-- particirAccp(승인여부)N -->
-						<c:if test="${list.particirAccp eq 'NO' }">
-							<button type="button" class="list-btn yellow">승인대기</button>
-						</c:if>
-						<!-- particirAccp(승인여부)null(참여신청을 하지 않았다는 의미) -->
-						<c:if test="${list.particirAccp eq null }">
-							<button type="button" class="list-btn green point">참여하기</button>
-						</c:if>
-					</div>
-				</c:if>
 			</div>
 		</c:forEach>
 	</div>
 </body>
 <script>
-	//부서별 출력
-	function viewPart(info){
-		//전체보기
-		if(info=='all'){
-			$.ajax({
-				url:'${pageContext.request.contextPath}/SelectFromCompany',
-				type:'GET',
-			})
-			.done(data=>{
-				console.log('success')
-			})
-			.fail(reject=>{
-				console.log(reject)
-			})
-		}
-		else{
+	//프로젝트div클릭시 피드로 이동
+	$('.prj-move').on('click',(e=>{
+		let access=$(e.target).data("access")
+		let accp=$(e.target).data("accp")
+		let id=$(e.target).data("prjid")
+		let cls=$(e.target).data("cls")
+		//만료여부에 따른 분기
+		if(cls=='NO'){
+			//공개여부(전체공개)		비공개이지만 승인받은 경우
+			if(access=='YES' || ( access=='NO' && accp=='YES')) {
+				location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id
+			}
+		}else if(cls=='YES'){
 			
 		}
+		
+		
+	}))
+	//부서정보를 컨트롤러에 넘김
+	function viewPart(dept){
+		deptInfo.deptId.value=dept;
+		deptInfo.submit();
 	}
-	let deptInfo=$('.view-dept').val()
-	console.log(deptInfo)
+	
+	//select에 따른 데이터변동
 	$('.option').change(function() {
-		let value=$('.option').val()
-		//진행중프로젝트
-		if(value=='select1'){
-			$.ajax({
-				url:''
-			})
-		}
-		//만료된 프로젝트
-		else if(value=='select2'){
-			
-		}
+		deptInfo.projectCls.value=$('.option').val()
+		deptInfo.submit();	
 	})
+	//페이지가 바뀌어도 selectBox가 변동되지 않도록 하기 위함	
+	if("${projectVO.projectCls }"!=""){
+		$('.option').val("${projectVO.projectCls }")		
+	}
+
 	
 </script>
 </html>
