@@ -104,73 +104,40 @@ div h2 {
 </style>
 </head>
 <body>
+	<script src="resources/ckeditor/build/ckeditor.js"></script>
 	<div class="top">
 		<h2>공지사항 수정</h2>
 	</div>
 	<div class="body">
 		<form action="noticeUpdate">
-			<table class="table">
-				<thead>
-					<tr class="main__p">
-						<th class="table__title">
-							<input type="text" name="noticeTitle" value="${noticeInfo.noticeTitle }">
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<div class="content">
-								<input type="text" name="noticeContent" value="${noticeInfo.noticeContent }">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="hidden" name="noticeId" value="${noticeInfo.noticeId }">
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<label id="noticeTitle">제목 </label>
+			<input type="text" name="noticeTitle" value="${noticeInfo.noticeTitle }">
+			<textarea name="noticeContent" id="editor">${noticeInfo.noticeContent }</textarea>
 			<button type="button" onclick="location.href='noticeList'">목록</button>
 			<button type="submit">작성</button>
 		</form>
 	</div>
+	
 	<script>
-$('form').on('submit', function(e){
-			
-			let objData = serializeObject();
-			
-			$.ajax({
-				url : 'noticeUpdate',
-				method : 'post',
-				data : objData
-			})
-			.done(data => {
-				let message = '수정이 완료되었습니다.';
-				alert(message);
-			})
-			.fail(reject => console.log(reject));
-			
-			return false;
-		});
-		
-		
-		function serializeObject(){
-			let formData = $('form').serializeArray();
-		
-			
-			let formObject = {};
-			$.each(formData, function(idx, obj){
-				let field = obj.name;
-				let val = obj.value;
-				
-				formObject[field] = val;
-			});
-			
-			return formObject;
-		}
-		
+		ClassicEditor.create( document.querySelector( '#editor' ), {
+		    ckfinder:{
+		    	uploadUrl: 'resources/img'
+		    },
+		    /* 폰트 설정 안됨. 죽이고싶음 */
+		    fontFamily:{
+		    	items:[
+		    		'default',
+		    		'Arial',
+		    		'궁서체',
+		    		'바탕',
+		    		'돋움'
+		    	],
+		    	supportAllValues: true
+		    }
+		  }
+		  
+		);
+
 	</script>
 </body>
 </html>

@@ -6,6 +6,7 @@ import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 
 public interface NoticeService {
+	
 	// 게시물 총 갯수
 	public int noticeCount(SearchVO searchVO);
 	
@@ -24,4 +25,11 @@ public interface NoticeService {
 	// 공지 삭제
 	public int noticeDelete(int noticeId);
 
+	// 조회수 올리기
+	/*
+	public default int noticeHit(String noticeId) {
+		return 0;
+	}
+	*/
+	
 }

@@ -1,12 +1,16 @@
 package com.worksb.hi.company.web;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.worksb.hi.company.service.CompanyService;
@@ -112,5 +118,49 @@ public class CompanyController {
 		memberService.updateMember(member);
 		session.setAttribute("companyId", dbCompany.getCompanyId());
 		return "redirect:/start";
+	}
+	
+	@RequestMapping(value="/ckuploadsAjax")
+	@ResponseBody
+	public Map<String, Object> image(@RequestPart MultipartFile[] upload, HttpServletRequest request) throws Exception{
+		
+		Map<String, Object> mv = new HashMap<>();
+
+		 for(MultipartFile uploadFile : upload){
+		    	if(uploadFile.getContentType().startsWith("image") == false){
+		    		System.err.println("this file is not image type");
+		    		return null;
+		        }
+		  
+		        String originalName = uploadFile.getOriginalFilename();
+		        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+		        
+		        System.out.println("fileName : " + fileName);
+		    
+		        //날짜 폴더 생성
+		        String folderPath = makeFolder();
+		        //UUID
+		        String uuid = UUID.randomUUID().toString();
+		        //저장할 파일 이름 중간에 "_"를 이용하여 구분
+		        
+		        String uploadFileName = folderPath +File.separator + uuid + "_" + fileName;
+		        
+		        String saveName = uploadPath + File.separator + uploadFileName;
+		        
+		        Path savePath = Paths.get(saveName);
+		        //Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
+		        System.out.println("path : " + saveName);
+		        try{
+		        	uploadFile.transferTo(savePath);
+		            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+		        } catch (IOException e) {
+		             e.printStackTrace();	             
+		        }
+		   
+		        mv.put("uploaded", true);
+		        mv.put("url", request.getContextPath()+"/images/" + setImagePath(uploadFileName));
+		}
+
+	    return mv;
 	}
 }

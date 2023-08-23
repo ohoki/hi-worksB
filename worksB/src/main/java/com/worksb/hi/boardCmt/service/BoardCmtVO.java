@@ -13,4 +13,8 @@ public class BoardCmtVO {
 	private int boardId;
 	private String boardType;
 	
+	private String memberName;
+	private Date boardRegdate;
+	private int boardHit;
+	
 }
