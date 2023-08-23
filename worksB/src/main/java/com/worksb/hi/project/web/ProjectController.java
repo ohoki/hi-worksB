@@ -174,12 +174,13 @@ public class ProjectController {
 	
 	//회사 전체 프로젝트출력
 	@GetMapping("/SelectFromCompany")
-	public String SelectCom(Model m,HttpSession session) {
+	public String SelectCom(Model m,HttpSession session, ProjectVO VO) {
 		Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+		VO.setCompanyId(companyId);
 		
 		List<PrjParticirVO> myList = projectService.selectAllparticier(memberId);
-		List<ProjectVO> list = projectService.selectFromCompany(companyId);
+		List<ProjectVO> list = projectService.selectFromCompany(VO);
 		List<DeptVO> deptList = projectService.getDeptInfo(companyId); 
 				
 		for(ProjectVO vo :list) {

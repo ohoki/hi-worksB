@@ -127,8 +127,8 @@ public class ProjectServiceImpl implements ProjectService {
 
 	//회사별조회
 	@Override
-	public List<ProjectVO> selectFromCompany(int companyId) {
-		List<ProjectVO> vo=projectMapper.selectFromCompany(companyId);
+	public List<ProjectVO> selectFromCompany(ProjectVO vo) {
+		List<ProjectVO> list=projectMapper.selectFromCompany(vo);
 //		List<ProjectVO> result = new ArrayList<>();
 //
 //		Set<Integer> uniqueProjectIds = new HashSet<>();
@@ -160,7 +160,7 @@ public class ProjectServiceImpl implements ProjectService {
 //		for(ProjectVO project:result){
 //		    System.out.println(project.getProjectName());
 //		}
-		return vo;
+		return list;
 	}
 
 	//로그인된 아이디가 참여하고 있는 프로젝트 
