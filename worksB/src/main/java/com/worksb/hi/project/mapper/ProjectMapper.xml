@@ -35,7 +35,7 @@
 						#{boardAccess},
 						#{commentAccess},
 						#{fileAccess},
-						#{deptId}
+						#{deptId},
 						'A2'
 						)
 	</insert>
@@ -211,6 +211,8 @@
         pp2.project_markup='A1'
     AND
         pp2.particir_accp='A1'
+    AND 
+    	p.project_cls='A2'
 	ORDER BY p.project_id  
 </select>
 
@@ -257,6 +259,8 @@
         pp2.project_markup='A2'
         AND
         pp2.particir_accp='A1'
+        AND 
+    	p.project_cls='A2'
 	ORDER BY p.project_id
 </select>
 
