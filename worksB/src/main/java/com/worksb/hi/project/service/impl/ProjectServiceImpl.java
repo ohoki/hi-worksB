@@ -1,9 +1,6 @@
 package com.worksb.hi.project.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,12 +89,24 @@ public class ProjectServiceImpl implements ProjectService {
 	public int insertParticipant(PrjParticirVO participant) {
 		return projectMapper.insertParticipant(participant);
 	}
+	// 프로젝트 참여자 조회
+	@Override
+	public List<PrjParticirVO> getParticirList(int projectId) {
+		return projectMapper.getParticirList(projectId);
+	}
+	//프로젝트 즐겨찾기 여부
+	public PrjParticirVO getParticirByProject(PrjParticirVO particirVO) {
+		return projectMapper.getParticirByProject(particirVO);
+	}
+	
 
 
 
 	
 	
 	//주현
+
+	// 개별조회
 	@Override
 	public List<ProjectVO> searchPrj(String memberId) {
 		List<ProjectVO> vo=projectMapper.searchPrj(memberId);
@@ -108,52 +117,68 @@ public class ProjectServiceImpl implements ProjectService {
 //		}
 		return vo;
 	}
-
-
-
+	
+	//북마크여부(NO)+만료여부에 따른 조회
 	@Override
-	public List<ProjectVO> selectFromCompany(int companyId,String memberId) {
-		List<ProjectVO> vo=projectMapper.selectFromCompany(companyId);
-		List<ProjectVO> result = new ArrayList<>();
-
-		Set<Integer> uniqueProjectIds = new HashSet<>();
-		//Set<Integer> sessionMatchingProjectIds = new HashSet<>();
-
-		for(int i=vo.size()-1;i >= 0;i--){
-		    ProjectVO project = vo.get(i);
-
-		    if (!uniqueProjectIds.contains(project.getProjectId())) {
-		        uniqueProjectIds.add(project.getProjectId());
-
-		        if (memberId.equals(project.getMemberId())) {
-		        	uniqueProjectIds.add(project.getProjectId());
-		        }else {
-		        	
-		        }
-		    }
-		}
-
-		// 결과 리스트에 중복된 프로젝트 중 세션과 일치하는 것만 추가
-		for(ProjectVO project:vo) {
-		    if (uniqueProjectIds.contains(project.getProjectId())) {
-		    	result.add(project);
-		        uniqueProjectIds.remove(project.getProjectId()); // 중복 제거한 프로젝트는 세트에서 제거
-		    }
-		}
-
-		// 결과 출력
-		for(ProjectVO project:result){
-		    System.out.println(project.getProjectName());
-		}
-		return result;
+	public List<ProjectVO> searchPrjCls(String memberId, String cls) {
+		return projectMapper.searchPrjCls(memberId, cls);
 	}
 
 
+	//회사별조회
+	@Override
+	public List<ProjectVO> selectFromCompany(ProjectVO vo) {
+		List<ProjectVO> list=projectMapper.selectFromCompany(vo);
+//		List<ProjectVO> result = new ArrayList<>();
+//
+//		Set<Integer> uniqueProjectIds = new HashSet<>();
+//		//Set<Integer> sessionMatchingProjectIds = new HashSet<>();
+//
+//		for(int i=vo.size()-1;i >= 0;i--){
+//		    ProjectVO project = vo.get(i);
+//
+//		    if (!uniqueProjectIds.contains(project.getProjectId())) {
+//		        uniqueProjectIds.add(project.getProjectId());
+//
+//		        if (memberId.equals(project.getMemberId())) {
+//		        	uniqueProjectIds.add(project.getProjectId());
+//		        }else {
+//		        	
+//		        }
+//		    }
+//		}
+//
+//		// 결과 리스트에 중복된 프로젝트 중 세션과 일치하는 것만 추가
+//		for(ProjectVO project:vo) {
+//		    if (uniqueProjectIds.contains(project.getProjectId())) {
+//		    	result.add(project);
+//		        uniqueProjectIds.remove(project.getProjectId()); // 중복 제거한 프로젝트는 세트에서 제거
+//		    }
+//		}
+//
+//		// 결과 출력
+//		for(ProjectVO project:result){
+//		    System.out.println(project.getProjectName());
+//		}
+		return list;
+	}
 
+	//로그인된 아이디가 참여하고 있는 프로젝트 
+	@Override
+	public List<PrjParticirVO> selectAllparticier(String memberId){
+		return projectMapper.selectAllparticier(memberId);
+	}
+
+	//즐겨찾기갱신
 	@Override
 	public void updateStar(ProjectVO vo) {
 		projectMapper.updateStar(vo);
 	}
+	
+
+
+
+	
 
 
 

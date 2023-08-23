@@ -70,7 +70,10 @@ input:-webkit-autofill:active {
 	margin:0;
 	height: 40px !important;
 	margin-left: 4%;
-	font-size: var(--font-small) !important;
+	font-size: var(--font-micro) !important;
+	border:1px solid var(--color-dark-red);
+	background-color: var(--color-white) !important;
+	color: var(--color-dark-red) !important;
 }
 
 .register-form__btns{
@@ -79,7 +82,7 @@ input:-webkit-autofill:active {
 }
 
 .register-form button {
-	background-color: rgb(174, 213, 245);
+	background-color: var(--color-dark-red);
 	height: 50px;
 	width: 40%;
 	border-radius: 5px;
@@ -87,6 +90,7 @@ input:-webkit-autofill:active {
 	font-weight: var(--weight-bold);
 	font-size: var(--font-regular);
 }
+
 
 #consent {
 	display: inline-block;

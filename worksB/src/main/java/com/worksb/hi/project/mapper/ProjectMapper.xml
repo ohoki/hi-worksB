@@ -35,7 +35,7 @@
 						#{boardAccess},
 						#{commentAccess},
 						#{fileAccess},
-						#{deptId}
+						#{deptId},
 						'A2'
 						)
 	</insert>
@@ -78,18 +78,24 @@
 	
 	<!-- 프로젝트 게시글 리스트 -->
 	<select id="getBoardList" resultType="BoardVO">
-		SELECT PRJ_BOARD_ID,        
-				PRJ_BOARD_TITLE,     
-				PRJ_BOARD_SUBJECT,  
-				PRJ_BOARD_REGDATE,            
-				MEMBER_ID,            
-				INSP_YN,              
-				PIN_YN,                
-				BOARD_TYPE,           
-				PROJECT_ID,                 
-				COORDINATE
-		FROM prj_board
-		WHERE project_id = #{projectId}  
+		SELECT 	p.prj_board_id,        
+				p.prj_board_title,     
+				p.prj_board_subject,  
+				p.prj_board_regdate,            
+				p.member_id,            
+				p.insp_yn,              
+				p.pin_yn,                
+				p.board_type,           
+				p.project_id,                 
+				p.coordinate,
+				m.member_name
+		FROM 	prj_board p
+		JOIN    member m ON p.member_id = m.member_id
+		WHERE 	prj_board_id
+		NOT IN 	(SELECT	prj_board_id
+				FROM	prj_task
+				WHERE	high_task_id IS NOT NULL)
+		AND		project_id = #{projectId}
 		ORDER BY prj_board_regdate DESC
 	</select>
 	
@@ -122,15 +128,49 @@
 										manager,
 										project_id,
 										alarm_yn,
-										particir_accp)
+										particir_accp,
+										project_markup
+										)
 							VALUES
 									(	#{prjParticirId}, 
 										#{memberId},
 										#{manager},
 										#{projectId},
 										'A1',
-										#{particirAccp})
+										#{particirAccp},
+										#{projectMarkup}
+										)
 	</insert>
+	
+	<!-- 프로젝트 참여자 조회 -->
+	<select id="getParticirList" resultType="PrjParticirVO">
+		SELECT	p.prj_particir_id,
+				p.member_id,
+				p.manager,
+				p.project_id,
+				p.alarm_yn,
+				p.project_markup,
+				p.particir_accp,
+				m.member_name,
+				m.real_profile_path
+		FROM	prj_particir p
+		JOIN	member m
+		ON		p.member_id=m.member_id
+		WHERE	project_id = #{projectId}
+	</select>
+	
+	<!-- 프로젝트 즐겨찾기 여부 -->
+	<select id="getParticirByProject" resultType="PrjParticirVO">
+		SELECT prj_particir_id,       
+				member_id,       
+				manager,                 
+				project_id,           
+				alarm_yn,        
+				project_markup,           
+				particir_accp       
+		FROM prj_particir
+		WHERE member_id = #{memberId} AND project_id = #{projectId}
+	</select>
 	
 	
 	
@@ -147,7 +187,7 @@
 	
 <!-- 주현 -->
 
-<!-- 개별 프로젝트 조회 -->
+<!-- 북마크가 된 개별 프로젝트 조회 승인된 것만 출력 -->
 <select id="searchPrj" parameterType="String" resultType="ProjectVO">
   SELECT
 	    p.project_id,
@@ -163,7 +203,7 @@
 	    find_subcode(pp2.project_markup) AS project_markup, 
 	    find_subcode(pp2.particir_accp) AS particir_accp,
 	    p.dept_id,
-	    p.project_cls
+	    find_subcode(p.project_cls) AS project_cls
 	FROM
 	    project p
 	JOIN (
@@ -186,14 +226,19 @@
     )pp2 ON(pp1.project_id=pp2.project_id)
 	WHERE
 	    pp2.member_id=#{memberId}
+ 	AND
+        pp2.project_markup='A1'
+    AND
+        pp2.particir_accp='A1'
+    AND 
+    	p.project_cls='A2'
 	ORDER BY p.project_id  
 </select>
 
-
-<!-- 회사별 프로젝트 조회 -->
-<select id="selectFromCompany" parameterType="int" resultType="com.worksb.hi.project.service.ProjectVO">
-	SELECT
-	    DISTINCT p.project_id,
+<!-- 북마크가 안 된 개별 프로젝트 조회--> 
+<select id="searchPrjCls" parameterType="String" resultType="ProjectVO">
+	   SELECT
+	    p.project_id,
 	    p.project_name,
 	    find_subcode(p.project_access) AS project_access,
 	    find_subcode(p.manager_accp) AS manager_accp,
@@ -202,25 +247,67 @@
 	    find_subcode(p.board_access) AS board_access,
 	    find_subcode(p.file_access) AS file_access,
 	    find_subcode(p.comment_access) AS comment_access, 
-        (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num,
-  		pp.member_id AS member_id,
-  		find_subcode(pp.particir_accp) AS particir_accp,
+	    pp1.prj_particir_num,
+	    find_subcode(pp2.project_markup) AS project_markup, 
+	    find_subcode(pp2.particir_accp) AS particir_accp,
 	    p.dept_id,
 	    find_subcode(p.project_cls) AS project_cls
 	FROM
 	    project p
+	JOIN (
+	    SELECT
+	        project_id,
+	        COUNT(*)  AS prj_particir_num
+	    FROM
+	        prj_particir
+	    GROUP BY
+	        project_id
+	) pp1 ON (p.project_id = pp1.project_id)
     JOIN(
-        SELECT 
-            member_id,
+        SELECT
+            project_markup,
             project_id,
+            member_id,
             particir_accp
         FROM
             prj_particir
-    )pp ON (p.project_id=pp.project_id)
+    )pp2 ON(pp1.project_id=pp2.project_id)
 	WHERE
-	    BOARD_ACCESS='J1' 
-	    AND dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})  
-	ORDER BY p.project_id  
+	    pp2.member_id=#{id}
+        AND
+        pp2.project_markup='A2'
+        AND
+        pp2.particir_accp='A1'
+        AND 
+    	p.project_cls='A2'
+	ORDER BY p.project_id
+</select>
+
+
+<!-- 회사별 프로젝트 조회 -->
+<select id="selectFromCompany" parameterType="int" resultType="com.worksb.hi.project.service.ProjectVO">
+	SELECT
+       p.project_id,
+       p.project_name,
+       find_subcode(p.project_access) AS project_access,
+       find_subcode(p.manager_accp) AS manager_accp,
+       find_subcode(p.write_access) AS write_access,
+       find_subcode(p.update_access) AS update_access,
+       find_subcode(p.board_access) AS board_access,
+       find_subcode(p.file_access) AS file_access,
+       find_subcode(p.comment_access) AS comment_access, 
+       p.dept_id,
+       find_subcode(p.project_cls) AS project_cls,
+       (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num
+   FROM
+       project p
+   WHERE
+      dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})       
+      AND p.project_cls= nvl(#{projectCls},'A2')
+   	  <if test="deptId!=null">
+   	  	AND dept_id=#{deptId}
+   	  </if>
+   ORDER BY p.project_id
 </select>
 
 <!-- 즐겨찾기 갱신 -->
@@ -230,4 +317,18 @@
 	 WHERE project_id=#{projectId} 
 	   AND member_id=#{memberId}
 </update>
+
+<!-- 로그인된 아이디가 참여하고 있는 프로젝트 -->
+<select id="selectAllparticier" parameterType="String" resultType="PrjParticirVO">
+	SELECT
+		prj_particir_id 
+		,member_id
+		,find_subcode(manager) AS manager  
+		,project_id         
+		,find_subcode(alarm_yn) AS alarm_yn
+		,find_subcode(project_markup) AS project_markup
+		,find_subcode(particir_accp) AS particir_accp
+	FROM prj_particir
+	WHERE member_id=#{memberId}
+</select>
 </mapper>

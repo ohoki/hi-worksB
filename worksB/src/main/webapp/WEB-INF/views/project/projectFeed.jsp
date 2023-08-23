@@ -11,8 +11,8 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 
 <style>
 body{
@@ -104,27 +104,32 @@ a {
 .board-container{
 	border: 1px solid var(--color-dark-white);
     border-radius: var(--size-border-radius);
-    width : 900px;
+    width : 750px;
     background-color : #ffffff;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     margin: 50px auto;
     padding: 30px;
 }
-.board-header{
+.board-header,
+.subTask-content{
 	display: flex;
 	align-items: center;
 }
-.board-headder-info{
-	margin-left: 80px;
+.board-headder-info,
+.task-info{
+	margin-left: 60px;
 }
 .board-sub{
-	height:350px;
+	height:250px;
 	margin-top: 20px;
 	font-size: var(--font-small);
 }
 .divide{
 	border-bottom: 1px solid var(--color-light-white);
 	margin: 20px 0;
+}
+.divide2{
+	border-bottom: 1px solid var(--color-light-white);
 }
 .board-comment{
 	background-color : var(--color-light-blue);
@@ -138,7 +143,8 @@ a {
 	color: var(--color-dark-grey);
     font-weight: var(--weight-bold);
 }
-.regdate{
+.regdate,
+.compnoVote{
 	color: var(--color-dark-white);
 	font-size: var(--font-small);
 }
@@ -146,17 +152,65 @@ a {
 	font-size: var(--font-regular);
 	color: var(--color-dark-grey);
 }
+.vote-sub,
+.task_sub{
+	height:120px;
+}
+
+.voteEndDate{
+	color: var(--color-dark-white);
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+.voteList,
+.subTask-content{
+	border-radius: var(--size-border-radius);
+	background-color: #f7fafd;
+	height: 30px;
+	margin-bottom: 10px;
+	padding-left: 15px;
+}
+.task-detail,
+.prjParticir_title span{
+	font-size: 15px;
+}
+
+.prjParticir {
+	width: 200px;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--color-dark-white);
+	padding: 0 20px 0 5px;
+	cursor: pointer;
+}
+
+.prjParticir:nth-child(1) {
+	border-top: 1px solid var(--color-dark-white);
+}
+
+.prjParticir-img {
+	width: 40px;
+	height: 40px;
+}
+
+.btn-add-taskManager{
+	width: 100px;
+	height: 30px;
+	background-color : #c0e6f5;
+	color: var(--color-grey);
+}
 </style>
 </head>
 <body>
 <div style="display : flex;">
 	<div style="width: 70%;">
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+		<!-- 게시글 조회 -->
 		<c:forEach items="${boards }" var="board">
 			<c:if test="${board.boardType eq 'C5'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div class="board-headder-info memberName">${board.memberName } </div>
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
@@ -172,13 +226,17 @@ a {
 			</c:if>
 			<!-- C6 일정-->
 			<c:if test="${board.boardType eq 'C6'}">
-				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container" id="scheInfo">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div class="board-headder-info memberName">${board.memberName } </div>
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
 						${board.prjBoardTitle }
+					</div>
+					<div class="sche-date divide">
+						<div class="sche-startDate" id="sche-startDate">일정시작일</div>
+						<div class="sche-endDate" id="sche-endDate">일정종료일</div>
 					</div>
 					<div class="board-sub divide">
 						${board.prjBoardSubject }
@@ -192,14 +250,19 @@ a {
 			<c:if test="${board.boardType eq 'C7'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div class="board-headder-info memberName">${board.memberName } </div>
+						
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
 						${board.prjBoardTitle }
+						<span class="compnoVote">(복수투표여부)</span>
 					</div>
-					<div class="board-sub divide">
+					<div class="board-sub divide vote-sub">
 						${board.prjBoardSubject }
+					</div>
+					<div class="voteEndDate">투표마감일</div>
+					<div class="voteContent">
 					</div>
 					<div class="board-comment">
 						댓글공간
@@ -210,14 +273,24 @@ a {
 			<c:if test="${board.boardType eq 'C8'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberId } </div>
+						<div class="board-headder-info memberName">${board.memberName } </div>
 						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
 					</div>
 					<div class="board-title divide">
 						${board.prjBoardTitle }
 					</div>
-					<div class="board-sub divide">
+					<div class="taskState">업무상태</div>
+					<div class="task-detail">
+						<div class="task-startDate">업무시작일</div>
+						<div class="task-endDate">업무종료일</div>
+						<div class="task-priority">우선순위</div>
+						<div class="task-processivity">진척도</div>
+						<div class="task-manager">업무담당자 : </div>
+					</div>
+					<div class="board-sub task_sub divide2">
 						${board.prjBoardSubject }
+					</div>
+					<div class="subTask">
 					</div>
 					<div class="board-comment">
 						댓글공간
@@ -226,51 +299,62 @@ a {
 			</c:if>
 		</c:forEach>		
 	</div>
+	<!-- 게시글 조회 끝 -->
 	<div style="width: 25%;">
 		<h1>북마크 공간~~</h1>
 	</div>
 </div>
 <script>
+	// 게시글 조회
 	$(window).on('DOMContentLoaded', function() {
 		let boardList = $('[data-list="board"]');
 		
 		for(let i=0; i<boardList.length; i++) {
-			if(boardList[i].dataset.type == 'C5') {
-				$.ajax({
-					url : '/getBoardInfo',
-					type : 'GET',
-					data : {'prjBoardId' : boardList[i].dataset.id},
-					succes : function(C5data) {
-						/* let 넣고자하는 태그
-						태그.value = C5data;  */
-					}, error : function() {
-						console.log(reject);
-					}
-				});
-			} else if (boardList[i].dataset.type == 'C6') {
+			if (boardList[i].dataset.type == 'C6') {
 				//일정
 				$.ajax({
-					url : '/getScheInfo',
+					url : '${pageContext.request.contextPath}/getScheInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
-					succes : function() {
-						let content = `<div>${startDate}</div>
-										<div>
-										`;
+					success : function(sche) {
+						 let startDate = $(boardList[i]).find('.sche-startDate');
+		                 let endDate = $(boardList[i]).find('.sche-endDate');
+
+		                 startDate.text(sche.startDate);
+		                 endDate.text(sche.endDate);
 					}, error : function(reject) {
 						console.log(reject);
 					}
-				});
-			} else if (boardList[i].dataset.type == 'C7') {
+				})
+			}else if (boardList[i].dataset.type == 'C7') {
 				//투표
 				$.ajax({
-					url : '/getVoteInfo',
+					url : '${pageContext.request.contextPath}/getVoteInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
-					succes : function(voteData) {
-						let endDate = `<div>투표 종료일: ${voteData.endDate}</div>`;
+					success : function(voteData) {
+						let voteEndDate = $(boardList[i]).find('.voteEndDate');
+						let compnoVote = $(boardList[i]).find('.compnoVote');
+						let voteContent = $(boardList[i]).find('.voteContent');
 						
-						$(boardList[i]).find('.board-sub').append(endDate);
+						// 종료일
+						let endDate = new Date(voteData.voteInfo[0].endDate);
+						voteEndDate.text('투표마감일: ' + endDate.toDateString());
+						
+						// 복수 투표 여부
+						if (voteData.voteInfo[0].compnoVote == 'A1') {
+							compnoVote.text('(복수 투표)');
+						} else if (voteData.voteInfo[0].compnoVote == 'A2') {
+							compnoVote.text('');
+						}
+						
+						// 투표 항목
+						for (let j = 0; j < voteData.voteList.length; j++) {
+						let voteItem = $('<div>').addClass('voteList').text((j + 1) + '. ' + voteData.voteList[j].listContent);
+						voteContent.append(voteItem);
+						}
+						
+						
 						
 					}, error : function(reject) {
 						console.log(reject);
@@ -279,12 +363,90 @@ a {
 			} else if (boardList[i].dataset.type == 'C8') {
 				//업무
 				$.ajax({
-					url : '/getTaskInfo',
+					url : '${pageContext.request.contextPath}/getTaskInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
-					succes : function() {
-						
-					}, error : function(reject) {
+					success : function(taskData) {
+						let taskInfo = $(boardList[i]);
+						// 상위 업무
+						let highTask = taskData.highTask[0];
+						// 상위 업무 담당자 리스트
+						let highManagers = taskData.highManager;
+						// 하위 업무리스트
+						let subTasks = taskData.subTask;
+
+						// 우선 순위 priority 구분
+				        function getPriority(priority) {
+	                        switch (priority) {
+	                            case 'F3':
+	                                return '낮음';
+	                            case 'F2':
+	                                return '보통';
+	                            case 'F1':
+	                                return '긴급';
+	                            case null:
+	                            	return '';
+	                            default:
+	                                return priority;
+	                        }
+                    	}
+				        
+				        // 업무 상태 state 구분
+				        function getState(state) {
+	                        switch (state) {
+	                            case 'G1':
+	                                return '요청';
+	                            case 'G2':
+	                                return '진행';
+	                            case 'G3':
+	                                return '피드백';
+	                            case 'G4':
+	                                return '완료';
+	                            case 'G5':
+	                                return '보류';
+	                            case null:
+	                            	return '';
+	                            default:
+	                                return state;
+	                        }
+	                    }
+
+				        // 상위 업무 정보
+				        // 시작일
+				        let startDate = highTask.startDate != null ? highTask.startDate : '';
+				        taskInfo.find(".task-startDate").text(startDate);
+						// 종료일
+				        let endDate = highTask.endDate != null ? highTask.endDate : '';
+				        taskInfo.find(".task-endDate").text(endDate);
+				        
+				        // 우선 순위
+				        taskInfo.find(".task-priority").text(getPriority(highTask.priority));
+				        
+				        // 진척도
+				        taskInfo.find(".task-processivity").text(highTask.processivity);
+				        
+				        // 업무상태
+				        taskInfo.find(".taskState").text(getState(highTask.state));
+				        
+				        // 상위 업무 담당자 리스트
+				        let highManagerList = taskInfo.find(".task-manager");
+				        for(let k=0; k<highManagers.length; k++){
+				        	let highManager = highManagers[k];
+				        	
+				        	highManagerList.append('<span class="highManagerInfo">' + highManager.memberName + '   </span>');
+				        }
+
+				        // 하위 업무 리스트
+				        let subTasksInfo = taskInfo.find(".subTask");
+
+				        for (let j = 0; j < subTasks.length; j++) {
+				        	let subTask = subTasks[j];
+				        	let subTaskContent = $('<div class="subTask-content"></div>');
+				            subTaskContent.append('<div class="subTask-state task-info">' + getState(subTask.state) + '</div>');
+				            subTaskContent.append('<div class="subTask-title task-info">' + subTask.prjBoardTitle + '</div>');
+				            subTasksInfo.append(subTaskContent);
+				        }
+				    }, error : function(reject) {
 						console.log(reject);
 					}
 				});
@@ -293,7 +455,7 @@ a {
 	});
 </script>
 
-
+<!-- 게시글 작성 -->
 <div class="modal modalBoard" tabindex="-1" id="boardInsertModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -362,6 +524,28 @@ a {
 						<label class="btn btn-outline-danger" for="option5">보류</label>
 					</div>
 						
+					<!-- 업무 담당자 -->
+					<div>
+						<button type="button" class="btn-add-taskManager" data-bs-toggle="modal" data-bs-target="#add-taskManager">담당자 추가</button>
+						<div id="add-taskManager" class="modal" tabindex="-1">
+						 	<div class="modal-dialog">
+						 		<div class="modal-content prjParticir">
+							 		<div class="modal-body">
+										<div class="prjParticir_title">
+											<span>프로젝트 참여자</span>
+										</div>
+										<div id="particir">	
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="taskManager">
+							
+						</div>
+					</div>
+					<!-- 업무 담당자 끝 -->
+					
 					<div>
 						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
 					</div>
@@ -532,6 +716,7 @@ a {
         </div>
     </div>
 </div>
+<!-- 게시글 작성 끝-->
 </body>
 <script>
 	// 이진
@@ -672,6 +857,7 @@ a {
                         <option value="G5">보류</option>
                     </select>
                 </div>
+                <div class="subTaskManager"></div>
             </div>`;
         
         $('.task-add:last').prev().after(subtaskForm);
@@ -693,11 +879,19 @@ a {
 		let boardType = 'C8';
 		let memberId = $('#memberId').val();
 		let projectId = $('#projectId').val();
-		console.log(memberId);
+		
 		
 		let boardVO = {prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId}
 		let taskVO = {state, startDate, endDate, priority, processivity}
 		
+		// 상위 업무 담당자 리스트
+		let prjManager =[];
+		$('.taskManager input[name="prjParticirId"]').each(function(index, item){
+	        let prjParticirId = $(item).val();
+	        prjManager.push({prjParticirId});
+	    });
+		
+		// 하위 업무 리스트
 		let subTask = [];
 		$('.task-add').each(function(index,item){
 			console.log(item)
@@ -715,11 +909,11 @@ a {
         	subTask.pop();
    		}
 		
-		console.log(JSON.stringify({boardVO, taskVO, subTask}));
+		console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager}));
 		$.ajax({
 			url:'taskInsert',
 			type:'post',
-			data:JSON.stringify({boardVO, taskVO, subTask}),
+			data:JSON.stringify({boardVO, taskVO, subTask, prjManager}),
 			contentType:'application/json',
 			success:function(data){
 				console.log(data);
@@ -729,6 +923,73 @@ a {
 		});
 	})
 	
-	
+	// 프로젝트 참여자 조회
+	$('.btn-add-taskManager').click(function(e){
+	    let particirDiv = $('#particir');
+	    $.ajax({
+	    	url : '${pageContext.request.contextPath}/particirList',
+	        type: 'GET',
+	        data: {'projectId': "${projectInfo.projectId}"},
+	        success: function(particir){
+	            console.log(particir)
+	            let particirList = $('#particir');
+	            particirList.empty();
+	            
+	            for(let i=0; i<particir.length; i++) {
+					//div태그
+					let particirInfo = document.createElement('div');
+					particirInfo.classList.add('flex');
+					particirInfo.classList.add('prjParticir');
+					//이미지 태그
+					let employeeProfile = document.createElement('img');
+					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.classList.add('employee-img');
+					if(particir[i].realProfilePath != null) {
+						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
+					}else {
+						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					}
+					//스팬 태그
+					let span = document.createElement('span');
+					span.innerText = particir[i].memberName;
+					//히든 인풋 태그 (프로젝트 참여자 id값)
+					let input = document.createElement('input');
+					input.setAttribute('type', 'hidden');
+					input.setAttribute('name', 'particirId');
+					input.value = particir[i].prjParticirId;
+					//태그 삽입
+					particirInfo.append(employeeProfile);
+					particirInfo.append(span);
+					particirInfo.append(input);
+					
+					particirList.append(particirInfo);
+					
+				}
+	            
+	            // 참여자 선택하여 업무 담당자 추가하기
+	            $(document).on("click", ".prjParticir", function (e) {
+	                e.stopPropagation();
+
+	                let memberName = $(this).find("span").text();
+	                let AddParticir = '<input type="text" name="memberName" value="' + memberName + '">';
+	                $('.taskManager').append(AddParticir);
+	                
+	                
+	                //prj_particir_id
+	                let prjParticirId = $(this).find("input[name='particirId']").val();
+	                let AddParticirId = '<input type="hidden" id="prjParticirId" name="prjParticirId" value="' + prjParticirId + '">';
+	                $('.taskManager').append(AddParticirId);
+	                 
+	                
+	                console.log(prjParticirId);
+	            });
+	            
+	        },
+	        error: function(reject){
+	            console.log(reject);
+	        }
+	    });
+	});
+
 </script>
 </html>

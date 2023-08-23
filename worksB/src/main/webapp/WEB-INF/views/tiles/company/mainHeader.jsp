@@ -13,7 +13,7 @@
 </head>
 <body>
 	<!-- header -->
-	<header class="header">
+	<header class="company-header">
 		<!-- 회사 로고 -->
 		<div>
 			<a href="${pageContext.request.contextPath}/start"><img src="${pageContext.request.contextPath}/images/${companyInfo.realLogoPath }" alt="회사 로고"
@@ -25,7 +25,7 @@
 		<div class="header__icon">
 			<!-- 구성원 -->
 			<a href="#" data-type="employees"> 
-				<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/comments-solid.svg" class="header__profile">
+			<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/comments-solid.svg" class="header__profile">
 			</a>
 			<!-- 알림 -->
 			<a href="#" data-type="alarm"> 
@@ -41,6 +41,7 @@
 			<a href="#" data-type="profile"> <img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진"
 				class="header__profile">
 			</a>
+			<div class="status"></div>
 			<!-- 프로필 모달 -->
 			</c:if>
 			<div id="profile-modal">
@@ -58,7 +59,7 @@
 						<a href="#" data-type="my-profile">내 프로필</a>
 					</p>
 					<p>
-						<a href="#">상태변경</a>
+						<a href="#" data-type="status">상태변경</a>
 					</p>
 					<p>
 						<a href="#" data-type="logout">로그아웃</a>
@@ -71,7 +72,7 @@
 			<!-- 개인정보 모달 -->
 			<div id="my-profile-modal">
 				<div class="my-profile-modal__content">
-					<div class="my-profile-modal__title">
+					<div>
 						<c:if test="${memberInfo.realProfilePath eq null }">
 							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="my-profile-logo">
 						</c:if>
@@ -92,6 +93,16 @@
 						</ul>
 						<button type="button" class="my-profile__btn">정보 수정</button>
 					</div>	
+				</div>			
+			</div>
+			<!-- 상태변경 모달 -->
+			<div id="status-modal">
+				<div class="status-modal__content">
+					<ul>
+						<li><span class="status-green"></span>접속 중</li>
+						<li><span class="status-yellow"></span>자리 비움</li>
+						<li><span class="status-red"></span>접속 종료</li>
+					</ul>
 				</div>			
 			</div>
 			<!-- 알림 모달 -->
@@ -132,9 +143,41 @@
 					</div>
 				</div>			
 			</div>
+			<!-- 구성원 정보 모달 -->
+			<div id="employee-modal">
+				<div class="employee__content">
+					<div>
+						<img src="" alt="기본 프로필 사진" class="my-profile-logo" id="e-img">	
+						<div class="employee-modal__name"></div>
+						<ul>
+							<li class="my-profile-item"><img alt="소속 회사" src="${pageContext.request.contextPath}/resources/icon/building-solid.svg" class="item-icon"><span id="e-company">${companyInfo.companyName }</span></li>
+							<li class="my-profile-item"><img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/envelope-solid.svg" class="item-icon"><span id="e-id"></span></li>
+							<li class="my-profile-item"><img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/mobile-screen-button-solid.svg" class="item-icon"><span id="e-phone"></span></li>
+							<li class="my-profile-item">
+								<img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/circle-info-solid.svg" class="item-icon">
+								<span id="e-dept"></span></li>
+						</ul>
+						<button type="button" class="chat__btn">채팅하기</button>
+					</div>	
+				</div>			
+			</div>
 		</div>
 	</header>
 <script>
+	//접속상태 표시
+	$(window).on('load', function() {
+		let status = '${memberInfo.empStatus}';
+		let statusDiv = $('.status');
+		
+		if(status == 'S1') {
+			statusDiv.addClass('status-green');
+		}else if(status == 'S2') {
+			statusDiv.addClass('status-yellow');
+		}else if(status == 'S3') {
+			statusDiv.addClass('status-red');
+		}
+	});
+	
 	//모달페이지 출력
 	$('a').on('click', function(e) {
 		e.stopPropagation();
@@ -145,6 +188,7 @@
 		}else if(type == 'logout') {
 			$('#logout').submit();
 		}else if(type == 'my-profile') {
+			$('.modal-visible').removeClass('modal-visible');
 			$('#my-profile-modal').addClass('modal-visible');
 		}else if(type == 'alarm') {
 			$('#alarm-modal').addClass('modal-visible');
@@ -165,6 +209,7 @@
 						let employeeDiv = document.createElement('div');
 						employeeDiv.classList.add('flex');
 						employeeDiv.classList.add('employee');
+						/* employeeDiv.setAttribute('onclick', 'abc(this)'); */
 						//이미지 태그
 						let employeeProfile = document.createElement('img');
 						employeeProfile.setAttribute('alt', '회원사진');
@@ -177,9 +222,14 @@
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = members[i].memberName;
+						//히든 인풋 태그 (멤버id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.value = members[i].memberId;
 						//태그 삽입
 						employeeDiv.append(employeeProfile);
 						employeeDiv.append(span);
+						employeeDiv.append(input);
 						
 						employeesDiv.append(employeeDiv);
 					}
@@ -188,6 +238,8 @@
 					console.log(reject);
 				}
 			});
+		}else if(type == 'status') {
+			$('#status-modal').addClass('modal-visible');
 		}
 	});
 	
@@ -199,5 +251,80 @@
 	$('.my-profile__btn').on('click', function() {
 		location.href='${pageContext.request.contextPath}/member/updateForm';
 	})
+	
+	//접속상태 변경
+	$('.status-modal__content li').on('click', function(e) {
+		e.stopPropagation();
+		let value = e.currentTarget.innerText;
+		let statusDiv = $('.status');
+
+		if(value == '접속 중') {
+			value = 'S1';
+			statusDiv.removeClass('status-green status-yellow status-red');
+			statusDiv.addClass('status-green');
+			$('.modal-visible').removeClass('modal-visible');
+		}else if(value == '자리 비움') {
+			value = 'S2';
+			statusDiv.removeClass('status-green status-yellow status-red');
+			statusDiv.addClass('status-yellow');
+			$('.modal-visible').removeClass('modal-visible');
+		}else if(value == '접속 종료') {
+			value = 'S3';
+			statusDiv.removeClass('status-green status-yellow status-red');
+			statusDiv.addClass('status-red');
+			$('.modal-visible').removeClass('modal-visible');
+		}
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/member/updateMember',
+			type : 'get',
+			data : {'memberId' : '${memberInfo.memberId}', 'empStatus' : value},
+			error : function(reject) {
+				console.log(reject);
+			}	
+		});
+		
+	});
+	
+	//구성원 정보 출력
+	$(document).on("click",".employee",function(e){
+		e.stopPropagation();
+		let memberId = $(e.currentTarget).children('input').val();
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/member/getMember',
+			type : 'GET',
+			data : {'memberId' : memberId},
+			success : function(member) {
+				//이미지
+				let img = $('#e-img');
+				if(member.realProfilePath != null) {
+					img.attr('src', '${pageContext.request.contextPath}/images/' + member.realProfilePath);
+				}else {
+					img.attr('src', '${pageContext.request.contextPath }/resources/img/user.png');
+				}
+				//정보
+				$('.employee-modal__name').text(member.memberName);
+				$('#e-id').text(member.memberId);
+				$('#e-phone').text(member.memberPhone);
+				
+				//부서
+				let dept = $('#e-dept');
+				if(member.deptId != null) {
+					dept.text(member.deptName);
+				}else {
+					dept.text('-');
+				}
+			},
+			error : function(reject) {
+				
+			}
+		});
+		
+		
+		
+		
+		$('#employee-modal').addClass('modal-visible');
+	});
 </script>
 </html>

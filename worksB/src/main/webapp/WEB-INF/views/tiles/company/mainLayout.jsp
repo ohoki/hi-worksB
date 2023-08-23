@@ -27,7 +27,7 @@
 		width: 90%;
 		height: 93vh;
 		overflow: scroll;
-		overflow-x: hidden
+		overflow-x: hidden;
 	}
 	body {
 		height: 100vh;

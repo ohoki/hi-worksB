@@ -1,6 +1,7 @@
 package com.worksb.hi.project.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -65,6 +66,9 @@ public class ProjectController {
 	    String newName = "[" + department.getDeptName() + "]" + projectVO.getProjectName();
 	    projectVO.setProjectName(newName);
 	    
+	    // 프로젝트 만료 여부 NO
+	    projectVO.setProjectCls("A2");
+	    
 	    // 프로젝트 등록
 	    projectService.insertProject(projectVO);
 
@@ -80,7 +84,10 @@ public class ProjectController {
 		participant.setManager("A1");
 		// 참여 승인 여부
 		participant.setParticirAccp("A1");
+		// 즐겨찾기 여부 A2
+		participant.setProjectMarkup("A2");
 		participant.setProjectId(projectVO.getProjectId());
+		
 		
 		// 참여자 등록
 		projectService.insertParticipant(participant);
@@ -140,15 +147,30 @@ public class ProjectController {
 	
 	// 프로젝트 피드
 	@GetMapping("/projectFeed")
-    public String projectFeed(@RequestParam int projectId, Model model) {
+    public String projectFeed(@RequestParam int projectId, Model model, HttpSession session) {
         ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+        // 게시글 리스트
         List<BoardVO> boards = projectService.getBoardList(projectInfo);
+        //즐겨찾기 여부
+        PrjParticirVO particir = new PrjParticirVO();
+        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+        particir.setProjectId(projectId);
+        PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
         
+        model.addAttribute("particirInfo", particirInfo);
         model.addAttribute("projectInfo", projectInfo);
         model.addAttribute("boards", boards);
         return "project/projectFeed";
     }
 	
+	// 프로젝트 참여자 조회
+	@GetMapping("particirList")
+	@ResponseBody
+	public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
+		return projectService.getParticirList(projectId);
+	}
+	
+	//
 	
 	
 	
@@ -161,11 +183,25 @@ public class ProjectController {
 	
 	//회사 전체 프로젝트출력
 	@GetMapping("/SelectFromCompany")
-	public String SelectCom(Model m,HttpSession session) {
+	public String SelectCom(Model m,HttpSession session, ProjectVO VO) {
 		Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
-		m.addAttribute("projectList",projectService.selectFromCompany(companyId,memberId));
-		m.addAttribute("memberId", memberId);
+		VO.setCompanyId(companyId);
+		
+		List<PrjParticirVO> myList = projectService.selectAllparticier(memberId);
+		List<ProjectVO> list = projectService.selectFromCompany(VO);
+		List<DeptVO> deptList = projectService.getDeptInfo(companyId); 
+				
+		for(ProjectVO vo :list) {
+			Optional<PrjParticirVO>op= myList.stream().filter(part -> part.getProjectId() ==vo.getProjectId() ).findAny();
+			if(!op.isEmpty())
+				vo.setParticirAccp(op.get().getParticirAccp());
+		}
+		m.addAttribute("projectList",list);
+		m.addAttribute("deptList", deptList);
+		
+		//m.addAttribute("particirList",myList);
+    
 		return "prj/selectFromCompany";
 	}
 	
@@ -175,19 +211,14 @@ public class ProjectController {
 	@GetMapping("/projectList")
 	public String projectList(Model m,HttpSession session) {
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
-		m.addAttribute("projectList",projectService.searchPrj(memberId));
+		//북마크가 된 것만을 출력
+		m.addAttribute("bookmarked",projectService.searchPrj(memberId));
+		
+		//북마크기 되지 않은 것
+		m.addAttribute("noneBookmarked",projectService.searchPrjCls(memberId,"A1"));
 		return"prj/projectList";
 	}
-	
-	//개인 프로젝트리스트출력(그리드형식)
-	@GetMapping("/projectGrid")
-	public String projectGrid(Model m,HttpSession session) {
-		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
-		m.addAttribute("projectList",projectService.searchPrj(memberId));
-		return"prj/projectGrid";
-	}
-	
-	
+
 	//즐겨찾기갱신
 	@PostMapping("/updateStar")
 	@ResponseBody
@@ -196,6 +227,34 @@ public class ProjectController {
 		starInfo.setMemberId(memberId);
 		
 		projectService.updateStar(starInfo);
-		return"ok";
+		return"star updated";
+	}
+	
+	//프로젝트참여하기(requestparam형식)
+	@GetMapping("/signIn")
+	public String signIn(
+			@RequestParam int projectId,HttpSession session,
+			@RequestParam String accp) {
+		PrjParticirVO vo= new PrjParticirVO();
+		vo.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+		vo.setProjectId(projectId);
+		vo.setManager("A2");
+		vo.setParticirAccp(accp);
+		projectService.insertParticipant(vo);
+		
+		return "prj/selectFromCompany";
+	}
+	//프로젝트에 참여하기(ajax로)
+	@PostMapping("/signOnly")
+	@ResponseBody
+	public String signOnly
+	(@RequestBody int projectId,HttpSession session,@RequestBody String particirAccp) {
+		PrjParticirVO vo= new PrjParticirVO();
+		vo.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+		vo.setProjectId(projectId);
+		vo.setManager("A2");
+		vo.setParticirAccp(particirAccp);
+		
+		return "success";
 	}
 }

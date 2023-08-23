@@ -32,6 +32,9 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 		//멤버찾기
 		MemberVO member = new MemberVO();
 		member.setMemberId(authentication.getName());
+		member.setEmpStatus("S1");
+		memberMapper.updateMember(member);
+		
 		member = memberMapper.selectMember(member);
 		
 		if(member.getCompanyId() != null) {

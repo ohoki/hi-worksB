@@ -27,7 +27,7 @@
 	width: 100px;
 	height: 40px;
 	margin-left: 20px;
-	background-color: rgb(174, 213, 245);
+	background-color: var(--color-dark-red);
 	border-radius: 5px;
 	color: var(--color-white);
 	font-weight: var(--weight-bold);
@@ -36,9 +36,9 @@
 .index-header_btn:hover, .active{
 	background-color: var(--color-white);
 	border-radius: 5px;
-	color: rgb(174, 213, 245);
+	color: var(--color-dark-red);
 	font-weight: var(--weight-bold);
-	border: 1px solid rgb(174, 213, 245);
+	border: 1px solid var(--color-dark-red);
 }
 </style>
 <body>
