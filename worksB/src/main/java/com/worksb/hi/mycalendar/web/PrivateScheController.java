@@ -11,15 +11,15 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
+import com.worksb.hi.mycalendar.service.ToDoListService;
+import com.worksb.hi.mycalendar.service.ToDoListVO;
 
 //2023-08-18 김정현 개인일정관리
 
@@ -28,6 +28,9 @@ public class PrivateScheController {
 	
 	@Autowired
 	PrivateScheService privateScheService;
+	
+	@Autowired
+	ToDoListService toDoListService;
 	
 	//개인일정 페이지에서 ajax호출 url
 	@SuppressWarnings("unchecked")
@@ -38,6 +41,7 @@ public class PrivateScheController {
 		//session에서 사용자 id값 가져와서 개인일정 검색
 		MemberVO vo = (MemberVO) session.getAttribute("memberInfo");
 		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(vo.getMemberId());
+		List<ToDoListVO> tdlList = toDoListService.selectAllTdl(vo.getMemberId());
 		
 		//json객체 리스트화
 		JSONObject jsonObj = new JSONObject();
@@ -53,6 +57,16 @@ public class PrivateScheController {
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
 			
+		}
+		for(int i=0;i<tdlList.size();i++) {
+			hash.put("id", "t"+tdlList.get(i).getListId());
+			hash.put("title", tdlList.get(i).getListTitle());
+			hash.put("start", tdlList.get(i).getApplyDate());
+			hash.put("allDay", "true");
+			hash.put("color", "#2a9d8f");
+			
+			jsonObj = new JSONObject(hash);
+			jsonArr.add(jsonObj);
 		}
 		
 		return jsonArr;
@@ -79,6 +93,13 @@ public class PrivateScheController {
 		return "redirect:privateSche";
 	}
 	
+	//ToDo List 입력
+	@PostMapping("todoListInsert")
+	public void todoListInsert(ToDoListVO vo) {
+		toDoListService.insertTdl(vo);
+	}
+	
+	
 	//개인일정 단건조회
 	@GetMapping("selectPsche")
 	@ResponseBody
@@ -90,6 +111,16 @@ public class PrivateScheController {
 		return scheVO;
 	}
 	
+	//todoList 단건조회
+	@GetMapping("selectTdl")
+	@ResponseBody
+	public ToDoListVO viewTodoList(int listId) {
+		ToDoListVO tdlVO = new ToDoListVO();
+		tdlVO = toDoListService.selectTdl(listId);
+		return tdlVO;
+	};
+	
+	//개인일정 수정
 	@PostMapping("updatePsche")
 	@ResponseBody
 	public String updatePsche(PrivateScheVO vo) {
@@ -103,6 +134,7 @@ public class PrivateScheController {
 		return resultMsg;
 	}
 	
+	//개인일정 삭제
 	@GetMapping("deletePsche")
 	@ResponseBody
 	public String deletePshce(PrivateScheVO vo) {

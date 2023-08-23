@@ -23,9 +23,6 @@
 		text-decoration: none;
 		color : var(--color-dark-beige);
 	}
-	.fc .fc-button-group > .fc-button.fc-button-active, .fc .fc-button-group > .fc-button:active, .fc .fc-button-group > .fc-button:focus, .fc .fc-button-group > .fc-button:hover {
-    	z-index: 0 !important;
-	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -68,13 +65,13 @@
 					        <option value="120">2시간 전 미리 알림</option>
 					        <option value="1440">1일 전 미리 알림</option>
 						</select><br>
-						<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberInfo.memberId }" readonly="readonly"><br>
+						<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberInfo.memberName }" readonly="readonly"><br>
 						<label for="coordinate">장소 : </label><input id="coordinate" name="coordinate" type="text" ><br>
-						<label for="scheContent">내용 : </label><textarea id="scheContent" name="scheContent" rows="" cols="100%"></textarea>
+						<label for="scheContent">내용 : </label><textarea id="scheContent" name="scheContent" rows="" cols="90%"></textarea>
 					</form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" form="scheForm" class="btn btn-primary">일정 저장</button>
+                    <button type="submit" form="scheForm" class="btn btn-primary" id="insertBtn">일정 저장</button>
                     <button type="reset" form="scheForm" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
             </div>
@@ -105,7 +102,7 @@
 				<label for="memberId">작성자 : </label><input name="memberId" type="text" value=""><br>
 				<label for="coordinate">장소 : </label><input name="coordinate" type="text" ><br>
 				<input id="scheId" name="scheId" type="text" hidden="hidden">
-				<label for="scheContent">내용 : </label><textarea name="scheContent" rows="" cols="100%"></textarea>
+				<label for="scheContent">내용 : </label><textarea name="scheContent" rows="" cols="90%"></textarea>
 			</form>
 	      </div>
 	      <div class="modal-footer">
@@ -133,8 +130,8 @@
 	      	</form>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary">TDL 저장</button>
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	        <button type="button" form="tdlForm" class="btn btn-primary" id="tdlInsertBtn">TDL 저장</button>
+	        <button type="reset" form="tdlForm" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	      </div>
 	    </div>
 	  </div>
@@ -162,7 +159,6 @@
 	
 	//dateTimePicker
 	jQuery.datetimepicker.setLocale('kr');
-
 	$('#datetimepicker1').datetimepicker({
 		format:'Y-m-d H:i',
 		step: 30,
@@ -183,7 +179,6 @@
 			})
 		}
 	});
-		
 	$('#datetimepicker5').datetimepicker({
 	    format:'Y-m-d',
 	    lang:'kr',
@@ -192,14 +187,14 @@
 	
 	//일정입력/수정 시 알람시간 부여
     $(".alarmDate").change(function(e) {
-        var selectedAlarm = $(this).val(); // 선택한 알람 시간 옵션 가져오기
-		var startDate;
+    	let selectedAlarm = $(this).val(); // 선택한 알람 시간 옵션 가져오기
+    	let startDate;
         if($(e.target).parent().attr('id')==='scheForm'){
 	        startDate = new Date($("#datetimepicker1").val()); // 시작일 가져오기
         }else if($(e.target).parent().attr('id')==='scheViewForm'){
         	startDate = new Date($("#datetimepicker3").val()); // 시작일 가져오기
         }
-        var alarmDate = new Date(startDate); // 알람 시간 초기화
+        let alarmDate = new Date(startDate); // 알람 시간 초기화
 
         if (selectedAlarm === "10") {
             alarmDate.setMinutes(alarmDate.getMinutes() - 10); // 10분 전
@@ -213,11 +208,11 @@
             alarmDate.setDate(alarmDate.getDate() - 1); // 1일 전
         }
         if (selectedAlarm !== "") {
-            var alarmYear = alarmDate.getFullYear();
-			var alarmMonth = alarmDate.getMonth()+1;
-			var alarmDay = alarmDate.getDate();
-			var alarmHours = alarmDate.getHours();
-			var alarmMinutes = alarmDate.getMinutes();
+        	let alarmYear = alarmDate.getFullYear();
+        	let alarmMonth = alarmDate.getMonth()+1;
+        	let alarmDay = alarmDate.getDate();
+        	let alarmHours = alarmDate.getHours();
+        	let alarmMinutes = alarmDate.getMinutes();
 			if(alarmMinutes<10){
 				alarmMinutes = '0'+alarmMinutes;
 			}
@@ -230,7 +225,7 @@
 			if(alarmMonth <10){
 				alarmMonth ='0'+alarmMonth;
 			}
-			var alarmTime = alarmYear+'-'+alarmMonth+'-'+alarmDay+'_'+alarmHours+':'+alarmMinutes;
+			let alarmTime = alarmYear+'-'+alarmMonth+'-'+alarmDay+'_'+alarmHours+':'+alarmMinutes;
 			let option = $(`<option selected hidden value=`+alarmTime+`>`+alarmTime+`</option>`);
 	        $(".alarmDate").append(option);
         }
@@ -251,16 +246,21 @@
 	
 	//todolist 줄 삭제
 	$(document).on('click', '.tdlLineDeleteBtn', function() {
-	  console.log('e');
-	  $(this).prev().remove(); // 클릭한 요소의 이전 요소 삭제
-	  $(this).next().remove(); 
-	  $(this).remove(); // 클릭한 요소만 삭제
+		console.log('e');
+		$(this).prev().remove(); // 클릭한 요소의 이전 요소 삭제
+		$(this).next().remove(); 
+		$(this).remove(); // 클릭한 요소만 삭제
+	});
+	
+	//개인일정 입력시 memberId값 부여
+	let memberId = `${memberInfo.memberId}`
+	$('#insertBtn').on("click", ()=>{
+		$('#memberId').val(memberId)
 	});
 	
 	var calendar 
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
-		
 		//변수선언
 		var calendarEl = document.getElementById('calendar');
 		calendar = new FullCalendar.Calendar(calendarEl, {
@@ -333,6 +333,7 @@
 	        scheModal.show();
 			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
 			$('#coordinate').prop("required", false);
+			$('#scheForm input').eq(3).prop("readonly",true);
 			$(".alarmDate option").prop("disabled", false);
 			//해당 날짜가져오기
 			$('#datetimepicker1').val(arg.startStr);
@@ -345,42 +346,64 @@
 		//이벤트 클릭시 상세보기
 		function eventClickHandler(info){
 			let scheId = info.event.id
-			let data = { "scheId" : scheId};
-			$.ajax({
-				url:"selectPsche",
-				method:"GET",
-				data: data,
-				dataType: "json",
-				success:function(result){
-					selectModal.show();
-					//삭제버튼 있을시 삭제
-					$('#updateBtn').prev('button').remove();
-					//버튼클릭이벤트 정지
-					$('#updateBtn').prop("type","button").off("click");
-					$('#scheViewForm input,textarea').prop("readonly", true);
-					$('#scheViewForm input').eq(0).val(result.title);
-					$('#scheViewForm input').eq(1).val(result.start).datetimepicker('destroy');
-					$('#scheViewForm input').eq(2).val(result.end).datetimepicker('destroy');
-					//알람시간 option태그 생성
-					if(result.alarmDate === null){
-						var none = "없음";
-					}else{
-						var none = result.alarmDate;
+	    	let memName = `${memberInfo.memberName}`
+    		let t = "t"
+	    	if(scheId.substr(0,1)===t){
+	    		let listId = scheId.substr(1)
+				let data = { "listId" : listId};
+	    		$.ajax({
+	    			url:"selectTdl",
+	    			method:"GET",
+	    			data:data,
+	    			dataType:"JSON",
+	    			success:function(result){
+	    				console.log(result)
+	    				tdlModal.show();
+	    			},
+	    			error:function(error){
+	    				alert("조회오류");
+	    			}
+	    		});
+	    	}else if(scheId.substr(0,1)!==t){
+				let data = { "scheId" : scheId};
+				$.ajax({
+					url:"selectPsche",
+					method:"GET",
+					data: data,
+					dataType: "json",
+					success:function(result){
+						selectModal.show();
+						//삭제버튼 있을시 삭제
+						$('#updateBtn').prev('button').remove();
+						//버튼클릭이벤트 정지
+						$('#updateBtn').prop("type","button").off("click");
+						$('#scheViewForm input,textarea').prop("readonly", true);
+						$('#scheViewForm input').eq(0).val(result.title);
+						$('#scheViewForm input').eq(1).val(result.start).datetimepicker('destroy');
+						$('#scheViewForm input').eq(2).val(result.end).datetimepicker('destroy');
+						//알람시간 option태그 생성
+						let option
+						if(result.alarmDate === null){
+							let none = "없음";
+							option = $(`<option selected hidden value="">`+none+`</option>`);
+						}else{
+							let none = result.alarmDate;
+							option = $(`<option selected hidden value=`+none+`>`+none+`</option>`);
+						}
+				        $(".alarmDate").append(option);
+				        $(".alarmDate option").prop("disabled",true);
+	
+						$('#scheViewForm input').eq(3).val(memName);
+						$('#scheViewForm input').eq(4).val(result.coordinate);
+						$('#scheViewForm textarea').val(result.scheContent);
+						$('#scheId').val(result.scheId);
+						$('#updateBtn').text('수정/삭제').on("click", function(){updateScheForm(info)});
+					},
+					error:function(error){
+						alert("조회오류");
 					}
-					let option = $(`<option selected hidden value=`+none+`>`+none+`</option>`);
-			        $(".alarmDate").append(option);
-			        $(".alarmDate option").prop("disabled",true);
-			        
-					$('#scheViewForm input').eq(3).val(result.memberId);
-					$('#scheViewForm input').eq(4).val(result.coordinate);
-					$('#scheViewForm textarea').val(result.scheContent);
-					$('#scheId').val(result.scheId);
-					$('#updateBtn').text('수정/삭제').on("click", function(){updateScheForm(info)});
-				},
-				error:function(error){
-					alert("조회오류");
-				}
-			});
+				});
+	    	}
 		}
 		
 		//이벤트 등록모달
@@ -389,19 +412,20 @@
 	        scheModal.show();
 			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
 			$('#coordinate').prop("required", false);
+			$('#scheForm input').eq(3).prop("readonly",true);
 			$(".alarmDate option").prop("disabled", false);
 			//현재시간 입력
-			var now = new Date();
-			var nowYear = now.getFullYear();
-			var nowMonth = now.getMonth()+1;
-			var nowDate = now.getDate();
-			var hours = now.getHours();
-			var minutes = now.getMinutes();
-			var after = now.getMinutes()+30;
+			let now = new Date();
+			let nowYear = now.getFullYear();
+			let nowMonth = now.getMonth()+1;
+			let nowDate = now.getDate();
+			let hours = now.getHours();
+			let minutes = now.getMinutes();
+			let after = now.getMinutes()+30;
 			if(minutes <10){
 				minutes = '0'+minutes;
 			}
-			var afterhours = hours;
+			let afterhours = hours;
 			if(after>59){
 				after = after-60;
 				if(after <10){
@@ -409,8 +433,8 @@
 				}
 				afterhours = hours+1;
 			}
-			var nowTime = nowYear+'-'+nowMonth+'-'+nowDate+' '+hours+':'+minutes;
-			var nowTimeAfter = nowYear+'-'+nowMonth+'-'+nowDate+' '+afterhours+':'+after;
+			let nowTime = nowYear+'-'+nowMonth+'-'+nowDate+' '+hours+':'+minutes;
+			let nowTimeAfter = nowYear+'-'+nowMonth+'-'+nowDate+' '+afterhours+':'+after;
 			$('#datetimepicker1').val(nowTime);
 			$('#datetimepicker2').val(nowTimeAfter);
 			
@@ -419,8 +443,10 @@
 		//todoList db입력
 		function toDoListInsert(){
 			tdlModal.show()
+			$('#tdlForm input').eq(0).prop("required",true);
+			$('#tdlForm input').eq(1).prop("required",true);
+			$('#tdlInsertBtn').attr("type","submit");
 		};
-		
 
 	
 		//일정 수정폼
