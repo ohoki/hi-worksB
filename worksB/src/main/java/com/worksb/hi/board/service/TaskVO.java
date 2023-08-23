@@ -31,4 +31,12 @@ COMPANY_ID   NOT NULL NUMBER
 	private int taskId;
 	private int companyId;
 	private String prjBoardTitle;
+	
+/*
+PRJ_BOARD_ID
+PRJ_PARTICIR_ID
+RESP_ID
+ */
+	private int prjParticirId;
+	private int respId;
 }

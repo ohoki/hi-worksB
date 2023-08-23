@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksb.hi.board.mapper.BoardMapper;
+import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.ScheVO;
@@ -104,11 +105,19 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getHighTaskId(taskVO);
 	}
 	
-	//하위 업무 조회
+	// 하위 업무 조회
 	@Override
 	public List<TaskVO> getSubTask(int TaskId) {
 		return boardMapper.getSubTask(TaskId);
 	}
+
+	// 업무 담당자 등록
+	@Override
+	public int insertTaskManager(TaskVO taskVO) {
+		return boardMapper.insertTaskManager(taskVO);
+	}
+	
+	
 
 	
 
