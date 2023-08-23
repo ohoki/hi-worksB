@@ -11,42 +11,41 @@
 		<if test="searchkeyword != null and searchkeyword !=''">
 			<choose>
 				<when test="searchtype == 1 ">
-					and board_title like '%' || #{searchkeyword } || '%'
+					WHERE board_title like '%' || #{searchkeyword } || '%'
 				</when>
 				<when test="searchtype == 2 ">
-					and board_content like '%' || #{searchkeyword } || '%'
+					WHERE board_content like '%' || #{searchkeyword } || '%'
 				</when>
 				<when test="searchtype == 3 ">
-					and member_name like  '%${searchkeyword }%'
+					WHERE member_name like  '%${searchkeyword }%'
 				</when>
 				<when test="searchtype == 4 ">
-					and( board_title like '%${searchkeyword }%' or board_content like '%${searchkeyword }%')
+					WHERE ( board_title like '%${searchkeyword }%' or board_content like '%${searchkeyword }%')
 				</when>
 			</choose>
 		</if> 
 	</select>
 	
 	<!-- 게시글 전체 조회 -->
-	<select id="selectCarpoolAll" resultType="BoardCmtVO">
+	<select id="selectCarpoolAll" resultType="carpoolVO">
 		select *
 		from (  select rownum rn, a.*
         		from (select *
               		  from carpool_board n JOIN member m
               		  on n.member_id = m.member_id
-              		  where board_type = 'C2'  
 					<if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
 					<choose>
 					<when test="searchVO.searchtype == 1 ">
-						and board_title like '%' || #{searchVO.searchkeyword } || '%'
+						WHERE board_title like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 2 ">
-						and board_content like '%' || #{searchVO.searchkeyword } || '%'
+						WHERE board_content like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 3 ">
-						and member_name like  '%${searchVO.searchkeyword }%'
+						WHERE member_name like  '%${searchVO.searchkeyword }%'
 					</when>
 					<when test="searchVO.searchtype == 4 ">
-						and( board_title like '%${searchVO.searchkeyword }%' or board_content like '%${searchVO.searchkeyword }%')
+						WHERE ( board_title like '%${searchVO.searchkeyword }%' or board_content like '%${searchVO.searchkeyword }%')
 					</when>
 					</choose>
 					</if>               		  
@@ -54,4 +53,88 @@
 		where rn between #{pagingVO.start} and #{pagingVO.end}
 	</select>
 	
+	<!-- 단건 조회 -->
+	<select id="getCarpoolInfo" resultType="CarpoolVO">
+		SELECT c.BOARD_ID,
+			   c.BOARD_TITLE,
+			   c.BOARD_CONTENT,
+			   c.MEMBER_ID,
+			   c.BOARD_REGDATE,
+			   c.BOARD_UPDDATE,
+			   c.BOARD_HIT,
+			   c.CATEGORY,
+			   c.DEPARTURE,
+			   c.ARRIVAL,
+			   c.DEPARTURE_DATE,
+			   c.PASSENGER,
+			   c.COORDINATE,
+			   c.BOARD_TYPE,
+			   c.COMPANY_ID,
+			   m.member_name
+	  	  FROM carpool_board c join member m
+	  	  	ON (c.member_id = m.member_id)
+	  	 WHERE board_id = #{boardId}
+	</select>
+	
+	<!-- 게시물 등록 -->
+	<insert id="carpoolInsert" parameterType="CarpoolVO">
+		<selectKey keyProperty="boardId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(board_id), 0) + 1
+			  FROM carpool_board
+		</selectKey>
+		INSERT INTO carpool_board(
+								  BOARD_ID
+								  ,BOARD_TITLE
+								  ,BOARD_CONTENT
+								  ,MEMBER_ID
+								  ,BOARD_REGDATE
+
+								  ,BOARD_HIT
+								  ,CATEGORY
+								  ,DEPARTURE
+								  ,ARRIVAL
+								  ,DEPARTURE_DATE
+								  ,PASSENGER
+								  ,COORDINATE
+								  ,BOARD_TYPE
+								  ,COMPANY_ID
+								  )
+								  values
+								  (
+								  #{boardId}
+								  ,#{boardTitle}
+								  ,#{boardContent}
+								  ,#{memberId}
+								  ,sysdate
+								  ,0
+								  ,#{category}
+								  ,#{departure}
+								  ,#{arrival}
+								  ,#{departureDate}
+								  ,#{passenger}
+								  ,#{coordinate}
+								  ,'c3'
+								  ,#{companyId}
+								  )
+	</insert>
+	<update id="carpoolUpdate" parameterType="CarpoolVO">
+			update Carpool_board
+			<set>
+				board_title = #{boardTitle},
+				board_content = #{boardContent},
+				board_upddate = sysdate, 
+				category = #{category}
+				departure = #{departure} <!-- 출발지 -->
+				arrival = #{arrival} 	 <!-- 도착지 -->
+				departure_date = #{departureDate} 
+				coordinate = #{coordinate}
+			</set>
+		where board_id = #{boardId}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="carpoolDelete" parameterType="int">
+		DELETE FROM carpool_board
+		WHERE board_id = #{carpoolId}
+	</delete>
 </mapper>

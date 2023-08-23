@@ -158,7 +158,7 @@ form {
 					<td><fmt:formatDate value="${notice.boardRegdate }"
 							pattern="yyyy/MM/dd" /></td>
 					<td>
-						<!-- 좋아요 -->2
+						<!-- 좋아요 -->0
 					</td>
 					<td>${notice.boardHit}</td>
 				</tr>

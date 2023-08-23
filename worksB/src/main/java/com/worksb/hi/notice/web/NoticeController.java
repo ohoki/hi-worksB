@@ -1,21 +1,34 @@
 package com.worksb.hi.notice.web;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.notice.service.NoticeService;
 import com.worksb.hi.notice.service.NoticeVO;
 
+import lombok.extern.log4j.Log4j;
+
 // 2023.08.18 이동민 공지사항
 @Controller
+@Log4j
 public class NoticeController {
 	
 	@Autowired
@@ -26,7 +39,7 @@ public class NoticeController {
 	public String noticeList(Model model
 						, SearchVO searchVO
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
-						, @RequestParam(value="cntPerPage", defaultValue ="20") Integer cntPerPage) {
+						, @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
 		
 		int total = noticeService.noticeCount(searchVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
@@ -69,12 +82,22 @@ public class NoticeController {
 		return "notice/noticeUpdate";
 	}
 	
+	//게시글 수정
+	@PostMapping("/noticeUpdate")
+	public String noticeUpdate(NoticeVO noticeVO){
+		noticeService.noticeUpdate(noticeVO);
+		return "redirect:noticeList";
+	}
+	
 	// 게시글 삭제
 	@GetMapping("/noticeDelete")
 	public String noticeDelete(@RequestParam(name = "noticeId", defaultValue = "0") int noticeId) {
 		noticeService.noticeDelete(noticeId);
 		return "redirect:noticeList";
 	}
+
+	
+	
 	 
 	/* 수정중
 	// 좋아요 기능

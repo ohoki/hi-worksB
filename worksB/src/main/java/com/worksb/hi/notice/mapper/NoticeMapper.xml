@@ -34,20 +34,19 @@
         		from (select *
               		  from notice_board n JOIN member m
               		  on n.member_id = m.member_id
-              		  where board_type = 'C2' 
 					<if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
 					<choose>
 					<when test="searchVO.searchtype == 1 ">
-						and notice_title like '%' || #{searchVO.searchkeyword } || '%'
+						WHERE notice_title like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 2 ">
-						and notice_content like '%' || #{searchVO.searchkeyword } || '%'
+						WHERE notice_content like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 3 ">
-						and member_name like  '%${searchVO.searchkeyword }%'
+						WHERE member_name like  '%${searchVO.searchkeyword }%'
 					</when>
 					<when test="searchVO.searchtype == 4 ">
-						and( notice_title like '%${searchVO.searchkeyword }%' or notice_content like '%${searchVO.searchkeyword }%')
+						WHERE ( notice_title like '%${searchVO.searchkeyword }%' or notice_content like '%${searchVO.searchkeyword }%')
 					</when>
 					</choose>
 					</if>               		  
@@ -55,7 +54,7 @@
 		where rn between #{pagingVO.start} and #{pagingVO.end}
 	</select>
 
-<!-- 단건 조회 test버전 -->
+<!-- 단건 조회 -->
  	<select id="getNoticeInfo" resultType="NoticeVO">
 		SELECT n.notice_id,
 			   n.notice_title,
@@ -114,7 +113,6 @@
 				notice_title = #{noticeTitle},
 				notice_content = #{noticeContent},
 				board_upddate = sysdate,
-				coordinate = #{coordinate}
 			</set>
 		where notice_id = #{noticeId}
 	</update>
@@ -124,4 +122,12 @@
 		DELETE FROM notice_board
 		WHERE notice_id = #{noticeId}
 	</delete>
+	
+	<!-- 조회수 올리기 -->
+	<update id="noticeHit" parameterType="int">
+		update notice_board 
+		   set board_hit = board_hit + 1 
+		 where notice_id = #{noticeId}
+	</update>
+	
 </mapper>

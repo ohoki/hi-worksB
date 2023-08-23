@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <title>Insert title here</title>
 <style>
 body {
@@ -103,42 +102,61 @@ div h2 {
 	height: 25px;
 }
 
+	.ck.ck-editor {
+    	width: 817px;
+    	margin: 0 auto;
+    	board: 0;
+	}
+	.ck-editor__editable {
+		margin: 0 auto;
+	    min-height: 300px;
+	    width: 800px;
+	}
+
+
 </style>
 </head>
 <body>
+	<!-- api -->
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>		
+<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<div class="top">
 		<h2>공지사항 작성</h2>
 	</div>
-	<div class="body">
-		<form action="noticeInsert" method="post">
-			<table class="table">
-				<thead>
-					<tr class="main__p">
-						<th class="table__title">
-							<label id="noticeTitle">제목 </label>
-							<input type="text" name="noticeTitle">
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<div class="content">
-								<input type="text" name="noticeContent">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="hidden" name="memberId" value="${memberId }">
-							<input type="hidden" name="companyId" value="${companyId}">
-						</td>
-					</tr>
-				</tbody>
-			</table>
+		<!-- 에디터 사용 -->
+		<form action="noticeInsert" method="POST">
+			<label id="noticeTitle">제목 </label>
+			<input type="text" name="noticeTitle">
+			<textarea name="noticeContent" id="editor"></textarea>
+			
+		    <!-- hidden -->
+		    <input type="hidden" name="memberId" value="${memberInfo.memberId }">
+			<input type="hidden" name="companyId" value="${memberInfo.companyId}">
+			
 			<button type="button" onclick="location.href='noticeList'">목록</button>
-			<button type="submit">작성</button>
-		</form>
-	</div>
+		    <input type="submit" value="작성">
+    	</form>
+	<script>
+		ClassicEditor.create( document.querySelector( '#editor' ), {
+		    ckfinder:{
+		    	uploadUrl: '${pageContext.request.contextPath}/ckuploadsAjax'
+		    },
+		 
+		    /* 폰트 설정 안됨. 죽이고싶음 */
+		    fontFamily:{
+		    	items:[
+		    		'default',
+		    		'Arial',
+		    		'궁서체',
+		    		'바탕',
+		    		'돋움'
+		    	],
+		    	supportAllValues: true
+		    }
+		  }
+		  
+		);
+
+	</script>
 </body>
 </html>
