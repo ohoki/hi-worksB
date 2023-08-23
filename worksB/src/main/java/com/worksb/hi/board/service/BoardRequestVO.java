@@ -8,5 +8,7 @@ public class BoardRequestVO {
 	BoardVO boardVO;
 	TaskVO taskVO;
 	List<TaskVO> subTask;
+	List<TaskVO> prjManager;
 	//VoteVO voteVO, ScheVO scheVO
+
 }

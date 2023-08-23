@@ -2,6 +2,7 @@ package com.worksb.hi.board.mapper;
 
 import java.util.List;
 
+import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
@@ -32,6 +33,9 @@ public interface BoardMapper {
 	public int getHighTaskId(TaskVO taskVO);
 	// 하위 업무 조회
 	public List<TaskVO> getSubTask(int TaskId);
+	
+	// 업무 담당자 등록
+	public int insertTaskManager(TaskVO taskVO);
 	
 	
 	

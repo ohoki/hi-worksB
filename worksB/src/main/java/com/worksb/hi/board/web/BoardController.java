@@ -52,6 +52,20 @@ public class BoardController {
     	taskVO.setPrjBoardId(boardVO.getPrjBoardId());
     	boardService.insertTask(taskVO);
     	
+    	//업무 담당
+    	List<TaskVO> managerList = brVO.getPrjManager();
+    	if(managerList != null) {
+    		for(int i=0; i < managerList.size(); i++) {
+    			TaskVO taskManager = managerList.get(i);
+    			
+    			taskManager.setPrjBoardId(taskVO.getPrjBoardId());
+    			boardService.insertTaskManager(taskManager);
+
+    		}
+    	}
+    	
+    	
+    	
     	//하위업무
     	List<TaskVO> taskList = brVO.getSubTask();
     	if(taskList != null){
