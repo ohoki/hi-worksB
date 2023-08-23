@@ -226,4 +226,25 @@
 		WHERE	high_task_id = #{taskId}
 		ORDER BY t.task_id
 	</select>
+	
+	
+	<!-- 업무 담당자 추가 -->
+	<insert id="insertTaskManager" parameterType="TaskVO">
+		<selectKey keyProperty="respId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(resp_id), 0) + 1
+			FROM task_manager
+		</selectKey>
+		INSERT INTO task_manager
+								(
+									prj_board_id,
+									prj_particir_id,
+									resp_id
+								)
+						VALUES 
+								(
+									#{prjBoardId},
+									#{prjParticirId},
+									#{respId}
+								)
+	</insert>
 </mapper>
