@@ -103,9 +103,22 @@ div h2 {
 	height: 25px;
 }
 
+	.ck.ck-editor {
+    	width: 817px;
+    	margin: 0 auto;
+    	board: 0;
+	}
+	.ck-editor__editable {
+		margin: 0 auto;
+	    min-height: 300px;
+	    width: 800px;
+	}
+
 </style>
 </head>
 <body>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>		
+<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<div class="top">
 		<h2>카풀 게시판 작성</h2>
 	</div>
@@ -124,7 +137,7 @@ div h2 {
 					<tr>
 						<td>
 							<div class="content">
-								<input type="text" name="boardContent">
+								<textarea name="noticeContent" id="editor"></textarea>
 							</div>
 						</td>
 					</tr>
@@ -161,5 +174,25 @@ div h2 {
 	$(document).ready(function(){
     $('input.timepicker').timepicker({});
 });
+	
+	ClassicEditor.create( document.querySelector( '#editor' ), {
+	    ckfinder:{
+	    	uploadUrl: '${pageContext.request.contextPath}/ckuploadsAjax'
+	    },
+	 
+	    /* 폰트 설정 안됨. 죽이고싶음 */
+	    fontFamily:{
+	    	items:[
+	    		'default',
+	    		'Arial',
+	    		'궁서체',
+	    		'바탕',
+	    		'돋움'
+	    	],
+	    	supportAllValues: true
+	    }
+	  }
+	  
+	);
 </script>
 </html>

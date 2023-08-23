@@ -129,6 +129,14 @@ div h2 {
 				<thead>
 					<tr class="main__p">
 						<th class="table__title">
+						<c:choose>
+							<c:when test="${carpoolInfo.category eq 'B1' }">
+								[태워드립니다] 
+							</c:when>
+							<c:otherwise>
+								[태워주세요] 
+							</c:otherwise>
+						</c:choose>
 							${carpoolInfo.boardTitle }
 						</th>
 					</tr>

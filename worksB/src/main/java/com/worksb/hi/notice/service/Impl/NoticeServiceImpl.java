@@ -52,8 +52,9 @@ public class NoticeServiceImpl implements NoticeService {
 		int result = noticeMapper.noticeUpdate(noticeVO);
 		if(result == 1) {
 			return noticeVO.getNoticeId();
+		}else {
+			return 0;
 		}
-		return 0;
 	}
 
 	// 공지사항 삭제
