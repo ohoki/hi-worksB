@@ -31,6 +31,8 @@ public interface BoardMapper {
 	public List<TaskVO> getHighTask(TaskVO taskVO);
 	// 상위 업무 taskId 조회
 	public int getHighTaskId(TaskVO taskVO);
+	// 상위 업무 담당자 조회
+	public List<TaskVO> getHighManager(TaskVO taskVO);
 	// 하위 업무 조회
 	public List<TaskVO> getSubTask(int TaskId);
 	

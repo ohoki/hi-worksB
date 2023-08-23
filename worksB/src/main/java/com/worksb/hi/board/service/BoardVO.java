@@ -29,4 +29,6 @@ COORDINATE                 VARCHAR2(60)
 	private int projectId;
 	private String coordinate;
 	
+	private String memberName;
+	
 }
