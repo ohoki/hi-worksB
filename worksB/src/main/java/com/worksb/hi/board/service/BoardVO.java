@@ -2,6 +2,8 @@ package com.worksb.hi.board.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -21,6 +23,7 @@ COORDINATE                 VARCHAR2(60)
 	private int prjBoardId;
 	private String prjBoardTitle;
 	private String prjBoardSubject;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date prjBoardRegdate;
 	private String memberId;
 	private String inspYn;
