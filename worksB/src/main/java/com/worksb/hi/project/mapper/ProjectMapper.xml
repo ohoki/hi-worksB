@@ -78,17 +78,19 @@
 	
 	<!-- 프로젝트 게시글 리스트 -->
 	<select id="getBoardList" resultType="BoardVO">
-		SELECT 	prj_board_id,        
-				prj_board_title,     
-				prj_board_subject,  
-				prj_board_regdate,            
-				member_id,            
-				insp_yn,              
-				pin_yn,                
-				board_type,           
-				project_id,                 
-				coordinate
-		FROM 	prj_board
+		SELECT 	p.prj_board_id,        
+				p.prj_board_title,     
+				p.prj_board_subject,  
+				p.prj_board_regdate,            
+				p.member_id,            
+				p.insp_yn,              
+				p.pin_yn,                
+				p.board_type,           
+				p.project_id,                 
+				p.coordinate,
+				m.member_name
+		FROM 	prj_board p
+		JOIN    member m ON p.member_id = m.member_id
 		WHERE 	prj_board_id
 		NOT IN 	(SELECT	prj_board_id
 				FROM	prj_task
@@ -126,14 +128,18 @@
 										manager,
 										project_id,
 										alarm_yn,
-										particir_accp)
+										particir_accp,
+										project_markup
+										)
 							VALUES
 									(	#{prjParticirId}, 
 										#{memberId},
 										#{manager},
 										#{projectId},
 										'A1',
-										#{particirAccp})
+										#{particirAccp},
+										#{projectMarkup}
+										)
 	</insert>
 	
 	<!-- 프로젝트 참여자 조회 -->
