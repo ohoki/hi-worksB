@@ -172,25 +172,7 @@
 		WHERE member_id = #{memberId} AND project_id = #{projectId}
 	</select>
 	
-	<!-- 프로젝트 업무 리스트 -->
-	<select id="getTaskList" resultType="BoardVO">
-		SELECT 	p.prj_board_id,        
-				p.prj_board_title,     
-				p.prj_board_subject,  
-				p.prj_board_regdate,            
-				p.member_id,            
-				p.insp_yn,              
-				p.pin_yn,                
-				p.board_type,           
-				p.project_id,                 
-				p.coordinate,
-				m.member_name
-		FROM 	prj_board p
-		JOIN    member m ON p.member_id = m.member_id
-		WHERE 	project_id = #{projectId}
-        AND     board_type = 'C8'
-		ORDER BY prj_board_regdate DESC
-	</select>
+	
 	
 	
 	

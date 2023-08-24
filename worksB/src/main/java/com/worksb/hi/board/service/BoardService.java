@@ -2,6 +2,8 @@ package com.worksb.hi.board.service;
 
 import java.util.List;
 
+import com.worksb.hi.project.service.ProjectVO;
+
 public interface BoardService {
 	// 이진
 	// 게시글 등록
@@ -32,6 +34,9 @@ public interface BoardService {
 	
 	// 업무 담당자 등록
 	public int insertTaskManager(TaskVO taskVO);
+	
+	// 프로젝트 업무글 리스트
+	public List<BoardVO> getTaskList(ProjectVO projectVO);
 	
 	
 	

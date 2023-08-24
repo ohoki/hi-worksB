@@ -7,6 +7,7 @@ import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
+import com.worksb.hi.project.service.ProjectVO;
 
 public interface BoardMapper {
 	// 이진
@@ -39,6 +40,8 @@ public interface BoardMapper {
 	// 업무 담당자 등록
 	public int insertTaskManager(TaskVO taskVO);
 	
+	// 프로젝트 업무글 리스트
+	public List<BoardVO> getTaskList(ProjectVO projectVO);
 	
 	
 }
