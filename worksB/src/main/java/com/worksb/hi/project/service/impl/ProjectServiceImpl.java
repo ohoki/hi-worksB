@@ -99,6 +99,11 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectMapper.getParticirByProject(particirVO);
 	}
 	
+	@Override
+	public List<BoardVO> getTaskList(ProjectVO projectVO) {
+		return projectMapper.getTaskList(projectVO);
+	}
+	
 
 
 
@@ -174,6 +179,8 @@ public class ProjectServiceImpl implements ProjectService {
 	public void updateStar(ProjectVO vo) {
 		projectMapper.updateStar(vo);
 	}
+
+	
 	
 
 
