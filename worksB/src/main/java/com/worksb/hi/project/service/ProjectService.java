@@ -43,4 +43,7 @@ public interface ProjectService {
 	public void updateStar(ProjectVO vo);
 	//로그인된 아이디가 참여하고 있는 프로젝트를 출력
 	public List<PrjParticirVO> selectAllparticier(String memberId);
+	//파일탭(전체공개프로젝트)
+	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo);
+
 }
