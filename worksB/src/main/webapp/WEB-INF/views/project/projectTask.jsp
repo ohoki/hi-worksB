@@ -11,6 +11,10 @@
 table{
 	border: 1px solid var(--color-light-grey);
 }
+.sub-task {
+    display: none;
+    padding-left: 20px;
+  }
 </style>
 </head>
 <body>
@@ -18,6 +22,7 @@ table{
 		<table class="taskTable">
 			<thead>
 				<tr>
+					<th></th>
 					<th>업무명</th>
 					<th>상태</th>
 					<th>우선순위</th>
@@ -29,51 +34,53 @@ table{
 			</thead>
 			<tbody class="taskList" >
 				<c:forEach items="${taskList }" var="task">
-					<tr data-id="${task.prjBoardId}">
-						<td>${task.prjBoardTitle }</td>
-						<td class="taskState"></td>
+					<tr data-id="${task.prjBoardId}" class="highTask">
 						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td><fmt:formatDate value="${task.prjBoardRegdate}" pattern="yyyy-MM-dd"/></td>
+			            <td class="prjBoardTitle">${task.prjBoardTitle}</td>
+			            <td class="state">${task.state}</td>
+			            <td class="priority">${task.priority}</td>
+			            <td class="highTaskManager"></td>
+			            <td class="startDate"><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd"/></td>
+			            <td class="endDate"><fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd"/></td>
+			            <td class="prjBoardRegdate"><fmt:formatDate value="${task.prjBoardRegdate}" pattern="yyyy-MM-dd"/></td>
 					</tr>
+					<tr>
+
+        			</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 	</div>
-
 	
 <script>
-	$(window).on('DOMContentLoaded', function() {
-		let taskBoardList = $('.taskList tr');
-		for(let i=0; i<taskBoardList.length; i++){
-			$.ajax({
-				url : '${pageContext.request.contextPath}/getTaskInfo',
-				type : 'GET',
-				data : {'prjBoardId' : taskBoardList[i].dataset.id},
-				success : function(taskData) {
-					console.log(taskData)
-					let taskInfo = $(taskBoardList[i]);
-					// 상위 업무
-					let highTask = taskData.highTask[0];
-					// 상위 업무 담당자 리스트
-					let highManagers = taskData.highManager;
-					// 하위 업무리스트
-					let subTasks = taskData.subTask;
-					
+$(window).on('DOMContentLoaded', function() {
+	let taskBoardList = $('.highTask');
+	for(let i=0; i<taskBoardList.length; i++){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getTaskDetail',
+			type : 'GET',
+			data : {'prjBoardId' : taskBoardList[i].dataset.id},
+			success : function(taskData) {
+				console.log(taskData)
+				let taskInfo = $(taskBoardList[i]);
+				let highManagers = taskData.highManager;
+				let subTasks = taskData.subTask;
 
-					
-					//상위 업무
-					
-					
-			    }, error : function(reject) {
-					console.log(reject);
+				// 하위 업무 정보 출력
+				let subTasksInfo = $('');
+				for (let j = 0; j < subTasks.length; j++) {
+					let subTask = subTasks[j];
+
+				
+				
 				}
-			});
-			
-		}
-	});
+
+			}, error: function(reject) {
+				console.log(reject);
+			}
+		});
+	}
+});
 </script>
 </body>
 </html>
