@@ -100,6 +100,11 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectMapper.getParticirByProject(particirVO);
 	}
 	
+	@Override
+	public List<BoardVO> getTaskList(ProjectVO projectVO) {
+		return projectMapper.getTaskList(projectVO);
+	}
+	
 
 
 
@@ -144,11 +149,13 @@ public class ProjectServiceImpl implements ProjectService {
 	public void updateStar(ProjectVO vo) {
 		projectMapper.updateStar(vo);
 	}
+
 	//전체공개프로젝트의 파일탭
 	@Override
 	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo) {
 		return projectMapper.viewFileWhenPublic(vo);
 	}
+
 	
 
 
