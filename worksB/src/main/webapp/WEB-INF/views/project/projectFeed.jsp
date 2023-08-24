@@ -65,6 +65,9 @@ a {
 	margin: 0 40px;
 	border-bottom: 1px solid var(--color-dark-beigie);
 	color: var(--color-dark-grey);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .board-title span {
@@ -146,6 +149,108 @@ a {
 	color: var(--color-dark-grey);
 }
 
+.sche-btns {
+	margin: 20px auto;
+	text-align: center;
+}
+
+.sche-btns button {
+	width: 70px;
+	height: 35px;
+	background-color: var(--color-dark-red);
+	border-radius: 5px;
+	color: white;
+	font-weight: var(--weight-bold);
+}
+
+.sche-particir, .sche-nonParticir {
+	font-size: var(--font-micro);
+	padding: 0 10px;
+	cursor: pointer;
+}
+
+.sche-particir {
+	color: var(--color-green) !important;
+}
+
+.sche-nonParticir {
+	color: var(--color-dark-red) !important;
+}
+
+.voteContent {
+	margin: 0 40px;
+	margin-bottom: 30px;
+}
+
+.voteContent-info {
+	text-align: right;
+	font-size: var(--font-micro);
+}
+
+.anonyVote {
+	color: var(--color-light-blue);
+	margin-left: 20px;
+} 
+
+.compnoVote{
+	color: var(--color-dark-red);
+}
+
+.vote-lists input {
+	display: none;
+}
+
+.vote-lists input:checked + label {
+	background-color: var(--color-dark-red);
+}
+
+.vote-lists label {
+	cursor: pointer;
+	width: 15px;
+	height: 15px;
+	border: 3px solid var(--color-dark-red);
+	border-radius: 50%;
+	position: relative;
+	transition: all 0.3s;
+	margin-right: 10px;
+}
+
+.vote-lists img {
+	width: 15px;
+	height: 15px;
+	line-height: 10px;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.vote-list {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 5px 10px;
+	background-color: var(--color-dark-beigie);
+	margin: 5px;
+}
+
+.vote-btn {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.vote-btn button {
+	width: 70px;
+	height: 35px;
+	background-color: var(--color-dark-red);
+	border-radius: 5px;
+	color: white;
+	font-weight: var(--weight-bold);
+}
+
+
+
+
+
 
 
 .form__select,
@@ -223,11 +328,6 @@ a {
 	border: 1px solid var(--color-light-white);
     border-radius: var(--size-border-radius);
     margin: 5px;
-}
-
-.compnoVote{
-	color: var(--color-dark-white);
-	font-size: var(--font-small);
 }
 
 .vote-sub,
@@ -350,7 +450,7 @@ a {
 						<c:if test="${memberInfo.realProfilePath ne null }">
 							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 						</c:if>
-							<input type="text"><button type="button">등록</button>
+							<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 					</div>
 				</div>
 			</c:if>
@@ -374,7 +474,13 @@ a {
 						</div>
 					</div>
 					<div class="board-title">
-						<span>[일정]</span> ${board.prjBoardTitle }
+						<div>
+							<span>[일정]</span> ${board.prjBoardTitle }
+						</div>
+						<div>
+							<span class="sche-particir">참석 2</span>
+							<span class="sche-nonParticir">불참 3</span>
+						</div>
 					</div>
 					<div class="sche-date">
 						<span class="text">기간 : </span>
@@ -385,6 +491,105 @@ a {
 					<div class="board-content">
 						<div>
 							${board.prjBoardSubject }
+						</div>
+					</div>
+					<div class="sche-btns">
+						<button type="button">참석</button>
+						<button type="button">불참</button>
+					</div>
+					<div class="board-footer">
+						<div >
+							<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+							<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+						</div>
+						<div>
+							<span class="board-footer-info">댓글 7</span>
+							<span class="board-footer-info">좋아요 14</span>
+						</div>
+					</div>
+					<c:if test="ㄴㅇㄹ">
+						<div>
+							댓글 더보기
+						</div>
+						<!-- for each로 최신 댓글 2개만 -->
+							<div class="board-comment">
+								<div>
+									<img alt="#" src="#">
+									<div>
+										<div>
+											회원정보
+										</div>
+										<div>
+											댓글내용
+										</div>
+									</div>
+								</div>
+								<div>
+									<a href="#">수정</a>
+									<a href="#">삭제</a>
+								</div>
+							</div>
+						<!-- 여기까지 -->	
+					</c:if>
+					<div class="comment-input">
+						<c:if test="${memberInfo.realProfilePath eq null }">
+							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+						</c:if>
+						<c:if test="${memberInfo.realProfilePath ne null }">
+							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+						</c:if>
+							<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+					</div>
+				</div>
+			</c:if>
+			
+			<!-- C7 투표 -->
+			<c:if test="${board.boardType eq 'C7'}">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div class="board-header">
+						<div class="board-header-info">
+							<c:if test="${board.realProfilePath eq null }">
+								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<c:if test="${board.realProfilePath ne null }">
+								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<div class="board-headder-info__memberName">${board.memberName } </div>
+							<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
+						</div>
+						<div>
+						<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+						</div>
+					</div>
+					<div class="board-title">
+						<div>
+							<span>[투표]</span> ${board.prjBoardTitle }						
+						</div>
+						<div>
+							<span class="sche-particir">참여인원 2</span>
+						</div>
+					</div>
+					<div class="sche-date">
+						<span class="text">투표 마감일 : </span>
+						<span> ~ </span>
+						<span data-end></span>
+					</div>
+					<div class="board-content">
+						<div>
+							${board.prjBoardSubject }
+						</div>
+					</div>
+					<div class="voteContent">
+						<div class="voteContent-info">
+							<span class="compnoVote"></span>
+							<span class="anonyVote"></span>
+						</div>
+						<div class="vote-lists">
+							<ul>
+							</ul>
+						</div>
+						<div class="vote-btn">
+							<button type="button">투표</button>
 						</div>
 					</div>
 					<div class="board-footer">
@@ -428,34 +633,12 @@ a {
 						<c:if test="${memberInfo.realProfilePath ne null }">
 							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 						</c:if>
-							<input type="text"><button type="button">등록</button>
+							<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 					</div>
 				</div>
 			</c:if>
-			
-			<!-- C7 투표 -->
-			<c:if test="${board.boardType eq 'C7'}">
-				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
-					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberName } </div>
-						
-						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
-					</div>
-					<div class="board-title divide">
-						${board.prjBoardTitle }
-						<span class="compnoVote">(복수투표여부)</span>
-					</div>
-					<div class="board-sub divide vote-sub">
-						${board.prjBoardSubject }
-					</div>
-					<div class="voteEndDate">투표마감일</div>
-					<div class="voteContent">
-					</div>
-					<div class="board-comment">
-						댓글공간
-					</div>
-				</div>
-			</c:if>
+
+
 			<!-- C8 업무 -->
 			<c:if test="${board.boardType eq 'C8'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
@@ -520,29 +703,43 @@ a {
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
 					success : function(voteData) {
-						let voteEndDate = $(boardList[i]).find('.voteEndDate');
+						let endDate = $(boardList[i]).find('span[data-end]');
 						let compnoVote = $(boardList[i]).find('.compnoVote');
-						let voteContent = $(boardList[i]).find('.voteContent');
+						let anonyVote = $(boardList[i]).find('.anonyVote');
+						let voteList = $(boardList[i]).find('.vote-lists ul');
 						
 						// 종료일
-						let endDate = new Date(voteData.voteInfo[0].endDate);
-						voteEndDate.text('투표마감일: ' + endDate.toDateString());
-						
+						endDate.text(voteData.voteInfo[0].endDate);
 						// 복수 투표 여부
 						if (voteData.voteInfo[0].compnoVote == 'A1') {
-							compnoVote.text('(복수 투표)');
+							compnoVote.text('복수 투표');
 						} else if (voteData.voteInfo[0].compnoVote == 'A2') {
 							compnoVote.text('');
 						}
-						
+						// 익명 투표 여부
+						if (voteData.voteInfo[0].anonyVote == 'A1') {
+							anonyVote.text('익명 투표');
+						} else if (voteData.voteInfo[0].anonyVote == 'A2') {
+							anonyVote.text('');
+						}
 						// 투표 항목
 						for (let j = 0; j < voteData.voteList.length; j++) {
-						let voteItem = $('<div>').addClass('voteList').text((j + 1) + '. ' + voteData.voteList[j].listContent);
-						voteContent.append(voteItem);
+							//li 태그 생성
+							let li = $('<li class="vote-list">');
+							let checkbox = $('<input>');
+							let label = $('<label>');
+							let img = $('<img src="${pageContext.request.contextPath }/resources/icon/check-solid.svg">');
+							
+							checkbox.attr('type', 'checkbox').attr('id', boardList[i].dataset.id + '-' + voteData.voteList[j].listId);
+							label.attr('for', boardList[i].dataset.id + '-' + voteData.voteList[j].listId);
+							
+							label.append(img);
+							li.append(checkbox);
+							li.append(label);
+							li.append(voteData.voteList[j].listContent);
+							
+							voteList.append(li);
 						}
-						
-						
-						
 					}, error : function(reject) {
 						console.log(reject);
 					}
