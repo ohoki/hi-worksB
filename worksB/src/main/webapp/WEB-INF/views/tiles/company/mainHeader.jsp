@@ -41,9 +41,9 @@
 			<a href="#" data-type="profile"> <img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진"
 				class="header__profile">
 			</a>
+			</c:if>
 			<div class="status"></div>
 			<!-- 프로필 모달 -->
-			</c:if>
 			<div id="profile-modal">
 				<div class="profile-modal__content">
 					<div class="profile-modal__title">
