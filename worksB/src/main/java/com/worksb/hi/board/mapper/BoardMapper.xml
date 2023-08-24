@@ -257,7 +257,6 @@
 								)
 	</insert>
 	
-	
 	<!-- 프로젝트 업무 리스트 -->
 	<select id="getTaskList" resultType="BoardVO">
 		SELECT p.prj_board_id,        
@@ -314,4 +313,7 @@
 		ORDER BY prj_board_regdate DESC
 	</select>
 	-->
+	
+	
+<!-- 	주현 -->
 </mapper>

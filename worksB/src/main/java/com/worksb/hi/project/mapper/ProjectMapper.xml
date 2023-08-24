@@ -285,7 +285,7 @@
 
 <!-- 회사별 프로젝트 조회 -->
 <select id="selectFromCompany" parameterType="int" resultType="com.worksb.hi.project.service.ProjectVO">
-	SELECT
+   SELECT
        p.project_id,
        p.project_name,
        find_subcode(p.project_access) AS project_access,
@@ -303,9 +303,9 @@
    WHERE
       dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})       
       AND p.project_cls= nvl(#{projectCls},'A2')
-   	  <if test="deptId!=null">
-   	  	AND dept_id=#{deptId}
-   	  </if>
+        <if test="deptId!=null">
+           AND dept_id=#{deptId}
+        </if>
    ORDER BY p.project_id
 </select>
 
@@ -329,5 +329,23 @@
 		,find_subcode(particir_accp) AS particir_accp
 	FROM prj_particir
 	WHERE member_id=#{memberId}
+</select>
+<!-- 전체공개프로젝트의 파일 -->
+<select id="viewFileWhenPublic" parameterType="ProjectVO" resultType="FileDataVO">
+	SELECT
+		board_type,
+		file_name,
+		file_path,
+		file_type,
+		file_regdate,
+		file_size,
+		board_id,
+		real_file_path,
+		file_id,
+		project_id
+	FROM
+		file_data
+	WHERE
+		project_id=#{projectId}
 </select>
 </mapper>

@@ -44,4 +44,9 @@ public interface BoardMapper {
 	public List<BoardVO> getTaskList(ProjectVO projectVO);
 	
 	
+	
+	
+//주현
+	
+	
 }
