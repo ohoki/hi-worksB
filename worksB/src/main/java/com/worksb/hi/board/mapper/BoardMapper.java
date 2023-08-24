@@ -41,4 +41,9 @@ public interface BoardMapper {
 	
 	
 	
+	
+	
+//주현
+	
+	
 }
