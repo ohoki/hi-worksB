@@ -11,6 +11,7 @@ import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
+import com.worksb.hi.project.service.FileDataVO;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -99,10 +100,7 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectMapper.getParticirByProject(particirVO);
 	}
 	
-	@Override
-	public List<BoardVO> getTaskList(ProjectVO projectVO) {
-		return projectMapper.getTaskList(projectVO);
-	}
+
 	
 
 
@@ -134,37 +132,6 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<ProjectVO> selectFromCompany(ProjectVO vo) {
 		List<ProjectVO> list=projectMapper.selectFromCompany(vo);
-//		List<ProjectVO> result = new ArrayList<>();
-//
-//		Set<Integer> uniqueProjectIds = new HashSet<>();
-//		//Set<Integer> sessionMatchingProjectIds = new HashSet<>();
-//
-//		for(int i=vo.size()-1;i >= 0;i--){
-//		    ProjectVO project = vo.get(i);
-//
-//		    if (!uniqueProjectIds.contains(project.getProjectId())) {
-//		        uniqueProjectIds.add(project.getProjectId());
-//
-//		        if (memberId.equals(project.getMemberId())) {
-//		        	uniqueProjectIds.add(project.getProjectId());
-//		        }else {
-//		        	
-//		        }
-//		    }
-//		}
-//
-//		// 결과 리스트에 중복된 프로젝트 중 세션과 일치하는 것만 추가
-//		for(ProjectVO project:vo) {
-//		    if (uniqueProjectIds.contains(project.getProjectId())) {
-//		    	result.add(project);
-//		        uniqueProjectIds.remove(project.getProjectId()); // 중복 제거한 프로젝트는 세트에서 제거
-//		    }
-//		}
-//
-//		// 결과 출력
-//		for(ProjectVO project:result){
-//		    System.out.println(project.getProjectName());
-//		}
 		return list;
 	}
 
@@ -180,7 +147,12 @@ public class ProjectServiceImpl implements ProjectService {
 		projectMapper.updateStar(vo);
 	}
 
-	
+	//전체공개프로젝트의 파일탭
+	@Override
+	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo) {
+		return projectMapper.viewFileWhenPublic(vo);
+	}
+
 	
 
 

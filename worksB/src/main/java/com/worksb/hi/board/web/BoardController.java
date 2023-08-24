@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.type.BlobByteObjectArrayTypeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +22,8 @@ import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.ProjectService;
+import com.worksb.hi.project.service.ProjectVO;
 
 // 이진 0818 게시판관리 - 게시글,업무,일정,투표 등록
 
@@ -31,6 +32,9 @@ public class BoardController {
 	//이진	
 	@Autowired
 	BoardService boardService;
+	
+	@Autowired
+	ProjectService projectService;
 	
 	// 이진
 	// 게시글 등록 폼
@@ -161,6 +165,7 @@ public class BoardController {
 	@GetMapping("getTaskInfo")
 	@ResponseBody
 	public Map<String, List<TaskVO>> getTaskInfo(@RequestParam("prjBoardId") int prjBoardId) {
+		System.out.println("===================================="+ prjBoardId);
 	    Map<String, List<TaskVO>> resultMap = new HashMap<>();
 	    
 	    TaskVO taskVO = new TaskVO();
@@ -182,7 +187,18 @@ public class BoardController {
 	    return resultMap;
 	}
 
+	// 프로젝트 업무페이지
+		@GetMapping("/projectTask")
+		public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
+			ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+			List<BoardVO> taskList = boardService.getTaskList(projectInfo);
 
+			System.out.println("============================" + taskList);
+			model.addAttribute("projectInfo", projectInfo);
+			model.addAttribute("taskList", taskList);
+		    
+		return "project/projectTask";
+		}
 	
 	
 	
