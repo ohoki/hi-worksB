@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.DeptVO;
@@ -31,6 +33,8 @@ public class ProjectController {
 	//이진
 	ProjectService projectService;
 	
+	@Autowired
+	BoardService boardService;
 	
 	//주현
 	
@@ -170,7 +174,17 @@ public class ProjectController {
 		return projectService.getParticirList(projectId);
 	}
 	
-	//
+	// 프로젝트 업무페이지
+	@GetMapping("/projectTask")
+	public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
+		ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+		List<BoardVO> taskList = projectService.getTaskList(projectInfo);
+		
+		model.addAttribute("projectInfo", projectInfo);
+		model.addAttribute("taskList", taskList);
+	    
+	return "project/projectTask";
+	}
 	
 	
 	
@@ -228,7 +242,7 @@ public class ProjectController {
 		starInfo.setMemberId(memberId);
 		
 		projectService.updateStar(starInfo);
-		return"star updated";
+		return"bookmark-updated";
 	}
 	
 	//프로젝트참여하기(requestparam형식)
