@@ -34,7 +34,7 @@ PROJECT_CLS             VARCHAR2(5)
 	private String projectMarkup;
 	private String memberId;
 	
-	
+	private int prjBoardId;
 	
 	//주현
 	private String particirAccp;

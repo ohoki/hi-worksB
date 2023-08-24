@@ -34,4 +34,5 @@ COORDINATE                 VARCHAR2(60)
 	
 	private String memberName;
 	
+
 }
