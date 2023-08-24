@@ -133,7 +133,7 @@ public class BoardController {
 	@GetMapping("getScheInfo")
 	@ResponseBody
 	public ScheVO getScheInfo(ScheVO scheVO) {
-		return boardService.getScheInfo(scheVO);
+		return boardService.getScheInfo(scheVO); 
 	}
 	
 	// 투표 조회
