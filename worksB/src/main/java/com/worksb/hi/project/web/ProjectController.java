@@ -174,17 +174,7 @@ public class ProjectController {
 		return projectService.getParticirList(projectId);
 	}
 	
-	// 프로젝트 업무페이지
-	@GetMapping("/projectTask")
-	public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
-		ProjectVO projectInfo = projectService.getProjectInfo(projectId);
-		List<BoardVO> taskList = projectService.getTaskList(projectInfo);
-		
-		model.addAttribute("projectInfo", projectInfo);
-		model.addAttribute("taskList", taskList);
-	    
-	return "project/projectTask";
-	}
+	
 	
 	
 	
@@ -197,6 +187,7 @@ public class ProjectController {
 	
 	//회사 전체 프로젝트출력
 	@GetMapping("/SelectFromCompany")
+	//매개변수에 있는 것은 반환페이지에서 쓸 수 있음
 	public String SelectCom(Model m,HttpSession session, ProjectVO VO) {
 		Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
@@ -273,5 +264,22 @@ public class ProjectController {
 		projectService.insertParticipant(vo);
 		
 		return "success";
+	}
+	
+	//파일탭
+	@GetMapping("/filetab")
+	public String file(HttpSession session, ProjectVO vo,Model m) {
+		//pjid와fileAccess가넘어옴
+		if(vo.getFileAccess().equals("J1")) {
+			m.addAttribute("fileList",projectService.viewFileWhenPublic(vo));
+		}else if(vo.getFileAccess().equals("J2")) {
+			String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+			
+			
+			vo.setMemberId(memberId);
+			
+		}
+		
+		return "project/filetab";
 	}
 }

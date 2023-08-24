@@ -256,4 +256,64 @@
 									#{respId}
 								)
 	</insert>
+	
+	<!-- 프로젝트 업무 리스트 -->
+	<select id="getTaskList" resultType="BoardVO">
+		SELECT p.prj_board_id,        
+				p.prj_board_title,     
+				p.prj_board_subject,  
+				p.prj_board_regdate,            
+				p.member_id,            
+				p.insp_yn,              
+				p.pin_yn,                
+				p.board_type,           
+				p.project_id,                 
+				p.coordinate,
+                t.high_task_id,
+				t.start_date,
+				t.end_date,
+				t.priority,
+				t.state,
+				t.processivity,
+				t.task_id,
+                m.member_name
+		FROM 	prj_board p 
+				JOIN prj_task t	ON	p.prj_board_id = t.prj_board_id
+    			JOIN member m	ON	p.member_id = m.member_id
+		WHERE 	p.prj_board_id
+				IN	(SELECT	prj_board_id
+					FROM	prj_task
+					WHERE	high_task_id IS NULL)
+		        AND	project_id = #{projectId}
+		        AND	board_type = 'C8'
+		ORDER BY prj_board_regdate DESC
+	</select>
+
+	<!-- 
+	<select id="getTaskList" resultType="BoardVO">
+	SELECT 	p.prj_board_id,        
+				p.prj_board_title,     
+				p.prj_board_subject,  
+				p.prj_board_regdate,            
+				p.member_id,            
+				p.insp_yn,              
+				p.pin_yn,                
+				p.board_type,           
+				p.project_id,                 
+				p.coordinate,
+				m.member_name
+		FROM 	prj_board p
+		JOIN    member m ON p.member_id = m.member_id
+		WHERE 	prj_board_id
+		NOT IN 	(SELECT	prj_board_id
+				FROM	prj_task
+				WHERE	high_task_id IS NOT NULL)
+        AND     project_id = #{projectId}
+        AND     board_type = 'C8'
+		ORDER BY prj_board_regdate DESC
+	</select>
+	-->
+	
+	
+<!-- 	주현 -->
 </mapper>

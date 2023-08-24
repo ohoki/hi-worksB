@@ -8,6 +8,7 @@ import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectVO;
+import com.worksb.hi.project.service.FileDataVO;
 
 public interface ProjectMapper {
 	//이진
@@ -22,9 +23,6 @@ public interface ProjectMapper {
 	
 	//프로젝트 게시글 리스트
 	public List<BoardVO> getBoardList(ProjectVO projectVO);
-	// 프로젝트 업무글 리스트
-	public List<BoardVO> getTaskList(ProjectVO projectVO);
-	
 	
 	// 부서 정보 - 회사 번호 기준
 	public List<DeptVO> getDeptInfo(int companyId);
@@ -57,4 +55,6 @@ public interface ProjectMapper {
 		public void updateStar(ProjectVO vo);
 		//로그인된 아이디가 참여하고 있는 프로젝트를 출력
 		public List<PrjParticirVO> selectAllparticier(String memberId);
+		//전체공개프로젝트의 파일탭
+		public List<FileDataVO> viewFileWhenPublic(ProjectVO vo);
 }

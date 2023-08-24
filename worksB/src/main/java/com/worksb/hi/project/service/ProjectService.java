@@ -17,8 +17,6 @@ public interface ProjectService {
 	
 	//프로젝트 게시글 리스트
 	public List<BoardVO> getBoardList(ProjectVO projectVO);
-	// 프로젝트 업무글 리스트
-	public List<BoardVO> getTaskList(ProjectVO projectVO);
 	
 	// 부서 정보 - 회사 번호 기준
 	public List<DeptVO> getDeptInfo(int companyId);
@@ -47,4 +45,7 @@ public interface ProjectService {
 	public void updateStar(ProjectVO vo);
 	//로그인된 아이디가 참여하고 있는 프로젝트를 출력
 	public List<PrjParticirVO> selectAllparticier(String memberId);
+	//파일탭(전체공개프로젝트)
+	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo);
+
 }
