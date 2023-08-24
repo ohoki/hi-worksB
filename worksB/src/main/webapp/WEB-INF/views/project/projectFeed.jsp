@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,9 +16,138 @@
 <script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 
 <style>
-body{
-	background-color : #f7fafd;
+a {
+    text-decoration: none;
+    color: var(--color-dark-beige);
 }
+
+.board-container{
+	border: 1px solid var(--color-beigie);
+    border-radius: 20px;
+    width : 70%;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+}
+
+.profile {
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+}
+
+.board-header,
+.subTask-content{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px 40px;
+}
+
+.board-header-info {
+	display: flex;
+	align-items: center;
+}
+
+.board-headder-info__memberName {
+	margin: 0 20px;
+	font-weight: var(--weight-bold);
+}
+
+.board-header-btn {
+	cursor: pointer;
+	padding-left: 10px;
+}
+
+.board-title {
+	font-size: var(--font-small);
+	font-weight: var(--weight-bold);
+	padding: 5px;
+	margin: 0 40px;
+	border-bottom: 1px solid var(--color-dark-beigie);
+	color: var(--color-dark-grey);
+}
+
+.board-title span {
+	color: var(--color-blue);
+}
+
+.board-content{
+	margin: 30px 40px;
+	font-size: var(--font-micro);
+	color: var(--color-dark-grey);	
+}
+
+.board-footer {
+	display: flex;
+	justify-content: space-between;
+	margin: 10px 40px;
+	font-size: var(--font-micro);
+}
+
+.board-footer-icon {
+	margin-right: 10px;
+}
+
+.board-footer-icon:hover {
+	color: var(--color-dark-red);
+	cursor: pointer;
+}
+
+.board-footer-info {
+	margin-left: 10px;
+}
+
+.board-comment {
+
+}
+
+.comment-input {
+	border-top: 1px solid var(--color-dark-beigie);
+	padding: 20px 40px;	
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.comment-input input{
+	width: 90%;
+	height: 40px;
+	border: 1px solid var(--color-dark-beigie);
+	border-radius: 5px;
+	margin-left: 20px;
+}
+
+.comment-input button {
+	width: 50px;
+	height: 30px;
+	position: absolute;
+	top: 25px;
+	right: 60px;
+	background-color: var(--color-dark-red);	
+	border-radius: 5px;
+	color: white;
+	transition: all 0.5s;
+	font-size: var(--font-micro);
+}
+
+.comment-input button:hover {
+	background-color: var(--color-dark-beigie);		
+	color: var(--color-dark-grey);
+}
+
+.sche-date {
+	font-weight: var(--weight-bold);
+	font-size: 15px;
+	color: var(--color-dark-red);
+	margin: 10px 40px;
+}
+
+.sche-date .text {
+	color: var(--color-dark-grey);
+}
+
+
+
 .form__select,
 .form__input-title,
 .form__textarea {
@@ -95,63 +225,11 @@ body{
     margin: 5px;
 }
 
-
-a {
-    text-decoration: none;
-    color: var(--color-dark-beige);
-}
-
-.board-container{
-	border: 1px solid var(--color-dark-white);
-    border-radius: var(--size-border-radius);
-    width : 750px;
-    background-color : #ffffff;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 50px auto;
-    padding: 30px;
-}
-.board-header,
-.subTask-content{
-	display: flex;
-	align-items: center;
-}
-.board-headder-info,
-.task-info{
-	margin-left: 60px;
-}
-.board-sub{
-	height:250px;
-	margin-top: 20px;
-	font-size: var(--font-small);
-}
-.divide{
-	border-bottom: 1px solid var(--color-light-white);
-	margin: 20px 0;
-}
-.divide2{
-	border-bottom: 1px solid var(--color-light-white);
-}
-.board-comment{
-	background-color : var(--color-light-blue);
-	height: 80px;
-	padding: 10px;
-	
-}
-.board-title{
-	font-size: 27px;
-	margin-top: 20px;
-	color: var(--color-dark-grey);
-    font-weight: var(--weight-bold);
-}
-.regdate,
 .compnoVote{
 	color: var(--color-dark-white);
 	font-size: var(--font-small);
 }
-.memberName{
-	font-size: var(--font-regular);
-	color: var(--color-dark-grey);
-}
+
 .vote-sub,
 .task_sub{
 	height:120px;
@@ -207,45 +285,154 @@ a {
 		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
 		<!-- 게시글 조회 -->
 		<c:forEach items="${boards }" var="board">
+			<!-- C5 일반 게시글 -->
 			<c:if test="${board.boardType eq 'C5'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberName } </div>
-						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+						<div class="board-header-info">
+							<c:if test="${board.realProfilePath eq null }">
+								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<c:if test="${board.realProfilePath ne null }">
+								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<div class="board-headder-info__memberName">${board.memberName } </div>
+							<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
+						</div>
+						<div>
+						<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+						</div>
 					</div>
-					<div class="board-title divide">
-						${board.prjBoardTitle }
+					<div class="board-title">
+						<span>[일반]</span> ${board.prjBoardTitle }
 					</div>
-					<div class="board-sub divide">
+					<div class="board-content">
 						${board.prjBoardSubject }
 					</div>
-					<div class="board-comment">
-						댓글공간
+					<div class="board-footer">
+						<div >
+							<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+							<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+						</div>
+						<div>
+							<span class="board-footer-info">댓글 7</span>
+							<span class="board-footer-info">좋아요 14</span>
+						</div>
+					</div>
+					<c:if test="ㄴㅇㄹ">
+						<div>
+							댓글 더보기
+						</div>
+						<!-- for each로 최신 댓글 2개만 -->
+							<div class="board-comment">
+								<div>
+									<img alt="#" src="#">
+									<div>
+										<div>
+											회원정보
+										</div>
+										<div>
+											댓글내용
+										</div>
+									</div>
+								</div>
+								<div>
+									<a href="#">수정</a>
+									<a href="#">삭제</a>
+								</div>
+							</div>
+						<!-- 여기까지 -->	
+					</c:if>
+					<div class="comment-input">
+						<c:if test="${memberInfo.realProfilePath eq null }">
+							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+						</c:if>
+						<c:if test="${memberInfo.realProfilePath ne null }">
+							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+						</c:if>
+							<input type="text"><button type="button">등록</button>
 					</div>
 				</div>
 			</c:if>
+
 			<!-- C6 일정-->
 			<c:if test="${board.boardType eq 'C6'}">
-				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container" id="scheInfo">
+				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberName } </div>
-						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+						<div class="board-header-info">
+							<c:if test="${board.realProfilePath eq null }">
+								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<c:if test="${board.realProfilePath ne null }">
+								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<div class="board-headder-info__memberName">${board.memberName } </div>
+							<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
+						</div>
+						<div>
+						<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+						</div>
 					</div>
-					<div class="board-title divide">
-						${board.prjBoardTitle }
+					<div class="board-title">
+						<span>[일정]</span> ${board.prjBoardTitle }
 					</div>
-					<div class="sche-date divide">
-						<div class="sche-startDate" id="sche-startDate">일정시작일</div>
-						<div class="sche-endDate" id="sche-endDate">일정종료일</div>
+					<div class="sche-date">
+						<span class="text">기간 : </span>
+						<span data-start></span>
+						<span> ~ </span>
+						<span data-end></span>
 					</div>
-					<div class="board-sub divide">
-						${board.prjBoardSubject }
+					<div class="board-content">
+						<div>
+							${board.prjBoardSubject }
+						</div>
 					</div>
-					<div class="board-comment">
-						댓글공간
+					<div class="board-footer">
+						<div >
+							<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+							<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+						</div>
+						<div>
+							<span class="board-footer-info">댓글 7</span>
+							<span class="board-footer-info">좋아요 14</span>
+						</div>
+					</div>
+					<c:if test="ㄴㅇㄹ">
+						<div>
+							댓글 더보기
+						</div>
+						<!-- for each로 최신 댓글 2개만 -->
+							<div class="board-comment">
+								<div>
+									<img alt="#" src="#">
+									<div>
+										<div>
+											회원정보
+										</div>
+										<div>
+											댓글내용
+										</div>
+									</div>
+								</div>
+								<div>
+									<a href="#">수정</a>
+									<a href="#">삭제</a>
+								</div>
+							</div>
+						<!-- 여기까지 -->	
+					</c:if>
+					<div class="comment-input">
+						<c:if test="${memberInfo.realProfilePath eq null }">
+							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+						</c:if>
+						<c:if test="${memberInfo.realProfilePath ne null }">
+							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+						</c:if>
+							<input type="text"><button type="button">등록</button>
 					</div>
 				</div>
 			</c:if>
+			
 			<!-- C7 투표 -->
 			<c:if test="${board.boardType eq 'C7'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
@@ -317,8 +504,8 @@ a {
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
 					success : function(sche) {
-						 let startDate = $(boardList[i]).find('.sche-startDate');
-		                 let endDate = $(boardList[i]).find('.sche-endDate');
+						 let startDate = $(boardList[i]).find('span[data-start]');
+		                 let endDate = $(boardList[i]).find('span[data-end]');
 
 		                 startDate.text(sche.startDate);
 		                 endDate.text(sche.endDate);
@@ -743,29 +930,29 @@ a {
 	// 업무, 투표, 일정
 	// 시작일자, 마감일자 범위 선택하기
 	$(function () {
-		$(".startDate").datepicker({
-			dateFormat: "yy-mm-dd",
+		$(".startDate").datetimepicker({
+			dateFormat: "yy-mm-dd h:m:s",
 			// 오늘 이후로 선택 가능하게 설정
 			minDate: 0,
 			onSelect: function(selectedDate) {
 				// 시작일 선택 -> selectedDate
 				// 최소 선택 일자를 minDate -> selectedDate로 설정
-				$(".endDate").datepicker("option", "minDate", selectedDate);
+				$(".endDate").datetimepicker("option", "minDate", selectedDate);
 			}
 		});
 		
 		// 마감 일자 설정
-		$(".endDate").datepicker({
-			dateFormat: "yy-mm-dd",
+		$(".endDate").datetimepicker({
+			dateFormat: "yy-mm-dd h:m:s",
 			// 오늘 이후로 선택 가능하게 설정
 			minDate: 0
 		});
 		
 		// 폼 리셋 버튼을 클릭할 때 날짜 전부 초기화
 		$("button[type='reset']").on("click", function() {
-			$(".startDate").datepicker("setDate", null);
-			$(".endDate").datepicker("setDate", null);
-			$(".endDate").datepicker("option", "minDate", 0);
+			$(".startDate").datetimepicker("setDate", null);
+			$(".endDate").datetimepicker("setDate", null);
+			$(".endDate").datetimepicker("option", "minDate", 0);
 		});
 	});
 	
