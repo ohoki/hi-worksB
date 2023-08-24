@@ -116,8 +116,8 @@
     </div>
     <div>
 		<ul class="project__nav">
-			<li><a href="#">피드</a></li>
-			<li><a href="#">업무</a></li>
+			<li><a href="${pageContext.request.contextPath }/projectFeed?projectId=${projectInfo.projectId}">피드</a></li>
+			<li><a href="${pageContext.request.contextPath }/projectTask?projectId=${projectInfo.projectId}">업무</a></li>
 			<li><a href="#">캘린더</a></li>
 			<li><a href="#">파일</a></li>
 		</ul>

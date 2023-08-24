@@ -12,6 +12,7 @@ import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
+import com.worksb.hi.project.service.ProjectVO;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -121,6 +122,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<TaskVO> getHighManager(TaskVO taskVO) {
 		return boardMapper.getHighManager(taskVO);
+	}
+	
+	@Override
+	public List<BoardVO> getTaskList(ProjectVO projectVO) {
+		return boardMapper.getTaskList(projectVO);
 	}
 	
 	
