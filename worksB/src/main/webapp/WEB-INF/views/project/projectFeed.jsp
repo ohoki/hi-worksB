@@ -534,15 +534,12 @@ a {
 										<div class="prjParticir_title">
 											<span>프로젝트 참여자</span>
 										</div>
-										<div id="particir">	
-										</div>
+										<div class="particir"></div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="taskManager">
-							
-						</div>
+						<div class="taskManager"></div>
 					</div>
 					<!-- 업무 담당자 끝 -->
 					
@@ -991,14 +988,14 @@ a {
 	*/
 
 	$(document).ready(function () {
-	    function particirList(targetDiv) {
+	    function particirList(prjpt) {
 	        $.ajax({
 	            url: '${pageContext.request.contextPath}/particirList',
 	            type: 'GET',
 	            data: { 'projectId': "${projectInfo.projectId}" },
 	            success: function (particir) {
 	            	console.log(particir)
-		            let particirList = $('#particir');
+		            let particirList = $('.particir');
 		            particirList.empty();
 		            
 		            for(let i=0; i<particir.length; i++) {
@@ -1038,11 +1035,11 @@ a {
 
 	                    let memberName = $(this).find("span").text();
 	                    let AddParticir = '<input type="text" name="memberName" value="' + memberName + '">';
-	                    targetDiv.append(AddParticir);
+	                    prjpt.append(AddParticir);
 
 	                    let prjParticirId = $(this).find("input[name='particirId']").val();
 	                    let AddParticirId = '<input type="hidden" name="prjParticirId" value="' + prjParticirId + '">';
-	                    targetDiv.append(AddParticirId);
+	                    prjpt.append(AddParticirId);
 
 	                    console.log(prjParticirId);
 	                });
@@ -1085,14 +1082,33 @@ a {
 	                    </select>
 	                </div>
 	                <!-- 하위 업무 참여자 추가 -->
-	                <button type="button" class="btn-add-taskManager" data-bs-toggle="modal" data-bs-target="#add-taskManager">담당자 추가</button>
+	                <div>
+					<button type="button" class="btn-add-subManager" data-bs-toggle="modal" data-bs-target="#add-taskManager">담당자 추가</button>
+					<div id="add-taskManager" class="modal" tabindex="-1">
+					 	<div class="modal-dialog">
+					 		<div class="modal-content prjParticir">
+						 		<div class="modal-body">
+									<div class="prjParticir_title">
+										<span>프로젝트 참여자</span>
+									</div>
+									<div class="particir">	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="subManager">
+						
+					</div>
+				</div>
+	                
 	            </div>`;
 	        
 	        $('.task-add:last').prev().after(subtaskForm);
 	    });
-	    $('.btn-add-taskManager-subtask').click(function (e) {
+	    $('.btn-add-subManager').click(function (e) {
 	        e.stopPropagation();
-	        particirList($('.taskManager-subtask'));
+	        particirList($('.subManager'));
 	    });
 
 	});
