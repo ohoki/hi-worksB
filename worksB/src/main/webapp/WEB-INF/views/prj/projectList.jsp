@@ -116,10 +116,10 @@
     
     //즐겨찾기 관련 정보를 DB에 연동
     function updateStar(markup,projectId){
-    	var data = {
-    	        projectMarkup: markup,
-    	        projectId: projectId
-    	    }
+    	let data = {
+    	        'projectMarkup': markup,
+    	        'projectId': projectId
+    	    };
 		$.ajax({
 			url:'${pageContext.request.contextPath }/updateStar',
 			type:'post',
