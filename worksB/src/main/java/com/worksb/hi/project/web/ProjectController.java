@@ -174,17 +174,7 @@ public class ProjectController {
 		return projectService.getParticirList(projectId);
 	}
 	
-	// 프로젝트 업무페이지
-	@GetMapping("/projectTask")
-	public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
-		ProjectVO projectInfo = projectService.getProjectInfo(projectId);
-		List<BoardVO> taskList = projectService.getTaskList(projectInfo);
-		
-		model.addAttribute("projectInfo", projectInfo);
-		model.addAttribute("taskList", taskList);
-	    
-	return "project/projectTask";
-	}
+	
 	
 	
 	

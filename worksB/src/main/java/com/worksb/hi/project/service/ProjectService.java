@@ -17,8 +17,6 @@ public interface ProjectService {
 	
 	//프로젝트 게시글 리스트
 	public List<BoardVO> getBoardList(ProjectVO projectVO);
-	// 프로젝트 업무글 리스트
-	public List<BoardVO> getTaskList(ProjectVO projectVO);
 	
 	// 부서 정보 - 회사 번호 기준
 	public List<DeptVO> getDeptInfo(int companyId);
