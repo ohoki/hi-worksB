@@ -227,7 +227,7 @@ public class ProjectController {
 		starInfo.setMemberId(memberId);
 		
 		projectService.updateStar(starInfo);
-		return"star updated";
+		return"bookmark-updated";
 	}
 	
 	//프로젝트참여하기(requestparam형식)

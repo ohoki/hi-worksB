@@ -22,6 +22,7 @@
 	background-color: var(--color-dark-red);
 	color: var(--color-white);
 	border : 1px solid var(--color-dark-red);
+	transition: all 0.5s;
 }
 .list-title {
 	font-size: var(--font-regular);
@@ -68,6 +69,10 @@
 	display: flex;
 	align-items: center;
 }
+
+.project-name span {
+	cursor: pointer;
+}
 .project-info {
 	display: flex;
 	align-items: center;
@@ -98,10 +103,12 @@
 	border: 1px solid var(--color-dark-beigie);
 	background-color: var(--color-dark-beigie);
 	color: var(--color-dark-red);	
+	transition: all 0.5s;
 }
 .prj-icon {
 	margin: 0 10px;
 	display: inline-block;
+	cursor: pointer;
 }
 .list-btn {
 	width: 70px;
@@ -161,7 +168,7 @@
 						<c:if test="${list.projectAccess eq 'NO' }">
 							<img class="prj-icon" alt="참여자공개이미지" title="참여자만 공개" src="${pageContext.request.contextPath }/resources/icon/lock-solid.svg">	
 						</c:if>
-						<span class="prj-move" data-cls="${list.projectCls }" data-access="${list.projectAccess}" data-accp="${list.particirAccp}" data-prjid="${list.projectId }">${list.projectName}</span>
+						<span data-cls="${list.projectCls }" data-access="${list.projectAccess}" data-accp="${list.particirAccp}" data-prjid="${list.projectId }">${list.projectName}</span>
 					</div>
 					
 					<!-- 참여버튼 클릭 시 참여하기 기능 구현  필요함 -->
