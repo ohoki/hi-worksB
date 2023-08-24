@@ -117,9 +117,14 @@ div h2 {
 </style>
 </head>
 <body>
+	<!-- 커스텀 되는 슈퍼 빌드 테스트중 -->
+	<!-- <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/super-build/ckeditor.js"></script> -->
 	<!-- api -->
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>		
-<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+	<!-- CDN 링크 밑에꺼랑 둘중 하나 사용 -->
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+	<!-- 사진 업로드를 위한 ckfinder -->
+	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<div class="top">
 		<h2>공지사항 작성</h2>
 	</div>
@@ -141,6 +146,7 @@ div h2 {
 		    ckfinder:{
 		    	uploadUrl: '${pageContext.request.contextPath}/ckuploadsAjax'
 		    },
+		    language: "ko" ,
 		 
 		    /* 폰트 설정 안됨. 죽이고싶음 */
 		    fontFamily:{
