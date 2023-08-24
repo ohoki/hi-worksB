@@ -45,17 +45,14 @@
 .project__nav li:hover{
 	color: var(--color-dark-red);
 	border-bottom: 3px solid var(--color-dark-red);
-	cursor: pointer;		
+	cursor: pointer;	
+	transition: all 0.5s;	
 }
 
 .project__nav a:hover{
-	color: var(--color-dark-red);	
+	color: var(--color-dark-red);
+	transition: all 0.5s;	
 }
-
-
-
-
-
 
 .modal{
     position:absolute;
@@ -109,10 +106,10 @@
 	<div class="project__title">
 		<!-- 즐겨찾기 여부 -->
 		<c:if test="${particirInfo eq null or particirInfo.projectMarkup eq 'A2'}">
-			<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg">	
+			<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg" data-bookmark="no">	
 		</c:if>
 		<c:if test="${particirInfo.projectMarkup eq 'A1'}">
-			<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg">	
+			<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg" data-bookmark="yes">	
 		</c:if>
 		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg" data-bs-toggle="modal" data-bs-target="#firstModal">
     	<span>${projectInfo.projectName}</span>
@@ -208,5 +205,49 @@
 			$(targetModal).modal('show');
 		});
 	});
+	
+	//즐겨해제
+	let bookMark = $('img[data-bookmark]');
+	
+	bookMark.on('click', function(e) {
+		let data = $(e.currentTarget).data('bookmark');
+		
+		//즐찾 해제
+		if(data == 'yes') {
+			let result = updateStar('A2');
+			
+			if(result == 'bookmark-updated') {
+				alert('즐겨찾기가 해제되었습니다.');
+				$(e.currentTarget).data('bookmark', 'no');
+				$(e.currentTarget).attr('src', '${pageContext.request.contextPath }/resources/icon/emptyStar.svg');
+			} else {
+				alert('즐겨찾기 갱신에 실패했습니다.');
+			}
+		} else if(data == 'no') {
+			let result = updateStar('A1');
+			
+			if(result == 'bookmark-updated') {
+				alert('즐겨찾기에 추가되었습니다.');
+				$(e.currentTarget).data('bookmark', 'yes');
+				$(e.currentTarget).attr('src', '${pageContext.request.contextPath }/resources/icon/star-solid.svg');
+			} else {
+				alert('즐겨찾기 갱신에 실패했습니다.');
+			}
+		}
+	});
+
+    //즐겨찾기 관련 정보를 DB에 연동
+    function updateStar(markup){
+    	let data = { 'projectMarkup': markup, 'projectId': '${projectInfo.projectId}' };
+    	let result = $.ajax({
+			url:'${pageContext.request.contextPath }/updateStar',
+			type:'post', 
+			async: false,
+			data:JSON.stringify(data),
+			contentType:'application/json'
+		}).responseText;
+    	
+    	return result;
+};
 </script>
 </html>

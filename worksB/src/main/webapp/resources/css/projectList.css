@@ -54,12 +54,22 @@
 	background-color: rgb(253, 252, 220, 0.2);
 }
 
+.list:hover .unread-project {
+	opacity: 1;
+	top: -5px;
+	transition: all 0.5s;
+}
+
 .project-name {
 	margin-right: 50px;
 	height: 30px;
 	line-height: 30px;
 	display: flex;
 	align-items: center;
+}
+
+.project-name span {
+	cursor: pointer;
 }
 
 .project-info {
@@ -77,7 +87,8 @@
 	line-height: 25px;
 	text-align: center;
 	color: white;
-	top: -5px;
+	top: -20px;
 	left: 15px;
 	font-size: var(--font-micro);
+	opacity: 0;
 }
