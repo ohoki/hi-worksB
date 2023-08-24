@@ -23,7 +23,7 @@ COORDINATE                 VARCHAR2(60)
 	private int prjBoardId;
 	private String prjBoardTitle;
 	private String prjBoardSubject;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date prjBoardRegdate;
 	private String memberId;
 	private String inspYn;
@@ -31,8 +31,6 @@ COORDINATE                 VARCHAR2(60)
 	private String boardType;
 	private int projectId;
 	private String coordinate;
-	
 	private String memberName;
-	
-
+	private String realProfilePath;
 }
