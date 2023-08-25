@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.mycalendar.mapper.ToDoListMapper">
-	<!-- 단건조회 -->
+	<!-- LIST 단건조회 -->
 	<select id="selectTdl" resultType="ToDoListVO" parameterType="int">
 		SELECT list_id,             
 			   list_title,   
@@ -24,22 +24,72 @@
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- to do list 등록 -->
-	<insert id="insertPsche" parameterType="ToDoListVO">
-		INSERT INTO to_do_list(
-							   list_id
-							   , list_title
-							   , list_regdate
-							   , member_id
-							   , apply_date
-							   )
-		VALUES (#{listId}
-				, #{listTitle}
-				, sysdate
-				, #{memberId}
-				, #{applyDate}
-				)
+	<insert id="insertTdl" parameterType="ToDoListVO">
+		<selectKey keyProperty="listId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(list_id),0)+1
+			FROM to_do_list
+		</selectKey>
+			INSERT INTO to_do_list(
+								   list_id
+								   , list_title
+								   , list_regdate
+								   , member_id
+								   , apply_date
+								   )
+			VALUES (#{listId}
+					, #{listTitle}
+					, sysdate
+					, #{memberId}
+					, #{applyDate}
+					)
 	</insert>
 	<!-- to do list 수정-->
-	
+	<update id="updateTdl" parameterType="ToDoListVO">
+		UPDATE to_do_list
+		<set>
+			<if test="listTitle == null or listTitle.equals('')">
+				list_title = '제목없음',
+			</if>
+			<if test="listTitle != null and !listTitle.equals('')">
+				list_title = #{listTitle},
+			</if>
+			<if test="applyDate != null and !applyDate.equals('')">
+				apply_date = #{applyDate},
+			</if>
+		</set>
+		WHERE list_id = #{listId}
+	</update>
 	<!-- to do list 삭제 -->
+	<delete id="deleteTdl">
+		DELETE FROM to_do_list
+		WHERE list_id = #{listId}
+	</delete>
+	<!-- ITEM 조회 -->
+	<select id="selelctTdlItem" resultType="ToDoListVO">
+		SELECT content  
+			   , success
+			   , item_id
+			   , list_id
+		FROM to_do_list_item
+		WHERE list_id = #{list_id}
+		ORDER BY list_id
+	</select>
+	<insert id="insertItem" parameterType="ToDoListVO">
+		<selectKey keyProperty="itemId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(item_id),0)+1
+			FROM to_do_list_item
+		</selectKey>
+		INSERT INTO to_do_list_item(
+									content
+									, success
+									, item_id
+									, list_id
+									)
+		VALUES (
+				#{content}
+				, ${success}
+				, #{itemId}
+				, #{listId}
+				)
+	</insert>
 </mapper>

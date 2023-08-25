@@ -5,14 +5,20 @@ import java.util.List;
 import com.worksb.hi.mycalendar.service.ToDoListVO;
 
 public interface ToDoListMapper {
-	//단건조회
+	//LIST 단건조회
 	public ToDoListVO selectTdl(int tdlId);
-	//전체조회
+	//LIST 전체조회
 	public List<ToDoListVO> selectAllTdl(String memberId);
-	//tdl입력
+	//LIST 입력
 	public int insertTdl(ToDoListVO vo);
-	//tdl수정
+	//LIST 수정
 	public int updateTdl(ToDoListVO vo);
-	//tdl삭제
+	//List 삭제
 	public int deleteTdl(int tdlId);
+	
+	//ITEM 조회
+	public List<ToDoListVO> selelctTdlItem(int listId);
+	//ITEM 입력
+	public int insertItem(ToDoListVO vo);
+	
 }
