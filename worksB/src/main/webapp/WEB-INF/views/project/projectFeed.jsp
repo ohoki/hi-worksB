@@ -396,33 +396,85 @@ div[data-processivity] {
 	margin-right: 20px;
 }
 
+.insert-board-modal {
+	border: 1px solid var(--color-dark-beigie);
+    border-radius: 20px;
+    width : 33%;
+    height: 850px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 5px auto;
+    background-color: white;
+    padding: 30px;
+}
+
+.insert-board-modal-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: var(--weight-bold);
+	color: var(--color-dark-grey);
+}
+
+.insert-board-list {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	text-align: center;
+}
+
+.insert-list-item {
+	flex-grow: 1;
+	cursor: pointer;
+	transition: all 0.5s;
+	margin-top: 15px;
+	font-size: var(--font-micro);
+    color: var(--color-dark-grey);
+    padding: 5px 0;
+    border-bottom: 2px solid var(--color-dark-beigie);
+}
+
+.insert-list-item:hover {
+	border-bottom: 2px solid var(--color-dark-red);
+}
 
 
+.dis-none {
+	display: none;
+}
 
+.d-b {
+	display: block !important;
+}
 
+.board-form {
+	margin-top: 10px;
+	color: var(--color-dark-grey);
+}
 
-
-
-
-
-
-
-
-.form__select,
-.form__input-title,
-.form__textarea {
+.board-form-title {
 	width: 100%;
-	padding: 10px;
-	border-radius: var(--size-border-radius);
-	border: 1px solid var(--color-dark-white);
-	font-size: var(--font-small);
-	margin-bottom: 15px;
+	height: 50px;
+	border-bottom: 1px solid var(--color-dark-beigie);
+	padding: 0 10px;
 }
 
 .form__textarea{
+	width: 100%;
 	height: 300px;
 	resize: none; /*textarea 길이 고정*/
+	border: none;
+	margin: 10px 0;
 }
+
+
+
+
+
+
+
+
+
+
 
 .modal-title {
     list-style: none;
@@ -443,15 +495,6 @@ div[data-processivity] {
 .modalBoard{
     top:0;
     left:0;
-}
-
-.boardForm{
-	display: none;	
-
-}
-
-.visible {
-	display: block;
 }
 
 .modal-header{
@@ -1023,6 +1066,7 @@ div[data-processivity] {
 		                let endDate = $(boardList[i]).find('span[data-end]');
 		                let state = $(boardList[i]).find('div[data-state]');
 		                let processivity = $(boardList[i]).find('div[data-processivity]');
+		                let processivityValueDiv = $(boardList[i]).find('.processivity-value');
 		                let prioriy = $(boardList[i]).find('div[data-prioriy]');
 		                let taskManagers = $(boardList[i]).find('.task-manager');
 		                let processivityValue = $(boardList[i]).find('span[data-processivityvalue]');
@@ -1038,7 +1082,7 @@ div[data-processivity] {
 		                // 진행상태 버튼 활성화
 		                state.children('button[value=' + highTask.state + ']' ).css('background-color', 'var(--color-dark-red)');
 		                //진척도
-		                $('.processivity-value').css('width', highTask.processivity + "%");
+		                processivityValueDiv.css('width', highTask.processivity + "%");
 		                processivityValue.text(highTask.processivity + "%");		                
 		             	// 우선 순위
 				        prioriy.text('우선순위 : ' + highTask.priorityName);
@@ -1088,264 +1132,242 @@ div[data-processivity] {
 
 <!-- 게시글 작성 HTML -->
 <div class="modal modalBoard" tabindex="-1" id="boardInsertModal">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-            	<ul class="modal-title">
-            		<li>글</li>
-            		<li>업무</li>
-            		<li>일정</li>
-            		<li>투표</li>
-            	</ul>
-            	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
-            	<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
-            	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <!-- 게시글 작성 폼 시작!!! 지도 추가해야됨-->
-            <div class="modal-body boardForm visible" id="board">
-                <form action="boardInsert" method="post">
-					<div>
-						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					</div>
-
-					<div>
-						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요."></textarea>
-					</div>
+	<div class="insert-board-modal">
+		<!-- 공통 양식 -->
+	    <div class="insert-board-modal-header">
+	    	<div class="insert-board-modal-title">
+	    		<div>게시물 작성</div>		
+	    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	    	</div>
+	    	<ul class="insert-board-list">
+	    		<li class="insert-list-item">글</li>
+	    		<li class="insert-list-item">업무</li>
+	    		<li class="insert-list-item">일정</li>
+	    		<li class="insert-list-item">투표</li>
+	    	</ul>
+	    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
+			<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
+		</div>
+		<!-- 일반 게시글 작성 폼 -->
+	    <div class="dis-none d-b board-form" id="board">
+       		<form action="boardInsert" method="post">
+				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+				<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요."></textarea>
+			
+				
+				<div>
+					<label>공개 범위</label> <select class="form__select" name="inspYn">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+				</div>
+	         	<div class="modal-footer form__button">
+	         		<input type="hidden" name="boardType" value="C5">
+	         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	              	<button type="submit" class="btn btn-primary">등록</button>
+	              	<button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	          	</div>
+			</form>
+        </div>
+        <!-- 게시글 작성 폼 끝!!! -->
+	
+	
+		<!-- 상위 업무 작성 폼!!! -->
+		<div class="modal-body dis-none" id="task">
+		   <form id="boardInsert" method="post">
+		       <!-- 시작일자 마감일자 우선순위 진척도 추가!!!! 하위업무-->
+				<div>
+					<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
+				</div>
+				<div class="form-check">
+					<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
+					<label class="btn btn-outline-info" for="option1">요청</label>
 					
-					<div>
-						<label>공개 범위</label> <select class="form__select" name="inspYn">
-							<option value="E2">전체 공개</option>
-							<option value="E1">프로젝트 관리자만</option>
-						</select>
-					</div>
-		            <div class="modal-footer form__button">
-		            	<input type="hidden" name="boardType" value="C5">
-		            	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		                <button type="submit" class="btn btn-primary">등록</button>
-		                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-		            </div>
-				</form>
-            </div>
-             <!-- 게시글 작성 폼 끝!!! -->
-             
-            
-            <!-- 상위 업무 작성 폼!!! -->
-             <div class="modal-body boardForm" id="task">
-                <form id="boardInsert" method="post">
-                    <!-- 시작일자 마감일자 우선순위 진척도 추가!!!! 하위업무-->
-					<div>
-						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
-					</div>
-
-					<div class="form-check">
-						<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
-						<label class="btn btn-outline-info" for="option1">요청</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G2" id="option2" autocomplete="off">
-						<label class="btn btn-outline-success" for="option2">진행</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G3" id="option3" autocomplete="off">
-						<label class="btn btn-outline-warning" for="option3">피드백</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G4" id="option4" autocomplete="off">
-						<label class="btn btn-outline-primary" for="option4">완료</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G5" id="option5" autocomplete="off">
-						<label class="btn btn-outline-danger" for="option5">보류</label>
-					</div>
-						
-					<!-- 업무 담당자 -->
-					<div>
-						<button type="button" class="btn-add-taskManager" data-bs-toggle="modal" data-bs-target="#add-taskManager">담당자 추가</button>
-						<div id="add-taskManager" class="modal" tabindex="-1">
-						 	<div class="modal-dialog">
-						 		<div class="modal-content prjParticir">
-							 		<div class="modal-body">
-										<div class="prjParticir_title">
-											<span>프로젝트 참여자</span>
-										</div>
-										<div class="particir"></div>
+					<input type="radio" class="btn-check" name="state" value="G2" id="option2" autocomplete="off">
+					<label class="btn btn-outline-success" for="option2">진행</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G3" id="option3" autocomplete="off">
+					<label class="btn btn-outline-warning" for="option3">피드백</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G4" id="option4" autocomplete="off">
+					<label class="btn btn-outline-primary" for="option4">완료</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G5" id="option5" autocomplete="off">
+					<label class="btn btn-outline-danger" for="option5">보류</label>
+				</div>
+				<!-- 업무 담당자 -->
+				<div>
+					<button type="button" class="btn-add-taskManager" data-bs-toggle="modal" data-bs-target="#add-taskManager">담당자 추가</button>
+					<div id="add-taskManager" class="modal" tabindex="-1">
+					 	<div class="modal-dialog">
+					 		<div class="modal-content prjParticir">
+						 		<div class="modal-body">
+									<div class="prjParticir_title">
+										<span>프로젝트 참여자</span>
 									</div>
+									<div class="particir"></div>
 								</div>
 							</div>
 						</div>
-						<div class="taskManager"></div>
 					</div>
-					<!-- 업무 담당자 끝 -->
-					
-					<div>
-						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
+					<div class="taskManager"></div>
+				</div>
+				<!-- 업무 담당자 끝 -->
+				<div>
+					<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
+				</div>
+				<div>
+					<label for="startDate">시작일 추가</label>
+					<input type="text" name="startDate" class="date-input startDate">
+				</div>
+				<div>
+					<label for="endDate">마감일 추가</label>
+					<input type="text" name="endDate" class="date-input endDate">
+				</div>
+				<!-- 우선 순위 -->
+				<div class="select-priority">
+					<select name="priority">
+						<option value="">우선 순위</option>
+						<option value="F3">낮음</option>
+						<option value="F2">보통</option>
+						<option value="F1">긴급</option>
+					</select>
+				</div>
+				<!-- 진척도 -->
+				<!-- 진척도 전체 프로그레스-->
+				<div class="js-progress create-content-cell">
+					<div class="progress-bar">
+				        <!-- 프로그레스 채우기-->
+			       		<div class="progress-bar-size" style="width: 0%;"></div>
 					</div>
-					
-					<div>
-						<label for="startDate">시작일 추가</label>
-						<input type="text" name="startDate" class="date-input startDate">
-					</div>
-					<div>
-						<label for="endDate">마감일 추가</label>
-						<input type="text" name="endDate" class="date-input endDate">
-					</div>
-					
-					<!-- 우선 순위 -->
-					<div class="select-priority">
-						<select name="priority">
-							<option value="">우선 순위</option>
-							<option value="F3">낮음</option>
-							<option value="F2">보통</option>
-							<option value="F1">긴급</option>
-						</select>
-					</div>
-					
-					<!-- 진척도 -->
-					<!-- 진척도 전체 프로그레스-->
-					<div class="js-progress create-content-cell">
-				        <div class="progress-bar">
-				         	<!-- 프로그레스 채우기-->
-				            <div class="progress-bar-size" style="width: 0%;"></div>
-				        </div>
-				        <!-- 프로그레스 버튼-->
-				        <div class="progress-graph">
-							<span class="progress-button" data-progress-value="0"></span>
-							<span class="progress-button" data-progress-value="10"></span>
-							<span class="progress-button" data-progress-value="20"></span>
-							<span class="progress-button" data-progress-value="30"></span>
-							<span class="progress-button" data-progress-value="40"></span>
-							<span class="progress-button" data-progress-value="50"></span>
-							<span class="progress-button" data-progress-value="60"></span>
-							<span class="progress-button" data-progress-value="70"></span>
-							<span class="progress-button" data-progress-value="80"></span>
-							<span class="progress-button" data-progress-value="90"></span>
-							<span class="progress-button" data-progress-value="100"></span>
-				        </div>
-    				</div>
-    				<!-- 진척도 값 표시하기 -->
-				    <div class="progress-value">0%</div>
-				    <!-- 진척도 값 넘길때 -->
-				    <input type="hidden" name="processivity" value="0">
-				    
-					</form>
-						
-					<!-- 하위 업무 -->	
-					<div class="task-add">
-					    <button type="button" class="btn btn-secondary btn-add-subtask">하위업무 추가</button>
-					</div>
-					<!-- 하위 업무 끝 -->
-					
-					<div class="task-inspYn">
-						<label>공개 범위</label>
+					<!-- 프로그레스 버튼-->
+				    <div class="progress-graph">
+						<span class="progress-button" data-progress-value="0"></span>
+						<span class="progress-button" data-progress-value="10"></span>
+						<span class="progress-button" data-progress-value="20"></span>
+						<span class="progress-button" data-progress-value="30"></span>
+						<span class="progress-button" data-progress-value="40"></span>
+						<span class="progress-button" data-progress-value="50"></span>
+						<span class="progress-button" data-progress-value="60"></span>
+						<span class="progress-button" data-progress-value="70"></span>
+						<span class="progress-button" data-progress-value="80"></span>
+						<span class="progress-button" data-progress-value="90"></span>
+						<span class="progress-button" data-progress-value="100"></span>
+				    </div>
+				</div>
+				<!-- 진척도 값 표시하기 -->
+				<div class="progress-value">0%</div>
+				<!-- 진척도 값 넘길때 -->
+				<input type="hidden" name="processivity" value="0">
+			</form>
+		
+			<!-- 하위 업무 -->	
+			<div class="task-add">
+			    <button type="button" class="btn btn-secondary btn-add-subtask">하위업무 추가</button>
+			</div>
+			<!-- 하위 업무 끝 -->
+	
+			<div class="task-inspYn">
+				<label>공개 범위</label>
+				<select class="form__select" name="inspYn">
+					<option value="E2">전체 공개</option>
+					<option value="E1">프로젝트 관리자만</option>
+				</select>
+			</div>
+	        <div class="modal-footer form__button">
+	         	<input type="hidden" name="boardType" value="C8">
+	         	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+				<button type="button" class="btn btn-primary" id="btnAddTask" data-bs-dismiss="modal">등록</button>
+				<button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	  		</div>
+		</div>
+	
+	
+		<!-- 일정 작성 폼!!! -->
+		<div class="modal-body dis-none" id="sche">
+			<form action="boardInsert" method="post">
+				<div>
+					<label>일정일정</label>
+					<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
+				</div>
+				<div>
+					<label for="startDate">시작일</label>
+					<input type="text" name="startDate" class="date-input startDate">
+				</div>
+				<div>
+					<label for="endDate">종료일</label>
+					<input type="text" name="endDate" class="date-input endDate">
+				</div>
+				<!-- 알람 추가 -->
+				<div>
+					<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
+				</div>
+	
+				<div>
+					<label>공개 범위</label> 
 						<select class="form__select" name="inspYn">
 							<option value="E2">전체 공개</option>
 							<option value="E1">프로젝트 관리자만</option>
 						</select>
-					</div>
-		            <div class="modal-footer form__button">
-		            	<input type="hidden" name="boardType" value="C8">
-		            	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		                <button type="button" class="btn btn-primary" id="btnAddTask" data-bs-dismiss="modal">등록</button>
-		                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-		            </div>
-				
-            </div>
-            
-            
-            <!-- 일정 작성 폼!!! -->
-            <div class="modal-body boardForm" id="sche">
-                <form action="boardInsert" method="post">
-					<div>
-					<label>일정일정</label>
-						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
-					</div>
-					
-					<div>
-						<label for="startDate">시작일</label>
-						<input type="text" name="startDate" class="date-input startDate">
-					</div>
-					<div>
-						<label for="endDate">종료일</label>
-						<input type="text" name="endDate" class="date-input endDate">
-					</div>
-					
-					<!-- 알람 추가 -->
-					
-					
-					<div>
-						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
-					</div>
-					
-					<div>
-						<label>공개 범위</label> <select class="form__select" name="inspYn">
-							<option value="E2">전체 공개</option>
-							<option value="E1">프로젝트 관리자만</option>
-						</select>
-					</div>
-		            <div class="modal-footer form__button">
-		            	<input type="hidden" name="boardType" value="C6">
-		            	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		                <button type="submit" class="btn btn-primary">등록</button>
-		                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-		            </div>
-				</form>
-            </div>
-            
-            
-             <!-- 투표 작성 폼!!! -->
-            <div class="modal-body boardForm" id="vote">
-                <form action="boardInsert" method="post">
-					<div>
-						<label>투표투표</label>
-						<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
-					</div>
-
-					<div>
-						<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
-					</div>
-					
-					<div class="vote-add-buttons">            
-			        	<input type="text" name="listContent"> <input type="button" class="btnAdd" value="항목 추가"><br>        
-			        </div>
-					
-					<div>
-						<input type="text" name="endDate" class="date-input endDate">
-						<label for="endDate">투표 종료일</label>
-					</div>
-					
-					<div class="form-check form-switch">
-						<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-						<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
-					</div>
-					
-					<div class="form-check form-switch">
-						<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-						<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
-					</div>
-					
-					<div class="form-check form-switch">
-						<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-						<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
-					</div>
-					
-					<div>
-						<label>공개 범위</label> <select class="form__select" name="inspYn">
-							<option value="E2">전체 공개</option>
-							<option value="E1">프로젝트 관리자만</option>
-						</select>
-					</div>
-					
-		            <div class="modal-footer form__button">
-		            	<input type="hidden" name="boardType" value="C7">
-		            	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		                <button type="submit" class="btn btn-primary">등록</button>
-		                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-		            </div>
-				</form>
-            </div>
-            
-        </div>
+				</div>
+	         	<div class="modal-footer form__button">
+		         	<input type="hidden" name="boardType" value="C6">
+		         	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	              	<button type="submit" class="btn btn-primary">등록</button>
+	              	<button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	          	</div>
+			</form>
+       	</div>
+	        
+	        
+		<!-- 투표 작성 폼!!! -->
+		<div class="modal-body dis-none" id="vote">
+			<form action="boardInsert" method="post">
+				<div>
+					<label>투표투표</label>
+					<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
+				</div>
+				<div>
+					<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
+				</div>
+				<div class="vote-add-buttons">            
+			   		<input type="text" name="listContent"> <input type="button" class="btnAdd" value="항목 추가"><br>        
+			    </div>
+				<div>
+					<input type="text" name="endDate" class="date-input endDate">
+					<label for="endDate">투표 종료일</label>
+				</div>
+				<div class="form-check form-switch">
+					<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+					<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
+				</div>
+				<div class="form-check form-switch">
+					<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+					<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
+				</div>
+				<div class="form-check form-switch">
+					<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+					<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
+				</div>
+				<div>
+					<label>공개 범위</label> 
+					<select class="form__select" name="inspYn">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+				</div>
+				<div class="modal-footer form__button">
+					<input type="hidden" name="boardType" value="C7">
+					<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+				    <button type="submit" class="btn btn-primary">등록</button>
+				    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+				</div>
+			</form>
+       	</div>
     </div>
 </div>
-<!-- 게시글 작성 끝-->
 </body>
+<!-- 게시글 작성 SCRIPT -->
 <script>
 	// 이진
 	// 게시글 유형 폼 선택
@@ -1748,4 +1770,5 @@ div[data-processivity] {
 
 
 </script>
+<!-- 게시글 작성 종료 -->
 </html>
