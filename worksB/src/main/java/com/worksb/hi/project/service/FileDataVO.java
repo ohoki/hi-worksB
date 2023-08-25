@@ -31,6 +31,8 @@ public class FileDataVO {
 	private String realFilePath;
 	private Integer fileId;
 	private Integer projectId;
+	//이름출력을 위함
+	private String memberName;
 	
 	//접근제한을 위한 필드
 	private String memberId;
