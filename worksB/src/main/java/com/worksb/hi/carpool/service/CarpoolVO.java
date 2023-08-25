@@ -17,7 +17,7 @@ public class CarpoolVO {
 	private String category;
 	private String departure;
 	private String arrival;
-	private Date departureDate;
+	private String departureDate;
 	private int passenger;
 	private String coordinate;
 	private String boardType;

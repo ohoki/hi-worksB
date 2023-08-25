@@ -108,7 +108,7 @@ div h2 {
 		<h2>카풀 수정</h2>
 	</div>
 	<div class="body">
-		<form action="carpoolUpdate">
+		<form action="carpoolUpdate" method="post">
 			<table class="table">
 				<thead>
 					<tr class="main__p">
