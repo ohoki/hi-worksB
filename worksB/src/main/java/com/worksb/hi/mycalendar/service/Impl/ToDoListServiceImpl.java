@@ -27,20 +27,30 @@ public class ToDoListServiceImpl implements ToDoListService {
 
 	@Override
 	public int insertTdl(ToDoListVO toDoListVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return toDoListMapper.insertTdl(toDoListVO);
 	}
 
 	@Override
 	public int updateTdl(ToDoListVO toDoListVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return toDoListMapper.updateTdl(toDoListVO);
 	}
 
 	@Override
 	public int deleteTdl(int listId) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = toDoListMapper.deleteTdl(listId);
+		return result;
+	}
+	
+	//ITEM 조회
+	@Override
+	public List<ToDoListVO> selelctTdlItem(int listId) {
+		return toDoListMapper.selelctTdlItem(listId);
+	}
+
+	//ITEM 입력
+	@Override
+	public int insertItem(ToDoListVO vo) {
+		return toDoListMapper.insertItem(vo);
 	}
 
 }
