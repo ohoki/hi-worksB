@@ -76,7 +76,7 @@ th, td {
 			</thead>
 			<tbody class="taskList" >
 				<c:forEach items="${taskList }" var="task">
-					<tr data-id="${task.prjBoardId}" class="highTask">
+					<tr data-id="${task.prjBoardId}" class="highTask taskTr">
 						<td><button class="subTaskBtn">버튼</button></td>
 			            <td class="prjBoardTitle">${task.prjBoardTitle}</td>
 			            <td class="state">${task.stateName}</td>
@@ -93,46 +93,69 @@ th, td {
 	<div>
 		<div id="task-modal">
 			<div class="task-modal__content">
-
-					<div class="board-header">
-						<div class="board-headder-info memberName"></div>
-						<div  class="board-headder-info regdate"></div>
+				<div class="board-header">
+				<!-- 
+						<div class="board-header-info">
+							<c:if test="${board.realProfilePath eq null }">
+								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<c:if test="${board.realProfilePath ne null }">
+								<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<div class="board-headder-info__memberName">${board.memberName } </div>
+							<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
+						</div>
+				
+						<div>
+						<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+						</div>
 					</div>
-					<div class="board-title divide">
-
+				-->
+					<div class="board-title">
+						<div>
+							<span>[업무]</span>
+							<span></span>
+						</div>
+						<div data-hightaskid></div>
 					</div>
-					<div class="taskState">업무상태</div>
-					<div class="task-detail">
-						<div class="task-startDate">업무시작일</div>
-						<div class="task-endDate">업무종료일</div>
-						<div class="task-priority">우선순위</div>
-						<div class="task-processivity">진척도</div>
-						<div class="task-manager">업무담당자 : </div>
+					<div class="sche-date d-flex">
+						<div>
+							<span class="text">기간 : </span>
+							<span data-start></span>
+							<span> ~ </span>
+							<span data-end></span>
+						</div>
+						<div data-processivity>
+							<div class="processivity">
+								<div class="processivity-value"></div>
+							</div>
+							<span data-processivityvalue></span>
+						</div>
 					</div>
-					<div class="board-sub task_sub divide2">
-
+					<div class="d-flex" style="margin-right: 40px;">
+						<div class="task-manager"> 
+							<span class="text">담당자 : </span>
+						</div>
+						<div data-prioriy></div>
 					</div>
-					<div class="subTask">
+					<div data-state>
+						<button type="button" value="G1">요청</button>
+						<button type="button" value="G2">진행</button>
+						<button type="button" value="G3">피드백</button>
+						<button type="button" value="G4">완료</button>
+						<button type="button" value="G5">보류</button>
 					</div>
-					<div class="board-comment">
-						댓글공간
+					<div class="board-content">
+						<div>
+						</div>
 					</div>
-
+					<div class="sub-task-lists">
+						<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+						<div class="sub-task-list">
+						</div>
+					</div>
 			</div>
 		</div>
-	
-	
-		<!-- 
-		<div id="task-modal">
-			<div class="task-modal__content">
-				<div class="flex task__title">
-					<span>업무모달</span>
-				</div>
-				<div id="tasks">
-				</div>
-			</div>
-		</div>
-		-->
 	</div>
 	
 <script>
@@ -170,7 +193,10 @@ $(document).ready(function() {
                     let subTask = subTasks[j];
                     
                     // 하위 업무 행 만들기
-                    let subTaskInfo = $('<tr class="subTask"></tr>');
+                    //let subTaskInfo = $('<tr class="subTask"></tr>');
+                    let subTaskInfo = $('<tr class="subTask taskTr" data-id="' + subTask.prjBoardId + '"></tr>');
+
+                    
                  	// 빈 셀
                     subTaskInfo.append('<td></td>');
                     
@@ -217,6 +243,70 @@ $(document).ready(function() {
 		$('.modal-task-visible').removeClass('modal-task-visible');
 	});
 
+	
+	$(document).on("click", ".taskTr", function(e){
+		e.stopPropagation();
+		let highTask = $(this);
+		let prjBoardId = highTask.data('id');
+		console.log("======================게시글번호"+prjBoardId)
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getTaskInfo',
+			type : 'GET',
+			data : {'prjBoardId' : prjBoardId},
+			success : function(taskData) {
+				console.log(taskData)
+				
+				let taskInfo = $('#task-modal');
+				// 상위 업무
+				let highTask = taskData.highTask[0];
+				// 상위 업무 담당자 리스트
+				let highManagers = taskData.highManager;
+				// 하위 업무리스트
+				let subTasks = taskData.subTask;
+
+		        // 상위 업무 정보
+				taskInfo.find('span[data-end]').text(highTask.endDate);
+		        /*
+		        // 시작일
+		        taskInfo.find(".task-startDate").text(highTask.startDate);
+				// 종료일
+		        taskInfo.find(".task-endDate").text(highTask.endDate);
+		        
+		        // 우선 순위
+		        taskInfo.find(".task-priority").text(highTask.priority);
+		        
+		        // 진척도
+		        taskInfo.find(".task-processivity").text(highTask.processivity);
+		        
+		        // 업무상태
+		        taskInfo.find(".taskState").text(highTask.state);
+		        
+		        // 상위 업무 담당자 리스트
+		        let highManagerList = taskInfo.find(".task-manager");
+		        for(let k=0; k<highManagers.length; k++){
+		        	let highManager = highManagers[k];
+		        	
+		        	highManagerList.append('<span class="highManagerInfo">' + highManager.memberName + '   </span>');
+		        }
+
+		        // 하위 업무 리스트
+		        let subTasksInfo = taskInfo.find(".subTask");
+		        
+		        console.log(subTasksInfo)
+
+		        for (let j = 0; j < subTasks.length; j++) {
+		        	let subTask = subTasks[j];
+		        	let subTaskContent = $('<div class="subTask-content"></div>');
+		            subTaskContent.append('<div class="subTask-state task-info">' + getState(subTask.state) + '</div>');
+		            subTaskContent.append('<div class="subTask-title task-info">' + subTask.prjBoardTitle + '</div>');
+		            subTasksInfo.append(subTaskContent);
+		        }
+		        */
+		    }, error : function(reject) {
+				console.log(reject);
+			}
+		});
+	})
 
 </script>
 
