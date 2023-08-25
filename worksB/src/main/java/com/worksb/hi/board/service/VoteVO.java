@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -16,7 +18,8 @@ COMPNO_VOTE  NOT NULL VARCHAR2(5) 	복수 투표	A1 YES / A2 NO
 RESULT_YN    NOT NULL VARCHAR2(5) 	결과 공개 여부 A1 YES / A2 NO
  */
 	private int prjBoardId;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm")
 	private Date endDate;
 	private String anonyVote;
 	private String compnoVote;
