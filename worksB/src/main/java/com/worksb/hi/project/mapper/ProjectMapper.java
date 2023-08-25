@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectVO;
@@ -51,10 +52,20 @@ public interface ProjectMapper {
 		public List<ProjectVO> searchPrjCls(@Param("id")String memberId,@Param("cls") String cls);
 		//내 회사의 프로젝트 전체 보기
 		public List<ProjectVO> selectFromCompany(ProjectVO vo);
+		
 		//즐찾갱신
 		public void updateStar(ProjectVO vo);
+		
 		//로그인된 아이디가 참여하고 있는 프로젝트를 출력
 		public List<PrjParticirVO> selectAllparticier(String memberId);
+		
 		//전체공개프로젝트의 파일탭
 		public List<FileDataVO> viewFileWhenPublic(ProjectVO vo);
+		//관리자여부
+		public String managerOrNot(ProjectVO vo);
+		//파일탭(파일접근제한프로젝트+관리자의 경우)
+		public List<FileDataVO>viewFileWhenRestricted1(ProjectVO vo);
+		//파일탭(파일접근제한프로젝트+로그인한 아이디가 관리자가 아닌 경우)
+		public List<FileDataVO>viewFileWhenRestricted2(ProjectVO vo);
+
 }

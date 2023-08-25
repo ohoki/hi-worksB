@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.project.mapper.ProjectMapper;
 import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.PrjParticirVO;
@@ -147,12 +148,28 @@ public class ProjectServiceImpl implements ProjectService {
 		projectMapper.updateStar(vo);
 	}
 
-	//전체공개프로젝트의 파일탭
+	//파일탭(전체공개프로젝트)
 	@Override
 	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo) {
 		return projectMapper.viewFileWhenPublic(vo);
 	}
+	//관리자여부
+	@Override
+	public String managerOrNot(ProjectVO vo) {
+		return projectMapper.managerOrNot(vo);
+	}
+	//파일탭(파일접근제한프로젝트>로그인한 사람이 관리자인 경우)
+	@Override
+	public List<FileDataVO> viewFileWhenRestricted1(ProjectVO vo) {
+		return projectMapper.viewFileWhenRestricted1(vo);
+	}
+	//파일탭(파일접근제한프로젝트>로그인한 사람이 관리자가 아닌 경우)
+	@Override
+	public List<FileDataVO> viewFileWhenRestricted2(ProjectVO vo) {
+		return projectMapper.viewFileWhenRestricted2(vo);
+	}
 
+	
 	
 
 

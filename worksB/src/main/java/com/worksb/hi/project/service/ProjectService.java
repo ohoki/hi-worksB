@@ -3,6 +3,7 @@ package com.worksb.hi.project.service;
 import java.util.List;
 
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.common.SearchVO;
 
 public interface ProjectService {
 	//이진
@@ -41,11 +42,20 @@ public interface ProjectService {
 	public List<ProjectVO> searchPrjCls(String memberId, String cls);
 	//내 회사의 프로젝트 전체 보기
 	public List<ProjectVO> selectFromCompany(ProjectVO vo);
+	
 	//즐찾갱신
 	public void updateStar(ProjectVO vo);
+	
 	//로그인된 아이디가 참여하고 있는 프로젝트를 출력
 	public List<PrjParticirVO> selectAllparticier(String memberId);
+	
 	//파일탭(전체공개프로젝트)
 	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo);
+	//관리자여부
+	public String managerOrNot(ProjectVO vo);
+	//파일탭(파일접근제한프로젝트+로그인한 아이디가 관리자인 경우)
+	public List<FileDataVO>viewFileWhenRestricted1(ProjectVO vo);
+	//파일탭(파일접근제한프로젝트+로그인한 아이디가 관리자가 아닌 경우)
+	public List<FileDataVO>viewFileWhenRestricted2(ProjectVO vo);
 
 }
