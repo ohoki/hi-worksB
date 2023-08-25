@@ -21,12 +21,31 @@ a {
     color: var(--color-dark-beige);
 }
 
+.board-insert-btn {
+	display: block;
+	float: right;
+	margin:20px 15% 30px 0;
+	width: 15%;
+	height: 40px;
+	border-radius: 5px;
+	background-color: var(--color-dark-beigie);		
+	color: var(--color-light-grey);	
+	font-weight: var(--weight-bold);
+	transition: all 0.5s;
+}
+
+.board-insert-btn:hover {
+	background-color: var(--color-dark-red);
+	color: white;
+}
+
 .board-container{
 	border: 1px solid var(--color-beigie);
     border-radius: 20px;
     width : 70%;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
     margin: 30px auto;
+    clear: both;
 }
 
 .profile {
@@ -69,6 +88,11 @@ a {
 	justify-content: space-between;
 	align-items: center;
 }
+
+.f-start {
+	justify-content: flex-start;
+}
+
 
 .board-title span {
 	color: var(--color-blue);
@@ -126,16 +150,16 @@ a {
 	position: absolute;
 	top: 25px;
 	right: 60px;
-	background-color: var(--color-dark-red);	
 	border-radius: 5px;
-	color: white;
+	background-color: var(--color-dark-beigie);		
+	color: var(--color-light-grey);	
 	transition: all 0.5s;
 	font-size: var(--font-micro);
 }
 
 .comment-input button:hover {
-	background-color: var(--color-dark-beigie);		
-	color: var(--color-dark-grey);
+	background-color: var(--color-dark-red);	
+	color: white;
 }
 
 .sche-date {
@@ -145,7 +169,8 @@ a {
 	margin: 10px 40px;
 }
 
-.sche-date .text {
+.sche-date .text, .task-manager .text {
+	font-size: 15px;
 	color: var(--color-dark-grey);
 }
 
@@ -157,10 +182,24 @@ a {
 .sche-btns button {
 	width: 70px;
 	height: 35px;
-	background-color: var(--color-dark-red);
+	background-color: var(--color-light-red);
 	border-radius: 5px;
 	color: white;
 	font-weight: var(--weight-bold);
+	margin: 0 20px;
+	transition: all 0.3s;
+}
+
+.sche-btns button:hover {
+	background-color: var(--color-dark-red);
+}
+
+.btn-green {
+	background-color: #def4c6 !important;
+}
+
+.btn-green:hover {
+	background-color: var(--color-green) !important;
 }
 
 .sche-particir, .sche-nonParticir {
@@ -200,19 +239,20 @@ a {
 	display: none;
 }
 
-.vote-lists input:checked + label {
-	background-color: var(--color-dark-red);
-}
-
 .vote-lists label {
 	cursor: pointer;
 	width: 15px;
 	height: 15px;
-	border: 3px solid var(--color-dark-red);
+	border: 3px solid var(--color-light-red);
 	border-radius: 50%;
 	position: relative;
 	transition: all 0.3s;
 	margin-right: 10px;
+}
+
+.vote-lists input:checked + label {
+	background-color: var(--color-dark-red);
+	border: 3px solid var(--color-dark-red);
 }
 
 .vote-lists img {
@@ -229,23 +269,138 @@ a {
 	align-items: center;
 	justify-content: flex-start;
 	padding: 5px 10px;
-	background-color: var(--color-dark-beigie);
+	background-color: rgba(240, 240, 240, 0.2);
 	margin: 5px;
+	border-radius: 5px;
 }
 
 .vote-btn {
 	margin-top: 20px;
 	text-align: center;
+	transition: all 0.3s;
 }
 
 .vote-btn button {
 	width: 70px;
 	height: 35px;
-	background-color: var(--color-dark-red);
+	background-color: var(--color-light-red);
 	border-radius: 5px;
 	color: white;
 	font-weight: var(--weight-bold);
 }
+
+
+.board-title div[data-hightaskid] {
+	font-size: var(--font-micro);
+	padding: 5px;
+	border: 1px solid var(--color-dark-red);
+	border-radius: 5px;
+	color: var(--color-dark-red);
+}
+
+.task-manager{
+	display: flex;
+	font-weight: var(--weight-bold);
+	font-size: 13px;
+	color: var(--color-blue);
+	margin: 10px 40px;
+	align-items: center;
+}
+
+.task-manager span {
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.d-flex {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+div[data-prioriy] {
+	font-size: var(--font-micro);
+	color: var(--color-green);
+	font-weight: var(--weight-bold);
+}
+
+div[data-state] {
+	margin: 0 40px;
+	text-align: left;
+}
+
+div[data-state] button{
+	width: 50px;
+	height: 10px;
+	background-color: var(--color-dark-beigie);
+	padding: 10px;
+	border-radius: 5px;
+	color: white;
+	font-weight: var(--weight-bold);
+	line-height: 10px;
+}
+
+div[data-processivity] {
+	display: flex;
+	align-items: center;
+	color: var(--color-green);
+}
+
+.processivity {
+	width: 150px;
+	height: 7px;
+	border-radius:2px;
+	background-color: var(--color-light-white);
+	margin-right: 10px;
+}
+
+.processivity-value {
+	width: 1%;
+	height: 7px;
+	border-radius:2px;
+	background-color: var(--color-green);
+}
+
+.sub-task-lists {
+	margin: 0 40px 30px 40px;
+}
+
+.sub-task-lists-title {
+	margin: 10px 0;
+	font-size: var(--font-micro);
+	font-weight: var(--weight-bold);
+	color: var(--color-dark-grey);
+}
+
+.sub-task-item {
+	display: flex;
+	align-items: center;
+	padding: 5px 10px;
+	background-color: rgba(240, 240, 240, 0.2);
+	justify-content: flex-start;
+	margin: 5px 0;
+	border-radius: 5px;
+	text-align: center;
+}
+
+.sub-state {
+	width: 30px;
+	height: 7px;
+	background-color: var(--color-blue);
+	padding: 10px;
+	border-radius: 5px;
+	color: white;
+	font-weight: var(--weight-bold);
+	font-size: var(--font-micro);
+	line-height: 7px;
+	margin-right: 20px;
+}
+
+
+
+
+
+
 
 
 
@@ -380,9 +535,10 @@ a {
 </style>
 </head>
 <body>
+<!-- 게시글 출력 HTML -->
 <div style="display : flex;">
-	<div style="width: 70%;">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+	<div style="width: 65%;">
+		<button type="button" class="board-insert-btn" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
 		<!-- 게시글 조회 -->
 		<c:forEach items="${boards }" var="board">
 			<!-- C5 일반 게시글 -->
@@ -394,7 +550,7 @@ a {
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<c:if test="${board.realProfilePath ne null }">
-								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+								<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<div class="board-headder-info__memberName">${board.memberName } </div>
 							<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
@@ -404,7 +560,9 @@ a {
 						</div>
 					</div>
 					<div class="board-title">
-						<span>[일반]</span> ${board.prjBoardTitle }
+						<div>
+							<span>[일반]</span> ${board.prjBoardTitle }
+						</div>
 					</div>
 					<div class="board-content">
 						${board.prjBoardSubject }
@@ -464,7 +622,7 @@ a {
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<c:if test="${board.realProfilePath ne null }">
-								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+								<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<div class="board-headder-info__memberName">${board.memberName } </div>
 							<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
@@ -494,7 +652,7 @@ a {
 						</div>
 					</div>
 					<div class="sche-btns">
-						<button type="button">참석</button>
+						<button type="button" class="btn-green">참석</button>
 						<button type="button">불참</button>
 					</div>
 					<div class="board-footer">
@@ -552,7 +710,7 @@ a {
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<c:if test="${board.realProfilePath ne null }">
-								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+								<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<div class="board-headder-info__memberName">${board.memberName } </div>
 							<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
@@ -589,7 +747,7 @@ a {
 							</ul>
 						</div>
 						<div class="vote-btn">
-							<button type="button">투표</button>
+							<button type="button" disabled>투표</button>
 						</div>
 					</div>
 					<div class="board-footer">
@@ -637,44 +795,152 @@ a {
 					</div>
 				</div>
 			</c:if>
-
-
+			
 			<!-- C8 업무 -->
 			<c:if test="${board.boardType eq 'C8'}">
 				<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
 					<div class="board-header">
-						<div class="board-headder-info memberName">${board.memberName } </div>
-						<div  class="board-headder-info regdate">${board.prjBoardRegdate }</div>
+						<div class="board-header-info">
+							<c:if test="${board.realProfilePath eq null }">
+								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<c:if test="${board.realProfilePath ne null }">
+								<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
+							</c:if>
+							<div class="board-headder-info__memberName">${board.memberName } </div>
+							<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
+						</div>
+						<div>
+						<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+						</div>
 					</div>
-					<div class="board-title divide">
-						${board.prjBoardTitle }
+					<div class="board-title">
+						<div>
+							<span>[업무]</span> ${board.prjBoardTitle }
+						</div>
+						<div data-hightaskid></div>
 					</div>
-					<div class="taskState">업무상태</div>
-					<div class="task-detail">
-						<div class="task-startDate">업무시작일</div>
-						<div class="task-endDate">업무종료일</div>
-						<div class="task-priority">우선순위</div>
-						<div class="task-processivity">진척도</div>
-						<div class="task-manager">업무담당자 : </div>
+					<div class="sche-date d-flex">
+						<div>
+							<span class="text">기간 : </span>
+							<span data-start></span>
+							<span> ~ </span>
+							<span data-end></span>
+						</div>
+						<div data-processivity>
+							<div class="processivity">
+								<div class="processivity-value"></div>
+							</div>
+							<span data-processivityvalue></span>
+						</div>
 					</div>
-					<div class="board-sub task_sub divide2">
-						${board.prjBoardSubject }
+					<div class="d-flex" style="margin-right: 40px;">
+						<div class="task-manager"> 
+							<span class="text">담당자 : </span>
+						</div>
+						<div data-prioriy></div>
 					</div>
-					<div class="subTask">
+					<div data-state>
+						<button type="button" value="G1">요청</button>
+						<button type="button" value="G2">진행</button>
+						<button type="button" value="G3">피드백</button>
+						<button type="button" value="G4">완료</button>
+						<button type="button" value="G5">보류</button>
 					</div>
-					<div class="board-comment">
-						댓글공간
+					<div class="board-content">
+						<div>
+							${board.prjBoardSubject }
+						</div>
+					</div>
+					<div class="sub-task-lists">
+						<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+						<div class="sub-task-list">
+						</div>
+					</div>
+					<div class="board-footer">
+						<div >
+							<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+							<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+						</div>
+						<div>
+							<span class="board-footer-info">댓글 7</span>
+							<span class="board-footer-info">좋아요 14</span>
+						</div>
+					</div>
+					<c:if test="ㄴㅇㄹ">
+						<div>
+							댓글 더보기
+						</div>
+						<!-- for each로 최신 댓글 2개만 -->
+							<div class="board-comment">
+								<div>
+									<img alt="#" src="#">
+									<div>
+										<div>
+											회원정보
+										</div>
+										<div>
+											댓글내용
+										</div>
+									</div>
+								</div>
+								<div>
+									<a href="#">수정</a>
+									<a href="#">삭제</a>
+								</div>
+							</div>
+						<!-- 여기까지 -->	
+					</c:if>
+					<div class="comment-input">
+						<c:if test="${memberInfo.realProfilePath eq null }">
+							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+						</c:if>
+						<c:if test="${memberInfo.realProfilePath ne null }">
+							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+						</c:if>
+							<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 					</div>
 				</div>
 			</c:if>
-		</c:forEach>		
-	</div>
-	<!-- 게시글 조회 끝 -->
+		</c:forEach>
+	</div>	
+			<!-- 게시글 조회 끝 -->
 	<div style="width: 25%;">
 		<h1>북마크 공간~~</h1>
 	</div>
 </div>
-<script>
+<!-- 게시글 출력 SCRIPT -->
+<script> 
+	//투표 항목 선택 시 버튼 색상 변경 && 복수 투표 여부
+	function checkBtn(e) {
+		let checkBox = $(e).closest('.vote-lists').find('input[type=checkbox]');
+		let voteBtn = $(e).closest('.vote-lists').next().children('button');
+		let compnoSpan = $(e).closest('.vote-lists').prev().children('.compnoVote');
+		let count = $(e).closest('.vote-lists').find('input[type=checkbox]:checked').length;
+		let isChecked = false;
+		
+		for(let i=0; i<checkBox.length; i++) {
+			if(checkBox[i].checked == true) {
+				isChecked = true;
+			}	
+		}
+		
+		if(isChecked) {
+			voteBtn.css('background-color', 'var(--color-dark-red)');
+			voteBtn.attr("disabled", false);
+		} else {
+			voteBtn.css('background-color', 'var(--color-light-red)');
+			voteBtn.attr("disabled", true);
+		}
+		
+		if(compnoSpan.text() == '') { //단일 투표
+			if(count > 1) {
+				alert('한개의 항목만 투표 가능합니다.');
+				$(e).prop("checked", false);
+			}	
+		}
+	}; 
+		
 	// 게시글 조회
 	$(window).on('DOMContentLoaded', function() {
 		let boardList = $('[data-list="board"]');
@@ -726,7 +992,7 @@ a {
 						for (let j = 0; j < voteData.voteList.length; j++) {
 							//li 태그 생성
 							let li = $('<li class="vote-list">');
-							let checkbox = $('<input>');
+							let checkbox = $('<input>').attr('onchange', 'checkBtn(this)');
 							let label = $('<label>');
 							let img = $('<img src="${pageContext.request.contextPath }/resources/icon/check-solid.svg">');
 							
@@ -751,84 +1017,64 @@ a {
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
 					success : function(taskData) {
-						let taskInfo = $(boardList[i]);
-						// 상위 업무
+						// 상위 업무 정보
+						let highTaskId = $(boardList[i]).find('div[data-hightaskid]');
+						let startDate = $(boardList[i]).find('span[data-start]');
+		                let endDate = $(boardList[i]).find('span[data-end]');
+		                let state = $(boardList[i]).find('div[data-state]');
+		                let processivity = $(boardList[i]).find('div[data-processivity]');
+		                let prioriy = $(boardList[i]).find('div[data-prioriy]');
+		                let taskManagers = $(boardList[i]).find('.task-manager');
+		                let processivityValue = $(boardList[i]).find('span[data-processivityvalue]');
 						let highTask = taskData.highTask[0];
-						// 상위 업무 담당자 리스트
 						let highManagers = taskData.highManager;
-						// 하위 업무리스트
 						let subTasks = taskData.subTask;
 
-						// 우선 순위 priority 구분
-				        function getPriority(priority) {
-	                        switch (priority) {
-	                            case 'F3':
-	                                return '낮음';
-	                            case 'F2':
-	                                return '보통';
-	                            case 'F1':
-	                                return '긴급';
-	                            case null:
-	                            	return '';
-	                            default:
-	                                return priority;
-	                        }
-                    	}
-				        
-				        // 업무 상태 state 구분
-				        function getState(state) {
-	                        switch (state) {
-	                            case 'G1':
-	                                return '요청';
-	                            case 'G2':
-	                                return '진행';
-	                            case 'G3':
-	                                return '피드백';
-	                            case 'G4':
-	                                return '완료';
-	                            case 'G5':
-	                                return '보류';
-	                            case null:
-	                            	return '';
-	                            default:
-	                                return state;
-	                        }
-	                    }
-
-				        // 상위 업무 정보
-				        // 시작일
-				        let startDate = highTask.startDate != null ? highTask.startDate : '';
-				        taskInfo.find(".task-startDate").text(startDate);
-						// 종료일
-				        let endDate = highTask.endDate != null ? highTask.endDate : '';
-				        taskInfo.find(".task-endDate").text(endDate);
-				        
-				        // 우선 순위
-				        taskInfo.find(".task-priority").text(getPriority(highTask.priority));
-				        
-				        // 진척도
-				        taskInfo.find(".task-processivity").text(highTask.processivity);
-				        
-				        // 업무상태
-				        taskInfo.find(".taskState").text(getState(highTask.state));
-				        
-				        // 상위 업무 담당자 리스트
-				        let highManagerList = taskInfo.find(".task-manager");
-				        for(let k=0; k<highManagers.length; k++){
-				        	let highManager = highManagers[k];
-				        	
-				        	highManagerList.append('<span class="highManagerInfo">' + highManager.memberName + '   </span>');
-				        }
-
-				        // 하위 업무 리스트
-				        let subTasksInfo = taskInfo.find(".subTask");
-
+				        // 업무 번호
+				        highTaskId.text('업무 번호 ' + taskData.highTask[0].taskId);
+				        // 기간
+				        startDate.text(taskData.highTask[0].startDate);
+		                endDate.text(taskData.highTask[0].endDate);
+		                // 진행상태 버튼 활성화
+		                state.children('button[value=' + highTask.state + ']' ).css('background-color', 'var(--color-dark-red)');
+		                //진척도
+		                $('.processivity-value').css('width', highTask.processivity + "%");
+		                processivityValue.text(highTask.processivity + "%");		                
+		             	// 우선 순위
+				        prioriy.text('우선순위 : ' + highTask.priorityName);
+				     	// 상위 업무 담당자
+				     	if(highManagers.length >1) {
+				     		taskManagers.append('<span>' + highManagers[0].memberName + ' 외 ' + (highManagers.length-1) + '명</span>');	
+				     	} else if(highManagers.length == 0) {
+				     		taskManagers.append('<span>없음</span>');
+				     	} else {
+				     		taskManagers.append('<span>' + highManagers[0].memberName + '</span>');
+				     	} 
+				     	
+				     	// 하위 업무 리스트
+				     	if(subTasks.length == 0) {
+				     		$(boardList[i]).find('.sub-task-lists').empty();
+				     		return;
+				     	}
+				     	
+				     	let countSpan = $(boardList[i]).find('span[data-subtaskcount]');
+				     	let subTaskList = $(boardList[i]).find(".sub-task-list");
+						// 하위 업무 갯수 
+				     	countSpan.text(subTasks.length);
+				     	// 정보 입력
 				        for (let j = 0; j < subTasks.length; j++) {
 				        	let subTask = subTasks[j];
-				        	let subTaskContent = $('<div class="subTask-content"></div>');
-				            subTaskContent.append('<div class="subTask-state task-info">' + getState(subTask.state) + '</div>');
-				            subTaskContent.append('<div class="subTask-title task-info">' + subTask.prjBoardTitle + '</div>');
-				            subTasksInfo.append(subTaskContent);
+							let li = $('<li class="sub-task-item">');
+				        	let subState = $('<span class="sub-state">');
+				        	let subTitle = $('<span class="sub-title">');
+						
+				        	subState.text(subTask.stateName);
+				        	subTitle.text(subTask.prjBoardTitle);
+				        	
+							li.append(subState);
+							li.append(subTitle);
+							
+							subTaskList.append(li);
 				        }
 				    }, error : function(reject) {
 						console.log(reject);
@@ -838,8 +1084,9 @@ a {
 		}
 	});
 </script>
+<!-- 게시글 출력 종료 -->
 
-<!-- 게시글 작성 -->
+<!-- 게시글 작성 HTML -->
 <div class="modal modalBoard" tabindex="-1" id="boardInsertModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

@@ -22,6 +22,7 @@
 	<resources mapping="/resources/**" location="/resources/" />
 	<!-- 파일 불러오기 -->
 	<resources mapping="/images/**" location="${file.loading.path}"/>
+	<resources mapping="/files/**" location="${file.loading.path}"/>
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
