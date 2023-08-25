@@ -29,7 +29,9 @@ public class AllTaskBoardVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	private String priority;
+	private String priorityName;
 	private String state;
+	private String stateName;
 	private String processivity;
 	private int taskId;
 	private int companyId;
