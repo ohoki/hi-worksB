@@ -113,59 +113,70 @@ div h2 {
 	    width: 800px;
 	}
 	/* 맵 */
-	.map_wrap {position:relative;width:800px;height:600px;}
+	.map_wrap {position:relative;width:900px;height:700px;}
     .title {font-weight:bold;display:block;}
     .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
     #centerAddr {display:block;margin-top:2px;font-weight: normal;}
     .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 	
-/* modal */
-/* 버튼을 감싸는 영역 */
-#btnWrap {
-  width: 500px;
-  margin: 100px auto;
+	/* 카테고리 css */
+.select {
+    padding: 15px 10px;
 }
-
-/* 버튼 디자인 */
-#popupBtn {
-  width: 150px;
-  height: 50px;
-  padding: 10px 5px;
+.select input[type=radio]{
+    display: none;
 }
-
-/* 모달팝업을 감싸고 있는 최상위 부모 */
-#modalWrap {
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+.select input[type=radio]+label{
+    display: inline-block;
+    cursor: pointer;
+    height: 24px;
+    width: 90px;
+    border: 1px solid #333;
+    line-height: 24px;
+    text-align: center;
+    font-weight:bold;
+    font-size:13px;
 }
-
-/* 모달 팝업창 */
-#modalBody {
-  width: 500px;
-  height: 300px;
-  padding: 30px 30px;
-  margin: 0 auto;
-  border: 1px solid #777;
-  background-color: #fff;
-  display: hidden;
+.select input[type=radio]+label{
+    background-color: #fff;
+    color: #333;
 }
-
-/* 닫기 버튼 */
-#closeBtn {
-  float:right;
-  font-weight: bold;
-  color: #777;
-  font-size:25px;
-  cursor: pointer;
+.select input[type=radio]:checked+label{
+    background-color: #333;
+    color: #fff;
 }
 	
+	/* modal */
+#modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+}
+.map_wrap {
+  background-color: #fefefe;
+  margin: 15% auto;
+
+  border: 1px solid #888;
+  width: 80%;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -190,29 +201,44 @@ div h2 {
 					<tr>
 						<td>
 							<div class="content">
-								<textarea name="noticeContent" id="editor"></textarea>
+								<textarea name="boardContent" id="editor"></textarea>
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<label id="departure">출발</label>
-							<button type="button" id= "popupBtn" name="departure">버튼</button><br> <!-- 팝업 버튼 -->
-							<label id="arrival">도착</label>
-							<input type="text" name="arrival"><br>
-							<label id="departureDate">날짜</label>
-							<input type="text" name="departureDate"><br>
+						<td class="p-0 d-xl-table-cell d-none">
+    						<label id="departure">출발</label>
+    							<input type="text" id="departureInput" name="departure" value=" " readonly="readonly"><br>
+							    <button type="button" id="departureButton">출발지 선택</button><br>
+							
+							    <label id="arrival">도착</label>
+							    <input type="text" id="arrivalInput" name="arrival" value=" " readonly="readonly"><br>
+							    <button type="button" id="arrivalButton">도착지 선택</button><br>
+							<label >날짜</label>
+							<input type="datetime-local" id="departureDate" name="departureDate" required pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}"><br>
 							<label id="passenger">인원</label>
-							<input type="number" name="passenger">
+							<select id="passelect" name="passenger">
+								<option value="0">0명</option>
+								<option value="1">1명</option>
+								<option value="2">2명</option>
+								<option value="3">3명</option>
+								<option value="4">4명</option>
+								<option value="5">5명</option>
+							</select>
+
+							<div class="select">
+     							<input type="radio" id="select" name="category" value="B1"><label for="select">태워드립니다</label>
+     							<input type="radio" id="select2" name="category" value="B2"><label for="select2">태워주세요</label>
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<input type="hidden" name="memberId" value="${memberInfo.memberId }">
 							<input type="hidden" name="companyId" value="${memberInfo.companyId}">
-							<input type="hidden" name="category" value="B1">
 						</td>
 					</tr>
+					
 				</tbody>
 			</table>
 			<button type="button" onclick="location.href='carpoolList'">목록</button>
@@ -221,21 +247,28 @@ div h2 {
 	</div>
 	
 	<!-- 지도  -->
-	<div id ="modalBody">
-	<div class="map_wrap">
-		
+	<div id="modal">
+		<div class="map_wrap">
     		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
-    			<div class="hAddr">
-        <span class="title">현재 위치</span>
-        <span id="centerAddr"></span>
-        <span id="closeBtn">&times;</span>
-        	
-    	</div>
+   			<div class="hAddr">
+       			<span class="title">현재 위치</span>
+       			<span id="centerAddr"></span>
+       			<button id="close-modal">닫기</button>
+   			</div>
+		</div>
 	</div>
-	</div>
-
 </body>
 <script>
+	
+	// 날짜 가져오기
+	var x = document.getElementById("departureDate").value;
+
+	// 거지같은 T 바꾸기
+	x = x.replace("T", " ");
+
+
+
+	
 	<!-- 에디터 -->
 	ClassicEditor.create( document.querySelector( '#editor' ), {
 	    ckfinder:{
@@ -256,29 +289,6 @@ div h2 {
 	  }
 	  
 	);
-	
-	/* 모달 */
-	const btn = document.getElementById('popupBtn');
-	const modal = document.getElementById('map_wrap');
-	const closeBtn = document.getElementById('closeBtn');
-	let button = $('#popupBtn')
-	button.on('click', ()=>{
-		modal.style.display = 'block';
-	})
-	
-	btn.onclick = function() {
-	  modal.style.display = 'block';
-	}
-	closeBtn.onclick = function() {
-	  modal.style.display = 'none';
-	}
-
-	window.onclick = function(event) {
-	  if (event.target == modal) {
-	    modal.style.display = "none";
-	  }
-	}
-	
 	
 	/* 내 위치 */
 	function askForLocation () {
@@ -301,7 +311,6 @@ div h2 {
 	    
 	    // 지도 중심을 이동 시킵니다
 	    map.setCenter(moveLatLon);
-	    
 	}
 	
 	
@@ -313,69 +322,120 @@ div h2 {
         level: 1 // 지도의 확대 레벨
     };  
 
-// 지도를 생성합니다    
-var map = new kakao.maps.Map(mapContainer, mapOption); 
+	var departureInput = document.getElementById("departureInput"); // departureInput 필드를 가져옴
+	var arrivalInput = document.getElementById("arrivalInput"); // arrivalInput 필드를 가져옴
+	
+	// 지도를 생성합니다    
+	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
+	    infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+	
+	// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+	searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+	
+	// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+	    searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+	        if (status === kakao.maps.services.Status.OK) {
+	            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+	            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+	            
+	            var content = '<div class="bAddr">' +
+	                            '<span class="title">법정동 주소정보</span>' + 
+	                            detailAddr + 
+	                        '</div>';
+				console.log(result[0].address.address_name);
+				
+		
+					// 모달 빠져나오기
+		  		modal.style.display = "none";
+		  		document.body.style.overflow = "auto"; // 스크롤바 보이기
+		  		
+		  			// 값 넣기
+		  			if(departureInput.value == null || departureInput.value == " " ){
+		  				departureInput.value = result[0].address.address_name;
+		  				console.log(departureInput.value);
+		  			} else if(departureInput.value != null){
+		  				arrivalInput.value = result[0].address.address_name;
+		  			}
+		  				
+	            	// 마커를 클릭한 위치에 표시합니다 
+	            	marker.setPosition(mouseEvent.latLng);
+	            	marker.setMap(map);
+	
+		            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+		            infowindow.setContent(content);
+		            infowindow.open(map, marker);
+	            
+	
+	        }   
+	    });
+	});
 
-// 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
 
-var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
-    infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+	// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+	kakao.maps.event.addListener(map, 'idle', function() {
+	    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+	});
+	
+	function searchAddrFromCoords(coords, callback) {
+	    // 좌표로 행정동 주소 정보를 요청합니다
+	    geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
+	}
+	
+	function searchDetailAddrFromCoords(coords, callback) {
+	    // 좌표로 법정동 상세 주소 정보를 요청합니다
+	    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+	}
+	
+	// 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+	function displayCenterInfo(result, status) {
+	    if (status === kakao.maps.services.Status.OK) {
+	        var infoDiv = document.getElementById('centerAddr');
+	
+	        for(var i = 0; i < result.length; i++) {
+	            // 행정동의 region_type 값은 'H' 이므로
+	            if (result[i].region_type === 'H') {
+	                infoDiv.innerHTML = result[i].address_name;
+	                break;
+	            }
+	        }
+	    }    
+	}
+	
 
-// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
-searchAddrFromCoords(map.getCenter(), displayCenterInfo);
-
-// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
-kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-    searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
-            
-            var content = '<div class="bAddr">' +
-                            '<span class="title">법정동 주소정보</span>' + 
-                            detailAddr + 
-                        '</div>';
-	console.log(result[0].address.address_name);
-            // 마커를 클릭한 위치에 표시합니다 
-            marker.setPosition(mouseEvent.latLng);
-            marker.setMap(map);
-
-            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-            infowindow.setContent(content);
-            infowindow.open(map, marker);
-        }   
-    });
-});
-
-// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
-kakao.maps.event.addListener(map, 'idle', function() {
-    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
-});
-
-function searchAddrFromCoords(coords, callback) {
-    // 좌표로 행정동 주소 정보를 요청합니다
-    geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
-}
-
-function searchDetailAddrFromCoords(coords, callback) {
-    // 좌표로 법정동 상세 주소 정보를 요청합니다
-    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-}
-
-// 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
-function displayCenterInfo(result, status) {
-    if (status === kakao.maps.services.Status.OK) {
-        var infoDiv = document.getElementById('centerAddr');
-
-        for(var i = 0; i < result.length; i++) {
-            // 행정동의 region_type 값은 'H' 이므로
-            if (result[i].region_type === 'H') {
-                infoDiv.innerHTML = result[i].address_name;
-                break;
-            }
-        }
-    }    
-}
+		const modal = document.getElementById("modal");
+		const openModalBtn = document.getElementById("departureButton");
+		const closeModalBtn = document.getElementById("close-modal");
+		// 모달창 열기
+		openModalBtn.addEventListener("click", () => {
+		  modal.style.display = "block";
+		  document.body.style.overflow = "hidden"; // 스크롤바 제거
+		});
+		// 모달창 닫기
+		closeModalBtn.addEventListener("click", () => {
+		  modal.style.display = "none";
+		  document.body.style.overflow = "auto"; // 스크롤바 보이기
+		});
+		
+		
+		const openModalBtnn = document.getElementById("arrivalButton");
+		
+		// 모달창 열기
+		openModalBtnn.addEventListener("click", () => {
+		  modal.style.display = "block";
+		  document.body.style.overflow = "hidden"; // 스크롤바 제거
+		});
+		// 모달창 닫기
+		closeModalBtn.addEventListener("click", () => {
+		  modal.style.display = "none";
+		  document.body.style.overflow = "auto"; // 스크롤바 보이기
+		});
+	
+	
 </script>
 </html>
