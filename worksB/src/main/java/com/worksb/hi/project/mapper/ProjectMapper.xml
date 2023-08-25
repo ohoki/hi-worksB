@@ -331,22 +331,113 @@
 	FROM prj_particir
 	WHERE member_id=#{memberId}
 </select>
-<!-- 전체공개프로젝트의 파일 -->
+<!-- 전체접근가능 프로젝트의 파일 -->
 <select id="viewFileWhenPublic" parameterType="ProjectVO" resultType="FileDataVO">
-	SELECT
-		board_type,
-		file_name,
-		file_path,
-		file_type,
-		file_regdate,
-		file_size,
-		board_id,
-		real_file_path,
-		file_id,
-		project_id
+ 	SELECT
+		f.board_type,
+		f.file_name,
+		f.file_path,
+		f.file_type,
+		f.file_regdate,
+		f.file_size,
+		f.board_id,
+		f.real_file_path,
+		f.file_id,
+		f.project_id,
+        f.member_id,
+        m.member_name
 	FROM
-		file_data
+		file_data f
+    JOIN(
+        SELECT
+            member_name,
+            member_id
+        FROM
+            member
+    )m on m.member_id=f.member_id
 	WHERE
 		project_id=#{projectId}
+</select>
+
+<!-- 매니저여부 파악 -->
+<select id="managerOrNot" parameterType="ProjectVO" resultType="String">
+	SELECT manager 
+	FROM prj_particir 
+	WHERE member_id=#{memberId} 
+			AND project_id=#{projectId}
+			AND manager='A1'
+</select>
+
+<!-- 제한공개+(로그인한 아이디)관리자의 파일탭 -->
+<select id="viewFileWhenRestricted1" parameterType="ProjectVO" resultType="FileDataVO">
+	SELECT
+	    f.board_type,
+	    f.file_name,
+	    f.file_path,
+	    f.file_type,
+	    f.file_regdate,
+	    f.file_size,
+	    f.board_id,
+	    f.real_file_path,
+	    f.file_id,
+	    f.project_id,
+	    f.member_id,
+	    pp.manager,
+	    m.member_name
+	FROM
+	    file_data f
+	LEFT JOIN(
+	    SELECT
+	        member_id,
+	        member_name
+	    FROM
+	        member
+	)m
+	    on
+	        m.member_id=f.member_id
+	LEFT JOIN(
+	    SELECT
+	        member_id,
+	        manager
+	    FROM
+	        prj_particir
+	    WHERE
+	        manager='A1'
+	)pp
+	    ON 
+	        pp.member_id=f.member_id OR 
+	        f.member_id=#{memberId}
+	WHERE project_id=#{projectId}
+</select>
+
+<!-- 제한공개+(로그인한 아이디)작성자의 파일탭 -->
+<select id="viewFileWhenRestricted2" parameterType="ProjectVO" resultType="FileDataVO">
+	SELECT
+	    f.board_type,
+	    f.file_name,
+	    f.file_path,
+	    f.file_type,
+	    f.file_regdate,
+	    f.file_size,
+	    f.board_id,
+	    f.real_file_path,
+	    f.file_id,
+	    f.project_id,
+	    f.member_id,
+	    m.member_name
+	FROM
+	    file_data f
+	LEFT JOIN(
+	    SELECT
+	        member_id,
+	        member_name
+	    FROM
+	        member
+	)m
+	    on
+	        m.member_id=f.member_id
+	WHERE project_id=#{projectId}
+	AND
+	    f.member_id=#{memberId}
 </select>
 </mapper>

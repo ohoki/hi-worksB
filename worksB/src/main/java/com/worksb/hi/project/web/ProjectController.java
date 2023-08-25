@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.TaskVO;
+import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.notice.service.NoticeVO;
 import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
@@ -267,19 +269,35 @@ public class ProjectController {
 	}
 	
 	//파일탭
-	@GetMapping("/filetab")
-	public String file(HttpSession session, ProjectVO vo,Model m) {
-		//pjid와fileAccess가넘어옴
+	@GetMapping("/filetab")//vo로 넘어오는 것: projectId,fileAccess
+	public String file(
+			HttpSession session, ProjectVO vo,Model m) 
+	{
+		
+		//프로젝트정보등록
+		ProjectVO projectInfo = projectService.getProjectInfo(vo.getProjectId());
+		m.addAttribute("projectInfo", projectInfo);
+		
+	
+			//파일공개권한이 전체인 경우
 		if(vo.getFileAccess().equals("J1")) {
 			m.addAttribute("fileList",projectService.viewFileWhenPublic(vo));
-		}else if(vo.getFileAccess().equals("J2")) {
-			String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
-			
-			
-			vo.setMemberId(memberId);
-			
-		}
 		
-		return "project/filetab";
+			//파일공개권한이 작성자+관리자인 경우
+		}else if(vo.getFileAccess().equals("J2")) {
+				//관리자여부 파악!!!!!!!!!제대로되나
+			String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+			vo.setMemberId(memberId);
+			String manager=projectService.managerOrNot(vo);
+			
+			//로그인한 사람이 관리자인 경우
+			if(manager!=null) {
+				m.addAttribute("fileList",projectService.viewFileWhenRestricted1(vo));
+			//로그인한 사람이 관리자가 아닌 경우
+			}else {
+				m.addAttribute("fileList",projectService.viewFileWhenRestricted2(vo));
+			}
+		}
+		return "project/projectFile";
 	}
 }
