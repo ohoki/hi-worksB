@@ -109,10 +109,11 @@ div h2 {
 		<h2>공지사항 수정</h2>
 	</div>
 	<div class="body">
-		<form action="noticeUpdate">
+		<form action="noticeUpdate" method="post">
 			<label id="noticeTitle">제목 </label>
 			<input type="text" name="noticeTitle" value="${noticeInfo.noticeTitle }">
 			<textarea name="noticeContent" id="editor">${noticeInfo.noticeContent }</textarea>
+			<input type="hidden" name="noticeId" value="${noticeInfo.noticeId }">
 			<button type="button" onclick="location.href='noticeList'">목록</button>
 			<button type="submit">작성</button>
 		</form>

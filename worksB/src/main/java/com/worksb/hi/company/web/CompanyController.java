@@ -134,8 +134,6 @@ public class CompanyController {
 		  
 		        String originalName = uploadFile.getOriginalFilename();
 		        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-		        
-		        System.out.println("fileName : " + fileName);
 		    
 		        //날짜 폴더 생성
 		        String folderPath = makeFolder();
@@ -149,7 +147,6 @@ public class CompanyController {
 		        
 		        Path savePath = Paths.get(saveName);
 		        //Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
-		        System.out.println("path : " + saveName);
 		        try{
 		        	uploadFile.transferTo(savePath);
 		            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)

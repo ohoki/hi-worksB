@@ -28,8 +28,8 @@ public interface NoticeService {
 	// 조회수 올리기
 	/*
 	public default int noticeHit(String noticeId) {
-		return 0;
-	}
-	*/
+		return NoticeMapper.noticeHit(noticeId);
+	}*/
+	
 	
 }

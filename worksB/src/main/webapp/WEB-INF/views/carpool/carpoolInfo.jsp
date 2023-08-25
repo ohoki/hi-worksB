@@ -166,6 +166,7 @@ div h2 {
 									도착 : ${carpoolInfo.arrival } 
 								</p>
 								<p>탑승 인원 수 : ${carpoolInfo.passenger }</p>
+								<p>출발 시간 : ${carpoolInfo.departureDate }</p>
 							</div>
 						</td>
 					</tr>
