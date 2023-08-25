@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.board.service.AllTaskBoardVO;
 import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
@@ -161,24 +162,23 @@ public class BoardController {
         return resultMap;
 	}
 
-	// 업무 조회
+	// 업무 상세 조회
 	@GetMapping("getTaskInfo")
 	@ResponseBody
-	public Map<String, List<TaskVO>> getTaskInfo(@RequestParam("prjBoardId") int prjBoardId) {
-		System.out.println("===================================="+ prjBoardId);
-	    Map<String, List<TaskVO>> resultMap = new HashMap<>();
+	public Map<String, List<AllTaskBoardVO>> getTaskInfo(@RequestParam("prjBoardId") int prjBoardId) {
+	    Map<String, List<AllTaskBoardVO>> resultMap = new HashMap<>();
 	    
-	    TaskVO taskVO = new TaskVO();
-	    taskVO.setPrjBoardId(prjBoardId);
+	    AllTaskBoardVO allTaskBoardVO = new AllTaskBoardVO();
+	    allTaskBoardVO.setPrjBoardId(prjBoardId);
 	    
 	    // 상위 업무
-	    List<TaskVO> highTask = boardService.getHighTask(taskVO);
+	    List<AllTaskBoardVO> highTask = boardService.getHighTask(allTaskBoardVO);
 	    // 상위 업무 담당자 리스트
-	    List<TaskVO> highManager = boardService.getHighManager(taskVO);
+	    List<AllTaskBoardVO> highManager = boardService.getHighManager(allTaskBoardVO);
 	    // 상위 업무의 업무번호
-	    int taskId = boardService.getHighTaskId(taskVO);
+	    int taskId = boardService.getHighTaskId(allTaskBoardVO);
 	    // 해당 업무의 하위 업무 리스트
-	    List<TaskVO> subTask = boardService.getSubTask(taskId);
+	    List<AllTaskBoardVO> subTask = boardService.getSubTask(taskId);
 	    
 	    resultMap.put("highTask", highTask);
 	    resultMap.put("subTask", subTask);
@@ -187,23 +187,20 @@ public class BoardController {
 	    return resultMap;
 	}
 
-	// 프로젝트 업무페이지
-		@GetMapping("/projectTask")
-		public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
-			ProjectVO projectInfo = projectService.getProjectInfo(projectId);
-			List<BoardVO> taskList = boardService.getTaskList(projectInfo);
+	// 프로젝트 업무탭 조회
+	@GetMapping("/projectTask")
+	public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
+		// 프로젝트 정보
+		ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+		// 상위 업무 리스트
+		List<AllTaskBoardVO> taskList = boardService.getTaskList(projectId);
+		
+		model.addAttribute("projectInfo", projectInfo);
+		model.addAttribute("taskList", taskList);
+	return "project/projectTask";
+	}
+	
 
-			System.out.println("============================" + taskList);
-			model.addAttribute("projectInfo", projectInfo);
-			model.addAttribute("taskList", taskList);
-		    
-		return "project/projectTask";
-		}
-	
-	
-	
-	
-	
 	
 	
 }
