@@ -54,6 +54,13 @@
 	transition: all 0.5s;	
 }
 
+
+
+
+
+
+
+
 .modal{
     position:absolute;
     display:none;
@@ -81,17 +88,6 @@
     transform:translateY(-50%);
 }
 
-.modal li{
-    font-size: 16px;
-    color: var(--color-dark-grey);
-    margin: 15px;
-    padding: 2px;
-}
-
-.modal li:hover{
-    background-color: var(--color-light-blue);
-    color: #303030;
-}
 
 .icon {
 	width: 30px;
