@@ -24,19 +24,19 @@ public interface BoardService {
 	// 투표 항목 조회
 	public List<VoteVO> getVoteList(VoteVO voteVO);
 	// 상위 업무 조회
-	public List<TaskVO> getHighTask(TaskVO taskVO);
+	public List<AllTaskBoardVO> getHighTask(AllTaskBoardVO allTaskBoardVO);
 	// 상위 업무 taskId 조회
-	public int getHighTaskId(TaskVO taskVO);
+	public int getHighTaskId(AllTaskBoardVO allTaskBoardVO);
 	// 상위 업무 담당자 조회
-	public List<TaskVO> getHighManager(TaskVO taskVO);
+	public List<AllTaskBoardVO> getHighManager(AllTaskBoardVO allTaskBoardVO);
 	// 하위 업무 조회
-	public List<TaskVO> getSubTask(int TaskId);
+	public List<AllTaskBoardVO> getSubTask(int TaskId);
 	
 	// 업무 담당자 등록
 	public int insertTaskManager(TaskVO taskVO);
 	
 	// 프로젝트 업무글 리스트
-	public List<BoardVO> getTaskList(ProjectVO projectVO);
+	public List<AllTaskBoardVO> getTaskList(int projectId);
 	
 	
 	
