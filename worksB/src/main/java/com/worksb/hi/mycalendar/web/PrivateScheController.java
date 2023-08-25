@@ -1,5 +1,6 @@
 package com.worksb.hi.mycalendar.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,15 +12,15 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
+import com.worksb.hi.mycalendar.service.ToDoListService;
+import com.worksb.hi.mycalendar.service.ToDoListVO;
 
 //2023-08-18 김정현 개인일정관리
 
@@ -29,15 +30,19 @@ public class PrivateScheController {
 	@Autowired
 	PrivateScheService privateScheService;
 	
+	@Autowired
+	ToDoListService toDoListService;
+	
 	//개인일정 페이지에서 ajax호출 url
 	@SuppressWarnings("unchecked")
 	@GetMapping("privateScheList")
 	@ResponseBody
 	public List<Map<String, Object>> myCalendar(HttpSession session) {
 		
-		//session에서 사용자 id값 가져와서 개인일정 검색
+		//session에서 사용자 id값 가져와서 개인일정/todoList 검색
 		MemberVO vo = (MemberVO) session.getAttribute("memberInfo");
 		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(vo.getMemberId());
+		List<ToDoListVO> tdlList = toDoListService.selectAllTdl(vo.getMemberId());
 		
 		//json객체 리스트화
 		JSONObject jsonObj = new JSONObject();
@@ -52,7 +57,17 @@ public class PrivateScheController {
 			
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
+		}
+		for(int i=0;i<tdlList.size();i++) {
+			hash.put("id", "t"+tdlList.get(i).getListId());
+			hash.put("title", tdlList.get(i).getListTitle());
+			hash.put("start", tdlList.get(i).getApplyDate());
+			hash.put("end", "");
+			hash.put("allDay", "true");
+			hash.put("color", "#2a9d8f");
 			
+			jsonObj = new JSONObject(hash);
+			jsonArr.add(jsonObj);
 		}
 		
 		return jsonArr;
@@ -78,6 +93,8 @@ public class PrivateScheController {
 		model.addAttribute("result", resultMsg);
 		return "redirect:privateSche";
 	}
+
+	
 	
 	//개인일정 단건조회
 	@GetMapping("selectPsche")
@@ -90,6 +107,8 @@ public class PrivateScheController {
 		return scheVO;
 	}
 	
+	
+	//개인일정 수정
 	@PostMapping("updatePsche")
 	@ResponseBody
 	public String updatePsche(PrivateScheVO vo) {
@@ -103,6 +122,7 @@ public class PrivateScheController {
 		return resultMsg;
 	}
 	
+	//개인일정 삭제
 	@GetMapping("deletePsche")
 	@ResponseBody
 	public String deletePshce(PrivateScheVO vo) {
@@ -116,5 +136,75 @@ public class PrivateScheController {
 		return resultMsg;
 	}
 	
+	//todoList 단건조회
+	@SuppressWarnings("unchecked")
+	@GetMapping("selectTdl")
+	@ResponseBody
+	public Map<String, List<ToDoListVO>> viewTodoList(int listId) {
+		ToDoListVO tdlVO= toDoListService.selectTdl(listId);
+		List<ToDoListVO> listVO = new ArrayList<ToDoListVO>(); 
+		listVO.add(tdlVO);
+		List<ToDoListVO> listItemVO = toDoListService.selelctTdlItem(tdlVO.getListId());
+		
+		HashMap<String, List<ToDoListVO>> map = new HashMap<String, List<ToDoListVO>>();
+		map.put("todoList", listVO);
+		map.put("item", listItemVO);
+		
+		return map;
+	};
 	
+	//ToDo List 입력
+	@PostMapping("todoListInsert")
+	@ResponseBody
+	public String todoListInsert(List<ToDoListVO> tdlList) {
+		System.out.println(tdlList);
+		//리스트의 첫번째는 todoList이므로 List테이블에 인서트
+		ToDoListVO tdlListVO = tdlList.get(0);
+		int result = toDoListService.insertTdl(tdlListVO);
+		//리스트의 두번째부터는 todoListItem이므로 Item테이블에 인서트
+		ToDoListVO tdlItemVO = new ToDoListVO();
+		int itemResult =0;
+		for(int i = 1;i<tdlList.size();i++) {
+			if(tdlList.get(i).getContent()!=null) {
+				tdlItemVO.setListId(tdlListVO.getListId());
+				tdlItemVO.setContent(tdlList.get(i).getContent()); 
+				tdlItemVO.setSuccess(tdlList.get(i).getSuccess());
+				itemResult =+ toDoListService.insertItem(tdlItemVO);
+			}
+		}
+		String resultMsg;
+		if(result ==1 && itemResult != 0) {
+			resultMsg = itemResult+"success";
+		}else {
+			resultMsg = "fail";
+		}
+		return resultMsg;
+	}
+	//todoList 수정
+	@PostMapping("updateToDoList")
+	@ResponseBody
+	public String updateTdlList(ToDoListVO vo) {
+		int result = toDoListService.updateTdl(vo);
+		String resultMsg;
+		if(result==1) {
+			return resultMsg = "success";
+		}else {
+			return resultMsg = "fail";
+		}
+		
+	}
+	
+	//todoList 삭제
+	@GetMapping("deleteToDoList")
+	@ResponseBody
+	public String deleteTdlList(ToDoListVO vo) {
+		int result = toDoListService.deleteTdl(vo.getListId());
+		String resultMsg;
+		if(result==1) {
+			resultMsg = "success";
+		}else {
+			resultMsg = "fail";
+		}
+		return resultMsg;
+	}
 }
