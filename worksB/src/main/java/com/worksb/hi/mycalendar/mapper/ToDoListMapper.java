@@ -20,5 +20,9 @@ public interface ToDoListMapper {
 	public List<ToDoListVO> selelctTdlItem(int listId);
 	//ITEM 입력
 	public int insertItem(ToDoListVO vo);
+	//ITEM 수정
+	public int updateItem(ToDoListVO vo);
+	//ITEM 삭제
+	public int deleteItem(int tdlId);
 	
 }
