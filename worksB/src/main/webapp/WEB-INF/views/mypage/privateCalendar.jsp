@@ -155,9 +155,9 @@
 			      	<label for="memberId">작성자 : </label><input name="memberId" type="text" value="${memberInfo.memberName }" readonly><br>
 			      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker6"  autocomplete="off">
 			      	<input id="listId" name="listId" type="text" hidden="hidden">
-			      	<div class="tdlList-view">
-			      	</div>
 		      	</form>
+		      	<div class="tdlList-view">
+		      	</div>
 	      	</div>
 	        <div class="modal-footer">
 	          <button type="button" form="tdlFormView" class="btn btn-primary" id="tdlUpdateBtn">TDL 수정</button>
@@ -410,8 +410,10 @@
 	    			success:function(result){
 	    				console.log(result)
 	    				tdlModal.show();
+	    				//조회모달 띄우기
 	    				$('#tdlBody').attr("class","div_hidden");
 	    				$('#tdlView').attr("class","div_block");
+	    				//inputTag 읽기전용으로/제목넣기, 해당날짜넣기,id값넣기
 	    				$('#tdlFormView input').prop("readonly",true);
 	    				$('#tdlFormView input').eq(0).val(result.todoList[0].listTitle);
 	    				let applyDate = result.todoList[0].applyDate.substr(0,10);
@@ -419,9 +421,13 @@
 	    				$('#listId').val(result.todoList[0].listId);
     					$('.tdlList-view').append('<p></p>').text("To Do List 목록")
     					$('.tdlList-view').append('<hr>')
+    					//ITEM항목 생성
 	    				for(let i = 0; i<result.item.length;i++){
 							let divTag = $('<div></div>')
-							let chkBoxTag = $('<input>').attr("type", "checkbox");
+							let chkBoxTag = $('<input>').attr("type", "checkbox").prop("disabled",true);
+							if(result.item[i].success==="A1"){
+								chkBoxTag.prop("checked",true);
+							}
 							let inputTag = $('<input>').attr("type", "text").attr("name", "content");
 							let delBtn = $('<img>').attr("class","tdlLineDeleteBtn").attr("src","${pageContext.request.contextPath }/resources/icon/minusCircleBtn.svg").attr("alt","minus SVG").attr("width","20").attr("height","20");
 							divTag.append(chkBoxTag)
@@ -556,11 +562,16 @@
 		        	checkboxValue = "A2"
 		        }
 		        let inputValue = $(this).find("input[type='text']").val();
+		        let dataObject;
+		        if(inputValue!=null && inputValue !=""){
+			        dataObject = {
+			            success : checkboxValue,
+			            content : inputValue
+			        };
+		        }else{
+		        	return;
+		        }
 		        // 데이터를 JSON 형식으로 저장할 객체 생성
-		        let dataObject = {
-		            success : checkboxValue,
-		            content : inputValue
-		        };
 		        // 객체를 배열에 추가
 		        itemDataArray.push(dataObject);
 		    });
@@ -570,15 +581,14 @@
 			for(let i =0;i<itemDataArray.length;i++){
 				wholeTdl.push(itemDataArray[i]);
 			}
-			console.log(wholeTdl);
 			let jsonData = JSON.stringify(wholeTdl);
-			console.log(jsonData)
 			
 			let memberName = `${memberInfo.memberName}`
  			$.ajax({
 				url:'todoListInsert',
 				method:'POST',
-				data : wholeTdl,
+				data : jsonData,
+				contentType : 'application/json',
 				success:function(result){
 					//캘린더 event 업데이트
 					loadPriSche();
@@ -602,9 +612,10 @@
 			    lang:'kr',
 			    timepicker:false
 			});
+			$('.tdlList-view div').find('input').prop("readonly",false).prop("disabled",false);
 			//tdl content 추가 버튼
-			$('#tdlFormView').append($('<button type="button" class="btn btn-primary addTdlLine">To Do List 추가</button>'))
-			$('#tdlFormView img[class="tdlLineDeleteBtn-hidden"]').attr("class","tdlLineDeleteBtn")
+			$('.tdlList-view').append($('<button type="button" class="btn btn-primary addTdlLine">To Do List 추가</button>'))
+			$('.tdlList-view img[class="tdlLineDeleteBtn-hidden"]').attr("class","tdlLineDeleteBtn")
 			//삭제버튼
 			let $deleteTdlbtn = $('<button type="button" class="btn btn-primary" id="deleteTdlBtn">삭제</button>');
 			$('#tdlUpdateBtn').parent().prepend($deleteTdlbtn);
@@ -621,28 +632,29 @@
 			if(applyDate === null || applyDate === "" ){
 				alert("날짜를 입력하세요")
 				applyDate.focus();
-			}else{
-				let tdlFormView = $('#tdlFormView')
-				let obj = serializeObject(tdlFormView);
-				
-				$.ajax({
-					url:"updateToDoList",
-					method : 'post',
-					data : obj,
-					success : function(result){
-						//캘린더 event 업데이트
-						loadPriSche();
-						console.log(result);
-					},
-					error : function(err){
-						console.log(err);
-					}
-				});
-				$('#tdlUpdateBtn').prev('button').remove();
-				tdlModal.hide();
-				$('#tdlUpdateBtn').text('TDL 수정');
-				$('#tdlUpdateBtn').off("click");
+				return false
 			};
+			
+			let tdlFormView = $('#tdlFormView')
+			let obj = serializeObject(tdlFormView);
+			
+			$.ajax({
+				url:"updateToDoList",
+				method : 'post',
+				data : obj,
+				success : function(result){
+					//캘린더 event 업데이트
+					loadPriSche();
+					console.log(result);
+				},
+				error : function(err){
+					console.log(err);
+				}
+			});
+			$('#tdlUpdateBtn').prev('button').remove();
+			tdlModal.hide();
+			$('#tdlUpdateBtn').text('TDL 수정');
+			$('#tdlUpdateBtn').off("click");
 		};
 	
 		//일정 수정폼
