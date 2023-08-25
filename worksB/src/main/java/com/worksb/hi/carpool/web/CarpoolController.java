@@ -61,13 +61,13 @@ public class CarpoolController {
 		return "redirect:carpoolList";
 	}
 	
-	// 등록 폼
+	// 수정 폼
 	@GetMapping("/carpoolUpdate")
 	public String carpoolUpdateForm() {
 		return "carpool/carpoolUpdate";
 	}
 	
-	// 등록
+	// 수정
 	@PostMapping("/carpoolUpdate")
 	public String carpoolUpdate(CarpoolVO carpoolVO) {
 		carpoolService.carpoolUpdate(carpoolVO);
