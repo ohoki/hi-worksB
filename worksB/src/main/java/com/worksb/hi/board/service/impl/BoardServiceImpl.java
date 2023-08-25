@@ -22,6 +22,7 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	BoardMapper boardMapper;
 	
+	// 게시글 등록
 	@Override
 	public int insertBoard(BoardVO boardVO) {
 		int result = boardMapper.insertBoard(boardVO);
@@ -31,7 +32,8 @@ public class BoardServiceImpl implements BoardService {
 			return -1;
 		}
 	}
-
+	
+	// 업무글 등록
 	@Override
 	public int insertTask(TaskVO taskVO) {
 		int result = boardMapper.insertTask(taskVO);
@@ -41,7 +43,8 @@ public class BoardServiceImpl implements BoardService {
 			return -1;
 		}
 	}
-
+	
+	// 투표글 등록
 	@Override
 	public int insertVote(VoteVO voteVO) {
 		int result = boardMapper.insertVote(voteVO);
@@ -56,7 +59,8 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 
 	}
-
+	
+	//투표 항목 등록
 	@Override
 	public int insertVoteList(VoteVO voteVO) {
 		int result = boardMapper.insertVoteList(voteVO);
@@ -66,7 +70,7 @@ public class BoardServiceImpl implements BoardService {
 			return -1;
 		}
 	}
-
+	
 	@Override
 	public int insertSche(ScheVO scheVO) {
 		int result = boardMapper.insertSche(scheVO);

@@ -162,7 +162,7 @@ public class BoardController {
         return resultMap;
 	}
 
-	// 업무 조회
+	// 업무 상세 조회
 	@GetMapping("getTaskInfo")
 	@ResponseBody
 	public Map<String, List<AllTaskBoardVO>> getTaskInfo(@RequestParam("prjBoardId") int prjBoardId) {
@@ -187,7 +187,7 @@ public class BoardController {
 	    return resultMap;
 	}
 
-	// 프로젝트 업무페이지
+	// 프로젝트 업무탭 조회
 	@GetMapping("/projectTask")
 	public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
 		// 프로젝트 정보
@@ -200,32 +200,7 @@ public class BoardController {
 	return "project/projectTask";
 	}
 	
-	
-	// 하위업무, 업무담당자 조회
-	@GetMapping("getTaskDetail")
-	@ResponseBody	
-	public Map<String, List<AllTaskBoardVO>> getTaskDetail(@RequestParam("prjBoardId") int prjBoardId){
-		Map<String, List<AllTaskBoardVO>> resultMap = new HashMap<>();
-		System.out.println("====================================================");
-		AllTaskBoardVO allTaskBoardVO = new AllTaskBoardVO();
-	    allTaskBoardVO.setPrjBoardId(prjBoardId);
-		
-		TaskVO taskVO = new TaskVO();
-	    taskVO.setPrjBoardId(prjBoardId);
-		
-	    // 상위 업무 담당자 리스트
-	    List<AllTaskBoardVO> highManager = boardService.getHighManager(allTaskBoardVO);
-	    // 상위 업무의 업무번호
-	    int taskId = boardService.getHighTaskId(allTaskBoardVO);
-	    // 해당 업무의 하위 업무 리스트
-	    List<AllTaskBoardVO> subTask = boardService.getSubTask(taskId);
-	    
-	    resultMap.put("subTask", subTask);
-	    resultMap.put("highManager", highManager);
-		
-		return resultMap;
-	}
-	
+
 	
 	
 }

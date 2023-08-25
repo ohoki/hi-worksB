@@ -25,7 +25,9 @@ COMPANY_ID   NOT NULL NUMBER
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	private String priority;
+	private String priorityName;
 	private String state;
+	private String stateName;
 	private String processivity;
 	private int prjBoardId;
 	private int taskId;

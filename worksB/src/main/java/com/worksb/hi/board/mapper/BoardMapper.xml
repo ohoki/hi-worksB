@@ -191,7 +191,9 @@
 				start_date,
 				end_date,
 				priority,
+				find_subcode(priority) AS priorityName,
 				state,
+				find_subcode(state) AS stateName,
 				processivity,
 				prj_board_id,
 				task_id,
@@ -215,6 +217,7 @@
 		JOIN	prj_particir pp ON tm.prj_particir_id = pp.prj_particir_id 
 		JOIN	member m ON m.member_id = pp.member_id
 	WHERE t.prj_board_id = #{prjBoardId}
+	ORDER BY resp_id
 	</select>
 	
 	<!-- 하위 업무 리스트 조회 -->
@@ -225,7 +228,9 @@
 				t.start_date,
 				t.end_date,
 				t.priority,
+				find_subcode(t.priority) AS priorityName,
 				t.state,
+				find_subcode(t.state) AS stateName,
 				t.processivity,
 				t.prj_board_id,
 				t.task_id,
@@ -273,7 +278,9 @@
 				t.start_date,
 				t.end_date,
 				t.priority,
+				find_subcode(t.priority) AS priorityName,
 				t.state,
+				find_subcode(t.state) AS stateName,
 				t.processivity,
 				t.task_id,
                 m.member_name
