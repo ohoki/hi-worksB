@@ -185,21 +185,33 @@
 		ORDER BY	list_id
 	</select>
 	
-	<!-- 상위 업무 조회 -->
-	<select id="getHighTask" parameterType="int" resultType="allTaskBoardVO">
-		SELECT	high_task_id,
-				start_date,
-				end_date,
-				priority,
-				find_subcode(priority) AS priorityName,
-				state,
-				find_subcode(state) AS stateName,
-				processivity,
-				prj_board_id,
-				task_id,
-				company_id
-		 FROM	prj_task
-		WHERE	prj_board_id = #{prjBoardId}
+	<!-- 업무 조회 -->
+	<select id="getTaskInfo" parameterType="int" resultType="allTaskBoardVO">
+		SELECT	p.prj_board_id,        
+				p.prj_board_title,     
+				p.prj_board_subject,  
+				p.prj_board_regdate,            
+				p.member_id,            
+				p.insp_yn,              
+				p.pin_yn,                
+				p.board_type,           
+				p.project_id,                 
+				p.coordinate,
+                t.high_task_id,
+				t.start_date,
+				t.end_date,
+				t.priority,
+				find_subcode(t.priority) AS priorityName,
+				t.state,
+				find_subcode(t.state) AS stateName,
+				t.processivity,
+				t.task_id,
+                m.member_name,
+                m.real_profile_path      
+		 FROM 	prj_board p 
+				JOIN prj_task t	ON	p.prj_board_id = t.prj_board_id
+    			JOIN member m	ON	p.member_id = m.member_id
+		WHERE	t.prj_board_id = #{prjBoardId}
 	</select>
 	
 	<!-- 상위 업무의 taskId 조회 -->
@@ -209,8 +221,8 @@
 		WHERE	prj_board_id = #{prjBoardId}
 	</select>
 	
-	<!-- 상위 업무 담당자 리스트 조회 -->
-	<select id="getHighManager" parameterType="int" resultType="allTaskBoardVO">
+	<!-- 업무 담당자 리스트 조회 -->
+	<select id="getManager" parameterType="int" resultType="allTaskBoardVO">
 	SELECT	m.member_name
 	FROM	prj_task t 
 		JOIN	task_manager tm	ON t.prj_board_id = tm.prj_board_id
@@ -262,7 +274,7 @@
 								)
 	</insert>
 	
-	<!-- 프로젝트 상위 업무 리스트 -->
+	<!-- 업무탭 리스트 -->
 	<select id="getTaskList" resultType="allTaskBoardVO">
 		SELECT p.prj_board_id,        
 				p.prj_board_title,     
