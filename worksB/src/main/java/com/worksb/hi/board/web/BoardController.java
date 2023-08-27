@@ -207,7 +207,8 @@ public class BoardController {
 
 	    return resultMap;
 	}
-	// 프로젝트 업무탭 조회
+	
+	// 프로젝트 업무탭 - 전체 업무 조회
 	@GetMapping("/projectTask")
 	public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
 		// 프로젝트 정보
@@ -217,9 +218,26 @@ public class BoardController {
 		
 		model.addAttribute("projectInfo", projectInfo);
 		model.addAttribute("taskList", taskList);
-	return "project/projectTask";
+		
+		return "project/projectTask";
 	}
 
-	
+/*
+	// 업무 수정
+	@PostMapping("/updateTask")
+	public String updateTask(@RequestBody BoardRequestVO brVO) {
+		BoardVO boardVO = brVO.getBoardVO();
+		boardService.updateBoard(boardVO);
+		
+		TaskVO taskVO = brVO.getTaskVO();
+		taskVO.setPrjBoardId(boardVO.getPrjBoardId());
+		boardService.updateTask(taskVO);
+		
+		List<TaskVO> managerList = brVO.getPrjManager();
+		
+		
+		return "z";
+	}
+*/	
 	
 }

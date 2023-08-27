@@ -135,6 +135,25 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getTaskList(projectId);
 	}
 	
+	// 업무 수정
+	@Override
+	public int updateTask(TaskVO taskVO) {
+		return boardMapper.updateTask(taskVO);
+	}
+
+	@Override
+	public int updateBoard(BoardVO boardVO) {
+		return boardMapper.updateBoard(boardVO);
+	}
+
+	@Override
+	public int updateTaskManager(TaskVO taskVO) {
+		return boardMapper.updateTaskManager(taskVO);
+	}
+
+
+
+	
 	
 
 	

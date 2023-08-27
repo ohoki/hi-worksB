@@ -307,9 +307,47 @@
 		        AND	board_type = 'C8'
 		ORDER BY prj_board_regdate DESC
 	</select>
-
-
 	
+	<!-- 게시글 prj_board 수정 -->
+	<update id="updateBoard" parameterType="BoardVO">
+		UPDATE prj_board
+		<set>
+			prj_board_title = #{prjBoardTitle},
+			prj_board_subject = #{prjBoardSubject},
+			prj_board_regdate = sysdate
+		</set>
+		WHERE prj_board_id = #{prjBoardId}
+	</update>
+	
+	<!-- 업무 수정 -->
+	<update id="updateTask" parameterType="TaskVO">
+		UPDATE prj_task
+		<set>
+			<if test="startDate !=null">
+				, start_date = #{startDate}
+			</if>
+			<if test="endDate !=null">
+				, end_date = #{endDate}
+			</if>
+			<if test="priority !=null and !priority.equals('')">
+				, priority = #{priority}
+			</if>
+			, state = #{state}
+			<if test="processivity !=null and !processivity.equals('')">
+				, processivity = #{processivity}
+			</if>
+		</set>
+		WHERE prj_board_id = #{prjBoardId}
+	</update>
+
+	<!-- 담당자 수정 -->
+	<update id="updateTaskManager" parameterType="TaskVO">
+		UPDATE task_manager
+		<set>
+			prj_particir_id = #{prjParticirId}
+		</set>
+		WHERE prj_board_id = #{prjBoardId}
+	</update>
 	
 <!-- 	주현 -->
 </mapper>

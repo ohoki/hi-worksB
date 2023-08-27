@@ -46,6 +46,7 @@ tr:hover{
 	display: none;
 	left: 0;
 	top: 0;
+
 }
 
 .task-modal__content{
@@ -55,7 +56,7 @@ tr:hover{
 	height: 100%;
 	width: 40%;
 	background-color: white;
-	font-size: 12px;
+	font-size: 17px;
 	padding: 20px 15px;
 	z-index: 10;
 }
@@ -113,6 +114,27 @@ tr:hover{
 	margin-right: 10px;
 }
 
+#update-task-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.update-task-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0px 0px 10px 2px #888;
+}
+
 </style>
 </head>
 <body>
@@ -120,6 +142,7 @@ tr:hover{
 		<div>
 			<input type="text" placeholder="업무명을 검색하세요." class="header__search task__search">
 		</div>
+		<!-- 전체 업무 조회 -->
 		<table class="taskTable">
 			<thead>
 				<tr>
@@ -131,6 +154,7 @@ tr:hover{
 					<th>시작일</th>
 					<th>마감일</th>
 					<th>등록일</th>
+					<th>업무번호</th>
 				</tr>
 			</thead>
 			<tbody class="taskList" >
@@ -144,11 +168,14 @@ tr:hover{
 			            <td class="startDate"><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd"/></td>
 			            <td class="endDate"><fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd"/></td>
 			            <td class="prjBoardRegdate"><fmt:formatDate value="${task.prjBoardRegdate}" pattern="yyyy-MM-dd"/></td>
+			            <td class="taskId">${task.taskId }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
+		<!-- 전체 업무 조회 끝-->
 	</div>
+	<!-- 업무 상세 조회 모달-->
 	<div>
 		<div id="task-modal">
 			<div class="task-modal__content">
@@ -255,12 +282,23 @@ tr:hover{
 			</div>
 		</div>
 	</div>
+	<!-- 업무 상세 조회 모달 끝-->
+	<!-- 업무글 메뉴 모달 -->
 	<div id="task-menu-modal">
 		<div class="task-menu__content">
 			<ul>
-				<li><span class=""></span>수정</li>
-				<li><span class=""></span>삭제</li>
+				<li class="update-task-btn">수정</li>
+				<li>삭제</li>
 			</ul>
+		</div>
+	</div>
+	
+	<!-- 업무글 수정 -->
+	<div id="update-task-modal">
+		<div class="update-task-content" id="updateTask">
+		    <h3>업무수정폼~~!!~!~~~!!!!</h3>
+		    <input type="text">
+		    <button id="update-submit">저장</button>
 		</div>
 	</div>
 <script>
@@ -331,6 +369,7 @@ tr:hover{
 						subTaskInfo.append('<td>-</td>');
 						subTaskInfo.append('<td class="subEndDate">' + subTask.endDate + '</td>');
 						subTaskInfo.append('<td class="subRegdate">' + subTask.prjBoardRegdate + '</td>');
+						subTaskInfo.append('<td class="subTaskId">' + subTask.taskId + '</td>');
 						// 상위 업무 바로 밑에 하위 업무 행 넣기
 						taskInfo.after(subTaskInfo);
 					}
@@ -367,6 +406,25 @@ tr:hover{
 		$('.modal-task-visible').removeClass('modal-task-visible');
 	});
 */
+
+	$('#task-modal').on('click', function(e) {
+	    if ($(e.target).is('#task-modal')) {
+	        $('#task-modal').removeClass('modal-task-visible');
+	    }
+	});
+	
+	$('#task-menu-modal').on('click', function(e) {
+	    if ($(e.target).is('#task-menu-modal')) {
+	        $('#task-menu-modal').removeClass('modal-task-visible');
+	    }
+	});
+	
+	$('#update-task-modal').on('click', function(e) {
+	    if ($(e.target).is('#update-task-modal')) {
+	        $('#update-task-modal').removeClass('modal-task-visible');
+	    }
+	});
+
 	// 업무 상세내용 모달
 	$(document).on("click", ".taskTr", function(e){
 		e.stopPropagation();
@@ -442,14 +500,57 @@ tr:hover{
 					
 					subTaskList.append(li);
 		        }
+		     	
+		     	$('.update-task-btn').attr('data-id', prjBoardId);
+		     	
+		     	
+		    }, error : function(reject) {
+				console.log(reject);
+			}
+		});
+	});
+	
+	// 업무글 메뉴 모달
+	$('.task-menu-btn').on('click', function(e){
+		$('#task-menu-modal').addClass('modal-task-visible');
+	})
+	// 수정 폼 모달
+	$('.update-task-btn').on('click', function(e){
+		$('.modal-task-visible').removeClass('modal-task-visible');
+		$('#update-task-modal').addClass('modal-task-visible');
+	})
+	
+	// 업무 글 수정 폼
+	$('.update-task-btn').on('click', function(e){
+		let taskInfo = $('.update-task-btn');
+		let prjBoardId = taskInfo.data('id');
+		console.log(prjBoardId)
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getTaskInfo',
+			type : 'GET',
+			data : {'prjBoardId' : prjBoardId},
+			success : function(taskData) {
+				console.log(taskData)
+				
+				let taskInfo = $('#updateTask');
+				// 클릭한 업무
+				let highTask = taskData.highTask[0];
+				
+				// 폼에 데이터 출력하기!!!!!!!!!!!!
+				let memberName = taskInfo.find('input');
+				memberName.val(highTask.memberName);
+		     	
 		    }, error : function(reject) {
 				console.log(reject);
 			}
 		});
 	})
-	
-	$('.task-menu-btn').on('click', function(e){
-		$('#task-menu-modal').addClass('modal-task-visible');
+
+	//업무 수정 처리하기
+	$('#update-submit').on('click', function(e){
+		
+		
 	})
 	
 	
