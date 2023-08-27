@@ -4,6 +4,13 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.notice.mapper.NoticeMapper">
 
+	<!-- 조회수 올리기 -->
+	<update id="noticeHit" parameterType="int">
+	    UPDATE notice_board 
+	       SET board_hit = board_hit + 1 
+	    WHERE notice_id = #{noticeId}
+	</update>
+	
 <!-- 페이징 -->
 	<!-- 게시판 총 갯수 -->
 	<select id="getTotalCount" resultType="int">

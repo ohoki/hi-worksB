@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.comLike.service.ComLikeService;
+import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.notice.service.NoticeService;
@@ -25,6 +28,9 @@ public class NoticeController {
 	
 	@Autowired
 	NoticeService noticeService;
+	
+    @Autowired
+    ComLikeService comLikeService;
 	
 	//페이징 전체조회
 	@GetMapping("noticeList")
@@ -44,12 +50,18 @@ public class NoticeController {
 		
 	}
 	
-	// 단건 조회
 	@GetMapping("/noticeInfo")
-	public String getNoticeInfo(NoticeVO noticeVO, Model model) {
-		NoticeVO findVO = noticeService.getNoticeInfo(noticeVO);
-		model.addAttribute("noticeInfo", findVO);
-		return "notice/noticeInfo";
+	public String getNoticeInfo(@RequestParam("noticeId") int noticeId, Model model) {
+	    NoticeVO noticeVO = new NoticeVO();
+	    noticeVO.setNoticeId(noticeId);
+
+	    // 조회수 증가
+	    noticeService.noticeHit(noticeId);
+
+	    // 공지 정보 가져오기
+	    NoticeVO findVO = noticeService.getNoticeInfo(noticeVO); // 수정된 부분
+	    model.addAttribute("noticeInfo", findVO);
+	    return "notice/noticeInfo";
 	}
 	
 	// 등록 폼
@@ -86,18 +98,36 @@ public class NoticeController {
 		noticeService.noticeDelete(noticeId);
 		return "redirect:noticeList";
 	}
-
 	
-	
-	 
-	/* 수정중
-	// 좋아요 기능
-	@GetMapping("/noticeInfo") public void findLike(int notice_id, String member_id, Model model) { 
-	model.addAttribute("findLike", service.findLike(notice_id) );
-
-	ComLikeVO comLike = new ComLikeVO();
-	 
-	 comeLike.setboard_id(notice_id)
-	}*/
+	// 좋아요 여부 확인
+    @GetMapping("/like")
+    @ResponseBody
+    public String like(@RequestParam("boardType") String boardType, @RequestParam("boardId") int boardId, @RequestParam("memberId") String memberId) {
+        ComLikeVO comLikeVO = new ComLikeVO();
+        comLikeVO.setBoardType(boardType);
+        comLikeVO.setBoardId(boardId);
+        comLikeVO.setMemberId(memberId);
+        
+        // 좋아요 눌렀는지 확인
+        if (comLikeService.checkLiked(comLikeVO)) {
+        	// 좋아요 누른 상태면 해제
+            comLikeService.deleteLike(comLikeVO);
+            return "unliked";
+        } else {
+        	// 안눌렀으면 좋아요 등록
+            comLikeService.insertLike(comLikeVO);
+            return "liked";
+        }
+    }
+    
+    // 좋아요 수 조회
+    @GetMapping("/countLikes")
+    @ResponseBody
+    public int countLikes(@RequestParam("boardType") String boardType, @RequestParam("boardId") int boardId) {
+        ComLikeVO comLikeVO = new ComLikeVO();
+        comLikeVO.setBoardType(boardType);
+        comLikeVO.setBoardId(boardId);
+        return comLikeService.countLikes(comLikeVO);
+    }
 	
 }

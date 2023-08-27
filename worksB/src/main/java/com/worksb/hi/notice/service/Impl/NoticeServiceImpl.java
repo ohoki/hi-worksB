@@ -66,7 +66,11 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 		return 0;
 	}
-
+	
+	@Override
+	public void noticeHit(int noticeId) {
+	    noticeMapper.noticeHit(noticeId);
+	}
 
 
 }
