@@ -296,9 +296,40 @@ tr:hover{
 	<!-- 업무글 수정 -->
 	<div id="update-task-modal">
 		<div class="update-task-content" id="updateTask">
+			<!-- 
 		    <h3>업무수정폼~~!!~!~~~!!!!</h3>
 		    <input type="text">
 		    <button id="update-submit">저장</button>
+		    -->
+		    <form action="" method="post">
+		    	<div>
+		    	<h3>업무수정폼~~!!~!~~~!!!!</h3>
+		    		<input type="text" name="prjBoardTitle">
+		    		<div class="board-state">
+						<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
+						<label for="option1">요청</label>
+						
+						<input type="radio" class="btn-check" name="state" value="G2" id="option2" autocomplete="off">
+						<label for="option2">진행</label>
+						
+						<input type="radio" class="btn-check" name="state" value="G3" id="option3" autocomplete="off">
+						<label for="option3">피드백</label>
+						
+						<input type="radio" class="btn-check" name="state" value="G4" id="option4" autocomplete="off">
+						<label for="option4">완료</label>
+						
+						<input type="radio" class="btn-check" name="state" value="G5" id="option5" autocomplete="off">
+						<label for="option5">보류</label>
+					</div>
+					<div>
+						<label for="startDate">시작일 : </label>
+						<input type="text" name="startDate" class="date-input startDate" data-date>
+						
+						<label for="endDate">마감일 : </label>
+						<input type="text" name="endDate" class="date-input endDate" disabled>
+					</div>
+		    	</div>
+		    </form>
 		</div>
 	</div>
 <script>
@@ -538,8 +569,9 @@ tr:hover{
 				let highTask = taskData.highTask[0];
 				
 				// 폼에 데이터 출력하기!!!!!!!!!!!!
-				let memberName = taskInfo.find('input');
-				memberName.val(highTask.memberName);
+				taskInfo.find('[name=prjBoardTitle]').val(highTask.prjBoardTitle);
+
+				
 		     	
 		    }, error : function(reject) {
 				console.log(reject);
