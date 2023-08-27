@@ -99,10 +99,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getVoteList(voteVO);
 	}
 	
-	// 상위 업무 조회
+	// 업무 조회
 	@Override
-	public List<AllTaskBoardVO> getHighTask(AllTaskBoardVO allTaskBoardVO) {
-		return boardMapper.getHighTask(allTaskBoardVO);
+	public List<AllTaskBoardVO> getTaskInfo(AllTaskBoardVO allTaskBoardVO) {
+		return boardMapper.getTaskInfo(allTaskBoardVO);
 	}
 	
 	// 상위 업무 taskId 조회
@@ -123,16 +123,36 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.insertTaskManager(taskVO);
 	}
 	
-	// 상위 업무 담당자 조회
+	// 업무 담당자 조회
 	@Override
-	public List<AllTaskBoardVO> getHighManager(AllTaskBoardVO allTaskBoardVO) {
-		return boardMapper.getHighManager(allTaskBoardVO);
+	public List<AllTaskBoardVO> getManager(AllTaskBoardVO allTaskBoardVO) {
+		return boardMapper.getManager(allTaskBoardVO);
 	}
 	
+	// 업무탭 리스트
 	@Override
 	public List<AllTaskBoardVO> getTaskList(int projectId) {
 		return boardMapper.getTaskList(projectId);
 	}
+	
+	// 업무 수정
+	@Override
+	public int updateTask(TaskVO taskVO) {
+		return boardMapper.updateTask(taskVO);
+	}
+
+	@Override
+	public int updateBoard(BoardVO boardVO) {
+		return boardMapper.updateBoard(boardVO);
+	}
+
+	@Override
+	public int updateTaskManager(TaskVO taskVO) {
+		return boardMapper.updateTaskManager(taskVO);
+	}
+
+
+
 	
 	
 
