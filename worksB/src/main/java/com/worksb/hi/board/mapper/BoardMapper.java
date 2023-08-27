@@ -27,23 +27,25 @@ public interface BoardMapper {
 	public List<VoteVO> getVoteInfo(VoteVO voteVO);
 	// 투표 항목 조회
 	public List<VoteVO> getVoteList(VoteVO voteVO);
-	// 상위 업무 조회
-	public List<AllTaskBoardVO> getHighTask(AllTaskBoardVO allTaskBoardVO);
+	// 업무 조회
+	public List<AllTaskBoardVO> getTaskInfo(AllTaskBoardVO allTaskBoardVO);
 	// 상위 업무 taskId 조회
 	public int getHighTaskId(AllTaskBoardVO allTaskBoardVO);
-	// 상위 업무 담당자 조회
-	public List<AllTaskBoardVO> getHighManager(AllTaskBoardVO allTaskBoardVO);
+	// 업무 담당자 조회
+	public List<AllTaskBoardVO> getManager(AllTaskBoardVO allTaskBoardVO);
 	// 하위 업무 조회
 	public List<AllTaskBoardVO> getSubTask(int TaskId);
 	
 	// 업무 담당자 등록
 	public int insertTaskManager(TaskVO taskVO);
 	
-	// 프로젝트 업무글 탭 리스트
+	// 업무탭 리스트
 	public List<AllTaskBoardVO> getTaskList(int projectId);
 	
-	
-	
+	// 업무 수정
+	public int updateTask(TaskVO taskVO);
+	public int updateBoard(BoardVO boardVO);
+	public int updateTaskManager(TaskVO taskVO);
 	
 //주현
 	
