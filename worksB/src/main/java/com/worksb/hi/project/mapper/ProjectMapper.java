@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.PrjParticirVO;
@@ -46,6 +47,9 @@ public interface ProjectMapper {
   
   
 	//주현
+	//!!!!!!!!!1공통 즐찾여부!!!!!!!!!!!!!!!!!!!!!!
+		public PrjParticirVO getMarkupInfo(@Param("projectId")int projectId,@Param("memberId") String memberId);
+	
 		//내가 참여하는 프로젝트 보기
 		public List<ProjectVO> searchPrj(String memberId);
 		//내가 참여하는 프로젝트 중 즐겨찾기가 안 된 것의 만료여부
@@ -59,13 +63,20 @@ public interface ProjectMapper {
 		//로그인된 아이디가 참여하고 있는 프로젝트를 출력
 		public List<PrjParticirVO> selectAllparticier(String memberId);
 		
+		//총 갯수
+		public int countWhenPublic(@Param("vo")ProjectVO vo,@Param("searchVO")SearchVO searchVO);
+		//총 갯수(작성자공개)
+		public int countWhenWriter(@Param("vo")ProjectVO vo,@Param("searchVO")SearchVO searchVO);
 		//전체공개프로젝트의 파일탭
-		public List<FileDataVO> viewFileWhenPublic(ProjectVO vo);
+		public List<FileDataVO> viewFileWhenPublic(@Param("vo")ProjectVO vo,@Param("pagingVO") PagingVO pagingVO, @Param("searchVO")SearchVO searchVO);
 		//관리자여부
 		public String managerOrNot(ProjectVO vo);
-		//파일탭(파일접근제한프로젝트+관리자의 경우)
-		public List<FileDataVO>viewFileWhenRestricted1(ProjectVO vo);
-		//파일탭(파일접근제한프로젝트+로그인한 아이디가 관리자가 아닌 경우)
-		public List<FileDataVO>viewFileWhenRestricted2(ProjectVO vo);
+		//파일탭(자신의 글만 보기)
+		public List<FileDataVO>viewFileWhenRestricted(@Param("vo")ProjectVO vo,@Param("pagingVO") PagingVO pagingVO, @Param("searchVO")SearchVO searchVO);		
 
+
+		//파일업로드
+		public int insertFile(FileDataVO vo);
+		//파일다운로드
+		public FileDataVO getFileById(int fileId);
 }
