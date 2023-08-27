@@ -16,6 +16,11 @@
 	<script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 	
 	<style>
+	input:-webkit-autofill {
+		webkit-box-shadow: 0 0 0 1000px white inset;
+		box-shadow: 0 0 0 1000px white inset;
+	}
+	
 	a {
 	    text-decoration: none;
 	    color: var(--color-dark-beige);
@@ -54,8 +59,7 @@
 		border-radius: 10px;
 	}
 	
-	.board-header,
-	.subTask-content{
+	.board-header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -557,8 +561,16 @@
 		margin-left: 20px;
 	}
 	
+	.add-taskManager-select option:disabled {
+		color: var(--color-light-white);
+	}
+	
 	.board-taskManager {
 		margin-bottom: 20px;
+	}
+	
+	.board-taskManager span {
+		margin-right: 10px;
 	}
 	
 	.add-manager-btn {
@@ -567,80 +579,91 @@
 		cursor: pointer;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	.ui-datepicker {
-		width: auto;
+	.startDate, .endDate {
+		width: 200px;
+		height: 30px;
+		border: 1px solid var(--color-dark-beigie) !important;
+		color: var(--color-dark-grey);
+		font-size: var(--font-micro);
+		margin-right: 20px;
 	}
 	
 	.progress-bar {
-		background-color: #eeeeee;
+		background-color: var(--color-light-white);
+		width: 300px;
 		height: 20px;
+		border-radius:5px;
+		margin: 10px;
 	}
+	
 	.progress-bar-size {
-		background-color: #90ddfc;
-		height: 100%;
-		width: 0;
-		transition: width 0.3s ease-in-out;
+		width: 1%;
+		height: 20px;
+		border-radius:5px;
+		background-color: var(--color-green);
+		transition: all 0.5s;
 	}
 	
-	.date-input,
-	.vote-add-buttons input,
-	.task-add input {
-		border: 1px solid var(--color-light-white);
-	    border-radius: var(--size-border-radius);
-	    margin: 5px;
+	.progress-value {
+		width: 20px;
 	}
 	
-	.vote-sub,
-	.task_sub{
-		height:120px;
-	}
-	
-	.voteEndDate{
-		color: var(--color-dark-white);
-		font-size: 18px;
-		margin-bottom: 10px;
-	}
-	.voteList,
-	.subTask-content{
-		border-radius: var(--size-border-radius);
-		background-color: #f7fafd;
-		height: 30px;
-		margin-bottom: 10px;
-		padding-left: 15px;
-	}
-	.task-detail,
-	.prjParticir_title span{
-		font-size: 15px;
-	}
-	
-	.prjParticir {
-		width: 200px;
-		align-items: center;
+	.js-progress {
+		display: flex;
 		justify-content: space-between;
-		border-bottom: 1px solid var(--color-dark-white);
-		padding: 0 20px 0 5px;
+		align-items: center;
+		padding-right: 60px;
+		margin: 10px 0;
+	}
+	
+	.board-progress {
+		display: flex;
+		align-items: center;
+	}
+	
+	.select-priority {
+		display: flex;
+		align-items: center;
+	}
+	
+	select[name=priority] {
+		width: 100px;
+		height: 30px;
+		border: 1px solid var(--color-dark-beigie);
+		background-color: white;
+		color: var(--color-dark-grey);
+		font-size: var(--font-micro);
+		margin-left: 20px;
+	}
+	
+	.board-sub-task {
+		margin: 20px 30px;
+	}
+	
+	.add-sub-task-btn {
+		text-decoration: underline;
+		color: var(--color-blue);
 		cursor: pointer;
 	}
 	
-	.prjParticir:nth-child(1) {
-		border-top: 1px solid var(--color-dark-white);
+	.sub-task-manager input, .sub-task-manager select {
+		width: 200px;
+		height: 30px;
+		border: 1px solid var(--color-dark-beigie) !important;
+		color: var(--color-dark-grey);
+		font-size: var(--font-micro);
 	}
 	
-	.prjParticir-img {
-		width: 40px;
-		height: 40px;
+	.board-sub-task-title {
+		color: var(--color-dark-grey);
+		font-weight: var(--weight-bold);
+		font-size: var(--font-small);
+		margin-bottom: 10px;
 	}
 	
-	
+	.m-bt {
+		margin-bottom: 10px;
+	}
 	</style>
 </head>
 <body>
@@ -1024,6 +1047,7 @@
 			<h1>북마크 공간~~</h1>
 		</div>
 	</div>
+	
 	<!-- 게시글 출력 SCRIPT -->
 	<script> 
 		//투표 항목 선택 시 버튼 색상 변경 && 복수 투표 여부
@@ -1246,7 +1270,7 @@
         <!-- 게시글 작성 폼 끝!!! -->
 		
 		<!-- 상위 업무 작성 폼!!! -->
-		<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none d-b" id="task">
+		<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none" id="task">
 			<div class="insert-board-area">
 				<div class="board-form" >
 					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -1266,104 +1290,67 @@
 						<input type="radio" class="btn-check" name="state" value="G5" id="option5" autocomplete="off">
 						<label for="option5">보류</label>
 					</div>
+					<div>
+						<label for="startDate">시작일 : </label>
+						<input type="text" name="startDate" class="date-input startDate" data-date>
+						
+						<label for="endDate">마감일 : </label>
+						<input type="text" name="endDate" class="date-input endDate" disabled>
+					</div>
+					
+					<!-- 진척도 -->
+					<div class="js-progress create-content-cell">
+						<!-- 우선 순위 -->
+						<div class="select-priority">
+							<div>우선 순위 : </div>
+							<select name="priority">
+								<option value="">=======</option>
+								<option value="F3">낮음</option>
+								<option value="F2">보통</option>
+								<option value="F1">긴급</option>
+							</select>
+						</div>
+						<!-- 진행율 -->
+						<div class="board-progress">
+							<div>진행율 : </div>
+							<div class="progress-bar">
+					       		<div class="progress-bar-size"></div>
+							</div>
+							<div class="progress-value">0%</div>
+							<input type="hidden" name="processivity" value="0">
+						</div>
+					</div>
+					
 					<!-- 업무 담당자 -->
 					<div class="board-taskManager">
-						<span onclick="createMangerDiv()" class="add-manager-btn">담당자 추가</span>
+						<span class="add-manager-btn">담당자 추가</span>
+						<div class="highManagerList"></div>
 					</div>
-					<!-- 업무 담당자 끝 -->	
-					<div>
-					<label for="startDate">시작일 추가</label>
-					<input type="text" name="startDate" class="date-input startDate">
-				</div>
-				<div>
-					<label for="endDate">마감일 추가</label>
-					<input type="text" name="endDate" class="date-input endDate">
-				</div>
-				<!-- 우선 순위 -->
-				<div class="select-priority">
-					<select name="priority">
-						<option value="">우선 순위</option>
-						<option value="F3">낮음</option>
-						<option value="F2">보통</option>
-						<option value="F1">긴급</option>
-					</select>
-				</div>
-				<!-- 진척도 -->
-				<!-- 진척도 전체 프로그레스-->
-				<div class="js-progress create-content-cell">
-					<div class="progress-bar">
-				        <!-- 프로그레스 채우기-->
-			       		<div class="progress-bar-size" style="width: 0%;"></div>
-					</div>
-					<!-- 프로그레스 버튼-->
-				    <div class="progress-graph">
-						<span class="progress-button" data-progress-value="0"></span>
-						<span class="progress-button" data-progress-value="10"></span>
-						<span class="progress-button" data-progress-value="20"></span>
-						<span class="progress-button" data-progress-value="30"></span>
-						<span class="progress-button" data-progress-value="40"></span>
-						<span class="progress-button" data-progress-value="50"></span>
-						<span class="progress-button" data-progress-value="60"></span>
-						<span class="progress-button" data-progress-value="70"></span>
-						<span class="progress-button" data-progress-value="80"></span>
-						<span class="progress-button" data-progress-value="90"></span>
-						<span class="progress-button" data-progress-value="100"></span>
-				    </div>
-				</div>
-				<!-- 진척도 값 표시하기 -->
-				<div class="progress-value">0%</div>
-				<!-- 진척도 값 넘길때 -->
-				<input type="hidden" name="processivity" value="0">
+					<!-- 업무 담당자 끝 -->
+					
 					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor2"></textarea>
 				</div>
+				
+				<!-- 하위업무 등록 -->
+				<div class="board-sub-task">
+					<div class="board-sub-task-title">하위 업무</div>
+					<div class="sub-task-manager"></div>
+					<span class="add-sub-task-btn">하위 업무 추가</span>
+				</div>
 	        </div>
+	        
 	        <div class="modal-footer">
 				<select name="inspYn" class="modal-footer-select">
 					<option value="E2">전체 공개</option>
 					<option value="E1">프로젝트 관리자만</option>
 				</select>
 				<input type="hidden" name="boardType" value="C5">
-         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-              	<button type="reset" class="modal-footer-btn">임시저장</button>
-              	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-              	<div><a href="#">임시저장 게시글 보기</a></div>
+	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	             	<button type="reset" class="modal-footer-btn">임시저장</button>
+	             	<button type="button" class="modal-footer-btn" id="btnAddTask" data-bs-dismiss="modal">등록</button>
+	             	<div><a href="#">임시저장 게시글 보기</a></div>
 			</div>
 		</form>
-		
-		
-		
-		
-		
-		<div class="modal-body dis-none">
-		   <form id="boardInsert" method="post">
-		       <!-- 시작일자 마감일자 우선순위 진척도 추가!!!! 하위업무-->
-				
-				
-				
-				
-			</form>
-		
-			<!-- 하위 업무 -->	
-			<div class="task-add">
-			    <button type="button" class="btn btn-secondary btn-add-subtask">하위업무 추가</button>
-			</div>
-			<!-- 하위 업무 끝 -->
-	
-			<div class="task-inspYn">
-				<label>공개 범위</label>
-				<select class="form__select" name="inspYn">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-			</div>
-	        <div class="modal-footer form__button">
-	         	<input type="hidden" name="boardType" value="C8">
-	         	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-				<button type="button" class="btn btn-primary" id="btnAddTask" data-bs-dismiss="modal">등록</button>
-				<button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-	  		</div>
-		</div>
-	
 	
 		<!-- 일정 작성 폼!!! -->
 		<div class="modal-body dis-none" id="sche">
@@ -1374,11 +1361,9 @@
 				</div>
 				<div>
 					<label for="startDate">시작일</label>
-					<input type="text" name="startDate" class="date-input startDate">
-				</div>
-				<div>
+					<input type="text" name="startDate" class="date-input startDate" data-date>
 					<label for="endDate">종료일</label>
-					<input type="text" name="endDate" class="date-input endDate">
+					<input type="text" name="endDate" class="date-input endDate" disabled>
 				</div>
 				<!-- 알람 추가 -->
 				<div>
@@ -1416,8 +1401,8 @@
 			   		<input type="text" name="listContent"> <input type="button" class="btnAdd" value="항목 추가"><br>        
 			    </div>
 				<div>
-					<input type="text" name="endDate" class="date-input endDate">
-					<label for="endDate">투표 종료일</label>
+					<label for="endDate" >투표 종료일</label>
+					<input type="text" name="endDate" class="date-input endDate" data-date>
 				</div>
 				<div class="form-check form-switch">
 					<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
@@ -1449,6 +1434,94 @@
     </div>
 </div>
 	
+	<!-- ckeditor -->
+	<script>
+	for(let i =1; i<3; i++) {
+		CKEDITOR.ClassicEditor.create(document.querySelector('#editor' + i), {
+	        toolbar: {
+	        	 items: [
+					'alignment', '|',
+					'heading', '|',
+					'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+					'exportPDF', 'insertImage', 'mediaEmbed',
+					'-',
+					'specialCharacters', '|',
+					'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',                     
+					'findAndReplace', 'selectAll'
+	             ],
+	             shouldNotGroupWhenFull: true
+	         },
+	        // Changing the language of the interface requires loading the language file using the <script> tag.
+	        language: 'ko',
+	        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+	        heading: {
+	            options: [
+	                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+	                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+	                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+	                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+	                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+	                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+	                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+	            ]
+	        },
+	        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+	        placeholder: '내용을 입력하세요.',
+	        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+	        fontFamily: {
+	            options: [
+	                'default',
+	                '궁서체',
+		    		'돋움',
+	                'Arial, Helvetica, sans-serif',
+	                'Courier New, Courier, monospace',
+	                'Georgia, serif',
+	                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+	                'Tahoma, Geneva, sans-serif',
+	                'Times New Roman, Times, serif',
+	                'Trebuchet MS, Helvetica, sans-serif',
+	                'Verdana, Geneva, sans-serif',
+	            ],
+	            supportAllValues: true
+	        },
+	        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+	        fontSize: {
+	            options: [ 10, 12, 14, 16, 18, 20, 22 ],
+	            supportAllValues: true
+	        },
+	        // The "super-build" contains more premium features that require additional configuration, disable them below.
+	        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+	        removePlugins: [
+	            // These two are commercial, but you can try them out without registering to a trial.
+	            // 'ExportPdf',
+	            // 'ExportWord',
+	            'CKBox',
+	            'EasyImage',
+	            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+	            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+	            // Storing images as Base64 is usually a very bad idea.
+	            // Replace it on production website with other solutions:
+	            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+	            // 'Base64UploadAdapter',
+	            'RealTimeCollaborativeComments',
+	            'RealTimeCollaborativeTrackChanges',
+	            'RealTimeCollaborativeRevisionHistory',
+	            'PresenceList',
+	            'Comments',
+	            'TrackChanges',
+	            'TrackChangesData',
+	            'RevisionHistory',
+	            'Pagination',
+	            'WProofreader',
+	            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+	            // from a local file system (file://) - load this site via HTTP server if you enable MathType
+	            'MathType'
+	        ]
+	   	});	
+	};
+	</script>
+	<!-- ckeditor 종료 -->
+	
 	<!-- 게시글 작성 SCRIPT -->
 	<script>
 		// 게시글 유형 폼 선택
@@ -1468,26 +1541,26 @@
 				visibleDiv.removeClass('d-b');
 				$('#vote').addClass('d-b');
 			}	
-		})
+		});
 		
-		function createMangerDiv() {
-			let boardTaskManager = $('.board-taskManager');
-			let selectBox = $('<select class="add-taskManager-select"><option value="" selected disabled>담당자 추가</option></select>');
+		// 업무 등록 시작
+		//담당자 추가 클릭 시 구성원 불러오고 셀렉트 박스
+		$(document).on('click', '.add-manager-btn', function(e) {
+			let boardTaskManager = $(e.currentTarget).closest('.board-taskManager');
+			let addManagerBtn = $(e.currentTarget);
+			let selectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
 			
-			boardTaskManager.empty();
-			boardTaskManager.append('<span>담당자 : </span>');
+			addManagerBtn.remove();
 			
 			$.ajax({
 		    	url : '${pageContext.request.contextPath}/particirList',
 		        type: 'GET',
 		        data: {'projectId': "${projectInfo.projectId}"},
 		        success: function(particir){
-					console.log(particir);
-					
-		            for(let i=0; i<particir.length; i++) {
+		        	for(let i=0; i<particir.length; i++) {
 						let option = $('<option>');
 						
-						option.val(particir[i].memberId);
+						option.val(particir[i].prjParticirId);
 						option.text(particir[i].memberName);
 						
 						selectBox.append(option);
@@ -1498,96 +1571,78 @@
 		        }
 		    });	
 			
-			boardTaskManager.append(selectBox);
-			boardTaskManager.append('<div class="taskManager"></div>');
-		};
-						
-		
-		
-		
-		
-		
-		
-		// 업무, 투표, 일정
-		// 업무 담당자 선택 시 참여자 리스트 출력
-		$('.add-taskManager-select').on('click', function(e) {
-			let optionCount = $(e.currentTarget).length-1;
-			
-			console.log(optionCount);
-			
-			if(optionCount != 0) {
-				return;
-			}else {
-				let selectBox = $(e.currentTarget);
-				let options = selectBox.children().not('option:disabled');
-				options.remove();
-				
-			    
-			}
+			boardTaskManager.prepend(selectBox);
+			boardTaskManager.prepend('<span>담당자 : </span>');
 		});
 		
-		// 참여자 선택하여 업무 담당자 추가하기
-		function selectTaskManager(e) {
-			e.stopPropagation();	
-		};
-		
-        /* $(document).on("click", ".prjParticir", function (e) {
-            
-
-            let memberName = $(this).find("span").text();
-            let AddParticir = '<input type="text" name="memberName" value="' + memberName + '">';
-            $('.taskManager').append(AddParticir);
-            
-            
-            //prj_particir_id
-            let prjParticirId = $(this).find("input[name='particirId']").val();
-            let AddParticirId = '<input type="hidden" id="prjParticirId" name="prjParticirId" value="' + prjParticirId + '">';
-            $('.taskManager').append(AddParticirId);
-             
-            
-            console.log(prjParticirId);
-        }); */
-		
-		
-		
-		
-		
-		
-		
+		//담당자 선택시 스팬 추가
+		$(document).on('change', '.add-taskManager-select', function(e) {
+			let managerSpan = $('<span>');
+			let memberId = `<input type="hidden" name="taskManager">`;
+			let selectBox = $(e.currentTarget);
+			let checkedOption = selectBox.find('option:checked');
+			
+			if(selectBox.find('option:disabled').length == 4) {
+				managerSpan.text('외 1명');
+				selectBox.before(managerSpan);
+			}else if (selectBox.find('option:disabled').length > 4) {
+				selectBox.prev().remove();
+				managerSpan.text('외' + (selectBox.find('option:disabled').length-3) + '명');
+				selectBox.before(managerSpan);
+			} else {
+				managerSpan.text(checkedOption.text());
+				selectBox.before(managerSpan);
+			}
+			//담당자 아이디 저장
+			memberId = $(memberId).val(checkedOption.val());
+			selectBox.next().append(memberId);
+			
+			checkedOption.prop('disabled', true);
+		});
 		
 		// 시작일자, 마감일자 범위 선택하기
-		$(function () {
-			$(".startDate").datetimepicker({
-				dateFormat: "yy-mm-dd h:m:s",
-				// 오늘 이후로 선택 가능하게 설정
-				minDate: 0,
-				onSelect: function(selectedDate) {
-					// 시작일 선택 -> selectedDate
-					// 최소 선택 일자를 minDate -> selectedDate로 설정
-					$(".endDate").datetimepicker("option", "minDate", selectedDate);
-				}
-			});
-			
-			// 마감 일자 설정
-			$(".endDate").datetimepicker({
-				dateFormat: "yy-mm-dd h:m:s",
-				// 오늘 이후로 선택 가능하게 설정
-				minDate: 0
-			});
-			
-			// 폼 리셋 버튼을 클릭할 때 날짜 전부 초기화
-			$("button[type='reset']").on("click", function() {
-				$(".startDate").datetimepicker("setDate", null);
-				$(".endDate").datetimepicker("setDate", null);
-				$(".endDate").datetimepicker("option", "minDate", 0);
-			});
+		$(document).on('click', 'input[data-date]', function(e) {
+			//startDate 클릭 시
+			if($(e.currentTarget).hasClass('startDate')) {
+				let startDate = $(e.currentTarget);
+				let endDate = startDate.siblings('.endDate');
+				
+				// 시작일
+				startDate.datetimepicker({
+					dateFormat: "yy-MM-dd h:m:s",
+					onSelectDate:function() {
+						endDate.prop('disabled', false);
+					}
+				});
+				
+				// 마감일
+				endDate.datetimepicker({
+					dateFormat: "yy-MM-dd h:m:s",
+					// 오늘 이후로 선택 가능하게 설정
+					onShow:function(){
+						let date = new Date(startDate.val());
+						date.setDate(date.getDate() + 1);
+						
+						this.setOptions({
+							minDate:startDate.val()?date:false
+						})
+					}
+				});
+			} //endDate 클릭 시 
+			else if($(e.currentTarget).hasClass('endDate')) {
+				let endDate = $(e.currentTarget);
+				
+				endDate.datetimepicker({
+					dateFormat: "yy-MM-dd h:m:s",
+					// 오늘 이후로 선택 가능하게 설정
+					minDate: 0
+				});
+			}
 		});
-		
-		
+			
 		//진척도!!
 		const progressBar = document.querySelector(".progress-bar");
 		const progressBarInner = document.querySelector(".progress-bar-size");
-		const progressButtons = document.querySelectorAll(".progress-button");
 	
 		progressBar.addEventListener("click", (event) => {
 			// 클릭 위치
@@ -1602,16 +1657,6 @@
 	
 			// 클릭한 진척도 값으로 프로그레스 채우기
 			progressBarInner.style.width = selectedProgress + "%";
-	
-			progressButtons.forEach(button => {
-				const buttonProgress = parseInt(button.getAttribute("data-progress-value"));
-				if (buttonProgress <= selectedProgress) {
-					// 프로그레스바를 클릭한 값보다 작거나 같은 값만 나타내기
-					button.style.display = "inline-block";
-				} else {
-					button.style.display = "none";
-				}
-			});
 			
 			// input에 선택 한 값 넣기
 		    const hiddenInput = document.querySelector("input[name='processivity']");
@@ -1625,6 +1670,122 @@
 			}
 		});
 		
+		// 하위 업무 추가하기
+	    $('.add-sub-task-btn').on('click', function() {
+	        var subtaskForm = `
+	            <div class="task-add">
+	        		<div class="d-flex m-bt">
+	        			<div>
+	        				<span>업무 제목 : </span>
+	        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+	        			</div>
+		                <div class="select-state">
+		                	<span>진행 상태 : </span>
+						    <select name="state" class="task-select">
+						        <option value="G1">요청</option>
+						        <option value="G2">진행</option>
+						        <option value="G3">피드백</option>
+						        <option value="G4">완료</option>
+						        <option value="G5">보류</option>
+						    </select>
+						</div>
+	        		</div>
+	                <div class="d-flex m-bt">
+		        		<div class="select-priority">
+		        			<span>우선 순위 : </span>
+		                    <select name="priority">
+		                        <option value="">=======</option>
+		                        <option value="F3">낮음</option>
+		                        <option value="F2">보통</option>
+		                        <option value="F1">긴급</option>
+		                    </select>
+		                </div>
+		                <div>
+		                    <label for="endDate">마감일 : </label>
+		                    <input type="text" name="endDate" class="date-input endDate" data-date>
+		                </div>
+	                </div>
+	                <div class="board-taskManager">
+						<span class="add-manager-btn">담당자 추가</span>
+						<div class="subManagerList"></div>
+					</div>
+	            </div>`;
+	        
+	            $('.sub-task-manager').append(subtaskForm);
+	    	});
+		
+		// 업무 등록하기
+		$('#btnAddTask').on('click', function(){
+			let editor2 = CKEDITOR.replace('editor2');
+			let data={}
+			let prjBoardTitle = $('#task').find('[name=prjBoardTitle]').val();
+			let prjBoardSubject = CKEDITOR.instances.editor2.getData();
+			let state = $('#task').find('[name=state]:checked').val();
+			let inspYn = $('#task').find('[name=inspYn]').val();
+			let startDate = $('#task').find('[name=startDate]').val();
+			let endDate = $('#task').find('[name=endDate]').val();
+			let priority = $('#task').find('[name=priority]').val();
+			let processivity = $('#task').find('[name=processivity]').val();
+			let boardType = 'C8';
+			let memberId = $('#memberId').val();
+			let projectId = $('#projectId').val();
+			
+			
+			let boardVO = {prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId}
+			let taskVO = {state, startDate, endDate, priority, processivity}
+			
+			// 상위 업무 담당자 리스트
+			let prjManager =[];
+			$('.highManagerList input[name="taskManager"]').each(function(index, item){
+		        let prjParticirId = $(item).val();
+		        prjManager.push({prjParticirId});
+		    });
+			
+			// 하위 업무
+			let subTask = [];
+			let subManager = [];
+			$('.task-add').each(function(index,item){
+				let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
+				// 하위 업무 리스트
+				if (prjBoardTitle !== "") {
+	                let state = $(item).find('[name=state]:checked').val();
+	                let endDate = $(item).find('[name=endDate]').val();
+	                let priority = $(item).find('[name=priority]').val();
+	                let managerList = $(item).find('input[name="taskManager"]');
+	                
+	                subTask.push({ prjBoardTitle, state, endDate, priority });
+	            	
+	            // 하위 업무 담당자
+					$(managerList).each(function(idx, manager) {
+						let prjParticirId = $(manager).val();
+						let prjBoardId = index;
+						console.log()
+						subManager.push({prjBoardId, prjParticirId});
+					});               
+	            }
+			});
+			
+			// 빈객체 지우기
+			/* if (subTask.length > 0 && !subTask[subTask.length - 1].prjBoardTitle) {
+	        	subTask.pop();
+	   		} */
+			
+			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}));
+			$.ajax({
+				url:'${pageContext.request.contextPath}/taskInsert',
+				type:'post',
+				data:JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}),
+				contentType:'application/json',
+				success:function(data){
+					location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + data;
+				},error: function(reject) {
+					console.log(reject);
+				}
+			});
+		})
+		// 업무 등록 종료
+		
+		
 		// 투표 항목 추가하기           
         $('.btnAdd').click (function () {                                        
             $('.vote-add-buttons').append (                        
@@ -1636,185 +1797,6 @@
                 $(this).remove (); // 버튼 지우기
             });
         });                                           
-		/*
-		// 하위 업무 추가하기
-		$(document).ready(function () {
-	    $('.btn-add-subtask').click(function (event) {
-	        event.stopPropagation();
-	        var subtaskForm = `
-	            <div class="task-add">
-	                <input type="text" name="prjBoardTitle">
-	                <div>
-	                    <label for="endDate">마감일 추가</label>
-	                    <input type="text" name="endDate" class="date-input endDate">
-	                </div>
-	                <div class="select-priority">
-	                    <select name="priority">
-	                        <option value="">우선 순위</option>
-	                        <option value="F3">낮음</option>
-	                        <option value="F2">보통</option>
-	                        <option value="F1">긴급</option>
-	                    </select>
-	                </div>
-	                <div class="select-state">
-	                    <select name="state" class="task-select">
-	                        <option value="G1">요청</option>
-	                        <option value="G2">진행</option>
-	                        <option value="G3">피드백</option>
-	                        <option value="G4">완료</option>
-	                        <option value="G5">보류</option>
-	                    </select>
-	                </div>
-	            </div>`;
-	        
-	        $('.task-add:last').prev().after(subtaskForm);
-	    	});
-		});
-		*/
-	
-		// 업무 등록하기
-		$('#btnAddTask').on('click', function(){
-			let data={}
-			let prjBoardTitle = $('#task #boardInsert').find('[name=prjBoardTitle]').val();
-			let prjBoardSubject = $('#task #boardInsert').find('[name=prjBoardSubject]').val();
-			let state = $('#task #boardInsert').find('[name=state]:checked').val();
-			let inspYn = $('.task-inspYn').find('[name=inspYn]').val();
-			let startDate = $('#task #boardInsert').find('[name=startDate]').val();
-			let endDate = $('#task #boardInsert').find('[name=endDate]').val();
-			let priority = $('#task #boardInsert').find('[name=priority]').val();
-			let processivity = $('#task #boardInsert').find('[name=processivity]').val();
-			let boardType = 'C8';
-			let memberId = $('#memberId').val();
-			let projectId = $('#projectId').val();
-			
-			
-			let boardVO = {prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId}
-			let taskVO = {state, startDate, endDate, priority, processivity}
-			
-			// 상위 업무 담당자 리스트
-			let prjManager =[];
-			$('.taskManager input[name="prjParticirId"]').each(function(index, item){
-		        let prjParticirId = $(item).val();
-		        prjManager.push({prjParticirId});
-		    });
-			
-			// 하위 업무 리스트
-			let subTask = [];
-			$('.task-add').each(function(index,item){
-				
-				let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
-				if (prjBoardTitle !== "") {
-	                let state = $(item).find('[name=state]:checked').val();
-	                let endDate = $(item).find('[name=endDate]').val();
-	                let priority = $(item).find('[name=priority]').val();
-	                subTask.push({ prjBoardTitle, state, endDate, priority });
-	            }
-			})
-			
-			// 빈객체 지우기
-			if (subTask.length > 0 && !subTask[subTask.length - 1].prjBoardTitle) {
-	        	subTask.pop();
-	   		}
-			
-			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager}));
-			$.ajax({
-				url:'taskInsert',
-				type:'post',
-				data:JSON.stringify({boardVO, taskVO, subTask, prjManager}),
-				contentType:'application/json',
-				success:function(data){
-					console.log(data);
-				},error: function(reject) {
-					console.log(reject);
-				}
-			});
-		})
-	
-		//ckeditor
-		for(let i =1; i<3; i++) {
-			CKEDITOR.ClassicEditor.create(document.querySelector('#editor' + i), {
-	            toolbar: {
-	            	 items: [
-						'alignment', '|',
-						'heading', '|',
-						'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-						'exportPDF', 'insertImage', 'mediaEmbed',
-						'-',
-						'specialCharacters', '|',
-						'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',                     
-						'findAndReplace', 'selectAll'
-	                 ],
-	                 shouldNotGroupWhenFull: true
-	             },
-	            // Changing the language of the interface requires loading the language file using the <script> tag.
-	            language: 'ko',
-	            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-	            heading: {
-	                options: [
-	                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-	                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-	                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-	                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-	                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-	                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-	                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-	                ]
-	            },
-	            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-	            placeholder: '내용을 입력하세요.',
-	            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-	            fontFamily: {
-	                options: [
-	                    'default',
-	                    '궁서체',
-			    		'돋움',
-	                    'Arial, Helvetica, sans-serif',
-	                    'Courier New, Courier, monospace',
-	                    'Georgia, serif',
-	                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
-	                    'Tahoma, Geneva, sans-serif',
-	                    'Times New Roman, Times, serif',
-	                    'Trebuchet MS, Helvetica, sans-serif',
-	                    'Verdana, Geneva, sans-serif',
-	                ],
-	                supportAllValues: true
-	            },
-	            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-	            fontSize: {
-	                options: [ 10, 12, 14, 16, 18, 20, 22 ],
-	                supportAllValues: true
-	            },
-	            // The "super-build" contains more premium features that require additional configuration, disable them below.
-	            // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-	            removePlugins: [
-	                // These two are commercial, but you can try them out without registering to a trial.
-	                // 'ExportPdf',
-	                // 'ExportWord',
-	                'CKBox',
-	                'EasyImage',
-	                // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-	                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-	                // Storing images as Base64 is usually a very bad idea.
-	                // Replace it on production website with other solutions:
-	                // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-	                // 'Base64UploadAdapter',
-	                'RealTimeCollaborativeComments',
-	                'RealTimeCollaborativeTrackChanges',
-	                'RealTimeCollaborativeRevisionHistory',
-	                'PresenceList',
-	                'Comments',
-	                'TrackChanges',
-	                'TrackChangesData',
-	                'RevisionHistory',
-	                'Pagination',
-	                'WProofreader',
-	                // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-	                // from a local file system (file://) - load this site via HTTP server if you enable MathType
-	                'MathType'
-	            ]
-	       	});	
-		};
-		//ckeditor 종료
 	</script>
 	<!-- 게시글 작성 종료 -->
 </body>

@@ -48,7 +48,7 @@ public class BoardController {
     // 업무글 등록
     @PostMapping("taskInsert")
     @ResponseBody
-    public String taskInsert(@RequestBody BoardRequestVO brVO) {
+    public int taskInsert(@RequestBody BoardRequestVO brVO) {
     	// 게시글 등록
     	BoardVO boardVO = brVO.getBoardVO();
     	boardService.insertBoard(brVO.getBoardVO());
@@ -65,12 +65,12 @@ public class BoardController {
     			//게시글 id
     			taskManager.setPrjBoardId(taskVO.getPrjBoardId());
     			boardService.insertTaskManager(taskManager);
-
     		}
     	}
     	
     	// 하위 업무 등록
     	List<TaskVO> taskList = brVO.getSubTask();
+    	List<TaskVO> subManagerList = brVO.getSubManager();
     	if(taskList != null){
     		TaskVO subtaskVO ;
 	    	for(int i=0; i < taskList.size(); i++) {
@@ -90,9 +90,26 @@ public class BoardController {
 	    		subtaskVO.setHighTaskId(taskVO.getTaskId());
 	    		subtaskVO.setState(taskVO.getState());
 	    		boardService.insertTask(subtaskVO);
+	    		
+	    		// 하위 업무 담당자 boardId 설정
+	        	for(int j=0; j<subManagerList.size(); j++) {
+	        		TaskVO subManager = subManagerList.get(i);
+	        		if(subManager.getPrjBoardId() == i) {
+	        			subManager.setPrjBoardId(subBoardVO.getPrjBoardId());
+	        		}
+	        	}
+	    		
 	    	}
     	}
-    	return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+    	//하위 업무 담당자 등록
+    	if(subManagerList != null) {
+    		for(int i=0; i<subManagerList.size(); i++) {
+    			boardService.insertTaskManager(subManagerList.get(i));
+    		}
+    	}
+    	int result = boardVO.getProjectId();
+    	
+    	return result; 
     }
     
 	//게시글 등록 - 게시글, 일정, 투표
