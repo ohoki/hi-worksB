@@ -42,8 +42,10 @@ public interface BoardMapper {
 	// 업무탭 리스트
 	public List<AllTaskBoardVO> getTaskList(int projectId);
 	
-	
-	
+	// 업무 수정
+	public int updateTask(TaskVO taskVO);
+	public int updateBoard(BoardVO boardVO);
+	public int updateTaskManager(TaskVO taskVO);
 	
 //주현
 	
