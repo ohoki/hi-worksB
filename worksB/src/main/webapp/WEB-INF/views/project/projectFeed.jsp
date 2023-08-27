@@ -1292,10 +1292,10 @@
 					</div>
 					<div>
 						<label for="startDate">시작일 : </label>
-						<input type="text" name="startDate" class="date-input startDate" data-date>
+						<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
 						
 						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" disabled>
+						<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
 					</div>
 					
 					<!-- 진척도 -->
@@ -1361,9 +1361,9 @@
 				</div>
 				<div>
 					<label for="startDate">시작일</label>
-					<input type="text" name="startDate" class="date-input startDate" data-date>
+					<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
 					<label for="endDate">종료일</label>
-					<input type="text" name="endDate" class="date-input endDate" disabled>
+					<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
 				</div>
 				<!-- 알람 추가 -->
 				<div>
@@ -1434,96 +1434,103 @@
     </div>
 </div>
 	
-	<!-- ckeditor -->
-	<script>
-	for(let i =1; i<3; i++) {
-		CKEDITOR.ClassicEditor.create(document.querySelector('#editor' + i), {
-	        toolbar: {
-	        	 items: [
-					'alignment', '|',
-					'heading', '|',
-					'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-					'exportPDF', 'insertImage', 'mediaEmbed',
-					'-',
-					'specialCharacters', '|',
-					'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',                     
-					'findAndReplace', 'selectAll'
-	             ],
-	             shouldNotGroupWhenFull: true
-	         },
-	        // Changing the language of the interface requires loading the language file using the <script> tag.
-	        language: 'ko',
-	        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-	        heading: {
-	            options: [
-	                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-	                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-	                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-	                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-	                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-	                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-	                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-	            ]
-	        },
-	        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-	        placeholder: '내용을 입력하세요.',
-	        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-	        fontFamily: {
-	            options: [
-	                'default',
-	                '궁서체',
-		    		'돋움',
-	                'Arial, Helvetica, sans-serif',
-	                'Courier New, Courier, monospace',
-	                'Georgia, serif',
-	                'Lucida Sans Unicode, Lucida Grande, sans-serif',
-	                'Tahoma, Geneva, sans-serif',
-	                'Times New Roman, Times, serif',
-	                'Trebuchet MS, Helvetica, sans-serif',
-	                'Verdana, Geneva, sans-serif',
-	            ],
-	            supportAllValues: true
-	        },
-	        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-	        fontSize: {
-	            options: [ 10, 12, 14, 16, 18, 20, 22 ],
-	            supportAllValues: true
-	        },
-	        // The "super-build" contains more premium features that require additional configuration, disable them below.
-	        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-	        removePlugins: [
-	            // These two are commercial, but you can try them out without registering to a trial.
-	            // 'ExportPdf',
-	            // 'ExportWord',
-	            'CKBox',
-	            'EasyImage',
-	            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-	            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-	            // Storing images as Base64 is usually a very bad idea.
-	            // Replace it on production website with other solutions:
-	            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-	            // 'Base64UploadAdapter',
-	            'RealTimeCollaborativeComments',
-	            'RealTimeCollaborativeTrackChanges',
-	            'RealTimeCollaborativeRevisionHistory',
-	            'PresenceList',
-	            'Comments',
-	            'TrackChanges',
-	            'TrackChangesData',
-	            'RevisionHistory',
-	            'Pagination',
-	            'WProofreader',
-	            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-	            // from a local file system (file://) - load this site via HTTP server if you enable MathType
-	            'MathType'
-	        ]
-	   	});	
-	};
-	</script>
-	<!-- ckeditor 종료 -->
-	
 	<!-- 게시글 작성 SCRIPT -->
 	<script>
+		//ckeditor 시작
+		for(let i =1; i<3; i++) {
+			CKEDITOR.ClassicEditor.create(document.querySelector('#editor' + i), {
+		        toolbar: {
+		        	 items: [
+						'alignment', '|',
+						'heading', '|',
+						'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+						'exportPDF', 'insertImage', 'mediaEmbed',
+						'-',
+						'specialCharacters', '|',
+						'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',                     
+						'findAndReplace', 'selectAll'
+		             ],
+		             shouldNotGroupWhenFull: true
+		         },
+		        // Changing the language of the interface requires loading the language file using the <script> tag.
+		        language: 'ko',
+		        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+		        heading: {
+		            options: [
+		                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+		                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+		                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+		                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+		                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+		                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+		                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+		            ]
+		        },
+		        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+		        placeholder: '내용을 입력하세요.',
+		        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+		        fontFamily: {
+		            options: [
+		                'default',
+		                '궁서체',
+			    		'돋움',
+		                'Arial, Helvetica, sans-serif',
+		                'Courier New, Courier, monospace',
+		                'Georgia, serif',
+		                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+		                'Tahoma, Geneva, sans-serif',
+		                'Times New Roman, Times, serif',
+		                'Trebuchet MS, Helvetica, sans-serif',
+		                'Verdana, Geneva, sans-serif',
+		            ],
+		            supportAllValues: true
+		        },
+		        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+		        fontSize: {
+		            options: [ 10, 12, 14, 16, 18, 20, 22 ],
+		            supportAllValues: true
+		        },
+		        // The "super-build" contains more premium features that require additional configuration, disable them below.
+		        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+		        removePlugins: [
+		            // These two are commercial, but you can try them out without registering to a trial.
+		            // 'ExportPdf',
+		            // 'ExportWord',
+		            'CKBox',
+		            'EasyImage',
+		            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+		            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+		            // Storing images as Base64 is usually a very bad idea.
+		            // Replace it on production website with other solutions:
+		            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+		            // 'Base64UploadAdapter',
+		            'RealTimeCollaborativeComments',
+		            'RealTimeCollaborativeTrackChanges',
+		            'RealTimeCollaborativeRevisionHistory',
+		            'PresenceList',
+		            'Comments',
+		            'TrackChanges',
+		            'TrackChangesData',
+		            'RevisionHistory',
+		            'Pagination',
+		            'WProofreader',
+		            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+		            // from a local file system (file://) - load this site via HTTP server if you enable MathType
+		            'MathType'
+		        ]
+		   	}).then(newEditor => {
+		   	 	window['editor'+i] = newEditor;
+		    })
+		    .catch( error => {
+		        console.error( error );
+		    });	
+		};
+		//ckeditor 종료
+		
+		
+		    
+		
+		
 		// 게시글 유형 폼 선택
 		$('ul.insert-board-list li').click(function(e){
 			let target = e.currentTarget.textContent;
@@ -1609,7 +1616,8 @@
 				
 				// 시작일
 				startDate.datetimepicker({
-					dateFormat: "yy-MM-dd h:m:s",
+					format:'Y-m-d H:i',
+					lang:'kr',
 					onSelectDate:function() {
 						endDate.prop('disabled', false);
 					}
@@ -1617,7 +1625,8 @@
 				
 				// 마감일
 				endDate.datetimepicker({
-					dateFormat: "yy-MM-dd h:m:s",
+					format:'Y-m-d H:i',
+					lang:'kr',
 					// 오늘 이후로 선택 가능하게 설정
 					onShow:function(){
 						let date = new Date(startDate.val());
@@ -1716,10 +1725,9 @@
 		
 		// 업무 등록하기
 		$('#btnAddTask').on('click', function(){
-			let editor2 = CKEDITOR.replace('editor2');
 			let data={}
 			let prjBoardTitle = $('#task').find('[name=prjBoardTitle]').val();
-			let prjBoardSubject = CKEDITOR.instances.editor2.getData();
+			let prjBoardSubject = editor2.getData();
 			let state = $('#task').find('[name=state]:checked').val();
 			let inspYn = $('#task').find('[name=inspYn]').val();
 			let startDate = $('#task').find('[name=startDate]').val();
@@ -1773,7 +1781,7 @@
 			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}));
 			$.ajax({
 				url:'${pageContext.request.contextPath}/taskInsert',
-				type:'post',
+				type:'POST',
 				data:JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}),
 				contentType:'application/json',
 				success:function(data){
