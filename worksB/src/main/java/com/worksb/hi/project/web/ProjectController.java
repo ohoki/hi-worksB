@@ -288,7 +288,7 @@ public class ProjectController {
 	}
 	
 	//파일탭의 검색
-	@PostMapping("/searchfiles")//vo로 넘어오는 것: projectId,fileAccess
+	@PostMapping("/searchfiles")
 	public String file(
 			HttpSession session, 
 			@RequestParam("prjId") int prjId,
