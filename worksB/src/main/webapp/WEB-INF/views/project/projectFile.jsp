@@ -107,8 +107,6 @@
 		}
 		function check(fileId){
 		 	let checkbox = $('#' + fileId);
-
-
 		    if(checkbox.prop('checked')) {
 		        checkbox.prop('checked', false);
 		        checkbox.closest('tr').css({"background-color":"white"});
@@ -133,7 +131,6 @@
 		        downloadLink.href = "${pageContext.request.contextPath}/downloadFile/" + checkedFileId;
 		        downloadLink.target = '_blank'; 
 		        downloadLink.download = $('#'+checkedFileId).closest('tr').find('td:first-child').text(); 
-
 		        // 링크를 클릭하여 파일 다운로드 시작
 		        downloadLink.click();
 		    } else {
