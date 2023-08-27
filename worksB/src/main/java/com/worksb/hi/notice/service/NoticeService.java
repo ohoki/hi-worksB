@@ -28,4 +28,6 @@ public interface NoticeService {
 	// 조회수 올리기
 	public void noticeHit(int noticeId);
 	
+
+	
 }

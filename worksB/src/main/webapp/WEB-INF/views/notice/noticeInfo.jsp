@@ -193,12 +193,12 @@ div h2 {
     function toggleLike(boardId, memberId) {
         // 서버로 비동기 요청을 보냄
         $.get("/like", { boardType: "NOTICE", boardId: boardId, memberId: memberId }, function (response) {
-            // 서버로부터 받은 응답(response)에 따라 동작 결정
+            // 서버로부터 받은 값에 따라 동작 결정
             if (response === "liked") {
-                // 좋아요 상태일 경우 버튼 텍스트 변경
+                // 좋아요 상태일 경우 
                 $("#likeButton").text("좋아요 해제");
             } else if (response === "unliked") {
-                // 좋아요 해제 상태일 경우 버튼 텍스트 변경
+                // 좋아요 해제 상태일 경우
                 $("#likeButton").text("좋아요");
             }
         });
