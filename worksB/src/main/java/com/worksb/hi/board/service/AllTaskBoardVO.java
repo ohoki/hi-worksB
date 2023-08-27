@@ -44,5 +44,7 @@ public class AllTaskBoardVO {
 	private int prjParticirId;
 	private int respId;
 	
+	private String realProfilePath;
+	
 	
 }

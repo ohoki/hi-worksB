@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -24,6 +26,7 @@ COORDINATE                 VARCHAR2(60)
 	private String prjBoardTitle;
 	private String prjBoardSubject;
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date prjBoardRegdate;
 	private String memberId;
 	private String inspYn;
