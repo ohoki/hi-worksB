@@ -130,4 +130,11 @@ public class NoticeController {
         return comLikeService.countLikes(comLikeVO);
     }
 	
+    // 공지마다 좋아요
+    @GetMapping("/noticeLikeCount")
+    @ResponseBody
+    public int getLikeCountForNotice(@RequestParam("noticeId") int noticeId) {
+        // 해당 공지마다의 좋아요 총 갯수 조회
+        return comLikeService.noticeLikeCount(noticeId);
+    }
 }

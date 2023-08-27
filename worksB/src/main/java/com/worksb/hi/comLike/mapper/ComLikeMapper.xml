@@ -33,4 +33,12 @@
           FROM com_like
          WHERE board_type = #{boardType} AND board_id = #{boardId} AND member_id = #{memberId}
     </select>
+    
+    	<!-- 공지마다의 좋아요 총 갯수 조회 -->
+	<select id="noticeLikeCount" parameterType="int" resultType="int">
+    	SELECT COUNT(*) 
+    	  FROM com_like
+    	 WHERE board_type = #{boardType} AND board_id = #{noticeId}
+    	 
+	</select>
 </mapper>

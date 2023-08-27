@@ -158,7 +158,19 @@ form {
 					<td><fmt:formatDate value="${notice.boardRegdate }"
 							pattern="yyyy/MM/dd" /></td>
 					<td>
-						<!-- 좋아요 -->0
+						<span id="likeCount-${notice.noticeId}">로딩 중...</span>
+                    	<script>
+                        // 좋아요 총 갯수 조회하는 함수
+                        function getLikeCountForNotice(noticeId) {
+                            $.get("/getLikeCountForNotice", { noticeId: noticeId }, function (count) {
+                                $("#likeCount-" + noticeId).text(count);
+                            });
+                        }
+                        // 페이지 로딩 시 해당 함수를 호출하여 좋아요 총 갯수를 가져와 표시
+                        $(document).ready(function () {
+                            getLikeCountForNotice(${notice.noticeId});
+                        });
+                    	</script>
 					</td>
 					<td>${notice.boardHit}</td>
 				</tr>

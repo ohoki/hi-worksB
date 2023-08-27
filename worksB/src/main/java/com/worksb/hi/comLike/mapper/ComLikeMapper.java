@@ -8,4 +8,5 @@ public interface ComLikeMapper {
     public void deleteLike(ComLikeVO comLikeVO);
     public int countLikes(ComLikeVO comLikeVO);
     public int checkLiked(ComLikeVO comLikeVO);
+	public int noticeLikeCount(int noticeId);
 }
