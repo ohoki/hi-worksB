@@ -3,6 +3,7 @@ package com.worksb.hi.project.service;
 import java.util.List;
 
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 
 public interface ProjectService {
@@ -36,6 +37,10 @@ public interface ProjectService {
 	
 	
 //주현
+	
+	//!!!!!!!!!1공통 즐찾여부!!!!!!!!!!!!!!!!!!!!!!
+	public PrjParticirVO getMarkupInfo(int projectId, String memberId);
+	
 	//내가 참여하는 프로젝트 보기
 	public List<ProjectVO> searchPrj(String memberId);
 	//내가 참여하는 프로젝트 중 즐겨찾기가 안 된 것의 만료여부
@@ -49,13 +54,21 @@ public interface ProjectService {
 	//로그인된 아이디가 참여하고 있는 프로젝트를 출력
 	public List<PrjParticirVO> selectAllparticier(String memberId);
 	
+	//총 갯수(전체공개)
+	public int countWhenPublic(ProjectVO vo,SearchVO searchvo);
+	//총 갯수(파일접근제한프로젝트+로그인한 아이디가 관리자가 아닌 경우)
+	public int countWhenWriter(ProjectVO vo,SearchVO searchvo);
+	
 	//파일탭(전체공개프로젝트)
-	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo);
+	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo,PagingVO pagingVO,SearchVO searchVO);
 	//관리자여부
 	public String managerOrNot(ProjectVO vo);
-	//파일탭(파일접근제한프로젝트+로그인한 아이디가 관리자인 경우)
-	public List<FileDataVO>viewFileWhenRestricted1(ProjectVO vo);
-	//파일탭(파일접근제한프로젝트+로그인한 아이디가 관리자가 아닌 경우)
-	public List<FileDataVO>viewFileWhenRestricted2(ProjectVO vo);
+	//파일탭(내 글만 봐야하는 경우)
+	public List<FileDataVO>viewFileWhenRestricted(ProjectVO vo,PagingVO pagingVO,SearchVO searchVO);
 
+
+	//파일업로드
+	public int insertFile(FileDataVO vo);
+	//파일다운로드
+	public FileDataVO getFileById(int fileId);
 }
