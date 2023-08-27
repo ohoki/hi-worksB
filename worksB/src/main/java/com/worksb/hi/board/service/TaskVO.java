@@ -22,11 +22,11 @@ TASK_ID      NOT NULL NUMBER
 COMPANY_ID   NOT NULL NUMBER
  */
 	private Integer highTaskId;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm")
 	private Date startDate;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd hh:mm")
 	private Date endDate;
 	private String priority;
 	private String priorityName;

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -47,7 +48,7 @@ public class BoardController {
 	}
     
     // 업무글 등록
-    @PostMapping("taskInsert")
+    @RequestMapping("taskInsert")
     @ResponseBody
     public int taskInsert(@RequestBody BoardRequestVO brVO) {
     	// 게시글 등록
