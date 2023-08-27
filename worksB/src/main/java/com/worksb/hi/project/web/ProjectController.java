@@ -515,8 +515,7 @@ public class ProjectController {
 		String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
 		ProjectVO projectInfo = projectService.getProjectInfo(Integer.valueOf(projectId));
 		m.addAttribute("projectInfo", projectInfo);
-		PrjParticirVO particirInfo=projectService.getMarkupInfo(vo.getProjectId(),memberId);
-		m.addAttribute("particirInfo",particirInfo);
+
 		
 		
 		
