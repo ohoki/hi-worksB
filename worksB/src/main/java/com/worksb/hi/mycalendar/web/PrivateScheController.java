@@ -83,7 +83,8 @@ public class PrivateScheController {
 	
 	//개인일정 입력
 	@PostMapping("priScheInsert")
-	public String priScheInsert(PrivateScheVO vo, Model model) {
+	@ResponseBody
+	public String priScheInsert(PrivateScheVO vo) {
 		int insertResult = privateScheService.insertPsche(vo);
 		String resultMsg =null;
 		if(insertResult == -1) {
@@ -91,8 +92,7 @@ public class PrivateScheController {
 		}else {
 			resultMsg = "등록성공";
 		}
-		model.addAttribute("result", resultMsg);
-		return "redirect:privateSche";
+		return resultMsg;
 	}
 
 	
@@ -184,15 +184,17 @@ public class PrivateScheController {
 	//todoList 수정
 	@PostMapping("updateToDoList")
 	@ResponseBody
-	public String updateTdlList(ToDoListVO vo) {
-		int result = toDoListService.updateTdl(vo);
-		String resultMsg;
-		if(result==1) {
-			return resultMsg = "success";
-		}else {
-			return resultMsg = "fail";
-		}
+	public String updateTdlList(@RequestBody Map<String, List<ToDoListVO>> tdlList) {
+		System.out.println(tdlList);
 		
+//		int result = toDoListService.updateTdl(vo);
+//		String resultMsg;
+//		if(result==1) {
+//			return resultMsg = "success";
+//		}else {
+//			return resultMsg = "fail";
+//		}
+		return "";
 	}
 	
 	//todoList 삭제
