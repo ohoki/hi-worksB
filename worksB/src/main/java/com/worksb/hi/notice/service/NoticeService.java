@@ -26,10 +26,8 @@ public interface NoticeService {
 	public int noticeDelete(int noticeId);
 
 	// 조회수 올리기
-	/*
-	public default int noticeHit(String noticeId) {
-		return NoticeMapper.noticeHit(noticeId);
-	}*/
+	public void noticeHit(int noticeId);
 	
+
 	
 }

@@ -12,9 +12,9 @@ public class BoardCmtVO {
 	private String commentContent;
 	private int boardId;
 	private String boardType;
+	private int commentDep;
 	
 	private String memberName;
-	private Date boardRegdate;
-	private int boardHit;
+
 	
 }

@@ -117,6 +117,10 @@ div h2 {
     font-weight: bold;
 }
 
+#likeButton {
+	color: black;
+}
+
 </style>
 </head>
 <body>
@@ -152,6 +156,13 @@ div h2 {
 									${noticeInfo.noticeContent }
 								</p>
 							</div>
+							<div>
+							    <!-- 좋아요 수 표시 -->
+							    좋아요 <span id="likeCount">${likeCount}</span>
+							
+							    <!-- 좋아요 버튼 -->
+							    <button id="likeButton" type="button" onclick="toggleLike('${noticeInfo.noticeId}', '${memberInfo.memberId}')">좋아요</button>
+							</div>
 						</td>
 					</tr>
 				</tbody>
@@ -181,5 +192,25 @@ div h2 {
 			</form>
 		</div>
 	</div>
+	<script>
+
+	
+	 // 좋아요 버튼 클릭 시 호출되는 함수
+    function toggleLike(boardId, memberId) {
+        // 서버로 비동기 요청을 보냄
+        $.get("like", { boardType: "C2", boardId: boardId, memberId: memberId }, function (response) {
+            // 서버로부터 받은 값에 따라 동작을 결정함
+            if (response.result == 'liked') {
+                // 좋아요 상태일 경우 
+                $("#likeButton").text("좋아요 취소");
+            } else if (response.result == "unliked") {
+                // 좋아요 해제 상태일 경우
+                $("#likeButton").text("좋아요");
+            }
+            $("#likeCount").text(response.count);
+        });
+	 }
+    
+	</script>
 </body>
 </html>

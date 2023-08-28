@@ -1,12 +1,48 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.worksb.hi.comLike.mapper">
-<!-- 좋아요 여부 확인 0 or 1 -->
-	<select id="findLike" resultType="int">
-		select count(*)
-		  from com_like
-		 where board_id = #{noticeId} and  board_type = #{boardType } and member_id = #{memberId }
+<mapper namespace="com.worksb.hi.comLike.mapper.ComLikeMapper">
+
+    <!-- 좋아요 추가 -->
+    <insert id="insertLike" parameterType="ComLikeVO">
+		<selectKey keyProperty="likeId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(like_id), 0) + 1
+			  FROM com_like
+		</selectKey>
+        	INSERT INTO com_like (like_id, board_type, board_id, member_id)
+        	 	 VALUES (
+        	 		 	 #{likeId}, 
+        	 		 	 #{boardType}, 
+        	 			 #{boardId}, 
+        	 		 	 #{memberId})
+    </insert>
+
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="ComLikeVO">
+        DELETE FROM com_like
+         WHERE board_type = #{boardType} AND board_id = #{boardId} AND member_id = #{memberId}
+    </delete>
+
+    <!-- 좋아요 총 갯수 -->
+    <select id="countLikes" resultType="int">
+        SELECT COUNT(*) 
+          FROM com_like
+         WHERE board_type = #{boardType} AND board_id = #{boardId}
+    </select>
+
+    <!-- 좋아요 눌렀는지 안눌렀는지 확인 -->
+    <select id="checkLiked" resultType="int">
+        SELECT COUNT(*) 
+          FROM com_like
+         WHERE board_type = #{boardType} AND board_id = #{boardId} AND member_id = #{memberId}
+    </select>
+    
+    	<!-- 공지마다의 좋아요 총 갯수 조회 -->
+	<select id="noticeLikeCount" parameterType="int" resultType="int">
+    	SELECT COUNT(*) 
+    	  FROM com_like
+    	 WHERE board_type = #{boardType} AND board_id = #{noticeId}
+    	 
 	</select>
 </mapper>

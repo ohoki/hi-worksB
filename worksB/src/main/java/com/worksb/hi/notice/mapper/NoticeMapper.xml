@@ -3,12 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.notice.mapper.NoticeMapper">
-
+	
 <!-- 페이징 -->
 	<!-- 게시판 총 갯수 -->
 	<select id="getTotalCount" resultType="int">
-		SELECT count(*)
-		FROM notice_board
+	   SELECT count(*)
+		 FROM notice_board
 		<if test="searchkeyword != null and searchkeyword !=''">
 			<choose>
 				<when test="searchtype == 1 ">
@@ -123,7 +123,7 @@
 		WHERE notice_id = #{noticeId}
 	</delete>
 	
-	<!-- 조회수 올리기 -->
+	<!-- 조회수 올리기 -->   
 	<update id="noticeHit" parameterType="int">
 		update notice_board 
 		   set board_hit = board_hit + 1 
