@@ -11,5 +11,4 @@ public class BoardRequestVO {
 	List<TaskVO> prjManager;
 	List<TaskVO> subManager;
 	//VoteVO voteVO, ScheVO scheVO
-
 }

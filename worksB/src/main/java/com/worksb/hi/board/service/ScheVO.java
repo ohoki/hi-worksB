@@ -18,14 +18,18 @@ PRJ_BOARD_ID NOT NULL NUMBER
 ALARM_DATE            DATE
  */
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date startDate;
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date endDate;
 	private int prjBoardId;
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date alarmDate;
+	private String alarmDateCode;
+	private String alarmDateCodeLiteral;
+	private String scheAddr;
+	private String scheAddrDetail;
 }
