@@ -29,5 +29,8 @@ public interface ToDoListService {
 	public int updateItem(ToDoListVO toDoListVO);
 	
 	//ITEM 삭제
-	public int deleteItem(int listId);
+	public int deleteItemList(int listId);
+	
+	//ITEM 단건 삭제
+	public int deleteItem(int itemId);
 }
