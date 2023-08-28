@@ -29,5 +29,5 @@ public interface NoticeMapper {
 	public int noticeDelete(int noticeId);
 	
 	// 조회수 올리기
-	public int noticeHit(String noticeId);
+	public int noticeHit(int noticeId);
 }

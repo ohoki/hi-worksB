@@ -66,6 +66,13 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 		return 0;
 	}
+	
+	// 좋아요
+	@Override
+	public void noticeHit(int noticeId) {
+	    noticeMapper.noticeHit(noticeId);
+	}
+
 
 
 
