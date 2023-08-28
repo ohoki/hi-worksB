@@ -189,13 +189,13 @@ public class PrivateScheController {
 	@ResponseBody
 	public String updateTdlList(@RequestBody Map<String, List<ToDoListVO>> tdlData) {
 	    List<ToDoListVO> todoList = tdlData.get("todoList");
-	    List<ToDoListVO> updateList = tdlData.get("update");
-	    List<ToDoListVO> deleteList = tdlData.get("delete");
-	    List<ToDoListVO> insertList = tdlData.get("insert");
+	    List<ToDoListVO> updateList = tdlData.get("updateItem");
+	    List<ToDoListVO> deleteList = tdlData.get("deleteItem");
+	    List<ToDoListVO> insertList = tdlData.get("insertItem");
 	    System.out.println(tdlData);
-	    if(todoList!=null) {
-	    	toDoListService.updateTdl(todoList.get(0));
-	    }
+	    System.out.println(updateList);
+	    System.out.println(deleteList);
+	    System.out.println(insertList);
 	    if(updateList!=null) {
 	    	for(int i=0;i<updateList.size();i++) {
 	    		toDoListService.updateItem(updateList.get(i));
@@ -211,6 +211,9 @@ public class PrivateScheController {
 	    		toDoListService.insertItem(insertList.get(i));
 	    	}
 	    }
+	    if(todoList!=null) {
+	    	toDoListService.updateTdl(todoList.get(0));
+	    }
 	    String result = "success";
 	    return result;
 	}
@@ -220,7 +223,7 @@ public class PrivateScheController {
 	@ResponseBody
 	public String deleteTdlList(ToDoListVO vo) {
 		int result = toDoListService.deleteTdl(vo.getListId());
-		toDoListService.deleteItem(vo.getListId());
+		toDoListService.deleteItemList(vo.getListId());
 		String resultMsg;
 		if(result==1) {
 			resultMsg = "success";

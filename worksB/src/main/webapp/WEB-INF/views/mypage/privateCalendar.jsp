@@ -716,7 +716,7 @@
 		        //item한개의 json화 
 		        if(inputValue!=null && inputValue !=""){
 			        dataObject = {
-			        	itemId : id,
+			        	listId : id,
 			            success : checkboxValue,
 			            content : inputValue
 			        };
@@ -732,20 +732,21 @@
 					let divTagClass = $(this).attr("class");	
 					if(typeof divTagClass ==="string"){
 						//item항목의 div태그에 class가 지정되어 있는 경우 => 삭제
-						let deleteItemId = divTagId.substr(-1)
+						let deleteItemId = divTagId.substr(6)
 						let itemId = {itemId : deleteItemId}
 						deleteItem.push(itemId);
 						console.log(deleteItem)
 					}else{
 						//item항목의 div태그에 class가 지정안되어 있는 경우 => 수정
-						let updateItemId = divTagId.substr(-1)
+						let updateItemId = divTagId.substr(6)
 						getUpdateItems($(this),updateItemId);
 						updateItem.push(dataObject);
 						console.log(updateItem)
 					}
 			    } else {
 					//item항목의 div태그가 id가 없는 경우 => 신규입력
-			        getItems($(this));
+					//!!!!!!
+			        getUpdateItems($(this));
 			        // 객체를 배열에 추가
 					insertItem.push(dataObject);
 					console.log(insertItem)
