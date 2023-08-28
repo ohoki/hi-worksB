@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.member.service.MemberVO;
@@ -82,7 +83,8 @@ public class PrivateScheController {
 	
 	//개인일정 입력
 	@PostMapping("priScheInsert")
-	public String priScheInsert(PrivateScheVO vo, Model model) {
+	@ResponseBody
+	public String priScheInsert(PrivateScheVO vo) {
 		int insertResult = privateScheService.insertPsche(vo);
 		String resultMsg =null;
 		if(insertResult == -1) {
@@ -90,8 +92,7 @@ public class PrivateScheController {
 		}else {
 			resultMsg = "등록성공";
 		}
-		model.addAttribute("result", resultMsg);
-		return "redirect:privateSche";
+		return resultMsg;
 	}
 
 	
@@ -156,7 +157,7 @@ public class PrivateScheController {
 	//ToDo List 입력
 	@PostMapping("todoListInsert")
 	@ResponseBody
-	public String todoListInsert(List<ToDoListVO> tdlList) {
+	public String todoListInsert(@RequestBody List<ToDoListVO> tdlList) {
 		System.out.println(tdlList);
 		//리스트의 첫번째는 todoList이므로 List테이블에 인서트
 		ToDoListVO tdlListVO = tdlList.get(0);
@@ -183,15 +184,17 @@ public class PrivateScheController {
 	//todoList 수정
 	@PostMapping("updateToDoList")
 	@ResponseBody
-	public String updateTdlList(ToDoListVO vo) {
-		int result = toDoListService.updateTdl(vo);
-		String resultMsg;
-		if(result==1) {
-			return resultMsg = "success";
-		}else {
-			return resultMsg = "fail";
-		}
+	public String updateTdlList(@RequestBody Map<String, List<ToDoListVO>> tdlList) {
+		System.out.println(tdlList);
 		
+//		int result = toDoListService.updateTdl(vo);
+//		String resultMsg;
+//		if(result==1) {
+//			return resultMsg = "success";
+//		}else {
+//			return resultMsg = "fail";
+//		}
+		return "";
 	}
 	
 	//todoList 삭제
@@ -199,6 +202,7 @@ public class PrivateScheController {
 	@ResponseBody
 	public String deleteTdlList(ToDoListVO vo) {
 		int result = toDoListService.deleteTdl(vo.getListId());
+		toDoListService.deleteItem(vo.getListId());
 		String resultMsg;
 		if(result==1) {
 			resultMsg = "success";
@@ -207,4 +211,7 @@ public class PrivateScheController {
 		}
 		return resultMsg;
 	}
+	
+	//todoList ITEM 삭제
+	
 }

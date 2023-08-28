@@ -49,8 +49,20 @@ public class ToDoListServiceImpl implements ToDoListService {
 
 	//ITEM 입력
 	@Override
-	public int insertItem(ToDoListVO vo) {
-		return toDoListMapper.insertItem(vo);
+	public int insertItem(ToDoListVO toDoListVO) {
+		return toDoListMapper.insertItem(toDoListVO);
+	}
+	
+	//ITEM 수정
+	@Override
+	public int updateItem(ToDoListVO toDoListVO) {
+		return toDoListMapper.updateItem(toDoListVO);
+	}
+	
+	//ITEM 삭제
+	@Override
+	public int deleteItem(int listId) {
+		return toDoListMapper.deleteItem(listId);
 	}
 
 }
