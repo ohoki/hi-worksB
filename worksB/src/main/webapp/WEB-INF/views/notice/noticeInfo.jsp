@@ -117,6 +117,10 @@ div h2 {
     font-weight: bold;
 }
 
+#likeButton {
+	color: black;
+}
+
 </style>
 </head>
 <body>
@@ -154,10 +158,10 @@ div h2 {
 							</div>
 							<div>
 							    <!-- 좋아요 수 표시 -->
-							    좋아요 수: <span id="likeCount">${likeCount}</span>
+							    좋아요 <span id="likeCount">${likeCount}</span>
 							
 							    <!-- 좋아요 버튼 -->
-							    <button id="likeButton" onclick="toggleLike(${noticeInfo.noticeId}, '${memberInfo.memberId}')">좋아요</button>
+							    <button id="likeButton" type="button" onclick="toggleLike('${noticeInfo.noticeId}', '${memberInfo.memberId}')">좋아요</button>
 							</div>
 						</td>
 					</tr>
@@ -189,26 +193,24 @@ div h2 {
 		</div>
 	</div>
 	<script>
+
+	
 	 // 좋아요 버튼 클릭 시 호출되는 함수
     function toggleLike(boardId, memberId) {
         // 서버로 비동기 요청을 보냄
-        $.get("/like", { boardType: "NOTICE", boardId: boardId, memberId: memberId }, function (response) {
-            // 서버로부터 받은 값에 따라 동작 결정
-            if (response === "liked") {
+        $.get("like", { boardType: "C2", boardId: boardId, memberId: memberId }, function (response) {
+            // 서버로부터 받은 값에 따라 동작을 결정함
+            if (response.result == 'liked') {
                 // 좋아요 상태일 경우 
-                $("#likeButton").text("좋아요 해제");
-            } else if (response === "unliked") {
+                $("#likeButton").text("좋아요 취소");
+            } else if (response.result == "unliked") {
                 // 좋아요 해제 상태일 경우
                 $("#likeButton").text("좋아요");
             }
+            $("#likeCount").text(response.count);
         });
-
-        // 좋아요 수 업데이트
-        $.get("/countLikes", { boardType: "NOTICE", boardId: boardId }, function (count) {
-            // 서버로부터 받은 좋아요 수(count)로 화면 업데이트
-            $("#likeCount").text(count);
-        });
-    }
+	 }
+    
 	</script>
 </body>
 </html>

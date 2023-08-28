@@ -214,8 +214,8 @@ div h2 {
 							    <label id="arrival">도착</label>
 							    <input type="text" id="arrivalInput" name="arrival" value=" " readonly="readonly"><br>
 							    <button type="button" id="arrivalButton">도착지 선택</button><br>
-							<label >날짜</label>
-							<input type="datetime-local" id="departureDate" name="departureDate" required pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}"><br>
+							<label>날짜</label>
+							<input type="datetime-local" id="departureDate" name="departureDate" required pattern="\d{4}-\d{2}-\d{2}\d{2}:\d{2}"><br>
 							<label id="passenger">인원</label>
 							<select id="passelect" name="passenger">
 								<option value="0">0명</option>

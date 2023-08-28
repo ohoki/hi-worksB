@@ -1,9 +1,11 @@
 package com.worksb.hi.notice.web;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,6 +21,7 @@ import com.worksb.hi.comLike.service.ComLikeService;
 import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
+import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.notice.service.NoticeService;
 import com.worksb.hi.notice.service.NoticeVO;
 
@@ -37,7 +40,7 @@ public class NoticeController {
 	public String noticeList(Model model
 						, SearchVO searchVO
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
-						, @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
+						, @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage, HttpSession session) {
 		
 		int total = noticeService.noticeCount(searchVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
@@ -47,20 +50,30 @@ public class NoticeController {
 		model.addAttribute("paging", pagingVO);
 							
 		return "notice/noticeList";
-		
 	}
 	
+	// 상세보기
 	@GetMapping("/noticeInfo")
-	public String getNoticeInfo(@RequestParam("noticeId") int noticeId, Model model) {
-	    NoticeVO noticeVO = new NoticeVO();
-	    noticeVO.setNoticeId(noticeId);
-
-	    // 조회수 증가
-	    noticeService.noticeHit(noticeId);
+	public String getNoticeInfo(NoticeVO noticeVO, ComLikeVO comLikeVO, Model model, HttpSession session) {
+	    
+		// 조회수 증가
+	    noticeService.noticeHit(noticeVO.getNoticeId());
 
 	    // 공지 정보 가져오기
-	    NoticeVO findVO = noticeService.getNoticeInfo(noticeVO); // 수정된 부분
+	    NoticeVO findVO = noticeService.getNoticeInfo(noticeVO);
 	    model.addAttribute("noticeInfo", findVO);
+	    
+	    // 좋아요 갯수 가져오기
+	    comLikeVO.setBoardId(noticeVO.getNoticeId());
+	    comLikeVO.setBoardType("C2");
+	    model.addAttribute("likeCount", comLikeService.countLikes(comLikeVO));
+	    
+	    // 세션의 id값 가져오기
+		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
+		String memberId = member.getMemberId();
+        comLikeVO.setMemberId(memberId);
+        
+	    model.addAttribute("checkLike",comLikeService.checkLiked(comLikeVO));
 	    return "notice/noticeInfo";
 	}
 	
@@ -102,35 +115,25 @@ public class NoticeController {
 	// 좋아요 여부 확인
     @GetMapping("/like")
     @ResponseBody
-    public String like(@RequestParam("boardType") String boardType, @RequestParam("boardId") int boardId, @RequestParam("memberId") String memberId) {
-        ComLikeVO comLikeVO = new ComLikeVO();
-        comLikeVO.setBoardType(boardType);
-        comLikeVO.setBoardId(boardId);
-        comLikeVO.setMemberId(memberId);
+    public  Map<String, Object> like(ComLikeVO comLikeVO ) {
+        Map<String, Object> map = new HashMap<>();
         
         // 좋아요 눌렀는지 확인
         if (comLikeService.checkLiked(comLikeVO)) {
         	// 좋아요 누른 상태면 해제
             comLikeService.deleteLike(comLikeVO);
-            return "unliked";
+            map.put("result", "unliked");
         } else {
         	// 안눌렀으면 좋아요 등록
             comLikeService.insertLike(comLikeVO);
-            return "liked";
+            map.put("result", "liked");
         }
+        map.put("count", comLikeService.countLikes(comLikeVO));
+        return map;
     }
-    
-    // 좋아요 수 조회
-    @GetMapping("/countLikes")
-    @ResponseBody
-    public int countLikes(@RequestParam("boardType") String boardType, @RequestParam("boardId") int boardId) {
-        ComLikeVO comLikeVO = new ComLikeVO();
-        comLikeVO.setBoardType(boardType);
-        comLikeVO.setBoardId(boardId);
-        return comLikeService.countLikes(comLikeVO);
-    }
+
 	
-    // 공지마다 좋아요
+    // noticeList에서 공지마다 좋아요
     @GetMapping("/noticeLikeCount")
     @ResponseBody
     public int getLikeCountForNotice(@RequestParam("noticeId") int noticeId) {

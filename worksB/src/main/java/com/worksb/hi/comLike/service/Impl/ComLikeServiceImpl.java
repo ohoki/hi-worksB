@@ -1,11 +1,13 @@
 package com.worksb.hi.comLike.service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.worksb.hi.comLike.mapper.ComLikeMapper;
 import com.worksb.hi.comLike.service.ComLikeService;
 import com.worksb.hi.comLike.service.ComLikeVO;
 
+@Service
 public class ComLikeServiceImpl implements ComLikeService {
 
     @Autowired
