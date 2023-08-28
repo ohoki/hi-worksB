@@ -51,6 +51,7 @@
 	    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 	    margin: 30px auto;
 	    clear: both;
+	    position: relative;
 	}
 	
 	.profile {
@@ -714,6 +715,28 @@
 		padding: 0 20px;
 	}
 	
+	div[data-boardmodal] {
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		font-size: 12px;
+		left: 0;
+		top: 0;
+		background-color: rgba(0,0,0,0.1);
+	}
+	
+	.board-modal-content {
+		position: absolute;
+		width: 6%;
+		height: 17%;
+		right: 4%;
+		top: 4%;
+		background-color: white;
+		border: 1px solid var(--color-dark-beigie);
+		border-radius: 10px;
+		padding: 5px 15px;
+		z-index: 10;
+	}
 	
 	.m-bt {
 		margin-bottom: 10px;
@@ -802,6 +825,20 @@
 							</c:if>
 								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 						</div>
+						<!-- board 버튼 클릭 시 모달 -->
+						<div class="d-none" data-boardmodal>
+							<div class="board-modal-content">
+								<p>
+									<a href="#" data-type="logout">상단고정</a>
+								</p>
+								<p>
+									<a href="#" data-type="my-profile">게시글 수정</a>
+								</p>
+								<p>
+									<a href="#" data-type="status">게시글 삭제</a>
+								</p>
+							</div>			
+						</div>
 					</div>
 				</c:if>
 	
@@ -889,7 +926,7 @@
 										<a href="#">삭제</a>
 									</div>
 								</div>
-							<!-- 여기까지 -->	
+							<!-- 여기까지 -->
 						</c:if>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
@@ -899,6 +936,20 @@
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
 								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+						</div>
+						<!-- board 버튼 클릭 시 모달 -->
+						<div class="d-none" data-boardmodal>
+							<div class="board-modal-content">
+								<p>
+									<a href="#" data-type="logout">상단고정</a>
+								</p>
+								<p>
+									<a href="#" data-type="my-profile">게시글 수정</a>
+								</p>
+								<p>
+									<a href="#" data-type="status">게시글 삭제</a>
+								</p>
+							</div>			
 						</div>
 					</div>
 				</c:if>
@@ -994,6 +1045,20 @@
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
 								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+						</div>
+						<!-- board 버튼 클릭 시 모달 -->
+						<div class="d-none" data-boardmodal>
+							<div class="board-modal-content">
+								<p>
+									<a href="#" data-type="logout">상단고정</a>
+								</p>
+								<p>
+									<a href="#" data-type="my-profile">게시글 수정</a>
+								</p>
+								<p>
+									<a href="#" data-type="status">게시글 삭제</a>
+								</p>
+							</div>			
 						</div>
 					</div>
 				</c:if>
@@ -1102,6 +1167,20 @@
 							</c:if>
 								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 						</div>
+						<!-- board 버튼 클릭 시 모달 -->
+						<div class="d-none" data-boardmodal>
+							<div class="board-modal-content">
+								<p>
+									<a href="#" data-type="logout">상단고정</a>
+								</p>
+								<p>
+									<a href="#" data-type="my-profile">게시글 수정</a>
+								</p>
+								<p>
+									<a href="#" data-type="status">게시글 삭제</a>
+								</p>
+							</div>			
+						</div>
 					</div>
 				</c:if>
 			</c:forEach>
@@ -1111,6 +1190,22 @@
 			<h1>북마크 공간~~</h1>
 		</div>
 	</div>
+	<!-- 모달 페이지 -->
+	<script >
+		//모달페이지 출력
+		$('.board-header-btn').on('click', function(e) {
+			console.log('gg');
+			let modal = $(e.currentTarget).closest('.board-container').find('div[data-boardmodal]');
+			console.log(modal);
+			modal.addClass('d-b');
+		});
+		
+		//여백 누르면 모달페이지 종료
+		$('[id*=modal]').on('click', function() {
+			$('.modal-visible').removeClass('modal-visible');
+		});
+	</script>
+	
 	
 	<!-- 게시글 출력 SCRIPT -->
 	<script> 
