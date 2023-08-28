@@ -287,19 +287,27 @@
 	
 	//tdl line 추가
 	$(document).on('click', '.addTdlLine', function(){
-		let divTag = $('<div></div>')
-		let chkBoxTag = $('<input>').attr("type", "checkbox").attr("name", "success").attr("value","A1");
-		let inputTag = $('<input>').attr("type", "text").attr("name", "content").attr("placeholder","List를 입력하세요");
-		let delBtn = $('<img>').attr("class","tdlLineDeleteBtn").attr("src","${pageContext.request.contextPath }/resources/icon/minusCircleBtn.svg").attr("alt","minus SVG").attr("width","20").attr("height","20");
-		divTag.append(chkBoxTag)
-		divTag.append(inputTag)
-		divTag.append(delBtn)
-		$(this).prev().append(divTag);
+		if($(this).parent().parent().attr("class")==="div_block"){
+			let divTag = $('<div></div>')
+			let chkBoxTag = $('<input>').attr("type", "checkbox").attr("name", "success").attr("value","A1");
+			let inputTag = $('<input>').attr("type", "text").attr("name", "content").attr("placeholder","List를 입력하세요");
+			let delBtn = $('<img>').attr("class","tdlLineDeleteBtn").attr("src","${pageContext.request.contextPath }/resources/icon/minusCircleBtn.svg").attr("alt","minus SVG").attr("width","20").attr("height","20");
+			divTag.append(chkBoxTag)
+			divTag.append(inputTag)
+			divTag.append(delBtn)
+			$(this).prev().append(divTag);
+		}
 	});
 	
 	//todolist 줄 삭제
-	$(document).on('click', '.tdlLineDeleteBtn', function() {
-		$(this).parent().remove(); // 클릭한 요소만 삭제
+	$(document).on('click', '.tdlLineDeleteBtn', function(e) {
+		let divTagId = $(this).parent().attr("id");
+	    if (typeof divTagId === "string") {
+			$(this).parent().attr("class", "div_hidden");	//클릭한 요소가 id값이 있을 경우 div_hidden클래스 부여
+	    } else {
+            $(this).parent().remove(); // 클릭한 요소만 삭제
+            console.log('no');
+	    }
 	});
 	
 	//개인일정 입력시 memberId값 부여
@@ -376,21 +384,6 @@
 				  alert( "Request failed: " + textStatus );
 			});
 		};
-		
-		//날짜 클릭시 일정 입력
-		function addPrivateSche(arg) {
-			//모달창 띄우기
-	        scheModal.show();
-			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
-			$('#coordinate').prop("required", false);
-			$('#scheForm input').eq(3).prop("readonly",true);
-			$(".alarmDate option").prop("disabled", false);
-			//해당 날짜가져오기
-			$('#datetimepicker1').val(arg.startStr);
-			$('#datetimepicker2').val(arg.endStr);
-			calendar.unselect();
-		};
-		//로그인한 사용자의 개인스케줄 정보를 ajax를 통해 json형식으로 가져옴
 		
 		
 		//이벤트 클릭시 상세보기
@@ -525,6 +518,52 @@
 			$('#datetimepicker2').val(nowTimeAfter);
 			
 		};
+		//날짜 클릭시 일정 입력모달창
+		function addPrivateSche(arg) {
+			//모달창 띄우기
+	        scheModal.show();
+			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
+			$('#coordinate').prop("required", false);
+			$('#scheForm input').eq(3).prop("readonly",true);
+			$(".alarmDate option").prop("disabled", false);
+			//해당 날짜가져오기
+			$('#datetimepicker1').val(arg.startStr);
+			$('#datetimepicker2').val(arg.endStr);
+			calendar.unselect();
+		};
+		//개인일정 db입력
+		$('#insertBtn').on("click", function(event){
+			event.preventDefault();
+			for(let i=0;i<$('#scheForm input').length-1;i++){
+				if($('#scheForm input').eq(i).val()===null || $('#scheForm input').eq(i).val()===''){
+					alert("필수값을 입력해주세요");
+					$('#scheForm input').eq(i).focus();
+					return false;
+				};
+			};
+			if($('#scheForm textarea').val()===null || $('#scheForm textarea').val()===''){
+				alert("필수값을 입력해주세요");
+				$('#scheForm textarea').focus();
+				return false;
+			};
+			$('#scheForm input[name="memberId"]').val(memberId);
+			let pScheFormInsert = $('#scheForm')
+			let pScheObj = serializeObject(pScheFormInsert);
+			$.ajax({
+				url:"priScheInsert",
+				method:"POST",
+				data : pScheObj,
+				success : function(result){
+					console.log(result);
+					loadPriSche();
+					scheModal.hide();
+					
+				},
+				error : function(error){
+					console.log(error)
+				}
+			});
+		});
 		
 		//todoList db입력
 		function toDoListInsert(){
@@ -614,7 +653,7 @@
 			});
 			$('.tdlList-view div').find('input').prop("readonly",false).prop("disabled",false);
 			//tdl content 추가 버튼
-			$('.tdlList-view').append($('<button type="button" class="btn btn-primary addTdlLine">To Do List 추가</button>'))
+			$('.tdlList-view').parent().append($('<button type="button" class="btn btn-primary addTdlLine">To Do List 추가</button>'))
 			$('.tdlList-view img[class="tdlLineDeleteBtn-hidden"]').attr("class","tdlLineDeleteBtn")
 			//삭제버튼
 			let $deleteTdlbtn = $('<button type="button" class="btn btn-primary" id="deleteTdlBtn">삭제</button>');
@@ -627,21 +666,81 @@
 		};
 		//tdl수정
 		function tdlUpdate(){
-			
+			//날짜정보 있는지 확인
 			let applyDate = $('#datetimepicker6').val();
 			if(applyDate === null || applyDate === "" ){
 				alert("날짜를 입력하세요")
 				applyDate.focus();
 				return false
 			};
-			
+			//todoList항목 json화
 			let tdlFormView = $('#tdlFormView')
 			let obj = serializeObject(tdlFormView);
+			let todoList = {todoList : obj};
+			
+			//item 항목 json화
+		    let itemDataArray = [];
+			itemDataArray.push(todoList);
+			
+		    // .tdlList 아래의 각 div 요소를 순회
+		    let updateItem = [];
+		    let insertItem = [];
+		    let deleteItem = [];
+	        let dataObject;
+	    	function getItems(){
+	    		let checkboxValue = $(this).find("input[type='checkbox']").is(":checked");
+		        if(checkboxValue){
+		        	checkboxValue = "A1"
+		        }else{
+		        	checkboxValue = "A2"
+		        }
+		        let inputValue = $(this).find("input[type='text']").val();
+		        //item한개의 json화 
+		        if(inputValue!=null && inputValue !=""){
+			        dataObject = {
+			            success : checkboxValue,
+			            content : inputValue
+			        };
+		        }else{
+		        	return;
+		        }
+	    	}
+		    $('.tdlList-view > div').each(function() {
+		    	let divTagId = $(this).attr("id");
+			    if (typeof divTagId === "string") {
+					//item항목의 div태그가 id가 있는 경우 => 수정/삭제
+					let divTagClass = $(this).attr("class");	
+					if(typeof divTagClass ==="string"){
+						//item항목의 div태그에 class가 지정되어 있는 경우 => 삭제
+						let deleteItemId = divTagId.substr(-1)
+						let itemId = {itemId : deleteItemId}
+						deleteItem.push(itemId);
+					}else{
+						//item항목의 div태그에 class가 지정안되어 있는 경우 => 수정
+						getItems();
+						updateItem.push(dataObject);
+					}
+			    } else {
+					//item항목의 div태그가 id가 없는 경우 => 신규입력
+			        getItems();
+			        // 객체를 배열에 추가
+					insertItem.push(dataObject);
+			    }
+		    });
+		    
+			let updateItemList = {"update" : insertItem}
+			itemDataArray.push(updateItemList);
+			let deleteItemList = {"delete" : insertItem}
+			itemDataArray.push(deleteItemList);
+			let insertItemList = {"insert" : insertItem}
+			itemDataArray.push(insertItemList);
+		    //json화 된 데이터들을 리스트에 담기
 			
 			$.ajax({
 				url:"updateToDoList",
 				method : 'post',
-				data : obj,
+				data : JSON.stringify(itemDataArray),
+				contentType : "application/json",
 				success : function(result){
 					//캘린더 event 업데이트
 					loadPriSche();
