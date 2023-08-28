@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.project.mapper.ProjectMapper;
 import com.worksb.hi.project.service.DeptVO;
@@ -148,25 +149,48 @@ public class ProjectServiceImpl implements ProjectService {
 		projectMapper.updateStar(vo);
 	}
 
-	//파일탭(전체공개프로젝트)
+	//갯수세기(전체공개_
 	@Override
-	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo) {
-		return projectMapper.viewFileWhenPublic(vo);
+	public int countWhenPublic(ProjectVO vo,SearchVO searchvo) {
+		return projectMapper.countWhenPublic(vo,searchvo);
+	}
+	//갯수세기(작성자의글만
+	@Override
+	public int countWhenWriter(ProjectVO vo, SearchVO searchvo) {
+		return projectMapper.countWhenWriter(vo, searchvo);
+	}
+	
+	//파일탭(전체 글)
+	@Override
+	public List<FileDataVO> viewFileWhenPublic(ProjectVO vo,PagingVO pagingVO,SearchVO searchVO) {
+		return projectMapper.viewFileWhenPublic(vo,pagingVO,searchVO);
 	}
 	//관리자여부
 	@Override
 	public String managerOrNot(ProjectVO vo) {
 		return projectMapper.managerOrNot(vo);
 	}
-	//파일탭(파일접근제한프로젝트>로그인한 사람이 관리자인 경우)
+	
+	//파일탭(작성자의 글만)
 	@Override
-	public List<FileDataVO> viewFileWhenRestricted1(ProjectVO vo) {
-		return projectMapper.viewFileWhenRestricted1(vo);
+	public List<FileDataVO> viewFileWhenRestricted(ProjectVO vo,PagingVO pagingVO,SearchVO searchVO) {
+		return projectMapper.viewFileWhenRestricted(vo,pagingVO,searchVO);
 	}
-	//파일탭(파일접근제한프로젝트>로그인한 사람이 관리자가 아닌 경우)
+
+	//fileUpload
 	@Override
-	public List<FileDataVO> viewFileWhenRestricted2(ProjectVO vo) {
-		return projectMapper.viewFileWhenRestricted2(vo);
+	public int insertFile(FileDataVO vo) {
+		return projectMapper.insertFile(vo);
+	}
+	//fileDownload
+	@Override
+	public FileDataVO getFileById(int fileId) {
+		return projectMapper.getFileById(fileId);
+	}
+
+	@Override
+	public PrjParticirVO getMarkupInfo(int projectId, String memberId) {
+		return projectMapper.getMarkupInfo(projectId, memberId);
 	}
 
 	

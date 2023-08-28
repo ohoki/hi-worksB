@@ -3,6 +3,7 @@ package com.worksb.hi.project.service;
 
 
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.Data;
@@ -26,7 +27,7 @@ public class FileDataVO {
 	private String filePath;
 	private String fileType;
 	private Date fileRegdate;
-	private String fileSize;
+	private long fileSize;
 	private Integer boardId;
 	private String realFilePath;
 	private Integer fileId;
@@ -37,4 +38,10 @@ public class FileDataVO {
 	//접근제한을 위한 필드
 	private String memberId;
 	private String manager;
+	
+	//jsp에서 용량출력할 때는 string형식
+	private String convertedSize;
+	
+	//file을 바이트타입으로 변환한 것
+	private byte[] fileContent;
 }
