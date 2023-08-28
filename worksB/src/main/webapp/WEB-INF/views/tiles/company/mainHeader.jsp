@@ -20,7 +20,15 @@
 				class="header__logo"></a>
 		</div>
 		<!-- 검색창 -->
-		<input type="text" placeholder="검색" class="header__search">
+		<form action="${pageContext.request.contextPath }/searchboard" name="boardSearchform">
+			<input type="text" placeholder="검색" value="${searchVO.searchkeyword}" name="searchkeyword" class="header__search">
+			<select name="searchBoardType">
+				<option value="1" <c:if test="${searchVO.searchtype==1}"> selected   </c:if>>프로젝트</option>
+				<option value="2" <c:if test="${searchVO.searchtype==2}"> selected   </c:if>>사내게시판</option>
+				<option value="3" <c:if test="${searchVO.searchtype==3}"> selected   </c:if>>전체</option>
+			</select>
+			<button type="submit" >검색</button>
+		</form>
 		<!-- 상단 메뉴들 -->
 		<div class="header__icon">
 			<!-- 구성원 -->
@@ -326,5 +334,17 @@
 		
 		$('#employee-modal').addClass('modal-visible');
 	});
+	
+	
+	
+	//검색
+	function sendDataToController() {
+	    // 선택된 옵션의 값
+	    let selectedOption = document.getElementById("selectOption").value;	
+	    // 검색어
+	    let searchKeyword = document.getElementById("searchInput").value;
+	    location.href = "/searchboard?selectedOption="+selectedOption+"&searchKeyword="+searchKeyword;
+
+	}
 </script>
 </html>

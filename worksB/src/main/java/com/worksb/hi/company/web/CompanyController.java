@@ -54,12 +54,19 @@ public class CompanyController {
 		} 
 		
 		String originalName = logo.getOriginalFilename();	
+		System.out.println(originalName+"originalName");
 		String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+		System.out.println(fileName+"fileName");
 		String folderPath = makeFolder();
+		System.out.println(folderPath+"folderPath");
 		String uuid = UUID.randomUUID().toString();
+		System.out.println(uuid+"uuid");
 		String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+		System.out.println(uploadFileName+"uploadFileName");
 		String saveName = uploadPath + File.separator + uploadFileName;
+		System.out.println(saveName+"saveName");
 		Path savePath = Paths.get(saveName);
+		System.out.println(savePath+"savePath");
 		
 		try {
 			logo.transferTo(savePath);
