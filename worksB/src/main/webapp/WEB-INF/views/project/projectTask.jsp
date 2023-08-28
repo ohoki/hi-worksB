@@ -131,9 +131,29 @@ tr:hover{
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 50%;
     box-shadow: 0px 0px 10px 2px #888;
 }
+
+.board-state label {
+		width: 70px;
+		height: 14px;
+		background-color: var(--color-dark-beigie);
+		padding: 10px;
+		border-radius: 5px;
+		color: white;
+		font-weight: var(--weight-bold);
+		line-height: 14px;
+		cursor: pointer;
+		text-align: center;
+		margin: 0 10px;
+		margin-bottom: 20px;
+	}
+	
+	.board-state input:checked + label {
+		background-color: var(--color-dark-red);
+		border: 3px solid var(--color-dark-red);
+	}
 
 </style>
 </head>
@@ -187,7 +207,7 @@ tr:hover{
 							<span data-regdate></span>
 						</div>
 						<div>
-						<img class="task-menu-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+						<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 						</div>
 					</div>
 					<div class="board-title">
@@ -306,7 +326,7 @@ tr:hover{
 		    	<h3>업무수정폼~~!!~!~~~!!!!</h3>
 		    		<input type="text" name="prjBoardTitle">
 		    		<div class="board-state">
-						<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
+						<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off">
 						<label for="option1">요청</label>
 						
 						<input type="radio" class="btn-check" name="state" value="G2" id="option2" autocomplete="off">
@@ -326,8 +346,37 @@ tr:hover{
 						<input type="text" name="startDate" class="date-input startDate" data-date>
 						
 						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" disabled>
+						<input type="text" name="endDate" class="date-input endDate">
 					</div>
+					<div class="js-progress create-content-cell">
+						<!-- 우선 순위 -->
+						<div class="select-priority">
+							<div>우선 순위 : </div>
+							<select name="priority">
+								<option value="">=======</option>
+								<option value="F3">낮음</option>
+								<option value="F2">보통</option>
+								<option value="F1">긴급</option>
+							</select>
+						</div>
+						<!-- 진행율 -->
+						<div class="board-progress">
+							<div>진행율 : </div>
+							<div class="progress-bar">
+					       		<div class="progress-bar-size"></div>
+							</div>
+							<div class="progress-value">0%</div>
+							<input type="hidden" name="processivity" value="0">
+						</div>
+						<!-- 업무 담당자 -->
+						<div class="board-taskManager">
+							<span class="add-manager-btn">담당자 추가</span>
+							<div class="highManagerList"></div>
+							<div class="deleteList"></div>
+						</div>
+						<textarea name="prjBoardSubject"></textarea>
+					</div>
+					<button type="button" id="update-submit">수정</button>
 		    	</div>
 		    </form>
 		</div>
@@ -347,6 +396,7 @@ tr:hover{
 				type: 'GET',
 				data: { 'prjBoardId': prjBoardId },
 				success: function(taskData) {
+					console.log(taskData)
 					// 업무 담당자
 					let taskManagers = taskData.highManager;
 					let manager = taskInfo.find('.taskManager');
@@ -358,7 +408,7 @@ tr:hover{
 						let text = " 외 " + count + "명";
 						manager.text(taskManagers[0].memberName + text);
 					} else {
-						manager.text('-');
+						manager.text('');
 					}
 	                
 					// 하위 업무
@@ -368,7 +418,6 @@ tr:hover{
 						let subTask = subTasks[j];
 						
 						// 하위 업무 행 만들기
-						//let subTaskInfo = $('<tr class="subTask"></tr>');
 						let subTaskInfo = $('<tr class="subTask taskTr" data-id="' + subTask.prjBoardId + '"></tr>');
 
 						// 버튼자리 빈 셀
@@ -377,7 +426,12 @@ tr:hover{
 						// 하위 업무 정보
 						subTaskInfo.append('<td class="subPrjBoardTitle">' + subTask.prjBoardTitle + '</td>');
 						subTaskInfo.append('<td class="subState">' + subTask.stateName + '</td>');
-						subTaskInfo.append('<td class="subPriority">' + subTask.priorityName + '</td>');
+						
+						if(subTask.priorityName != null){
+							subTaskInfo.append('<td class="subPriority">' + subTask.priorityName + '</td>');
+						}else{
+							subTaskInfo.append('<td class="subPriority"></td>');
+						}
 
 						// 하위 업무 담당자
 						let subManagers = taskData.subManager[subTask.prjBoardId];
@@ -392,14 +446,19 @@ tr:hover{
 						        subManager.text(subManagers[0].memberName + text);
 						    }
 						} else {
-							subManager.text('-');
+							subManager.text('');
 						}
 						subTaskInfo.append(subManager);
 						
 						// 하위 업무는 startDate 없음
-						subTaskInfo.append('<td>-</td>');
-						subTaskInfo.append('<td class="subEndDate">' + subTask.endDate + '</td>');
+						subTaskInfo.append('<td></td>');
+						if(subTask.endDate != null){
+							subTaskInfo.append('<td class="subEndDate">' + subTask.endDate + '</td>');
+						}else{
+							subTaskInfo.append('<td class="subEndDate"></td>');
+						}
 						subTaskInfo.append('<td class="subRegdate">' + subTask.prjBoardRegdate + '</td>');
+						
 						subTaskInfo.append('<td class="subTaskId">' + subTask.taskId + '</td>');
 						// 상위 업무 바로 밑에 하위 업무 행 넣기
 						taskInfo.after(subTaskInfo);
@@ -568,16 +627,113 @@ tr:hover{
 				// 클릭한 업무
 				let highTask = taskData.highTask[0];
 				
+				
 				// 폼에 데이터 출력하기!!!!!!!!!!!!
 				taskInfo.find('[name=prjBoardTitle]').val(highTask.prjBoardTitle);
-
+				// state 값 - radio
+				let state = highTask.state;
+				$('.btn-check').each(function() {
+					if ($(this).val() == state) {
+						$(this).prop('checked', true);
+					}
+				});
 				
+				taskInfo.find('[name=startDate]').val(highTask.startDate);
+				taskInfo.find('[name=endDate]').val(highTask.endDate)
+				
+				let priority = highTask.priority;
+				taskInfo.find('option[value="' + priority + '"]').prop('selected', true);
+				
+				taskInfo.find('[name=processivity]').val(highTask.processivity);
+				
+				// 업무 담당자 리스트
+				let managers = taskData.highManager;
+            	let managerList = taskInfo.find('.board-taskManager');
+
+            	for (let i = 0; i < managers.length; i++) {
+                	managerList.prepend('<span class="taskManagerName" data-particirId="' + managers[i].prjParticirId + '">' + managers[i].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor"></span>');
+            	}
+
+            	
+            	
+				taskInfo.find('[name=prjBoardSubject]').val(highTask.prjBoardSubject);
 		     	
 		    }, error : function(reject) {
 				console.log(reject);
 			}
 		});
 	})
+	
+	$(document).on('click', '.deleteManager', function(e){
+		let deleteManagerList = [];
+		let managerSpan = $(this).closest('.taskManagerName');
+		let prjParticirId = managerSpan.data('particirid');
+	    deleteManagerList.push(prjParticirId);
+
+	    managerSpan.remove();
+
+	    console.log(deleteManagerList);
+		
+	})
+	
+	
+	
+	//담당자 추가 클릭 시 구성원 불러오고 셀렉트 박스
+		$(document).on('click', '.add-manager-btn', function(e) {
+			let boardTaskManager = $(e.currentTarget).closest('.board-taskManager');
+			let addManagerBtn = $(e.currentTarget);
+			let selectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
+			
+			addManagerBtn.remove();
+			
+			$.ajax({
+		    	url : '${pageContext.request.contextPath}/particirList',
+		        type: 'GET',
+		        data: {'projectId': "${projectInfo.projectId}"},
+		        success: function(particir){
+		        	for(let i=0; i<particir.length; i++) {
+						let option = $('<option>');
+						
+						option.val(particir[i].prjParticirId);
+						option.text(particir[i].memberName);
+						
+						selectBox.append(option);
+					}
+		        },
+		        error: function(reject){
+		            console.log(reject);
+		        }
+		    });	
+			
+			boardTaskManager.append(selectBox);
+			boardTaskManager.prepend('<span>담당자 : </span>');
+		});
+		
+		//담당자 선택시 스팬 추가
+		$(document).on('change', '.add-taskManager-select', function(e) {
+			let managerSpan = $('<span>');
+			let memberId = `<input type="hidden" name="taskManager">`;
+			let selectBox = $(e.currentTarget);
+			let checkedOption = selectBox.find('option:checked');
+			
+			if(selectBox.find('option:disabled').length == 4) {
+				managerSpan.text('외 1명');
+				selectBox.before(managerSpan);
+			}else if (selectBox.find('option:disabled').length > 4) {
+				selectBox.prev().remove();
+				managerSpan.text('외' + (selectBox.find('option:disabled').length-3) + '명');
+				selectBox.before(managerSpan);
+			} else {
+				managerSpan.text(checkedOption.text());
+				selectBox.before(managerSpan);
+			}
+			//담당자 아이디 저장
+			memberId = $(memberId).val(checkedOption.val());
+			selectBox.next().append(memberId);
+			
+			checkedOption.prop('disabled', true);
+		});
+	
 
 	//업무 수정 처리하기
 	$('#update-submit').on('click', function(e){
