@@ -72,7 +72,7 @@
 			   , list_id
 		FROM to_do_list_item
 		WHERE list_id = #{list_id}
-		ORDER BY list_id
+		ORDER BY item_id
 	</select>
 	<insert id="insertItem" parameterType="ToDoListVO">
 		<selectKey keyProperty="itemId" resultType="int" order="BEFORE">
@@ -87,9 +87,25 @@
 									)
 		VALUES (
 				#{content}
-				, ${success}
+				, #{success}
 				, #{itemId}
 				, #{listId}
 				)
 	</insert>
+	<update id="updateItem" parameterType="ToDoListVO">
+		UPDATE to_do_list_item
+		<set>
+			<if test="content != null or !content.equals('')">
+				content = #{content},
+			</if>
+			<if test="success != null and !success.equals('')">
+				success = #{success},
+			</if>
+		</set>
+		WHERE item_id = #{itemId}
+	</update>
+	<delete id="deleteItem">
+		DELETE FROM to_do_list_item
+		WHERE list_id = #{listId}
+	</delete>
 </mapper>
