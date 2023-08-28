@@ -1,6 +1,7 @@
 package com.worksb.hi.board.web;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -47,9 +49,11 @@ public class BoardController {
 	}
     
     // 업무글 등록
-    @PostMapping("taskInsert")
+    @RequestMapping("taskInsert")
     @ResponseBody
     public int taskInsert(@RequestBody BoardRequestVO brVO) {
+    	
+    	System.out.println(brVO);
     	// 게시글 등록
     	BoardVO boardVO = brVO.getBoardVO();
     	boardService.insertBoard(brVO.getBoardVO());
@@ -89,7 +93,6 @@ public class BoardController {
 	    		// 하위 업무 - 업무 테이블 저장
 	    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
 	    		subtaskVO.setHighTaskId(taskVO.getTaskId());
-	    		subtaskVO.setState(taskVO.getState());
 	    		boardService.insertTask(subtaskVO);
 	    		
 	    		// 하위 업무 담당자 boardId 설정
@@ -115,7 +118,7 @@ public class BoardController {
     
 	//게시글 등록 - 게시글, 일정, 투표
 	@PostMapping("/boardInsert")
-	public String boardInsertProcess(BoardVO boardVO, TaskVO taskVO, VoteVO voteVO, ScheVO scheVO, HttpSession session) {
+	public String boardInsertProcess(BoardVO boardVO, VoteVO voteVO, ScheVO scheVO, HttpSession session) {
 		
 		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
 		String memberId = member.getMemberId();
@@ -129,9 +132,29 @@ public class BoardController {
         
 		int prjBoardId = boardVO.getPrjBoardId();
 		
+		// 일정
         if(boardType.equals("C6")) {
-        	// 일정
         	scheVO.setPrjBoardId(prjBoardId);
+        	
+        	if(!scheVO.getAlarmDateCode().equals("")) {
+        		//알람 시간 구하기
+            	String code = scheVO.getAlarmDateCode();
+            	Date endDate = scheVO.getEndDate();
+            	Calendar cal = Calendar.getInstance();
+            	// L1 -> 10분전, L2 -> 1시간 전, L3 -> 1일 전, L4 -> 7일 전
+            	cal.setTime(endDate);
+            	if(code.equals("L1")) {
+            		cal.add(Calendar.MINUTE, -10);
+            	} else if(code.equals("L2")) {
+            		cal.add(Calendar.HOUR, -1);
+            	} else if(code.equals("L3")) {
+            		cal.add(Calendar.DATE, -1);
+            	} else if(code.equals("L4")) {
+            		cal.add(Calendar.DATE, -7);
+            	}
+            	//알림 시간 등록
+            	scheVO.setAlarmDate(cal.getTime());
+        	}
         	
         	boardService.insertSche(scheVO);
         	
@@ -145,7 +168,6 @@ public class BoardController {
         	
         	// 투표글 등록
         	boardService.insertVote(voteVO);
-   
         }
         
 		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();

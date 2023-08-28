@@ -173,11 +173,24 @@
 		margin: 10px 40px;
 	}
 	
+	.sche-addr {
+		font-weight: var(--weight-bold);
+		font-size: 15px;
+		color: var(--color-dark-grey);
+		margin: 10px 40px;
+	}
+	
 	.sche-date .text, .task-manager .text {
 		font-size: 15px;
 		color: var(--color-dark-grey);
 	}
 	
+	.sche-alarm {
+		font-weight: var(--weight-bold);
+		font-size: 15px;
+		color: var(--color-light-blue);
+	}
+		
 	.sche-btns {
 		margin: 20px auto;
 		text-align: center;
@@ -388,7 +401,7 @@
 	}
 	
 	.sub-state {
-		width: 30px;
+		width: 50px;
 		height: 7px;
 		background-color: var(--color-blue);
 		padding: 10px;
@@ -575,7 +588,7 @@
 	
 	.add-manager-btn {
 		text-decoration: underline;
-		color: var(--color-blue);
+		color: var(--color-dark-red);
 		cursor: pointer;
 	}
 	
@@ -612,7 +625,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding-right: 60px;
+		padding-right: 200px;
 		margin: 10px 0;
 	}
 	
@@ -640,7 +653,7 @@
 		margin: 20px 30px;
 	}
 	
-	.add-sub-task-btn {
+	.add-sub-task-btn, .add-vote-list-btn {
 		text-decoration: underline;
 		color: var(--color-blue);
 		cursor: pointer;
@@ -660,6 +673,47 @@
 		font-size: var(--font-small);
 		margin-bottom: 10px;
 	}
+	
+	select[name=alarmDateCode] {
+		width: 200px;
+		height: 30px;
+		border: 1px solid var(--color-light-red);
+		background-color: white;
+		color: var(--color-dark-grey);
+		font-size: var(--font-micro);
+		margin-left: 20px;
+	}
+	
+	input[name=scheAddr] {
+		border-bottom: 1px solid var(--color-dark-beigie);
+		padding-left: 10px;
+		font-size: var(--font-micro);
+		color: var(--color-dark-grey);
+		width: 350px;
+	}
+	
+	#scheAddrDetail {
+		border-bottom: 1px solid var(--color-dark-beigie);
+		font-size: var(--font-micro);	
+		color: var(--color-dark-grey);
+		width: 250px;
+		padding-left: 10px;
+	}
+	
+	.form-check {
+		margin-right: 30px;
+	}
+	
+	input[name=listContent] {
+		display: block;
+		width: 80%;
+		margin: 5px auto;
+		height: 40px;
+		border-radius: 5px;
+		background-color: var(--color-beigie);
+		padding: 0 20px;
+	}
+	
 	
 	.m-bt {
 		margin-bottom: 10px;
@@ -778,11 +832,21 @@
 								<span class="sche-nonParticir">불참 3</span>
 							</div>
 						</div>
-						<div class="sche-date">
-							<span class="text">기간 : </span>
-							<span data-start></span>
-							<span> ~ </span>
-							<span data-end></span>
+						<div class="d-flex" style="margin-right: 40px;">
+							<div class="sche-date">
+								<span class="text">기간 : </span>
+								<span data-start></span>
+								<span> ~ </span>
+								<span data-end></span>
+							</div>
+							<div class="sche-alarm">
+								<span></span>
+							</div>
+						</div>
+						<div class="d-flex" style="margin-right: 40px;">
+							<div class="sche-addr">
+								<span class="text">장소 : </span>
+							</div>
 						</div>
 						<div class="board-content">
 							<div>
@@ -1092,11 +1156,23 @@
 						type : 'GET',
 						data : {'prjBoardId' : boardList[i].dataset.id},
 						success : function(sche) {
-							 let startDate = $(boardList[i]).find('span[data-start]');
-			                 let endDate = $(boardList[i]).find('span[data-end]');
-	
-			                 startDate.text(sche.startDate);
-			                 endDate.text(sche.endDate);
+							let startDate = $(boardList[i]).find('span[data-start]');
+							let endDate = $(boardList[i]).find('span[data-end]');
+							let alarmSpan = $(boardList[i]).find('.sche-alarm').children('span');
+							let addrSpan = $(boardList[i]).find('.sche-addr');
+
+							startDate.text(sche.startDate);
+			                endDate.text(sche.endDate);
+			                //알림 설정 여부
+			                if(sche.alarmDateCodeLiteral != null) {
+			                	alarmSpan.text(sche.alarmDateCodeLiteral);	
+			                }
+			                //장소 설정 여부
+			                if(sche.scheAddr != null) {
+			                	$(addrSpan).append('<span> ' + sche.scheAddr + sche.scheAddrDetail + '</span>');
+			                }else {
+			                	$(addrSpan).empty();
+			                }
 						}, error : function(reject) {
 							console.log(reject);
 						}
@@ -1173,15 +1249,23 @@
 					        // 업무 번호
 					        highTaskId.text('업무 번호 ' + taskData.highTask[0].taskId);
 					        // 기간
-					        startDate.text(taskData.highTask[0].startDate);
-			                endDate.text(taskData.highTask[0].endDate);
+					        if(taskData.highTask[0].startDate != null) {
+					        	startDate.text(taskData.highTask[0].startDate);
+				                endDate.text(taskData.highTask[0].endDate);	
+					        }else {
+					        	startDate.parent().remove();
+					        }
 			                // 진행상태 버튼 활성화
 			                state.children('button[value=' + highTask.state + ']' ).css('background-color', 'var(--color-dark-red)');
 			                //진척도
 			                processivityValueDiv.css('width', highTask.processivity + "%");
 			                processivityValue.text(highTask.processivity + "%");		                
 			             	// 우선 순위
-					        prioriy.text('우선순위 : ' + highTask.priorityName);
+			             	 if(highTask.priorityName != null) {
+			             		prioriy.text('우선순위 : ' + highTask.priorityName);
+					        }else {
+					        	prioriy.remove();
+					        }
 					     	// 상위 업무 담당자
 					     	if(highManagers.length >1) {
 					     		taskManagers.append('<span>' + highManagers[0].memberName + ' 외 ' + (highManagers.length-1) + '명</span>');	
@@ -1270,7 +1354,7 @@
         <!-- 게시글 작성 폼 끝!!! -->
 		
 		<!-- 상위 업무 작성 폼!!! -->
-		<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none" id="task">
+		<form class="dis-none" id="task">
 			<div class="insert-board-area">
 				<div class="board-form" >
 					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -1292,10 +1376,10 @@
 					</div>
 					<div>
 						<label for="startDate">시작일 : </label>
-						<input type="text" name="startDate" class="date-input startDate" data-date>
+						<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
 						
 						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" disabled>
+						<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
 					</div>
 					
 					<!-- 진척도 -->
@@ -1353,177 +1437,240 @@
 		</form>
 	
 		<!-- 일정 작성 폼!!! -->
-		<div class="modal-body dis-none" id="sche">
-			<form action="boardInsert" method="post">
-				<div>
-					<label>일정일정</label>
-					<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
-				</div>
-				<div>
-					<label for="startDate">시작일</label>
-					<input type="text" name="startDate" class="date-input startDate" data-date>
-					<label for="endDate">종료일</label>
-					<input type="text" name="endDate" class="date-input endDate" disabled>
-				</div>
-				<!-- 알람 추가 -->
-				<div>
-					<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
-				</div>
-	
-				<div>
-					<label>공개 범위</label> 
-						<select class="form__select" name="inspYn">
-							<option value="E2">전체 공개</option>
-							<option value="E1">프로젝트 관리자만</option>
+		<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none" id="sche">
+			<div class="insert-board-area">
+				<div class="board-form" >
+					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+					<div class="m-bt">
+						<label for="startDate">시작일 : </label>
+						<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
+						
+						<label for="endDate">마감일 : </label>
+						<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
+					</div>
+					<div class="d-flex m-bt" style="justify-content: flex-start;">
+						<div>
+							<label>장소 : </label>
+							<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddr" name="scheAddr">
+							<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
+						</div>
+						<select name="alarmDateCode">
+							<option value="" selected>알림 설정</option>
+							<option value="L1">10분 전 미리 알림</option>
+							<option value="L2">1시간 전 미리 알림</option>
+							<option value="L3">1일 전 미리 알림</option>
+							<option value="L4">7일 전 미리 알림</option>
 						</select>
+					</div>
+					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor3"></textarea>
 				</div>
-	         	<div class="modal-footer form__button">
-		         	<input type="hidden" name="boardType" value="C6">
-		         	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	              	<button type="submit" class="btn btn-primary">등록</button>
-	              	<button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-	          	</div>
-			</form>
-       	</div>
+	        </div>
 	        
+	        <div class="modal-footer">
+				<select name="inspYn" class="modal-footer-select">
+					<option value="E2">전체 공개</option>
+					<option value="E1">프로젝트 관리자만</option>
+				</select>
+					<input type="hidden" name="boardType" value="C6">
+	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	             	<button type="reset" class="modal-footer-btn">임시저장</button>
+	             	<button type="submit" class="modal-footer-btn" id="btnAddTask" data-bs-dismiss="modal">등록</button>
+	             	<div><a href="#">임시저장 게시글 보기</a></div>
+			</div>
+		</form>
 	        
 		<!-- 투표 작성 폼!!! -->
-		<div class="modal-body dis-none" id="vote">
-			<form action="boardInsert" method="post">
-				<div>
-					<label>투표투표</label>
-					<input type="text" class="form__input-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
+		<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none" id="vote">
+			<div class="insert-board-area">
+				<div class="board-form" >
+					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+					
+					<div class="d-flex m-bt" style="justify-content: flex-start;">
+						<div class="form-check form-switch">
+							<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+							<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
+						</div>
+						<div class="form-check form-switch">
+							<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+							<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
+						</div>
+						<div class="form-check form-switch">
+							<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+							<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
+						</div>
+					</div>
+					
+					
+					<div class="m-bt">
+						<label for="endDate">마감일 : </label>
+						<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off">
+					</div>
+					
+					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor4"></textarea>
 				</div>
-				<div>
-					<textarea class="form__textarea" name="prjBoardSubject" placeholder="내용을 입력하세요." required></textarea>
+				
+				<!-- 하위업무 등록 -->
+				<div class="board-sub-task">
+					<div class="board-sub-task-title">투표 항목</div>
+					<div class="board-vote-list"></div>
+					<span class="add-vote-list-btn">투표 항목 추가</span>
 				</div>
-				<div class="vote-add-buttons">            
-			   		<input type="text" name="listContent"> <input type="button" class="btnAdd" value="항목 추가"><br>        
-			    </div>
-				<div>
-					<label for="endDate" >투표 종료일</label>
-					<input type="text" name="endDate" class="date-input endDate" data-date>
-				</div>
-				<div class="form-check form-switch">
-					<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-					<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
-				</div>
-				<div class="form-check form-switch">
-					<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-					<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
-				</div>
-				<div class="form-check form-switch">
-					<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-					<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
-				</div>
-				<div>
-					<label>공개 범위</label> 
-					<select class="form__select" name="inspYn">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
-				</div>
-				<div class="modal-footer form__button">
-					<input type="hidden" name="boardType" value="C7">
-					<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-				    <button type="submit" class="btn btn-primary">등록</button>
-				    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-				</div>
-			</form>
-       	</div>
+	        </div>
+	        
+	        <div class="modal-footer">
+				<select name="inspYn" class="modal-footer-select">
+					<option value="E2">전체 공개</option>
+					<option value="E1">프로젝트 관리자만</option>
+				</select>
+				<input type="hidden" name="boardType" value="C7">
+	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	             	<button type="reset" class="modal-footer-btn">임시저장</button>
+	             	<button type="submit" class="modal-footer-btn" id="btnAddTask" data-bs-dismiss="modal">등록</button>
+	             	<div><a href="#">임시저장 게시글 보기</a></div>
+			</div>
+		</form>
     </div>
 </div>
 	
-	<!-- ckeditor -->
-	<script>
-	for(let i =1; i<3; i++) {
-		CKEDITOR.ClassicEditor.create(document.querySelector('#editor' + i), {
-	        toolbar: {
-	        	 items: [
-					'alignment', '|',
-					'heading', '|',
-					'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-					'exportPDF', 'insertImage', 'mediaEmbed',
-					'-',
-					'specialCharacters', '|',
-					'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',                     
-					'findAndReplace', 'selectAll'
-	             ],
-	             shouldNotGroupWhenFull: true
-	         },
-	        // Changing the language of the interface requires loading the language file using the <script> tag.
-	        language: 'ko',
-	        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-	        heading: {
-	            options: [
-	                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-	                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-	                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-	                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-	                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-	                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-	                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-	            ]
-	        },
-	        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-	        placeholder: '내용을 입력하세요.',
-	        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-	        fontFamily: {
-	            options: [
-	                'default',
-	                '궁서체',
-		    		'돋움',
-	                'Arial, Helvetica, sans-serif',
-	                'Courier New, Courier, monospace',
-	                'Georgia, serif',
-	                'Lucida Sans Unicode, Lucida Grande, sans-serif',
-	                'Tahoma, Geneva, sans-serif',
-	                'Times New Roman, Times, serif',
-	                'Trebuchet MS, Helvetica, sans-serif',
-	                'Verdana, Geneva, sans-serif',
-	            ],
-	            supportAllValues: true
-	        },
-	        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-	        fontSize: {
-	            options: [ 10, 12, 14, 16, 18, 20, 22 ],
-	            supportAllValues: true
-	        },
-	        // The "super-build" contains more premium features that require additional configuration, disable them below.
-	        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-	        removePlugins: [
-	            // These two are commercial, but you can try them out without registering to a trial.
-	            // 'ExportPdf',
-	            // 'ExportWord',
-	            'CKBox',
-	            'EasyImage',
-	            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-	            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-	            // Storing images as Base64 is usually a very bad idea.
-	            // Replace it on production website with other solutions:
-	            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-	            // 'Base64UploadAdapter',
-	            'RealTimeCollaborativeComments',
-	            'RealTimeCollaborativeTrackChanges',
-	            'RealTimeCollaborativeRevisionHistory',
-	            'PresenceList',
-	            'Comments',
-	            'TrackChanges',
-	            'TrackChangesData',
-	            'RevisionHistory',
-	            'Pagination',
-	            'WProofreader',
-	            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-	            // from a local file system (file://) - load this site via HTTP server if you enable MathType
-	            'MathType'
-	        ]
-	   	});	
-	};
-	</script>
-	<!-- ckeditor 종료 -->
-	
 	<!-- 게시글 작성 SCRIPT -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
+		//ckeditor 시작
+		for(let i =1; i<5; i++) {
+			CKEDITOR.ClassicEditor.create(document.querySelector('#editor' + i), {
+		        toolbar: {
+		        	 items: [
+						'alignment', '|',
+						'heading', '|',
+						'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+						'exportPDF', 'insertImage', 'mediaEmbed',
+						'-',
+						'specialCharacters', '|',
+						'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',                     
+						'findAndReplace', 'selectAll'
+		             ],
+		             shouldNotGroupWhenFull: true
+		         },
+		        // Changing the language of the interface requires loading the language file using the <script> tag.
+		        language: 'ko',
+		        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+		        heading: {
+		            options: [
+		                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+		                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+		                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+		                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+		                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+		                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+		                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+		            ]
+		        },
+		        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+		        placeholder: '내용을 입력하세요.',
+		        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+		        fontFamily: {
+		            options: [
+		                'default',
+		                '궁서체',
+			    		'돋움',
+		                'Arial, Helvetica, sans-serif',
+		                'Courier New, Courier, monospace',
+		                'Georgia, serif',
+		                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+		                'Tahoma, Geneva, sans-serif',
+		                'Times New Roman, Times, serif',
+		                'Trebuchet MS, Helvetica, sans-serif',
+		                'Verdana, Geneva, sans-serif',
+		            ],
+		            supportAllValues: true
+		        },
+		        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+		        fontSize: {
+		            options: [ 10, 12, 14, 16, 18, 20, 22 ],
+		            supportAllValues: true
+		        },
+		        // The "super-build" contains more premium features that require additional configuration, disable them below.
+		        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+		        removePlugins: [
+		            // These two are commercial, but you can try them out without registering to a trial.
+		            // 'ExportPdf',
+		            // 'ExportWord',
+		            'CKBox',
+		            'EasyImage',
+		            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+		            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+		            // Storing images as Base64 is usually a very bad idea.
+		            // Replace it on production website with other solutions:
+		            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+		            // 'Base64UploadAdapter',
+		            'RealTimeCollaborativeComments',
+		            'RealTimeCollaborativeTrackChanges',
+		            'RealTimeCollaborativeRevisionHistory',
+		            'PresenceList',
+		            'Comments',
+		            'TrackChanges',
+		            'TrackChangesData',
+		            'RevisionHistory',
+		            'Pagination',
+		            'WProofreader',
+		            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+		            // from a local file system (file://) - load this site via HTTP server if you enable MathType
+		            'MathType'
+		        ]
+		   	}).then(newEditor => {
+		   	 	window['editor'+i] = newEditor;
+		    })
+		    .catch( error => {
+		        console.error( error );
+		    });	
+		};
+		//ckeditor 종료
+		
+		//다음 주소 api
+		$('#scheAddr').on('click', function() {
+			new daum.Postcode({
+				oncomplete: function(data) {
+					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+					$('#scheAddrDetail').prop('disabled', false);
+					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+					var addr = ''; // 주소 변수
+					var extraAddr = ''; // 참고항목 변수
+					
+					//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+					    addr = data.roadAddress;
+					} else { // 사용자가 지번 주소를 선택했을 경우(J)
+					    addr = data.jibunAddress;
+					}
+					
+					// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+					if(data.userSelectedType === 'R'){
+					    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+					    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+					    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+					        extraAddr += data.bname;
+					    }
+					    // 건물명이 있고, 공동주택일 경우 추가한다.
+					    if(data.buildingName !== '' && data.apartment === 'Y'){
+					        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+					    }
+					    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+					    if(extraAddr !== ''){
+					        extraAddr = ' (' + extraAddr + ')';
+					    }
+					    // 조합된 참고항목을 해당 필드에 넣는다.
+					    	addr = addr + extraAddr;
+					} 
+					// 주소 정보를 해당 필드에 넣는다.
+					document.getElementById("scheAddr").value = addr;
+					// 커서를 상세주소 필드로 이동한다.
+					document.getElementById("scheAddrDetail").focus();
+				}
+			}).open();
+		});
+		//다음 주소 api 종료
+		
 		// 게시글 유형 폼 선택
 		$('ul.insert-board-list li').click(function(e){
 			let target = e.currentTarget.textContent;
@@ -1576,7 +1723,7 @@
 		});
 		
 		//담당자 선택시 스팬 추가
-		$(document).on('change', '.add-taskManager-select', function(e) {
+		$(document).on('change','.add-taskManager-select', function(e) {
 			let managerSpan = $('<span>');
 			let memberId = `<input type="hidden" name="taskManager">`;
 			let selectBox = $(e.currentTarget);
@@ -1609,7 +1756,8 @@
 				
 				// 시작일
 				startDate.datetimepicker({
-					dateFormat: "yy-MM-dd h:m:s",
+					format:'Y-m-d H:i',
+					lang:'kr',
 					onSelectDate:function() {
 						endDate.prop('disabled', false);
 					}
@@ -1617,7 +1765,8 @@
 				
 				// 마감일
 				endDate.datetimepicker({
-					dateFormat: "yy-MM-dd h:m:s",
+					format:'Y-m-d H:i',
+					lang:'kr',
 					// 오늘 이후로 선택 가능하게 설정
 					onShow:function(){
 						let date = new Date(startDate.val());
@@ -1633,7 +1782,7 @@
 				let endDate = $(e.currentTarget);
 				
 				endDate.datetimepicker({
-					dateFormat: "yy-MM-dd h:m:s",
+					format:'Y-m-d H:i',
 					// 오늘 이후로 선택 가능하게 설정
 					minDate: 0
 				});
@@ -1673,15 +1822,15 @@
 		// 하위 업무 추가하기
 	    $('.add-sub-task-btn').on('click', function() {
 	        var subtaskForm = `
-	            <div class="task-add">
+	            <div class="task-add" style="padding-right: 150px;">
 	        		<div class="d-flex m-bt">
 	        			<div>
 	        				<span>업무 제목 : </span>
-	        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+	        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요." style="margin-left: 20px;">
 	        			</div>
 		                <div class="select-state">
 		                	<span>진행 상태 : </span>
-						    <select name="state" class="task-select">
+						    <select name="state" class="task-select" style="margin-left: 20px;">
 						        <option value="G1">요청</option>
 						        <option value="G2">진행</option>
 						        <option value="G3">피드백</option>
@@ -1702,7 +1851,7 @@
 		                </div>
 		                <div>
 		                    <label for="endDate">마감일 : </label>
-		                    <input type="text" name="endDate" class="date-input endDate" data-date>
+		                    <input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
 		                </div>
 	                </div>
 	                <div class="board-taskManager">
@@ -1716,10 +1865,9 @@
 		
 		// 업무 등록하기
 		$('#btnAddTask').on('click', function(){
-			let editor2 = CKEDITOR.replace('editor2');
 			let data={}
 			let prjBoardTitle = $('#task').find('[name=prjBoardTitle]').val();
-			let prjBoardSubject = CKEDITOR.instances.editor2.getData();
+			let prjBoardSubject = editor2.getData();
 			let state = $('#task').find('[name=state]:checked').val();
 			let inspYn = $('#task').find('[name=inspYn]').val();
 			let startDate = $('#task').find('[name=startDate]').val();
@@ -1748,7 +1896,7 @@
 				let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
 				// 하위 업무 리스트
 				if (prjBoardTitle !== "") {
-	                let state = $(item).find('[name=state]:checked').val();
+	                state = $(item).find('[name=state]').val();
 	                let endDate = $(item).find('[name=endDate]').val();
 	                let priority = $(item).find('[name=priority]').val();
 	                let managerList = $(item).find('input[name="taskManager"]');
@@ -1773,7 +1921,7 @@
 			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}));
 			$.ajax({
 				url:'${pageContext.request.contextPath}/taskInsert',
-				type:'post',
+				type:'POST',
 				data:JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}),
 				contentType:'application/json',
 				success:function(data){
@@ -1787,15 +1935,10 @@
 		
 		
 		// 투표 항목 추가하기           
-        $('.btnAdd').click (function () {                                        
-            $('.vote-add-buttons').append (                        
-                '<input type="text" name="listContent"> <input type="button" class="btnRemove" value="X"><br>'                    
+        $('.add-vote-list-btn').on('click', function () {                                        
+            $('.board-vote-list').append (                        
+                '<input type="text" name="listContent" placeholder="내용을 입력해주세요.">'                    
             ); // end append                            
-            $('.btnRemove').on('click', function () { 
-                $(this).prev().remove (); // text 지우기
-                $(this).next ().remove (); // <br> 지우기
-                $(this).remove (); // 버튼 지우기
-            });
         });                                           
 	</script>
 	<!-- 게시글 작성 종료 -->
