@@ -18,9 +18,11 @@ COMPNO_VOTE  NOT NULL VARCHAR2(5) 	복수 투표	A1 YES / A2 NO
 RESULT_YN    NOT NULL VARCHAR2(5) 	결과 공개 여부 A1 YES / A2 NO
  */
 	private int prjBoardId;
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd hh:mm")
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date endDate;
+	
 	private String anonyVote;
 	private String compnoVote;
 	private String resultYn;
