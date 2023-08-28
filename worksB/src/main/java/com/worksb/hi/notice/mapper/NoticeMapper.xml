@@ -9,19 +9,20 @@
 	<select id="getTotalCount" resultType="int">
 	   SELECT count(*)
 		 FROM notice_board
+		WHERE company_id = #{companyId } <!-- 추가된 부분  -->
 		<if test="searchkeyword != null and searchkeyword !=''">
 			<choose>
 				<when test="searchtype == 1 ">
-					WHERE notice_title like '%' || #{searchkeyword } || '%'
+					AND notice_title like '%' || #{searchkeyword } || '%'
 				</when>
 				<when test="searchtype == 2 ">
-					WHERE notice_content like '%' || #{searchkeyword } || '%'
+					AND notice_content like '%' || #{searchkeyword } || '%'
 				</when>
 				<when test="searchtype == 3 ">
-					WHERE member_name like  '%${searchkeyword }%'
+					AND member_name like  '%${searchkeyword }%'
 				</when>
 				<when test="searchtype == 4 ">
-					WHERE ( notice_title like '%${searchkeyword }%' or notice_content like '%${searchkeyword }%')
+					AND ( notice_title like '%${searchkeyword }%' or notice_content like '%${searchkeyword }%')
 				</when>
 			</choose>
 		</if> 
@@ -34,19 +35,20 @@
         		from (select *
               		  from notice_board n JOIN member m
               		  on n.member_id = m.member_id
+              		  WHERE n.company_id = #{companyId }<!-- 추가 -->
 					<if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
 					<choose>
 					<when test="searchVO.searchtype == 1 ">
-						WHERE notice_title like '%' || #{searchVO.searchkeyword } || '%'
+						AND notice_title like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 2 ">
-						WHERE notice_content like '%' || #{searchVO.searchkeyword } || '%'
+						AND notice_content like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 3 ">
-						WHERE member_name like  '%${searchVO.searchkeyword }%'
+						AND member_name like  '%${searchVO.searchkeyword }%'
 					</when>
 					<when test="searchVO.searchtype == 4 ">
-						WHERE ( notice_title like '%${searchVO.searchkeyword }%' or notice_content like '%${searchVO.searchkeyword }%')
+						AND ( notice_title like '%${searchVO.searchkeyword }%' or notice_content like '%${searchVO.searchkeyword }%')
 					</when>
 					</choose>
 					</if>               		  
