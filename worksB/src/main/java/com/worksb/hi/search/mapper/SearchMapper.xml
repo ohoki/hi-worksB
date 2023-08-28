@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.worksb.hi.search.mapper.SearchMapper">
+	<select id="getAllPrj" resultType="SearchingVO">
+		SELECT 
+			p.prj_board_id,
+			p.prj_board_title,
+			p.prj_board_regdate,
+			p.member_id,
+			find_subcode(p.board_type) board_type,
+			p.project_id, 
+			m.member_name,
+			m.company_id,
+			pj.project_name
+		FROM prj_board p
+		LEFT JOIN(
+		    SELECT
+		        member_name,
+		        member_id,
+		        company_id
+		    FROM
+		        member
+		)m ON m.member_id=p.member_id
+			AND m.company_id=#{companyId}
+			
+		LEFT JOIN(
+		    SELECT
+		        project_id,
+		        project_name
+		    FROM
+		        project
+		)pj ON pj.project_id=p.project_id
+		
+		WHERE prj_board_title LIKE '%'||#{SearchKeyword}||'%'
+
+	</select>
+</mapper>

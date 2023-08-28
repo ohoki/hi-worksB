@@ -532,7 +532,7 @@ public class ProjectController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//게시판종류(nullable)
+		//게시판종류
 		vo.setBoardType("C5");
 
 		vo.setFileName(fileName);
@@ -606,8 +606,6 @@ public class ProjectController {
 	        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileData.getFileName() + "\"");
 
 	        try (OutputStream outputStream=response.getOutputStream()) {
-	            // 파일의 내용을 출력 스트림에 씁니다.
-	            // 이 때, 서버에서 클라이언트로 직접 파일을 저장하지 않고, 클라이언트의 브라우저로 전송합니다.
 	            outputStream.write(fileData.getFileContent());
 	        } catch (IOException e) {
 	            e.printStackTrace();
