@@ -6,12 +6,16 @@
 
     <!-- 좋아요 추가 -->
     <insert id="insertLike" parameterType="ComLikeVO">
-        INSERT INTO com_like (like_id, board_type, board_id, member_id)
-        	 VALUES (
-        	 		 #{likeId}, 
-        	 		 #{boardType}, 
-        	 		 #{boardId}, 
-        	 		 #{memberId})
+		<selectKey keyProperty="likeId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(like_id), 0) + 1
+			  FROM com_like
+		</selectKey>
+        	INSERT INTO com_like (like_id, board_type, board_id, member_id)
+        	 	 VALUES (
+        	 		 	 #{likeId}, 
+        	 		 	 #{boardType}, 
+        	 			 #{boardId}, 
+        	 		 	 #{memberId})
     </insert>
 
     <!-- 좋아요 삭제 -->
