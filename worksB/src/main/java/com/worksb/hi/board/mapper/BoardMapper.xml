@@ -373,5 +373,16 @@
 
 	</update>
 	-->
+	
+	
+	
 <!-- 	주현 -->
+	<!-- 상단 고정 업데이트 -->
+	<update id="updatePin" parameterType="BoardVO">
+		UPDATE prj_board
+		<set>
+			pin_yn = #{pinYn}
+		</set>
+		WHERE prj_board_id = #{prjBoardId}
+	</update>
 </mapper>

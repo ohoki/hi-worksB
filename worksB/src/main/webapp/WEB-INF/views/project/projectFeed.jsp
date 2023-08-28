@@ -51,7 +51,6 @@
 	    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 	    margin: 30px auto;
 	    clear: both;
-	    position: relative;
 	}
 	
 	.profile {
@@ -738,6 +737,17 @@
 		z-index: 10;
 	}
 	
+	.board-modal-content p{
+		margin-bottom: 5px;
+		padding: 5px;
+		color: var(--color-dark-grey);
+		cursor: pointer;
+	}
+	
+	.board-modal-content p:hover {
+		background-color: var(--color-beigie);
+	}
+	
 	.m-bt {
 		margin-bottom: 10px;
 	}
@@ -754,6 +764,8 @@
 	<div style="display : flex;">
 		<div style="width: 65%;">
 			<button type="button" class="board-insert-btn" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+			<!-- 상단 고정 게시글 -->
+			
 			<!-- 게시글 조회 -->
 			<c:forEach items="${boards }" var="board">
 				<!-- C5 일반 게시글 -->
@@ -828,15 +840,14 @@
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
 							<div class="board-modal-content">
-								<p>
-									<a href="#" data-type="logout">상단고정</a>
-								</p>
-								<p>
-									<a href="#" data-type="my-profile">게시글 수정</a>
-								</p>
-								<p>
-									<a href="#" data-type="status">게시글 삭제</a>
-								</p>
+								<c:if test="${board.pinYn eq 'A2' or board.pinYn eq null}">
+									<p data-type="pinY">상단고정</p>
+								</c:if>
+								<c:if test="${board.pinYn eq 'A1'}">
+									<p data-type="pinN">상단고정 해제</p>
+								</c:if>
+								<p data-type="update">게시글 수정</p>
+								<p data-type="delete">게시글 삭제</p>
 							</div>			
 						</div>
 					</div>
@@ -940,15 +951,14 @@
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
 							<div class="board-modal-content">
-								<p>
-									<a href="#" data-type="logout">상단고정</a>
-								</p>
-								<p>
-									<a href="#" data-type="my-profile">게시글 수정</a>
-								</p>
-								<p>
-									<a href="#" data-type="status">게시글 삭제</a>
-								</p>
+								<c:if test="${board.pinYn eq 'A2' or board.pinYn eq null}">
+									<p data-type="pinY">상단고정</p>
+								</c:if>
+								<c:if test="${board.pinYn eq 'A1'}">
+									<p data-type="pinN">상단고정 해제</p>
+								</c:if>
+								<p data-type="update">게시글 수정</p>
+								<p data-type="delete">게시글 삭제</p>
 							</div>			
 						</div>
 					</div>
@@ -1049,15 +1059,14 @@
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
 							<div class="board-modal-content">
-								<p>
-									<a href="#" data-type="logout">상단고정</a>
-								</p>
-								<p>
-									<a href="#" data-type="my-profile">게시글 수정</a>
-								</p>
-								<p>
-									<a href="#" data-type="status">게시글 삭제</a>
-								</p>
+								<c:if test="${board.pinYn eq 'A2' or board.pinYn eq null}">
+									<p data-type="pinY">상단고정</p>
+								</c:if>
+								<c:if test="${board.pinYn eq 'A1'}">
+									<p data-type="pinN">상단고정 해제</p>
+								</c:if>
+								<p data-type="update">게시글 수정</p>
+								<p data-type="delete">게시글 삭제</p>
 							</div>			
 						</div>
 					</div>
@@ -1170,15 +1179,14 @@
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
 							<div class="board-modal-content">
-								<p>
-									<a href="#" data-type="logout">상단고정</a>
-								</p>
-								<p>
-									<a href="#" data-type="my-profile">게시글 수정</a>
-								</p>
-								<p>
-									<a href="#" data-type="status">게시글 삭제</a>
-								</p>
+								<c:if test="${board.pinYn eq 'A2' or board.pinYn eq null}">
+									<p data-type="pinY">상단고정</p>
+								</c:if>
+								<c:if test="${board.pinYn eq 'A1'}">
+									<p data-type="pinN">상단고정 해제</p>
+								</c:if>
+								<p data-type="update">게시글 수정</p>
+								<p data-type="delete">게시글 삭제</p>
 							</div>			
 						</div>
 					</div>
@@ -1194,15 +1202,41 @@
 	<script >
 		//모달페이지 출력
 		$('.board-header-btn').on('click', function(e) {
-			console.log('gg');
 			let modal = $(e.currentTarget).closest('.board-container').find('div[data-boardmodal]');
-			console.log(modal);
+			let modalContent = modal.children('.board-modal-content');
+			let x = e.clientX + 15;
+			let y = e.clientY + 5;
+			
+			modalContent.css('top', y + 'px');
+			modalContent.css('left',x + 'px');
 			modal.addClass('d-b');
 		});
 		
 		//여백 누르면 모달페이지 종료
-		$('[id*=modal]').on('click', function() {
-			$('.modal-visible').removeClass('modal-visible');
+		$('div[data-boardmodal]').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		$('.board-modal-content p').on('click', function(e) {
+			e.stopPropagation();
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let boardId = boardContainer.data('id');
+			let prjId = '${projectInfo.projectId}';
+			let type = $(e.currentTarget).data('type');
+			
+			if(type == 'pinY') {
+				if(confirm('상단게시글에 고정하시겠습니까?')) {
+					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A1';						
+				}
+			}else if(type == 'pinN') {
+				if(confirm('상단게시글 고정을 해제 하시겠습니까?')) {
+					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A2';	
+				}
+			}else if(type == 'update') {
+				
+			}else if(type == 'delete') {
+				
+			}
 		});
 	</script>
 	
