@@ -278,5 +278,11 @@ public class BoardController {
 		return "z";
 	}
 */	
-	
+	//상단 고정 여부 수정
+	@GetMapping("/updatePin")
+	public String updatePin(BoardVO boardVO) {
+		boardService.updatePin(boardVO);
+		
+		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+	}
 }

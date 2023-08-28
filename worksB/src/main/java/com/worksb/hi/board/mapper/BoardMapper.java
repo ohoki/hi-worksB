@@ -47,7 +47,10 @@ public interface BoardMapper {
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
 	
-//주현
 	
+	
+//주현
+	// 상단 고정 업데이트
+	public int updatePin(BoardVO boardVO);
 	
 }

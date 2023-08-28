@@ -43,5 +43,6 @@ public interface BoardService {
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
 	
-	
+	// 상단 고정 업데이트
+	public int updatePin(BoardVO boardVO);
 }

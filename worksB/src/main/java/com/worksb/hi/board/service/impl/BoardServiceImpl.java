@@ -151,8 +151,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.updateTaskManager(taskVO);
 	}
 
-
-
+	// 상단 고정 업데이트
+	public int updatePin(BoardVO boardVO) {
+		return boardMapper.updatePin(boardVO);
+	};
 	
 	
 
