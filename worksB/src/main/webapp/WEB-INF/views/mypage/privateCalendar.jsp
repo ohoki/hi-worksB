@@ -676,25 +676,25 @@
 			//todoList항목 json화
 			let tdlFormView = $('#tdlFormView')
 			let obj = serializeObject(tdlFormView);
-			let todoList = {todoList : obj};
-			
+	
+			let todoList=[];
+			todoList.push(obj)
 			//item 항목 json화
-		    let itemDataArray = [];
-			itemDataArray.push(todoList);
+		    let itemDataArray = {};
 			
 		    // .tdlList 아래의 각 div 요소를 순회
 		    let updateItem = [];
 		    let insertItem = [];
 		    let deleteItem = [];
 	        let dataObject;
-	    	function getItems(){
-	    		let checkboxValue = $(this).find("input[type='checkbox']").is(":checked");
+	    	function getItems(div){
+	    		let checkboxValue = div.find("input[type='checkbox']").is(":checked");
 		        if(checkboxValue){
 		        	checkboxValue = "A1"
 		        }else{
 		        	checkboxValue = "A2"
 		        }
-		        let inputValue = $(this).find("input[type='text']").val();
+		        let inputValue = div.find("input[type='text']").val();
 		        //item한개의 json화 
 		        if(inputValue!=null && inputValue !=""){
 			        dataObject = {
@@ -704,7 +704,27 @@
 		        }else{
 		        	return;
 		        }
+	    	};
+	    	function getUpdateItems(div,id){
+	    		let checkboxValue = div.find("input[type='checkbox']").is(":checked");
+		        if(checkboxValue){
+		        	checkboxValue = "A1"
+		        }else{
+		        	checkboxValue = "A2"
+		        }
+		        let inputValue = div.find("input[type='text']").val();
+		        //item한개의 json화 
+		        if(inputValue!=null && inputValue !=""){
+			        dataObject = {
+			        	itemId : id,
+			            success : checkboxValue,
+			            content : inputValue
+			        };
+		        }else{
+		        	return;
+		        }
 	    	}
+	    	
 		    $('.tdlList-view > div').each(function() {
 		    	let divTagId = $(this).attr("id");
 			    if (typeof divTagId === "string") {
@@ -715,32 +735,39 @@
 						let deleteItemId = divTagId.substr(-1)
 						let itemId = {itemId : deleteItemId}
 						deleteItem.push(itemId);
+						console.log(deleteItem)
 					}else{
 						//item항목의 div태그에 class가 지정안되어 있는 경우 => 수정
-						getItems();
+						let updateItemId = divTagId.substr(-1)
+						getUpdateItems($(this),updateItemId);
 						updateItem.push(dataObject);
+						console.log(updateItem)
 					}
 			    } else {
 					//item항목의 div태그가 id가 없는 경우 => 신규입력
-			        getItems();
+			        getItems($(this));
 			        // 객체를 배열에 추가
 					insertItem.push(dataObject);
+					console.log(insertItem)
 			    }
 		    });
-		    
-			let updateItemList = {"update" : insertItem}
-			itemDataArray.push(updateItemList);
-			let deleteItemList = {"delete" : insertItem}
-			itemDataArray.push(deleteItemList);
-			let insertItemList = {"insert" : insertItem}
-			itemDataArray.push(insertItemList);
+
+			//let updateItemList = {"update" : updateItem}
+			//itemDataArray.push(updateItemList);
+			//let deleteItemList = {"delete" : deleteItem}
+			//itemDataArray.push(deleteItemList);
+			//let insertItemList = {"insert" : insertItem}
+			//itemDataArray.push(insertItemList);
+			itemDataArray={todoList, updateItem, deleteItem, insertItem};
+			console.log(itemDataArray)
+			console.log(JSON.stringify(itemDataArray))
 		    //json화 된 데이터들을 리스트에 담기
 			
 			$.ajax({
 				url:"updateToDoList",
 				method : 'post',
 				data : JSON.stringify(itemDataArray),
-				contentType : "application/json",
+				contentType : 'application/json',
 				success : function(result){
 					//캘린더 event 업데이트
 					loadPriSche();

@@ -25,9 +25,9 @@ public interface ToDoListService {
 	//ITEM 입력
 	public int insertItem(ToDoListVO vo);
 	
-	//LIST 수정
+	//ITEM 수정
 	public int updateItem(ToDoListVO toDoListVO);
 	
-	//LIST 삭제
+	//ITEM 삭제
 	public int deleteItem(int listId);
 }
