@@ -30,4 +30,6 @@ public interface NoticeMapper {
 	
 	// 조회수 올리기
 	public int noticeHit(int noticeId);
+
+	public List<NoticeVO> selectNoticeByCompanyId(PagingVO pagingVO, SearchVO searchVO, int companyId);
 }

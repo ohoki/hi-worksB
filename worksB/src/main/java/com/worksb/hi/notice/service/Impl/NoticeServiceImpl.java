@@ -73,6 +73,12 @@ public class NoticeServiceImpl implements NoticeService {
 	    noticeMapper.noticeHit(noticeId);
 	}
 
+    @Override
+    public List<NoticeVO> getNoticeListByCompanyId(PagingVO pagingVO, SearchVO searchVO, int companyId) {
+        return noticeMapper.selectNoticeByCompanyId(pagingVO, searchVO, companyId);
+    
+	}
+
 
 
 

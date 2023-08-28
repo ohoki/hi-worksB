@@ -42,9 +42,13 @@ public class NoticeController {
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
 						, @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage, HttpSession session) {
 		
+		int companyId = (int) session.getAttribute("companyId");
+		
 		int total = noticeService.noticeCount(searchVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO,searchVO);
+		
+		List<NoticeVO> noticeList = noticeService.getNoticeListByCompanyId(pagingVO, searchVO, companyId); //추가된 부분
+		//List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO,searchVO);
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("paging", pagingVO);
