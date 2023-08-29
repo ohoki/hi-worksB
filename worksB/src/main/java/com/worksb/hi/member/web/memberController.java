@@ -279,6 +279,7 @@ public class memberController {
 	}//companyRegisterForm
 	
 	
+	// 메모장 저장 및 업데이트
 	@PostMapping("/saveMemo")
     @ResponseBody
     public void saveMemo(@RequestParam("memoContent") String memoContent, HttpSession session) {
@@ -288,10 +289,8 @@ public class memberController {
 		memberVO.setMemoContent(memoContent);
 		
 		if (memo == null) {
-			// memberId가 존재하지 않으면 insert
 			memberService.insertMemo(memberVO);
 		} else {
-			// memberId가 존재하면 update
 			memberService.updateMemo(memberVO);
 	    }
     }
