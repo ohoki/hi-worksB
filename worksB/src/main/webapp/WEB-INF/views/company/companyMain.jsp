@@ -27,7 +27,13 @@
 	width : 1300px;
 	margin: 0 auto;
 }
-
+#memoContent{
+	width: 600px;
+	height: 200px;
+	font-size: 15px;
+	border: 1px solid var(--color-dark-beigie);
+	padding: 10px;
+}
 
 
 </style>
@@ -60,9 +66,9 @@
 					</ul>
 				</li>
 				<li class="memo"><span>메모</span>
-					<ul>
-						
-					</ul>
+				<div>
+					<textarea id="memoContent" spellcheck="false" placeholder="메모를 입력하세요.">${memo.memoContent}</textarea>
+				</div>
 				</li>
 				<li class="weather"><span>날씨</span>
 					<ul>
@@ -142,7 +148,28 @@
     
     
     
-    
+    let memo = $('#memoContent');
+    let saveTimeout;
+
+	// 텍스트 변경 시 자동 저장
+	memo.on('keyup', function() {
+		clearTimeout(saveTimeout); // 이전 타이머 제거
+		saveTimeout = setTimeout(saveMemo, 1000); // 1초 후 자동 저장
+    });
+
+	// 자동 저장 함수
+	function saveMemo() {
+		let memoContent = memo.val();
+        
+		$.ajax({
+			type: 'POST',
+			url: '${pageContext.request.contextPath}/saveMemo',
+			data: { memoContent: memoContent },
+			success: function(response) {
+				console.log('메모 저장 완료');
+			}
+		});
+	}
 
 	
 	
