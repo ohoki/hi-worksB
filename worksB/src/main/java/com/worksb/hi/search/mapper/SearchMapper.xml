@@ -31,9 +31,183 @@
 		        project_name
 		    FROM
 		        project
+		    WHERE
+		    	project_access='A1'
 		)pj ON pj.project_id=p.project_id
 		
 		WHERE prj_board_title LIKE '%'||#{SearchKeyword}||'%'
 
 	</select>
+	<select id="getAllClub" resultType="SearchingVO">
+		SELECT
+			board_id,
+			board_title,
+			board_content,
+			board_regdate,
+			board_upddate,
+			member_id,
+			coordinate,
+			board_hit,
+			notice,
+			club_id,
+			board_type
+		FROM
+			club_board
+		WHERE
+			member_id=#{memberId}
+		AND
+			board_title like'%'||#{SearchKeyword}||'%'
+			
+	</select>
+	<select id="getAllNotice" resultType="SearchingVO">
+		SELECT
+			notice_id,
+			notice_title,
+			notice_content,
+			member_id,
+			board_regdate,
+			board_upddate,
+			coordinate,
+			board_hit,
+			board_type,
+			company_id
+		FROM
+			notice_board
+		WHERE
+			company_id=#{companyId}
+		AND
+			notice_title like'%'||#{SearchKeyword}||'%'
+
+	</select>
+	<select id="getAllCarpool" resultType="SearchingVO">
+		SELECT
+			board_id,
+			board_title,
+			board_content,
+			member_id,
+			board_regdate,
+			board_upddate,
+			board_hit,
+			category,
+			departure,
+			arrival,
+			departure_date,
+			passenger,
+			coordinate,
+			board_type,
+			company_id
+		FROM carpool_board
+		WHERE
+			company_id=#{companyId}
+		AND
+			board_title like'%'||#{SearchKeyword}||'%'
+	</select>
+	
+	
+	
+	
+<!-- 	날짜옵션 추가되는 부분 아래쪽 -->
+<select id="getPrj" resultType="SearchingVO">
+   		SELECT 
+			p.prj_board_id,
+			p.prj_board_title,
+			p.prj_board_regdate,
+			p.member_id,
+			find_subcode(p.board_type) board_type,
+			p.project_id, 
+			m.member_name,
+			m.company_id,
+			pj.project_name
+		FROM prj_board p
+		LEFT JOIN(
+		    SELECT
+		        member_name,
+		        member_id,
+		        company_id
+		    FROM
+		        member
+		)m ON m.member_id=p.member_id
+			AND m.company_id=1
+			
+		LEFT JOIN(
+		    SELECT
+		        project_id,
+		        project_name
+		    FROM
+		        project
+		)pj ON pj.project_id=p.project_id
+		
+		WHERE prj_board_title LIKE '%'||#{SearchKeyword}||'%'
+        AND prj_board_regdate 
+        between TO_DATE(#{startDate},'YYYY-MM-DD') AND TO_DATE(#{endDate},'YYYY-MM-DD')
+</select>
+<select id="getClub" resultType="SearchingVO">
+	SELECT
+			board_id,
+			board_title,
+			board_content,
+			board_regdate,
+			board_upddate,
+			member_id,
+			coordinate,
+			board_hit,
+			notice,
+			club_id,
+			board_type
+		FROM
+			club_board
+		WHERE
+			member_id=#{memberId}
+		AND
+			board_title like'%'||#{SearchKeyword}||'%'
+		AND board_regdate 
+       		between TO_DATE(#{startDate},'YYYY-MM-DD') AND TO_DATE(#{endDate},'YYYY-MM-DD')
+</select>
+<select id="getNotice" resultType="SearchingVO">
+	SELECT
+			notice_id,
+			notice_title,
+			notice_content,
+			member_id,
+			board_regdate,
+			board_upddate,
+			coordinate,
+			board_hit,
+			board_type,
+			company_id
+		FROM
+			notice_board
+		WHERE
+			company_id=#{companyId}
+		AND
+			notice_title like'%'||#{SearchKeyword}||'%'
+		AND board_regdate 
+       		between TO_DATE(#{startDate},'YYYY-MM-DD') AND TO_DATE(#{endDate},'YYYY-MM-DD')
+	
+</select>
+<select id="getCarpool" resultType="SearchingVO">
+	SELECT
+			board_id,
+			board_title,
+			board_content,
+			member_id,
+			board_regdate,
+			board_upddate,
+			board_hit,
+			category,
+			departure,
+			arrival,
+			departure_date,
+			passenger,
+			coordinate,
+			board_type,
+			company_id
+		FROM carpool_board
+		WHERE
+			company_id=#{companyId}
+		AND
+			board_title like'%'||#{SearchKeyword}||'%'
+		AND board_regdate 
+       		between TO_DATE(#{startDate},'YYYY-MM-DD') AND TO_DATE(#{endDate},'YYYY-MM-DD')
+</select>
 </mapper>

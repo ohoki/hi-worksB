@@ -40,7 +40,7 @@
 		<div class="side__menu__bottom">
 			<ul class="side__menu__items">
 				<li class="side__menu__item"><a>구성원 초대</a></li>
-				<li class="side__menu__item"><a>관리자 설정</a></li>
+				<li class="side__menu__item"><a href="${pageContext.request.contextPath}/admin/companyInfo">관리자 설정</a></li>
 			</ul>
 		</div>
 	</aside>
