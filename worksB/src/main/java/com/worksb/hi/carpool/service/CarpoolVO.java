@@ -2,6 +2,8 @@ package com.worksb.hi.carpool.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -17,7 +19,8 @@ public class CarpoolVO {
 	private String category;
 	private String departure;
 	private String arrival;
-	private String departureDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	private Date departureDate;
 	private int passenger;
 	private String coordinate;
 	private String boardType;

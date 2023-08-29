@@ -13,6 +13,22 @@
 			   board_type,
 			   comment_dep
 		  FROM board_comment
-		 WHERE board_id = #{boardId}
+		 WHERE board_id = #{boardId} and boardtype = #{boardType}
+	  ORDER BY 
 	</select>
+	
+	<!-- 대댓글 리스트 -->
+	<select id="boardCmtchildList" resultType="BoardCmtVO">
+		SELECT comment_id,
+			   member_id,
+			   comment_regdate,
+			   comment_content,
+			   board_id,
+			   board_type,
+			   comment_dep
+		      FROM board_comment
+		     WHERE board_id = #{boardId} and boardtype = #{boardType} and comment_dep = 1
+	  ORDER BY 
+	</select> 
+			
 </mapper>

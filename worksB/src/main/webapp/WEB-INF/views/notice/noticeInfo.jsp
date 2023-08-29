@@ -173,8 +173,10 @@ div h2 {
 				<button type="button" class="buttonss__button" onclick="location.href='noticeList'">목록</button>
 			</div>
 			<div class="buttons">
-				<button type="button" class="buttonss__button" onclick="location.href='noticeUpdate?noticeId=${noticeInfo.noticeId}'">수정</button>
-				<button type="button" class="buttonss__button" onclick="location.href='noticeDelete?noticeId=${noticeInfo.noticeId}'">삭제</button>
+				<c:if test="${memberInfo.memberId eq noticeInfo.memberId}">
+					<button type="button" class="buttonss__button" onclick="location.href='noticeUpdate?noticeId=${noticeInfo.noticeId}'">수정</button>
+					<button type="button" class="buttonss__button" onclick="location.href='noticeDelete?noticeId=${noticeInfo.noticeId}'">삭제</button>
+				</c:if>
 			</div>
 		</div>
 		<div>
@@ -182,8 +184,18 @@ div h2 {
 				<table>
 					<thead>
 						<tr>
-							<th></th>
-							<th></th>
+							<th>
+							    <ul>
+							        <c:forEach items="${boardCmtList}" var="cmt">
+							            <li>${cmt.commentContent}</li>
+							            <ul>
+							                <c:forEach items="${cmt.replies}" var="reply">
+							                    <li>${reply.commentContent}</li>
+							                </c:forEach>
+							            </ul>
+							        </c:forEach>
+							    </ul>
+							</th>
 						</tr>
 					</thead>
 					<tr>
