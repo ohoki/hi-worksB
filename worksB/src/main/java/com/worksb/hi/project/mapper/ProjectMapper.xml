@@ -100,6 +100,23 @@
 		ORDER BY prj_board_regdate DESC
 	</select>
 	
+	<!-- 프로젝트 고정 게시글 리스트 -->
+	<select id="getPinBoardList" resultType="BoardVO">
+		SELECT 	prj_board_id,        
+				prj_board_title,     
+				pin_yn,                
+				board_type,           
+				project_id,
+                find_board_icon(board_type) AS board_icon_name
+		FROM    prj_board
+		WHERE   project_id = #{projectId}
+			AND pin_yn = 'A1' 	
+		ORDER BY prj_board_regdate DESC
+	</select>
+	
+	
+	
+	
 	<!-- 부서 정보 조회 (회사 번호)-->
 	<select id="getDeptInfo" parameterType="int" resultType="DeptVO">
 		SELECT	dept_id,

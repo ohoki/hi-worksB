@@ -373,7 +373,60 @@
 
 	</update>
 	-->
+	
+	
+	
 <!-- 	주현 -->
+	<!-- 상단 고정 업데이트 -->
+	<update id="updatePin" parameterType="BoardVO">
+		UPDATE prj_board
+		<set>
+			pin_yn = #{pinYn}
+		</set>
+		WHERE prj_board_id = #{prjBoardId}
+	</update>
+	
+	<!-- 회원의 프로젝트 별 북마크 리스트 -->
+	<select id="getBookmarkList" resultType="BoardVO">
+	SELECT 
+			m.bookmark_id,
+			m.board_type,
+			b.prj_board_id, 
+			b.prj_board_title, 
+			find_board_icon(b.board_type) AS board_icon_name
+	FROM    prj_board b JOIN bookmark m 
+		ON (b.prj_board_id = m.board_id) 
+	WHERE   m.member_id = #{memberId} 
+		AND m.project_id = #{projectId}	
+	</select>
+	
+	<!-- 게시글 북마크 등록 -->
+	<insert id="insertBookmark" parameterType="BoardVO">
+		<selectKey keyProperty="bookmarkId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(bookmark_id), 0) + 1
+			FROM bookmark
+		</selectKey>
+		INSERT INTO bookmark (
+							   bookmark_id,
+							   member_id,
+							   project_id,
+							   board_id,
+							   board_type
+							  )
+					VALUES   (
+							   #{bookmarkId},
+							   #{memberId},
+							   #{projectId},
+							   #{prjBoardId},
+							   #{boardType}
+							  )
+	</insert>
+	
+	<!-- 게시글 북마크 삭제 -->
+	<delete id="deleteBookmark" parameterType="BoardVO">
+		DELETE bookmark
+		WHERE member_id = #{memberId} AND board_id = #{prjBoardId} AND board_type = #{boardType}
+	</delete>
 
 
 	<!-- 정현 -->

@@ -9,13 +9,16 @@
 	<title>Insert title here</title>
 	 
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	
 	<link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
 	<script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 	
 	<style>
+	html{
+	  scroll-behavior: smooth;
+	}
+	
 	input:-webkit-autofill {
 		webkit-box-shadow: 0 0 0 1000px white inset;
 		box-shadow: 0 0 0 1000px white inset;
@@ -44,13 +47,58 @@
 		color: white;
 	}
 	
+	.pin-board {
+		clear: both;
+	    width : 70%;
+	    height: 300px;
+	    margin: 30px auto;
+	    overflow: auto;
+	    overflow-x: hidden;
+	}
+	
+	.pin-board-title {
+		color: var(--color-dark-red);
+		font-weight: var(--weight-bold);
+		padding: 10px 0;
+	}
+	
+	.all-board-title {
+		color: var(--color-dark-red);
+		font-weight: var(--weight-bold);
+		width: 70%;
+		margin: 10px auto;
+		padding: 0 10px;
+	}
+	
+	.pin-board li {
+	    width : 99%;
+	    display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 10px 0;
+		background-color: rgba(240, 240, 240, 0.1);
+		margin: 5px 0;
+		border-radius: 5px;
+		border: 1px solid var(--color-dark-beigie);
+		font-weight: var(--weight-bold);
+		color: var(--color-dark-grey);
+		cursor: pointer;
+	}
+	
+	.pin-board li:hover {
+		border: 1px solid var(--color-light-blue);
+	}
+	
+	.pin-board-icon {
+		margin: 0 10px;
+	}
+	
 	.board-container{
 		border: 1px solid var(--color-beigie);
 	    border-radius: 20px;
 	    width : 70%;
 	    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-	    margin: 30px auto;
-	    clear: both;
+	    margin: 0 auto 30px;
 	}
 	
 	.profile {
@@ -475,19 +523,21 @@
 		max-height: 550px;
 	}
 	
-	.insert-board-area::-webkit-scrollbar {
+	.insert-board-area::-webkit-scrollbar, .pin-board::-webkit-scrollbar, .bookmark-board-contets::-webkit-scrollbar {
 	    width: 10px;
 	  }
-	  .insert-board-area::-webkit-scrollbar-thumb {
+	  .insert-board-area::-webkit-scrollbar-thumb, .pin-board::-webkit-scrollbar-thumb, .bookmark-board-contets::-webkit-scrollbar-thumb {
 	    background-color: #2f3542;
 	    border-radius: 10px;
 	    background-clip: padding-box;
 	    border: 2px solid transparent;
+	    background-color: var(--color-dark-beigie);
 	  }
-	  .insert-board-area::-webkit-scrollbar-track {
+	  .insert-board-area::-webkit-scrollbar-track, .pin-board::-webkit-scrollbar-track, .bookmark-board-contet::-webkit-scrollbar-track {
 	    background-color: grey;
 	    border-radius: 10px;
 	    box-shadow: inset 0px 0px 5px white;
+	    background-color: var(--color-dark-beigie);
 	  }
 	
 	.board-form {
@@ -714,6 +764,91 @@
 		padding: 0 20px;
 	}
 	
+	div[data-boardmodal] {
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		font-size: 12px;
+		left: 0;
+		top: 0;
+		background-color: rgba(0,0,0,0.1);
+	}
+	
+	.board-modal-content {
+		position: absolute;
+		width: 6%;
+		height: 10%;
+		right: 4%;
+		top: 4%;
+		background-color: white;
+		border: 1px solid var(--color-dark-beigie);
+		border-radius: 10px;
+		padding: 5px 15px;
+		z-index: 10;
+	}
+	
+	.board-modal-content p{
+		margin-bottom: 5px;
+		padding: 5px;
+		color: var(--color-dark-grey);
+		cursor: pointer;
+	}
+	
+	.board-modal-content p:hover {
+		background-color: var(--color-beigie);
+	}
+	
+	.bookmark-board {
+		position: fixed;
+		width: 360px;
+	    margin: 0 auto;
+	    top: 220px;
+	}
+	
+	.bookmark-board-title {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 10px;
+		color: var(--color-dark-red);
+		font-weight: var(--weight-bold);
+	}
+	
+	.bookmark-board-contets {
+		border: 1px solid var(--color-beigie);
+	    border-radius: 20px;
+	    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    	overflow: auto;
+    	overflow-x: hidden;
+    	padding: 20px 0;
+    	min-height: 250px;
+    	max-height: 350px;
+	}
+	
+	.bookmark-board-contets ul {
+		display: flex;
+		flex-direction: column;
+		align-items: center;	
+	}
+	
+	.bookmark-board-contets li {
+	    width : 90%;
+	    display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 10px 0;
+		background-color: rgba(240, 240, 240, 0.1);
+		margin: 5px 0;
+		border-radius: 5px;
+		border: 1px solid var(--color-dark-beigie);
+		font-weight: var(--weight-bold);
+		color: var(--color-dark-grey);
+		cursor: pointer;
+	}
+	
+	.bookmark-board-contets li:hover {
+		border: 1px solid var(--color-light-blue);
+	}
 	
 	.m-bt {
 		margin-bottom: 10px;
@@ -727,15 +862,50 @@
 	<!-- 사진 업로드를 위한 ckfinder -->
 	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	
+		<!--부드러운 스크롤 효과-->
+		<script>	
+			$(document).ready(function(){
+			    $('a[href^="#"]').on('click',function (e) {
+			        e.preventDefault();
+	
+			        let target = this.hash;
+					let $target = $(target);
+					
+			        $('#main').stop().animate({
+			            'scrollTop': main.scrollTop + document.querySelector(target).getBoundingClientRect().top
+			        }, 500, 'swing');
+			    });
+			});
+		</script>
+	
 	<!-- 게시글 출력 HTML -->
 	<div style="display : flex;">
 		<div style="width: 65%;">
 			<button type="button" class="board-insert-btn" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
+			<!-- 상단 고정 게시글 -->
+			<c:if test="${pinBoardInfo.size() ne 0 }">
+				<div class="pin-board">
+					<div class="pin-board-title">상단고정 ${pinBoardInfo.size() }</div>
+					<ul>
+						<c:forEach items="${pinBoardInfo }" var="pinBoard">
+							<li>
+								<a href="#${pinBoard.boardType }${pinBoard.prjBoardId}" style="width: 100%">
+									<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
+									<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/${pinBoard.boardIconName}" alt="게시글 아이콘">
+									<!-- <img alt="게시글 아이콘" src=""> -->
+									<span>${pinBoard.prjBoardTitle }</span>
+								</a>	
+							</li>						
+						</c:forEach>
+					</ul>
+				</div>			
+			</c:if>
 			<!-- 게시글 조회 -->
+			<div class="all-board-title" style="clear: both;">전체</div>
 			<c:forEach items="${boards }" var="board">
 				<!-- C5 일반 게시글 -->
 				<c:if test="${board.boardType eq 'C5'}">
-					<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container" id="${board.boardType }${board.prjBoardId }">
 						<div class="board-header">
 							<div class="board-header-info">
 								<c:if test="${board.realProfilePath eq null }">
@@ -762,7 +932,13 @@
 						<div class="board-footer">
 							<div >
 								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
-								<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+								<c:if test="${board.bookmarkByMember eq 1 }">
+									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
+								</c:if>
+								<c:if test="${board.bookmarkByMember eq 0 }">
+									<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>								
+								</c:if>
+								
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 7</span>
@@ -802,12 +978,25 @@
 							</c:if>
 								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 						</div>
+						<!-- board 버튼 클릭 시 모달 -->
+						<div class="d-none" data-boardmodal>
+							<div class="board-modal-content">
+								<c:if test="${board.pinYn eq 'A2' or board.pinYn eq null}">
+									<p data-type="pinY">상단고정</p>
+								</c:if>
+								<c:if test="${board.pinYn eq 'A1'}">
+									<p data-type="pinN">상단고정 해제</p>
+								</c:if>
+								<p data-type="update">게시글 수정</p>
+								<p data-type="delete">게시글 삭제</p>
+							</div>			
+						</div>
 					</div>
 				</c:if>
 	
 				<!-- C6 일정-->
 				<c:if test="${board.boardType eq 'C6'}">
-					<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container" id="${board.boardType }${board.prjBoardId }">
 						<div class="board-header">
 							<div class="board-header-info">
 								<c:if test="${board.realProfilePath eq null }">
@@ -860,7 +1049,12 @@
 						<div class="board-footer">
 							<div >
 								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
-								<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+								<c:if test="${board.bookmarkByMember eq 1 }">
+									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+								</c:if>
+								<c:if test="${board.bookmarkByMember eq 0 }">
+									<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>								
+								</c:if>
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 7</span>
@@ -889,7 +1083,7 @@
 										<a href="#">삭제</a>
 									</div>
 								</div>
-							<!-- 여기까지 -->	
+							<!-- 여기까지 -->
 						</c:if>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
@@ -900,12 +1094,25 @@
 							</c:if>
 								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 						</div>
+						<!-- board 버튼 클릭 시 모달 -->
+						<div class="d-none" data-boardmodal>
+							<div class="board-modal-content">
+								<c:if test="${board.pinYn eq 'A2' or board.pinYn eq null}">
+									<p data-type="pinY">상단고정</p>
+								</c:if>
+								<c:if test="${board.pinYn eq 'A1'}">
+									<p data-type="pinN">상단고정 해제</p>
+								</c:if>
+								<p data-type="update">게시글 수정</p>
+								<p data-type="delete">게시글 삭제</p>
+							</div>			
+						</div>
 					</div>
 				</c:if>
 				
 				<!-- C7 투표 -->
 				<c:if test="${board.boardType eq 'C7'}">
-					<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container" id="${board.boardType }${board.prjBoardId }">
 						<div class="board-header">
 							<div class="board-header-info">
 								<c:if test="${board.realProfilePath eq null }">
@@ -955,7 +1162,12 @@
 						<div class="board-footer">
 							<div >
 								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
-								<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+								<c:if test="${board.bookmarkByMember eq 1 }">
+									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
+								</c:if>
+								<c:if test="${board.bookmarkByMember eq 0 }">
+									<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>								
+								</c:if>
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 7</span>
@@ -995,12 +1207,25 @@
 							</c:if>
 								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 						</div>
+						<!-- board 버튼 클릭 시 모달 -->
+						<div class="d-none" data-boardmodal>
+							<div class="board-modal-content">
+								<c:if test="${board.pinYn eq 'A2' or board.pinYn eq null}">
+									<p data-type="pinY">상단고정</p>
+								</c:if>
+								<c:if test="${board.pinYn eq 'A1'}">
+									<p data-type="pinN">상단고정 해제</p>
+								</c:if>
+								<p data-type="update">게시글 수정</p>
+								<p data-type="delete">게시글 삭제</p>
+							</div>			
+						</div>
 					</div>
 				</c:if>
 				
 				<!-- C8 업무 -->
 				<c:if test="${board.boardType eq 'C8'}">
-					<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container">
+					<div data-list="board" data-type="${board.boardType}" data-id="${board.prjBoardId }" class="board-container" id="${board.boardType }${board.prjBoardId }">
 						<div class="board-header">
 							<div class="board-header-info">
 								<c:if test="${board.realProfilePath eq null }">
@@ -1062,7 +1287,12 @@
 						<div class="board-footer">
 							<div >
 								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
-								<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+								<c:if test="${board.bookmarkByMember eq 1 }">
+									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
+								</c:if>
+								<c:if test="${board.bookmarkByMember eq 0 }">
+									<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>								
+								</c:if>
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 7</span>
@@ -1102,18 +1332,134 @@
 							</c:if>
 								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
 						</div>
+						<!-- board 버튼 클릭 시 모달 -->
+						<div class="d-none" data-boardmodal>
+							<div class="board-modal-content">
+								<c:if test="${board.pinYn eq 'A2' or board.pinYn eq null}">
+									<p data-type="pinY">상단고정</p>
+								</c:if>
+								<c:if test="${board.pinYn eq 'A1'}">
+									<p data-type="pinN">상단고정 해제</p>
+								</c:if>
+								<p data-type="update">게시글 수정</p>
+								<p data-type="delete">게시글 삭제</p>
+							</div>			
+						</div>
 					</div>
 				</c:if>
 			</c:forEach>
 		</div>	
 				<!-- 게시글 조회 끝 -->
 		<div style="width: 25%;">
-			<h1>북마크 공간~~</h1>
+			<div class="bookmark-board">
+				<div class="bookmark-board-title">북마크</div>
+				<div class="bookmark-board-contets">
+					<ul>
+						<c:if test="${bookmarkList.size() eq 0}">
+							<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>
+						</c:if>
+						<c:if test="${bookmarkList ne null}">
+							<c:forEach items="${bookmarkList }" var="bookmark">
+								<li>
+									<a href="#${bookmark.boardType }${bookmark.prjBoardId}" style="width: 100%">
+										<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+										<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/${bookmark.boardIconName}" alt="게시글 아이콘">
+										<!-- <img alt="게시글 아이콘" src=""> -->
+										<span>${bookmark.prjBoardTitle }</span>									
+									</a>
+								</li>						
+							</c:forEach>						
+						</c:if>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
+
+	<!-- 모달 페이지 -->
+	<script >
+		//모달페이지 출력
+		$('.board-header-btn').on('click', function(e) {
+			let modal = $(e.currentTarget).closest('.board-container').find('div[data-boardmodal]');
+			let modalContent = modal.children('.board-modal-content');
+			let x = e.clientX + 15;
+			let y = e.clientY + 5;
+			
+			modalContent.css('top', y + 'px');
+			modalContent.css('left',x + 'px');
+			modal.addClass('d-b');
+		});
+		
+		//여백 누르면 모달페이지 종료
+		$('div[data-boardmodal]').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		$('.board-modal-content p').on('click', function(e) {
+			e.stopPropagation();
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let boardId = boardContainer.data('id');
+			let prjId = '${projectInfo.projectId}';
+			let type = $(e.currentTarget).data('type');
+			
+			if(type == 'pinY') {
+				if(confirm('상단게시글에 고정하시겠습니까?')) {
+					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A1';						
+				}
+			}else if(type == 'pinN') {
+				if(confirm('상단게시글 고정을 해제 하시겠습니까?')) {
+					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A2';	
+				}
+			}else if(type == 'update') {
+				
+			}else if(type == 'delete') {
+				
+			}
+		});
+	</script>
 	
 	<!-- 게시글 출력 SCRIPT -->
-	<script> 
+	<script>
+		//북마크
+		$('span[data-bookmark]').on('click', function(e) {
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let prjBoardId = boardContainer.data('id');
+			let boardType = boardContainer.data('type');
+			let prjId = '${projectInfo.projectId}';
+			let memberId = '${memberInfo.memberId}';
+			let bookmark = $(e.currentTarget).data('bookmark');
+			let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
+			
+			if(bookmark == 'no') {
+				if(confirm('이 게시글을 북마크 하시겠습니까?')) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/insertBookmark',
+						type : 'POST',
+						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+						success : function(projectId) {
+							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					});	
+				}
+			}else if(bookmark == 'yes') {
+				if(confirm('북마크를 해제 하시겠습니까?')) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/deleteBookmark',
+						type : 'POST',
+						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+						success : function(projectId) {
+							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					});	
+				}
+			}
+		});
 		//투표 항목 선택 시 버튼 색상 변경 && 복수 투표 여부
 		function checkBtn(e) {
 			let checkBox = $(e).closest('.vote-lists').find('input[type=checkbox]');

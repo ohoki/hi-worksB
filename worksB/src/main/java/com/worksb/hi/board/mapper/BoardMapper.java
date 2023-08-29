@@ -7,6 +7,7 @@ import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
+import com.worksb.hi.project.service.ProjectVO;
 
 public interface BoardMapper {
 	// 이진
@@ -47,7 +48,20 @@ public interface BoardMapper {
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
 	
+	
+	
 //주현
+	// 상단 고정 업데이트
+	public int updatePin(BoardVO boardVO);
+	
+	// 회원의 프로젝트 별 북마크 리스트
+	public List<BoardVO> getBookmarkList(ProjectVO projectVO);
+	
+	// 게시글 북마크 등록
+	public int insertBookmark(BoardVO boardVO);
+	
+	// 게시글 북마크 삭제
+	public int deleteBookmark(BoardVO boardVO);
 	
 	//정현
 	//프로젝트 일정 캘린더 조회
@@ -56,4 +70,5 @@ public interface BoardMapper {
 	public List<TaskVO> getTaskCalendar(int projectId);
 	//프로젝트 일정 상세 조회
 	public BoardVO getScheBoardInfo(int prjBoardId);
+
 }
