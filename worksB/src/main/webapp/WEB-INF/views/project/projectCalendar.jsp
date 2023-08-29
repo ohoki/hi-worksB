@@ -36,11 +36,11 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-				  <h1 class="modal-title fs-5" id="scheModalLabel">Modal title</h1>
+				  <h1 class="modal-title fs-5" id="scheModalLabel"></h1>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-				  ...
+				
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -117,13 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
 			console.log(boardId.substr(1))
 		}else if(boardId.substr(0,1)!=="t"){
 			scheModal.show();
-			console.log(boardId)
 			$.ajax({
 				url:'getScheBoardInfo',
 				method:'GET',
 				data: {'prjBoardId' : boardId},
 				success:function(result){
-					console.log(result)
+					console.log(result.boardVO)
+					console.log(result.scheVO)
+					$('#scheModalLabel').text("일정 조회")
 				},
 				error:function(error){
 					console.log(error)

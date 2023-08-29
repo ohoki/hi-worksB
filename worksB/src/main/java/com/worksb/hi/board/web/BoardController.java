@@ -308,6 +308,7 @@ public class BoardController {
 		BoardRequestVO vo = new BoardRequestVO();
 		ScheVO scheVO = new ScheVO();
 		scheVO.setPrjBoardId(prjBoardId);
+		String memberId = vo.getBoardVO().getMemberId();
 		vo.setBoardVO(boardService.getScheBoardInfo(prjBoardId));
 		vo.setScheVO(boardService.getScheInfo(scheVO));
 		return vo;
