@@ -13,7 +13,7 @@
 		<p class="side__menu__cate">회사 관리</p>
 		<div class="side__menu">
 			<ul class="side__menu__items">
-				<li class="side__menu__item"><a>회사정보</a></li>
+				<li class="side__menu__item"><a href="${pageContext.request.contextPath}/admin/companyInfo">회사정보</a></li>
 				<li class="side__menu__item"><a>구성원</a></li>
 				<li class="side__menu__item"><a>동호회</a></li>
 				<li class="side__menu__item"><a>부서편집</a></li>
@@ -31,7 +31,7 @@
 		<div class="side__menu__bottom">
 			<ul class="side__menu__items">
 				<li class="side__menu__item"><a>구성원 초대</a></li>
-				<li class="side__menu__item"><a>홈으로</a></li>
+				<li class="side__menu__item"><a href="${pageContext.request.contextPath}/start">홈으로</a></li>
 				<li class="side__menu__item"><a>관리자 설정</a></li>
 			</ul>
 		</div>
