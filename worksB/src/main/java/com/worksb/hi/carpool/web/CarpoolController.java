@@ -42,7 +42,10 @@ public class CarpoolController {
 	
 	// 단건 조회
 	@GetMapping("/carpoolInfo")
-	public String getCarpoolInfo(CarpoolVO carpoolVO, Model model) {
+	public String getCarpoolInfo(@RequestParam("boardId")int boardId, CarpoolVO carpoolVO,Model model) {
+		if(boardId!=0) {
+			carpoolVO.setBoardId(boardId);			
+		}
 		CarpoolVO findVO = carpoolService.getCarpoolInfo(carpoolVO);
 		model.addAttribute("carpoolInfo", findVO);
 		return "carpool/carpoolInfo";

@@ -427,4 +427,42 @@
 		DELETE bookmark
 		WHERE member_id = #{memberId} AND board_id = #{prjBoardId} AND board_type = #{boardType}
 	</delete>
+
+
+	<!-- 정현 -->
+	<!-- 프로젝트 일정 캘린더 조회 -->
+	<select id="getScheCalendar" resultType="ScheVO">
+		SELECT b.prj_board_id
+			   , b.prj_board_title
+			   , s.start_date
+			   , s.end_date
+		FROM prj_board b, prj_sche s
+		WHERE b.prj_board_id = s.prj_board_id
+	          AND project_id = #{projectId}
+	</select>
+	<!-- 프로젝트 업무 캘린더 조회 -->
+	<select id="getTaskCalendar" resultType="TaskVO">
+		SELECT b.prj_board_id, b.prj_board_title, t.high_task_id, t.start_date, t.end_date
+		FROM prj_board b, prj_task t
+		WHERE b.prj_board_id = t.prj_board_id
+		        AND project_id = #{projectId}
+		        AND t.high_task_id IS NULL
+		        AND t.start_date IS NOT NULL
+		        AND t.end_date IS NOT NULL
+	</select>
+	<!-- 프로젝트 일정 상세 조회 -->
+	<select id="getScheBoardInfo">
+		SELECT prj_board_id        
+			   , prj_board_title   
+			   , prj_board_subject     
+			   , prj_board_regdate       
+			   , member_id 
+			   , insp_yn  
+			   , pin_yn  
+			   , board_type 
+			   , project_id  
+			   , coordinate 
+		FROM prj_board
+		WHERE prj_board_id = #{prjBoardId}
+	</select>
 </mapper>

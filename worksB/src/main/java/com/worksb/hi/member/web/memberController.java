@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.common.UserSha256;
 import com.worksb.hi.company.service.CompanyService;
 import com.worksb.hi.company.service.CompanyVO;
@@ -124,6 +125,12 @@ public class memberController {
 				//세션 저장
 				session.setAttribute("memberInfo", member);
 				session.setAttribute("companyInfo", company);
+				
+				List<MemberVO> projectList= memberService.getProjectList(member);
+				model.addAttribute("projectList", projectList);
+				List<MemberVO> noticeList= memberService.getNoticeList(member);
+				model.addAttribute("noticeList", noticeList);
+				
 				return "company/companyMain";
 			} 
 		}
