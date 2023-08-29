@@ -7,6 +7,7 @@ import lombok.Data;
 public class BoardRequestVO {
 	BoardVO boardVO;
 	TaskVO taskVO;
+	ScheVO scheVO;
 	List<TaskVO> subTask;
 	List<TaskVO> prjManager;
 	List<TaskVO> subManager;

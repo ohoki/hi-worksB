@@ -152,10 +152,23 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
+	
+	
+	//정현
+	//프로젝트 일정 캘린더 조회
+	@Override
+	public List<ScheVO> getScheCalendar(int projectId) {
+		return boardMapper.getScheCalendar(projectId);
+	}
 
-	
-	
+	@Override
+	public List<TaskVO> getTaskCalendar(int projectId) {
+		return boardMapper.getTaskCalendar(projectId);
+	}
 
-	
+	@Override
+	public BoardVO getScheBoardInfo(int prjBoardId) {
+		return boardMapper.getScheBoardInfo(prjBoardId);
+	}
 
 }

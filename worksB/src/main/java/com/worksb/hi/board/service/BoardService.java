@@ -44,4 +44,11 @@ public interface BoardService {
 	public int updateTaskManager(TaskVO taskVO);
 	
 	
+	//정현
+	//프로젝트 일정 캘린더 조회
+	public List<ScheVO> getScheCalendar(int projectId);
+	//프로젝트 업무 캘린더 조회
+	public List<TaskVO> getTaskCalendar(int projectId);
+	//프로젝트 일정 상세 조회
+	public BoardVO getScheBoardInfo(int prjBoardId);
 }

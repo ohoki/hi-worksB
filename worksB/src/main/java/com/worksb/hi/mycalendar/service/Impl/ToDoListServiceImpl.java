@@ -61,8 +61,13 @@ public class ToDoListServiceImpl implements ToDoListService {
 	
 	//ITEM 삭제
 	@Override
-	public int deleteItem(int listId) {
-		return toDoListMapper.deleteItem(listId);
+	public int deleteItemList(int listId) {
+		return toDoListMapper.deleteItemList(listId);
+	}
+
+	@Override
+	public int deleteItem(int itemId) {
+		return toDoListMapper.deleteItem(itemId);
 	}
 
 }

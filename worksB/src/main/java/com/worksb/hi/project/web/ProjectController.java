@@ -6,11 +6,13 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,6 +20,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -33,6 +37,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.board.service.ScheVO;
+import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.company.service.CompanyVO;
@@ -613,4 +619,55 @@ public class ProjectController {
 		}
 	
 		
+		
+		//정현
+		
+		//프로젝트 캘린더 페이지 이동
+		@GetMapping("projectCalendar")
+		public String prjCalendar(@RequestParam int projectId, Model model) {
+	        ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+	        
+	        //해당 프로젝트의 모든 일정 캘린더화
+	        List<ScheVO> scheList =  boardService.getScheCalendar(projectInfo.getProjectId());
+	        //해당 프로젝트의 상위 업무 캘린더화
+	        List<TaskVO> taskList = boardService.getTaskCalendar(projectInfo.getProjectId());
+	        
+			//json객체 리스트화
+			JSONObject jsonObj = new JSONObject();
+			JSONArray scheArr = new JSONArray();
+			JSONArray taskArr = new JSONArray();
+			HashMap<String, Object> hash = new HashMap<String, Object>();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+			for(int i=0;i<scheList.size();i++) {
+				hash.put("id", scheList.get(i).getPrjBoardId());//단건조회용 sche_id 입력
+				hash.put("title", scheList.get(i).getPrjBoardTitle()); //제목
+				//원하는 데이터 포맷 지정
+				String strStartDate = simpleDateFormat.format(scheList.get(i).getStartDate()); 
+				hash.put("start", strStartDate); //시작일자
+				String strEndDate = simpleDateFormat.format(scheList.get(i).getEndDate()); 
+				hash.put("end", strEndDate); //종료일자
+				
+				jsonObj = new JSONObject(hash);
+				scheArr.add(jsonObj);
+			}
+			for(int i=0;i<taskList.size();i++) {
+				hash.put("id", "t"+taskList.get(i).getPrjBoardId());//단건조회용 sche_id 입력
+				hash.put("title", taskList.get(i).getPrjBoardTitle()); //제목
+				//원하는 데이터 포맷 지정
+				String strStartDate = simpleDateFormat.format(taskList.get(i).getStartDate()); 
+				hash.put("start", strStartDate); //시작일자
+				String strEndDate = simpleDateFormat.format(taskList.get(i).getEndDate()); 
+				hash.put("end", strEndDate); //종료일자
+				hash.put("allDay", "true");
+				hash.put("color", "#2a9d8f");
+				
+				jsonObj = new JSONObject(hash);
+				taskArr.add(jsonObj);
+			}
+			model.addAttribute("scheList",scheArr);
+	        model.addAttribute("taskList", taskArr);
+	        model.addAttribute("projectInfo", projectInfo);
+			
+			return "project/projectCalendar";
+		}
 }

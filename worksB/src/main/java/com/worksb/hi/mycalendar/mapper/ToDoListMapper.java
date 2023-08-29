@@ -22,7 +22,9 @@ public interface ToDoListMapper {
 	public int insertItem(ToDoListVO vo);
 	//ITEM 수정
 	public int updateItem(ToDoListVO vo);
-	//ITEM 삭제
-	public int deleteItem(int tdlId);
+	//ITEM 항목들 삭제
+	public int deleteItemList(int tdlId);
+	//ITEM 단건 삭제
+	public int deleteItem(int itemId);
 	
 }
