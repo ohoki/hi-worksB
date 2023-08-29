@@ -137,4 +137,47 @@
 	<delete id="deleteMemberInfo" parameterType="String">
 		DELETE member WHERE member_id = #{memberId}
 	</delete>
+	
+	
+	<!-- 내 프로젝트 -->
+	<select id="getProjectList" resultType="MemberVO">
+		SELECT	p.project_name,
+				p.project_id
+		FROM	project p
+			JOIN	prj_particir pp
+			ON p.project_id = pp.project_id
+		WHERE pp.member_id= #{memberId}
+		ORDER BY p.project_id DESC
+	</select>
+	
+	<!-- 메모 -->
+	<insert id="insertMemo" parameterType="MemberVO">
+		INSERT INTO memo (
+							member_id,
+							memo_content
+						)
+					VALUES (
+							#{memberId},
+							#{memoContent}
+						)
+					
+	</insert>
+	
+	<update id="updateMemo" parameterType="MemberVO">
+		UPDATE	memo
+		SET		memberId = #{memberId},
+				memo_content = #{memoContent}
+		WHERE	member_id = #{memberId}
+	</update>
+	
+	<!-- 공지사항 -->
+	<select id="getNoticeList" resultType="MemberVO">
+		SELECT	n.notice_title,
+				n.notice_id
+		FROM	notice_board n
+			JOIN company c
+			ON n.company_id = c.company_id
+		WHERE	c.company_id = #{companyId}
+		ORDER BY n.notice_id DESC
+	</select>
 </mapper>

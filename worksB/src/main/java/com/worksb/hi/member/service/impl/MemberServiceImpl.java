@@ -92,4 +92,25 @@ public class MemberServiceImpl implements MemberService {
 	public int deleteMemberInfo(String memberId) {
 		return memberMapper.deleteMemberInfo(memberId);
 	}
+
+	// 내 프로젝트
+	@Override
+	public List<MemberVO> getProjectList(MemberVO memberVO) {
+		return memberMapper.getProjectList(memberVO);
+	}
+
+	@Override
+	public int insertMemo(MemberVO memberVO) {
+		return memberMapper.inserMemberInfo(memberVO);
+	}
+
+	@Override
+	public int updateMemo(MemberVO memberVO) {
+		return memberMapper.updateMemo(memberVO);
+	}
+
+	@Override
+	public List<MemberVO> getNoticeList(MemberVO memberVO) {
+		return memberMapper.getNoticeList(memberVO);
+	}
 }
