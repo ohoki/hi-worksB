@@ -9,6 +9,7 @@
 <!-- bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
 <link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
 <style>
 	#calendar-container {
@@ -32,7 +33,22 @@
 	.tdlLineDeleteBtn-hidden{
 		display: none;
 	}
-	
+	.fc .fc-button-primary{
+		background-color: #e76f51;
+		border-color : white;
+	}
+	.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+    background-color: #ef3608;
+    border-color: white;
+	}
+	.fc .fc-button-primary:disabled {
+    background-color: #efa491;
+    border-color: white;
+	}
+	.fc .fc-button-primary:hover {
+    background-color: #ff4719;
+    border-color: #ff4719;
+	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -164,22 +180,6 @@
 	          <button type="reset" form="tdlFormView" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	        </div>
 	      </div>
-	      <!-- tdl 수정/삭제폼 -->
- <!--   	      <div id="tdlUpdate">
-		  	<div class="modal-body">
-		      	<form id="tdlFormUpdate">
-			      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요"><hr>
-			      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker6"  autocomplete="off">
-			      	<div class="tdlList">
-			      	</div>
-			      	<button type="button" class="btn btn-primary addTdlLine" id="addTdlLine">To Do List 추가</button>
-		      	</form>
-	      	</div>
-	        <div class="modal-footer">
-	          <button type="button" form="tdlFormView" class="btn btn-primary" id="tdlUpdateBtn">TDL 수정</button>
-	          <button type="reset" form="tdlFormView" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-	        </div>
-	      </div> -->
 	    </div>
 	  </div>
 	</div>
@@ -306,7 +306,6 @@
 			$(this).parent().attr("class", "div_hidden");	//클릭한 요소가 id값이 있을 경우 div_hidden클래스 부여
 	    } else {
             $(this).parent().remove(); // 클릭한 요소만 삭제
-            console.log('no');
 	    }
 	});
 	
@@ -322,7 +321,7 @@
 		//변수선언
 		var calendarEl = document.getElementById('calendar');
 		calendar = new FullCalendar.Calendar(calendarEl, {
-
+			themeSystem: 'united',
 			dayMaxEventRows : true, // for all non-TimeGrid views
 			views : {
 				timeGrid : {
@@ -372,19 +371,17 @@
 		//전체 일정 조회/재조회
 		function loadPriSche(){
 			$.ajax({
-				  url: "privateScheList",
+				  url: "${pageContext.request.contextPath}/privateScheList",
 				  method: "GET",
 				  dataType: "json"
 			}).done(function(data){
 				calendar.removeAllEvents();
 				calendar.addEventSource(data);
 				calendar.getEventSources()
-				//calendar.refetchEvents();
 			}).fail(function( jqXHR, textStatus ) {
 				  alert( "Request failed: " + textStatus );
 			});
 		};
-		
 		
 		//이벤트 클릭시 상세보기
 		function eventClickHandler(info){
@@ -396,12 +393,11 @@
 	    		let listId = scheId.substr(1)
 				let data = { "listId" : listId};
 	    		$.ajax({
-	    			url:"selectTdl",
+	    			url:"${pageContext.request.contextPath}/selectTdl",
 	    			method:"GET",
 	    			data:data,
 	    			dataType:"JSON",
 	    			success:function(result){
-	    				console.log(result)
 	    				tdlModal.show();
 	    				//조회모달 띄우기
 	    				$('#tdlBody').attr("class","div_hidden");
@@ -443,7 +439,7 @@
 	    	}else if(scheId.substr(0,1)!==t){
 				let data = { "scheId" : scheId};
 				$.ajax({
-					url:"selectPsche",
+					url:"${pageContext.request.contextPath}/selectPsche",
 					method:"GET",
 					data: data,
 					dataType: "json",
@@ -550,11 +546,10 @@
 			let pScheFormInsert = $('#scheForm')
 			let pScheObj = serializeObject(pScheFormInsert);
 			$.ajax({
-				url:"priScheInsert",
+				url:"${pageContext.request.contextPath}/priScheInsert",
 				method:"POST",
 				data : pScheObj,
 				success : function(result){
-					console.log(result);
 					loadPriSche();
 					scheModal.hide();
 					
@@ -624,7 +619,7 @@
 			
 			let memberName = `${memberInfo.memberName}`
  			$.ajax({
-				url:'todoListInsert',
+				url:'${pageContext.request.contextPath}/todoListInsert',
 				method:'POST',
 				data : jsonData,
 				contentType : 'application/json',
@@ -687,44 +682,7 @@
 		    let insertItem = [];
 		    let deleteItem = [];
 	        let dataObject;
-	    	function getItems(div){
-	    		let checkboxValue = div.find("input[type='checkbox']").is(":checked");
-		        if(checkboxValue){
-		        	checkboxValue = "A1"
-		        }else{
-		        	checkboxValue = "A2"
-		        }
-		        let inputValue = div.find("input[type='text']").val();
-		        //item한개의 json화 
-		        if(inputValue!=null && inputValue !=""){
-			        dataObject = {
-			            success : checkboxValue,
-			            content : inputValue
-			        };
-		        }else{
-		        	return;
-		        }
-	    	};
-	    	function getUpdateItems(div,id){
-	    		let checkboxValue = div.find("input[type='checkbox']").is(":checked");
-		        if(checkboxValue){
-		        	checkboxValue = "A1"
-		        }else{
-		        	checkboxValue = "A2"
-		        }
-		        let inputValue = div.find("input[type='text']").val();
-		        //item한개의 json화 
-		        if(inputValue!=null && inputValue !=""){
-			        dataObject = {
-			        	listId : id,
-			            success : checkboxValue,
-			            content : inputValue
-			        };
-		        }else{
-		        	return;
-		        }
-	    	}
-	    	
+
 		    $('.tdlList-view > div').each(function() {
 		    	let divTagId = $(this).attr("id");
 			    if (typeof divTagId === "string") {
@@ -739,14 +697,46 @@
 					}else{
 						//item항목의 div태그에 class가 지정안되어 있는 경우 => 수정
 						let updateItemId = divTagId.substr(6)
-						getUpdateItems($(this),updateItemId);
+			    		let checkboxValue = $(this).find("input[type='checkbox']").is(":checked");
+				        if(checkboxValue){
+				        	checkboxValue = "A1"
+				        }else{
+				        	checkboxValue = "A2"
+				        }
+				        let inputValue = $(this).find("input[type='text']").val();
+				        //item한개의 json화 
+				        if(inputValue!=null && inputValue !=""){
+					        dataObject = {
+					        	itemId : updateItemId,
+					            success : checkboxValue,
+					            content : inputValue
+					        };
+				        }else{
+				        	return;
+				        }
 						updateItem.push(dataObject);
+						
 						console.log(updateItem)
 					}
 			    } else {
 					//item항목의 div태그가 id가 없는 경우 => 신규입력
-					//!!!!!!
-			        getUpdateItems($(this));
+			        let checkboxValue = $(this).find("input[type='checkbox']").is(":checked");
+			        if(checkboxValue){
+			        	checkboxValue = "A1"
+			        }else{
+			        	checkboxValue = "A2"
+			        }
+			        let inputValue = $(this).find("input[type='text']").val();
+			        let tdlListId
+			        //item한개의 json화 
+			        if(inputValue!=null && inputValue !=""){
+				        dataObject = {
+				            success : checkboxValue,
+				            content : inputValue
+				        };
+			        }else{
+			        	return;
+			        }
 			        // 객체를 배열에 추가
 					insertItem.push(dataObject);
 					console.log(insertItem)
@@ -765,7 +755,7 @@
 		    //json화 된 데이터들을 리스트에 담기
 			
 			$.ajax({
-				url:"updateToDoList",
+				url:"${pageContext.request.contextPath}/updateToDoList",
 				method : 'post',
 				data : JSON.stringify(itemDataArray),
 				contentType : 'application/json',
@@ -827,7 +817,7 @@
 				let obj = serializeObject(scheViewForm);
 				
 				$.ajax({
-					url : 'updatePsche',
+					url : '${pageContext.request.contextPath}/updatePsche',
 					method : 'post',
 					data : obj,
 					success : function(result){
@@ -862,11 +852,10 @@
 		function deleteSche(scheId){
 			let id = {"scheId":scheId}
 			$.ajax({
-				url:'deletePsche',
+				url:'${pageContext.request.contextPath}/deletePsche',
 				method : 'get',
 				data : id,
 				success : function(result){
-					console.log(result);
 					//캘린더 event 업데이트
 					loadPriSche();
 				},
@@ -884,11 +873,10 @@
 		function deleteTdlList(result){
 			let listId = {"listId":result.todoList[0].listId};
 			$.ajax({
-				url:'deleteToDoList',
+				url:'${pageContext.request.contextPath}/deleteToDoList',
 				method : 'get',
 				data : listId,
 				success : function(result){
-					console.log(result);
 					//캘린더 event 업데이트
 					loadPriSche();
 				},
