@@ -54,13 +54,6 @@
 	transition: all 0.5s;	
 }
 
-
-
-
-
-
-
-
 .modal{
     position:absolute;
     display:none;
@@ -76,18 +69,20 @@
     left:0;
 }
 
-.modal_body{
-    position:absolute;
-    top:20%;
-    left:15%;
-    width: 200px;
-    height: 200px; 
-    background-color: rgb(255,255,255);
-    border-radius:10px;
-    box-shadow:0 2px 3px 0 rgba(34,36,38,0.15);
-    transform:translateY(-50%);
+.modal-content {
+	top:70px;
+    left:50px;
+    border: 1px solid var(--color-dark-beigie);
+    width: 70%;
 }
 
+.modal-content li{
+	cursor: pointer;
+}
+
+.modal-content li:hover{
+	background-color: var(--color-beigie);
+}
 
 .icon {
 	width: 30px;
@@ -126,9 +121,9 @@
 			<div class="modal-body">
 				<ul id="menuList">
 					<li data-toggle="modal" data-target="#subMenuModal11">알림설정</li>
-					<li data-toggle="modal" data-target="#subMenuModal12">프로젝트 나가기</li>
 					<li onclick="location.href='projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>
 					<li data-toggle="modal" data-target="#subMenuModal14">프로젝트 삭제</li>
+					<li data-toggle="modal" data-target="#subMenuModal12">프로젝트 나가기</li>
 				</ul>
 			</div>
 		</div>

@@ -151,8 +151,25 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.updateTaskManager(taskVO);
 	}
 
-
+	// 상단 고정 업데이트
+	public int updatePin(BoardVO boardVO) {
+		return boardMapper.updatePin(boardVO);
+	};
 	
+	// 회원의 프로젝트 별 북마크 리스트
+	public List<BoardVO> getBookmarkList(ProjectVO projectVO) {
+		return boardMapper.getBookmarkList(projectVO);
+	};
+	
+	// 게시글 북마크 등록
+	public int insertBookmark(BoardVO boardVO) {
+		return boardMapper.insertBookmark(boardVO);
+	};
+	
+	// 게시글 북마크 삭제
+	public int deleteBookmark(BoardVO boardVO) {
+		return boardMapper.deleteBookmark(boardVO);
+	};
 	
 	//정현
 	//프로젝트 일정 캘린더 조회
@@ -170,5 +187,4 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO getScheBoardInfo(int prjBoardId) {
 		return boardMapper.getScheBoardInfo(prjBoardId);
 	}
-
 }

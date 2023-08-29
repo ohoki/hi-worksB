@@ -278,7 +278,29 @@ public class BoardController {
 		return "z";
 	}
 */	
+	//상단 고정 여부 수정
+	@GetMapping("/updatePin")
+	public String updatePin(BoardVO boardVO) {
+		boardService.updatePin(boardVO);
+		
+		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+	}
 	
+	// 북마크 등록
+	@RequestMapping("/insertBookmark")
+	@ResponseBody
+	public int insertBookmark(BoardVO boardVO) {
+		boardService.insertBookmark(boardVO);
+		return boardVO.getProjectId();
+	}
+	
+	// 북마크 삭제
+	@RequestMapping("/deleteBookmark")
+	@ResponseBody
+	public int deleteBookmark(BoardVO boardVO) {
+		boardService.deleteBookmark(boardVO);
+		return boardVO.getProjectId();
+	}
 	//프로젝트 일정 캘린더 상세조회
 	@GetMapping("getScheBoardInfo")
 	@ResponseBody
@@ -290,5 +312,4 @@ public class BoardController {
 		vo.setScheVO(boardService.getScheInfo(scheVO));
 		return vo;
 	}
-	
 }

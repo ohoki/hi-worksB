@@ -71,10 +71,17 @@ public class ProjectServiceImpl implements ProjectService {
 			return -1;
 		}
 	}
+	
 	//프로젝트 게시글 리스트
-		public List<BoardVO> getBoardList(ProjectVO projectVO) {
-			return projectMapper.getBoardList(projectVO);
-		}
+	public List<BoardVO> getBoardList(ProjectVO projectVO) {
+		return projectMapper.getBoardList(projectVO);
+	}
+	
+	//프로젝트 고정 게시글 리스트
+	public List<BoardVO> getPinBoardList(ProjectVO projectVO) {
+		return projectMapper.getPinBoardList(projectVO);
+	};
+	
 	// 부서 정보 - 회사 번호 기준
 	@Override
 	public List<DeptVO> getDeptInfo(int companyId) {
