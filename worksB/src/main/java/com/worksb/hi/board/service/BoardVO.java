@@ -36,4 +36,7 @@ COORDINATE                 VARCHAR2(60)
 	private String coordinate;
 	private String memberName;
 	private String realProfilePath;
+	private String boardIconName;
+	private int bookmarkByMember; //개인 회원 별 북마크 여부 (북마크O -> 1 / 북마크X -> 0)
+	private int bookmarkId;
 }

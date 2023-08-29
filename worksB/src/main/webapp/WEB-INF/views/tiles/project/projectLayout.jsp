@@ -45,7 +45,7 @@
 			<tiles:insertAttribute name="aside" />
 		</aside>
 		<main id="main">
-			<tiles:insertAttribute name="projectHeader" />
+			<tiles:insertAttribute name="projectHeader"/>
 			<tiles:insertAttribute name="content" />
 		</main>
 	</div>

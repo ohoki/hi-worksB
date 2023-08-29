@@ -285,4 +285,20 @@ public class BoardController {
 		
 		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
 	}
+	
+	// 북마크 등록
+	@RequestMapping("/insertBookmark")
+	@ResponseBody
+	public int insertBookmark(BoardVO boardVO) {
+		boardService.insertBookmark(boardVO);
+		return boardVO.getProjectId();
+	}
+	
+	// 북마크 삭제
+	@RequestMapping("/deleteBookmark")
+	@ResponseBody
+	public int deleteBookmark(BoardVO boardVO) {
+		boardService.deleteBookmark(boardVO);
+		return boardVO.getProjectId();
+	}
 }

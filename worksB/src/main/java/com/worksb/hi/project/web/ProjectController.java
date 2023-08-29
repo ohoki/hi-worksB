@@ -176,12 +176,32 @@ public class ProjectController {
         ProjectVO projectInfo = projectService.getProjectInfo(projectId);
         // 게시글 리스트
         List<BoardVO> boards = projectService.getBoardList(projectInfo);
+        List<BoardVO> pinBoard = projectService.getPinBoardList(projectInfo);
         //즐겨찾기 여부
         PrjParticirVO particir = new PrjParticirVO();
         particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
         particir.setProjectId(projectId);
         PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
+        //북마크 여부(회원별) -> 2중 for문으로 비교
+        projectInfo.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+        List<BoardVO> bookmarkListByMember = boardService.getBookmarkList(projectInfo);
         
+        if(bookmarkListByMember != null) {
+        	for(int i=0; i<boards.size(); i++) {
+        		for(int j=0; j<bookmarkListByMember.size(); j++) {
+        			if( boards.get(i).getPrjBoardId() == bookmarkListByMember.get(j).getPrjBoardId()) {
+        				boards.get(i).setBookmarkByMember(1);
+        				System.out.println("==========================================================boardId => " + boards.get(i).getPrjBoardId());
+        				break;
+        			} else {
+        				boards.get(i).setBookmarkByMember(0);
+        			}
+        		}
+        	}
+        }
+        
+        model.addAttribute("bookmarkList", bookmarkListByMember);
+        model.addAttribute("pinBoardInfo", pinBoard);
         model.addAttribute("particirInfo", particirInfo);
         model.addAttribute("projectInfo", projectInfo);
         model.addAttribute("boards", boards);
