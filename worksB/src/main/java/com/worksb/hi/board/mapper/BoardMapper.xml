@@ -427,7 +427,34 @@
 		DELETE bookmark
 		WHERE member_id = #{memberId} AND board_id = #{prjBoardId} AND board_type = #{boardType}
 	</delete>
+	
+	<!-- 일정 참가,미참 -->
+	<insert id="sheParticipate" statementType="CALLABLE" parameterType="ScheParticirVO" >
+		{ CALL
+			sche_attend(
+				#{prjBoardId},
+				#{prjParticirId},
+				#{attendance}
+			)
+	</insert>
 
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	<!-- 정현 -->
 	<!-- 프로젝트 일정 캘린더 조회 -->

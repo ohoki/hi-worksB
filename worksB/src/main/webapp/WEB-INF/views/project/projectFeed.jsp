@@ -1043,8 +1043,8 @@
 							</div>
 						</div>
 						<div class="sche-btns">
-							<button type="button" class="btn-green">참석</button>
-							<button type="button">불참</button>
+							<button type="button" class="btn-green" name="attend">참석</button>
+							<button type="button" name="nonAttend">불참</button>
 						</div>
 						<div class="board-footer">
 							<div >
@@ -1349,7 +1349,7 @@
 				</c:if>
 			</c:forEach>
 		</div>	
-				<!-- 게시글 조회 끝 -->
+		<!-- 게시글 조회 끝 -->
 		<div style="width: 25%;">
 			<div class="bookmark-board">
 				<div class="bookmark-board-title">북마크</div>
@@ -1420,76 +1420,6 @@
 	
 	<!-- 게시글 출력 SCRIPT -->
 	<script>
-		//북마크
-		$('span[data-bookmark]').on('click', function(e) {
-			let boardContainer = $(e.currentTarget).closest('.board-container');
-			let prjBoardId = boardContainer.data('id');
-			let boardType = boardContainer.data('type');
-			let prjId = '${projectInfo.projectId}';
-			let memberId = '${memberInfo.memberId}';
-			let bookmark = $(e.currentTarget).data('bookmark');
-			let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
-			
-			if(bookmark == 'no') {
-				if(confirm('이 게시글을 북마크 하시겠습니까?')) {
-					$.ajax({
-						url : '${pageContext.request.contextPath}/insertBookmark',
-						type : 'POST',
-						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-						success : function(projectId) {
-							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
-						},
-						error : function(reject) {
-							console.log(reject);
-						}
-					});	
-				}
-			}else if(bookmark == 'yes') {
-				if(confirm('북마크를 해제 하시겠습니까?')) {
-					$.ajax({
-						url : '${pageContext.request.contextPath}/deleteBookmark',
-						type : 'POST',
-						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-						success : function(projectId) {
-							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
-						},
-						error : function(reject) {
-							console.log(reject);
-						}
-					});	
-				}
-			}
-		});
-		//투표 항목 선택 시 버튼 색상 변경 && 복수 투표 여부
-		function checkBtn(e) {
-			let checkBox = $(e).closest('.vote-lists').find('input[type=checkbox]');
-			let voteBtn = $(e).closest('.vote-lists').next().children('button');
-			let compnoSpan = $(e).closest('.vote-lists').prev().children('.compnoVote');
-			let count = $(e).closest('.vote-lists').find('input[type=checkbox]:checked').length;
-			let isChecked = false;
-			
-			for(let i=0; i<checkBox.length; i++) {
-				if(checkBox[i].checked == true) {
-					isChecked = true;
-				}	
-			}
-			
-			if(isChecked) {
-				voteBtn.css('background-color', 'var(--color-dark-red)');
-				voteBtn.attr("disabled", false);
-			} else {
-				voteBtn.css('background-color', 'var(--color-light-red)');
-				voteBtn.attr("disabled", true);
-			}
-			
-			if(compnoSpan.text() == '') { //단일 투표
-				if(count > 1) {
-					alert('한개의 항목만 투표 가능합니다.');
-					$(e).prop("checked", false);
-				}	
-			}
-		}; 
-			
 		// 게시글 조회
 		$(window).on('DOMContentLoaded', function() {
 			let boardList = $('[data-list="board"]');
@@ -1653,6 +1583,109 @@
 				}
 			}
 		});
+		
+		//북마크
+		$('span[data-bookmark]').on('click', function(e) {
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let prjBoardId = boardContainer.data('id');
+			let boardType = boardContainer.data('type');
+			let prjId = '${projectInfo.projectId}';
+			let memberId = '${memberInfo.memberId}';
+			let bookmark = $(e.currentTarget).data('bookmark');
+			let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
+			
+			if(bookmark == 'no') {
+				if(confirm('이 게시글을 북마크 하시겠습니까?')) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/insertBookmark',
+						type : 'POST',
+						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+						success : function(projectId) {
+							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					});	
+				}
+			}else if(bookmark == 'yes') {
+				if(confirm('북마크를 해제 하시겠습니까?')) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/deleteBookmark',
+						type : 'POST',
+						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+						success : function(projectId) {
+							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					});	
+				}
+			}
+		});
+		
+		//투표 항목 선택 시 버튼 색상 변경 && 복수 투표 여부
+		function checkBtn(e) {
+			let checkBox = $(e).closest('.vote-lists').find('input[type=checkbox]');
+			let voteBtn = $(e).closest('.vote-lists').next().children('button');
+			let compnoSpan = $(e).closest('.vote-lists').prev().children('.compnoVote');
+			let count = $(e).closest('.vote-lists').find('input[type=checkbox]:checked').length;
+			let isChecked = false;
+			
+			for(let i=0; i<checkBox.length; i++) {
+				if(checkBox[i].checked == true) {
+					isChecked = true;
+				}	
+			}
+			
+			if(isChecked) {
+				voteBtn.css('background-color', 'var(--color-dark-red)');
+				voteBtn.attr("disabled", false);
+			} else {
+				voteBtn.css('background-color', 'var(--color-light-red)');
+				voteBtn.attr("disabled", true);
+			}
+			
+			if(compnoSpan.text() == '') { //단일 투표
+				if(count > 1) {
+					alert('한개의 항목만 투표 가능합니다.');
+					$(e).prop("checked", false);
+				}	
+			}
+		}; 
+		
+		$('.sche-btns button[name="attend"]').on('click', function(e) {
+			let btn = $(e.currentTarget);
+			let prjParticirId = '${particirInfo.prjParticirId }';
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let boardId = boardContainer.data('id');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/sheParticipate',
+				type : 'POST',
+				data : {'prjParticirId' : prjParticirId ,'prjBoardId' : boardId, 'attendance' : 'A1'},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+		})
+		
+		$('.sche-btns button[name="nonAttend"]').on('click', function(e) {
+			let btn = $(e.currentTarget);
+			let prjParticirId = '${particirInfo.prjParticirId }';
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let boardId = boardContainer.data('id');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/sheParticipate',
+				type : 'POST',
+				data : {'prjParticirId' : prjParticirId ,'prjBoardId' : boardId, 'attendance' : 'A2'},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+		})
 	</script>
 	<!-- 게시글 출력 종료 -->
 	

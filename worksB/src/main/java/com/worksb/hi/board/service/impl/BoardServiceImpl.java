@@ -10,6 +10,7 @@ import com.worksb.hi.board.service.AllTaskBoardVO;
 import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.board.service.ScheParticirVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
@@ -170,6 +171,17 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteBookmark(BoardVO boardVO) {
 		return boardMapper.deleteBookmark(boardVO);
 	};
+	
+	// 일정 참가,미참
+	public int sheParticipate(ScheParticirVO spVO) {
+		return boardMapper.sheParticipate(spVO);
+	};
+	
+	
+	
+	
+	
+	
 	
 	//정현
 	//프로젝트 일정 캘린더 조회
