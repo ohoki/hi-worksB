@@ -192,10 +192,9 @@ public class PrivateScheController {
 	    List<ToDoListVO> updateList = tdlData.get("updateItem");
 	    List<ToDoListVO> deleteList = tdlData.get("deleteItem");
 	    List<ToDoListVO> insertList = tdlData.get("insertItem");
-	    System.out.println(tdlData);
-	    System.out.println(updateList);
-	    System.out.println(deleteList);
-	    System.out.println(insertList);
+	    if(todoList!=null) {
+	    	toDoListService.updateTdl(todoList.get(0));
+	    }
 	    if(updateList!=null) {
 	    	for(int i=0;i<updateList.size();i++) {
 	    		toDoListService.updateItem(updateList.get(i));
@@ -208,11 +207,9 @@ public class PrivateScheController {
 	    }
 	    if(insertList!=null) {
 	    	for(int i=0;i<insertList.size();i++) {
+	    		insertList.get(i).setListId(todoList.get(0).getListId());
 	    		toDoListService.insertItem(insertList.get(i));
 	    	}
-	    }
-	    if(todoList!=null) {
-	    	toDoListService.updateTdl(todoList.get(0));
 	    }
 	    String result = "success";
 	    return result;
