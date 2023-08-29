@@ -106,14 +106,17 @@
 			searchform.submit();
 		}
 		function check(fileId){
-		 	let checkbox = $('#' + fileId);
-		    if(checkbox.prop('checked')) {
-		        checkbox.prop('checked', false);
-		        checkbox.closest('tr').css({"background-color":"white"});
-		    }else{
-		        checkbox.prop('checked', true);
+		    let checkbox=$('#' + fileId);
+		    let isChecked=checkbox.prop('checked');
+
+		    $('input[type="checkbox"]').prop('checked', false);
+		    $('input[type="checkbox"]').closest('tr').css({"background-color":"white"});
+			//체크안된경우만 실행됨
+		    if (!isChecked) {
 		        checkbox.closest('tr').css({"background-color":"green"});
+		        checkbox.prop('checked',!isChecked)
 		    }
+		    
 		}
 
 		fileSizeAndnotEmpty.addEventListener('change',function(){
@@ -129,14 +132,19 @@
 				 // 다운로드 링크 생성
 		        let downloadLink = document.createElement('a');
 		        downloadLink.href = "${pageContext.request.contextPath}/downloadFile/" + checkedFileId;
+		        //새창에서열기
 		        downloadLink.target = '_blank'; 
+		        //다운로드링크주소만들기
 		        downloadLink.download = $('#'+checkedFileId).closest('tr').find('td:first-child').text(); 
-		        // 링크를 클릭하여 파일 다운로드 시작
+		        // 링크를 클릭하여 할당된 링크로 파일 다운로드 시작
 		        downloadLink.click();
 		    } else {
 		        alert('파일을 선택해주세요.');
 		    }
 		}
+		downloadLink.addEventListener('download',function(){
+			location.href=${pageContext.request.contextPath}"+"/downloaded
+		})
 		
 
 	</script>

@@ -551,6 +551,7 @@ public class ProjectController {
 		String uuid = UUID.randomUUID().toString();
 		String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
 		String saveName = uploadPath + File.separator + uploadFileName;
+		//해당 경로에 파일이 존재하는지 확인할 수 있음
 		Path savePath = Paths.get(saveName);
 		
 		try {
@@ -609,7 +610,7 @@ public class ProjectController {
 		
 		@GetMapping("/downloadFile/{fileId}")
 		public void downloadFile(
-		        @PathVariable("fileId") int fileId, 
+		        @PathVariable("fileId") int fileId, //경로변수
 		        HttpServletResponse response) throws IOException {
 
 		    FileDataVO fileData = projectService.getFileById(fileId);
