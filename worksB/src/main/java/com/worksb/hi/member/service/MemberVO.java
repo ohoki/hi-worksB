@@ -44,4 +44,10 @@ public class MemberVO {
 	private int mailAuth;
 	private String companyAccp;
 	private String role;
+	
+	private String projectName;
+	private String projectId;
+	private String noticeTitle;
+	private int noticeId;
+	private String memoContent;
 }

@@ -649,13 +649,14 @@ tr:hover{
 				// 업무 담당자 리스트
 				let managers = taskData.highManager;
             	let managerList = taskInfo.find('.board-taskManager');
+            	let memberId = taskInfo.find('.highManagerList');
 
             	for (let i = 0; i < managers.length; i++) {
-                	managerList.prepend('<span class="taskManagerName" data-particirId="' + managers[i].prjParticirId + '">' + managers[i].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor"></span>');
+                	managerList.prepend('<span>' + managers[i].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor"></span>');
+                	memberId.prepend('<input type="hidden" name="taskManager" value="' + managers[i].prjParticirId + '">')
             	}
-
             	
-            	
+	
 				taskInfo.find('[name=prjBoardSubject]').val(highTask.prjBoardSubject);
 		     	
 		    }, error : function(reject) {
@@ -664,6 +665,7 @@ tr:hover{
 		});
 	})
 	
+	/*
 	$(document).on('click', '.deleteManager', function(e){
 		let deleteManagerList = [];
 		let managerSpan = $(this).closest('.taskManagerName');
@@ -675,9 +677,9 @@ tr:hover{
 	    console.log(deleteManagerList);
 		
 	})
+	*/
 	
-	
-	
+	/*
 	//담당자 추가 클릭 시 구성원 불러오고 셀렉트 박스
 		$(document).on('click', '.add-manager-btn', function(e) {
 			let boardTaskManager = $(e.currentTarget).closest('.board-taskManager');
@@ -705,7 +707,7 @@ tr:hover{
 		        }
 		    });	
 			
-			boardTaskManager.append(selectBox);
+			boardTaskManager.prepend(selectBox);
 			boardTaskManager.prepend('<span>담당자 : </span>');
 		});
 		
@@ -733,7 +735,7 @@ tr:hover{
 			
 			checkedOption.prop('disabled', true);
 		});
-	
+	*/
 
 	//업무 수정 처리하기
 	$('#update-submit').on('click', function(e){

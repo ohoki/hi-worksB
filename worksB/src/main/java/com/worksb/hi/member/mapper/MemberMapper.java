@@ -25,4 +25,15 @@ public interface MemberMapper {
 	
 	//회원삭제
 	public int deleteMemberInfo(String memberId);
+	
+	// 내프로젝트
+	public List<MemberVO> getProjectList(MemberVO memberVO);
+	
+	// 메모장
+	public int insertMemo(MemberVO memberVO);
+	public int updateMemo(MemberVO memberVO);
+	
+	// 공지사항
+	public List<MemberVO> getNoticeList(MemberVO memberVO);
+	
 }
