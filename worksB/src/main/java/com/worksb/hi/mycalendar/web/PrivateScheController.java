@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
@@ -184,17 +187,32 @@ public class PrivateScheController {
 	//todoList 수정
 	@PostMapping("updateToDoList")
 	@ResponseBody
-	public String updateTdlList(@RequestBody Map<String, List<ToDoListVO>> tdlList) {
-		System.out.println(tdlList);
-		
-//		int result = toDoListService.updateTdl(vo);
-//		String resultMsg;
-//		if(result==1) {
-//			return resultMsg = "success";
-//		}else {
-//			return resultMsg = "fail";
-//		}
-		return "";
+	public String updateTdlList(@RequestBody Map<String, List<ToDoListVO>> tdlData) {
+	    List<ToDoListVO> todoList = tdlData.get("todoList");
+	    List<ToDoListVO> updateList = tdlData.get("updateItem");
+	    List<ToDoListVO> deleteList = tdlData.get("deleteItem");
+	    List<ToDoListVO> insertList = tdlData.get("insertItem");
+	    if(todoList!=null) {
+	    	toDoListService.updateTdl(todoList.get(0));
+	    }
+	    if(updateList!=null) {
+	    	for(int i=0;i<updateList.size();i++) {
+	    		toDoListService.updateItem(updateList.get(i));
+	    	}
+	    }
+	    if(deleteList!=null) {
+	    	for(int i=0;i<deleteList.size();i++) {
+	    		toDoListService.deleteItem(deleteList.get(i).getItemId());
+	    	}
+	    }
+	    if(insertList!=null) {
+	    	for(int i=0;i<insertList.size();i++) {
+	    		insertList.get(i).setListId(todoList.get(0).getListId());
+	    		toDoListService.insertItem(insertList.get(i));
+	    	}
+	    }
+	    String result = "success";
+	    return result;
 	}
 	
 	//todoList 삭제
@@ -202,7 +220,7 @@ public class PrivateScheController {
 	@ResponseBody
 	public String deleteTdlList(ToDoListVO vo) {
 		int result = toDoListService.deleteTdl(vo.getListId());
-		toDoListService.deleteItem(vo.getListId());
+		toDoListService.deleteItemList(vo.getListId());
 		String resultMsg;
 		if(result==1) {
 			resultMsg = "success";

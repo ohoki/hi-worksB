@@ -279,4 +279,16 @@ public class BoardController {
 	}
 */	
 	
+	//프로젝트 일정 캘린더 상세조회
+	@GetMapping("getScheBoardInfo")
+	@ResponseBody
+	public BoardRequestVO getScheBoardInfo(@RequestParam int prjBoardId) {
+		BoardRequestVO vo = new BoardRequestVO();
+		ScheVO scheVO = new ScheVO();
+		scheVO.setPrjBoardId(prjBoardId);
+		vo.setBoardVO(boardService.getScheBoardInfo(prjBoardId));
+		vo.setScheVO(boardService.getScheInfo(scheVO));
+		return vo;
+	}
+	
 }

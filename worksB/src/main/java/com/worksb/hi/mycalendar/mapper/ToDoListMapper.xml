@@ -104,8 +104,12 @@
 		</set>
 		WHERE item_id = #{itemId}
 	</update>
-	<delete id="deleteItem">
+	<delete id="deleteItemList">
 		DELETE FROM to_do_list_item
 		WHERE list_id = #{listId}
+	</delete>
+	<delete id="deleteItem">
+		DELETE FROM to_do_list_item
+		WHERE item_id = #{itemId}
 	</delete>
 </mapper>

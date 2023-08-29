@@ -1,5 +1,8 @@
 package com.worksb.hi.mycalendar.service;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -23,7 +26,6 @@ public class PrivateScheVO {
 	private String ScheContent;
 	private String scheRegdate;
 	private String coordinate;
-	
 	@JsonProperty(value = "start")
 	private String startDate;
 	@JsonProperty(value = "end")
