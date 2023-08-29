@@ -21,9 +21,11 @@ ALARM_DATE            DATE
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date startDate;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date endDate;
+	
 	private int prjBoardId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -32,4 +34,7 @@ ALARM_DATE            DATE
 	private String alarmDateCodeLiteral;
 	private String scheAddr;
 	private String scheAddrDetail;
+	
+	private int projectId;
+	private String prjBoardTitle;
 }

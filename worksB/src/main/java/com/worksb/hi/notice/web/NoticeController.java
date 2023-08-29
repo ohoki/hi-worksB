@@ -54,10 +54,12 @@ public class NoticeController {
 	
 	// 상세보기
 	@GetMapping("/noticeInfo")
-	public String getNoticeInfo(NoticeVO noticeVO, ComLikeVO comLikeVO, Model model, HttpSession session) {
+	public String getNoticeInfo(NoticeVO noticeVO, ComLikeVO comLikeVO, Model model, HttpSession session,
+								@RequestParam("noticeId")int noticeId) {
 	    
 		// 조회수 증가
-	    noticeService.noticeHit(noticeVO.getNoticeId());
+		noticeService.noticeHit(noticeId);
+
 
 	    // 공지 정보 가져오기
 	    NoticeVO findVO = noticeService.getNoticeInfo(noticeVO);

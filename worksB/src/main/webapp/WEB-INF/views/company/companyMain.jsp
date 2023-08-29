@@ -1,12 +1,152 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>회사별 메인페이지</title>
+<style>
+
+.mainList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    list-style: none;
+}
+
+.mainList > li {
+    border: 1px solid var(--color-dark-beigie);
+    border-radius: var(--size-border-radius);
+    padding: 10px;
+    text-align: center;
+    margin: 20px;
+}
+
+.mainContainer{
+	width : 1300px;
+	margin: 0 auto;
+}
+
+
+
+</style>
 </head>
 <body>
-메인페이지~~
+	<div>
+		<ul>
+			<li class="memberName">${memberInfo.memberName }</li>
+		</ul>
+		<div class="mainContainer">
+			<ul class="mainList">
+				<li class="myProjectList">
+					<span>내프로젝트</span>
+					<ul>
+						<c:forEach items="${projectList}" var="project" varStatus="loop" begin="0" end="4">
+							<li>
+								<a href="${pageContext.request.contextPath}/projectFeed?projectId=${project.projectId}">${project.projectName}</a>
+							</li>
+						</c:forEach>
+					</ul>
+				</li>
+				<li class="noticeList">
+					<span>공지사항</span>
+					<ul>
+						<c:forEach items="${noticeList}" var="notice" varStatus="loop" begin="0" end="4">
+							<li>
+								<a href="${pageContext.request.contextPath}/noticeInfo?noticeId=${notice.noticeId}"><공지>${notice.noticeTitle}</a>
+							</li>
+						</c:forEach>
+					</ul>
+				</li>
+				<li class="memo"><span>메모</span>
+					<ul>
+						
+					</ul>
+				</li>
+				<li class="weather"><span>날씨</span>
+					<ul>
+						
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+ 
+<script>
+	/*
+	//OpenWeatherMap API 키
+	const apiKey = '2f238cd00e432238f8fedcfe8ee3553e';
+	
+	
+	// 날씨 정보 가져오기
+	function getWeatherByCoordinates(latitude, longitude) {
+		const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+		console.log(apiUrl)
+	
+	    $.ajax({
+	        url: apiUrl,
+	        method: 'GET',
+	        dataType: 'json',
+	        success: function(data) {
+	            console.log(data)
+	        },
+	        error: function(error) {
+	            console.error('Error fetching weather data:', error);
+	        }
+	    });
+	}
+	
+	// 현재 위치 정보 가져오기
+	function getCurrentPosition() {
+	    if ('geolocation' in navigator) {
+	        navigator.geolocation.getCurrentPosition(function(position) {
+	            const latitude = position.coords.latitude;
+	            const longitude = position.coords.longitude;
+	            getWeatherByCoordinates(latitude, longitude);
+	            console.log(latitude)
+	            console.log(longitude)
+	        }, function(error) {
+	            console.error('Error getting current position:', error);
+	        });
+	    } else {
+	        console.error('Geolocation is not available.');
+	    }
+	}
+
+	// 페이지 로딩 시 현재 위치 정보 가져오기
+	getCurrentPosition();
+	*/
+	
+	
+	
+	// 인사 메세지
+	
+    let currentTime = new Date();
+    let currentHour = currentTime.getHours();
+    let timeMessage = "";
+    if (currentHour >= 12) {
+        timeMessage = "님 즐거운 오후입니다.";
+    } else {
+        timeMessage = "님 즐거운 오전입니다.";
+    }
+    let message = $('.memberName');
+    message.append('<span>' + timeMessage + '</span>');
+    
+    let year = currentTime.getFullYear();
+    let month = currentTime.getMonth() + 1;
+    let day = currentTime.getDate();
+    let dayOfWeek = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"][currentTime.getDay()];
+    let currentDate = year + '년 ' + month + '월 ' + day + '일 ' + dayOfWeek
+    message.append('<span>' + currentDate + '</span>');
+    
+    
+    
+    
+
+	
+	
+	
+</script>
 </body>
 </html>

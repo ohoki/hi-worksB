@@ -20,15 +20,8 @@
 				class="header__logo"></a>
 		</div>
 		<!-- 검색창 -->
-		<form action="${pageContext.request.contextPath }/searchboard" name="boardSearchform">
-			<input type="text" placeholder="검색" value="${searchVO.searchkeyword}" name="searchkeyword" class="header__search">
-			<select name="searchBoardType">
-				<option value="1" <c:if test="${searchVO.searchtype==1}"> selected   </c:if>>프로젝트</option>
-				<option value="2" <c:if test="${searchVO.searchtype==2}"> selected   </c:if>>사내게시판</option>
-				<option value="3" <c:if test="${searchVO.searchtype==3}"> selected   </c:if>>전체</option>
-			</select>
-			<button type="submit" >검색</button>
-		</form>
+			<input type="text" id="searchInput" placeholder="검색" value="${searchVO.searchkeyword}" name="searchkeyword" class="header__search">
+			<button type="button" onclick="sendDataToController()">검색</button>
 		<!-- 상단 메뉴들 -->
 		<div class="header__icon">
 			<!-- 구성원 -->
@@ -328,10 +321,6 @@
 				
 			}
 		});
-		
-		
-		
-		
 		$('#employee-modal').addClass('modal-visible');
 	});
 	
@@ -340,10 +329,15 @@
 	//검색
 	function sendDataToController() {
 	    // 선택된 옵션의 값
-	    let selectedOption = document.getElementById("selectOption").value;	
+// 	    let selectedOption = document.getElementById("selectOption").value;	
 	    // 검색어
 	    let searchKeyword = document.getElementById("searchInput").value;
-	    location.href = "/searchboard?selectedOption="+selectedOption+"&searchKeyword="+searchKeyword;
+	    if(searchKeyword==""){
+	    	alert('검색어를 입력하세요')
+	    }else{
+		   location.href="${pageContext.request.contextPath}/searchboard?searchkeyword="+searchKeyword+"&searchBoardType=3";
+	    }
+
 
 	}
 </script>
