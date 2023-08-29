@@ -101,7 +101,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int insertMemo(MemberVO memberVO) {
-		return memberMapper.inserMemberInfo(memberVO);
+		return memberMapper.insertMemo(memberVO);
 	}
 
 	@Override
@@ -112,5 +112,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<MemberVO> getNoticeList(MemberVO memberVO) {
 		return memberMapper.getNoticeList(memberVO);
+	}
+
+	@Override
+	public MemberVO getMemo(MemberVO memberVO) {
+		return memberMapper.getMemo(memberVO);
 	}
 }

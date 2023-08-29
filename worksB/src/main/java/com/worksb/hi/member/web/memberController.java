@@ -5,18 +5,13 @@ package com.worksb.hi.member.web;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
-import javax.mail.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.javassist.compiler.ast.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -24,11 +19,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.common.UserSha256;
 import com.worksb.hi.company.service.CompanyService;
 import com.worksb.hi.company.service.CompanyVO;
@@ -126,10 +121,15 @@ public class memberController {
 				session.setAttribute("memberInfo", member);
 				session.setAttribute("companyInfo", company);
 				
+				// 내프로젝트 리스트
 				List<MemberVO> projectList= memberService.getProjectList(member);
 				model.addAttribute("projectList", projectList);
+				// 사내공지 리스트
 				List<MemberVO> noticeList= memberService.getNoticeList(member);
 				model.addAttribute("noticeList", noticeList);
+				// 메모 불러오기
+				MemberVO memo = memberService.getMemo(member);
+				model.addAttribute("memo", memo);
 				
 				return "company/companyMain";
 			} 
@@ -277,4 +277,24 @@ public class memberController {
 	public String companyRegisterForm() {
 		return "member/companyRegisterForm";
 	}//companyRegisterForm
+	
+	
+	@PostMapping("/saveMemo")
+    @ResponseBody
+    public void saveMemo(@RequestParam("memoContent") String memoContent, HttpSession session) {
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberInfo");
+		
+		MemberVO memo = memberService.getMemo(memberVO);
+		memberVO.setMemoContent(memoContent);
+		
+		if (memo == null) {
+			// memberId가 존재하지 않으면 insert
+			memberService.insertMemo(memberVO);
+		} else {
+			// memberId가 존재하면 update
+			memberService.updateMemo(memberVO);
+	    }
+    }
+
+
 }
