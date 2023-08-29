@@ -166,7 +166,7 @@ div h2 {
 									도착 : ${carpoolInfo.arrival } 
 								</p>
 								<p>탑승 인원 수 : ${carpoolInfo.passenger }</p>
-								<p>출발 시간 : ${carpoolInfo.departureDate }</p>
+								<p>출발 시간 : <fmt:formatDate value="${carpoolInfo.departureDate }" pattern="yyyy/MM/dd HH:mm"/></p>
 							</div>
 						</td>
 					</tr>
@@ -178,8 +178,10 @@ div h2 {
 				<button type="button" class="buttonss__button" onclick="location.href='carpoolList'">목록</button>
 			</div>
 			<div class="buttons">
+				<c:if test="${memberInfo.memberId eq carpoolInfo.memberId}">
 				<button type="button" class="buttonss__button" onclick="location.href='carpoolUpdate?boardId=${carpoolInfo.boardId}'">수정</button>
 				<button type="button" class="buttonss__button" onclick="location.href='carpoolDelete?boardId=${carpoolInfo.boardId}'">삭제</button>
+				</c:if>
 			</div>
 		</div>
 		

@@ -27,8 +27,5 @@ public interface NoticeService {
 
 	// 조회수 올리기
 	public void noticeHit(int noticeId);
-	
-	// 회사 정보 가져오기
-	public List<NoticeVO> getNoticeListByCompanyId(PagingVO pagingVO, SearchVO searchVO, int companyId);
 
 }

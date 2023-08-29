@@ -187,13 +187,13 @@ div h2 {
 		<h2>카풀 게시판 작성</h2>
 	</div>
 	<div class="body">
-		<form action="carpoolInsert" method="post">
+		<form action="carpoolInsert" method="post" onsubmit="return check();">
 			<table class="table">
 				<thead>
 					<tr class="main__p">
 						<th class="table__title">
 							<label id="boardTitle">제목 </label>
-							<input type="text" name="boardTitle">
+							<input type="text" id ="inputTitle" name="boardTitle">
 						</th>
 					</tr>
 				</thead>
@@ -208,14 +208,16 @@ div h2 {
 					<tr>
 						<td class="p-0 d-xl-table-cell d-none">
     						<label id="departure">출발</label>
-    							<input type="text" id="departureInput" name="departure" value=" " readonly="readonly"><br>
+    							<input type="text" id="departureInput" name="departure" readonly="readonly"><br>
 							    <button type="button" id="departureButton">출발지 선택</button><br>
-							
+								
 							    <label id="arrival">도착</label>
-							    <input type="text" id="arrivalInput" name="arrival" value=" " readonly="readonly"><br>
+							    <input type="text" id="arrivalInput" name="arrival" readonly="readonly"><br>
 							    <button type="button" id="arrivalButton">도착지 선택</button><br>
 							<label>날짜</label>
-							<input type="datetime-local" id="departureDate" name="departureDate" required pattern="\d{4}-\d{2}-\d{2}\d{2}:\d{2}"><br>
+							<input type="datetime-local" id="departureDateInput"><br>
+							<input type="hidden" id="departureDate" name="departureDate">
+							
 							<label id="passenger">인원</label>
 							<select id="passelect" name="passenger">
 								<option value="0">0명</option>
@@ -235,7 +237,7 @@ div h2 {
 					<tr>
 						<td>
 							<input type="hidden" name="memberId" value="${memberInfo.memberId }">
-							<input type="hidden" name="companyId" value="${memberInfo.companyId}">
+							<input type="hidden" name="companyId" value="${memberInfo.companyId }">
 						</td>
 					</tr>
 					
@@ -259,14 +261,52 @@ div h2 {
 	</div>
 </body>
 <script>
-	
-	// 날짜 가져오기
-	var x = document.getElementById("departureDate").value;
 
-	// 거지같은 T 바꾸기
-	x = x.replace("T", " ");
+	function check(){
+		// 입력값 체크
+		let inputTitle = document.getElementById("inputTitle").value;
 
+		let departureInput = document.getElementById("departureInput").value;
+        let arrivalInput = document.getElementById("arrivalInput").value;
+        let passenger = document.getElementById("passenger").value;
+        
+            
+            
+        if (inputTitle.length == 0) {
+            alert("제목을 입력해주세요.");
+            return false;
+            }
+            
 
+            
+        if (departureInput.length == 0) {
+            alert("도착지를 입력해주세요.");
+            return false;
+            }
+            
+        if (arrivalInput.length == 0) {
+            alert("인원수를 설정해주세요");
+            return false;
+            }
+        
+        if (passelect == 0) {
+            alert("인원수를 설정해주세요");
+            return false;
+            }
+
+        
+			
+			
+		
+		// 날짜 가져오기
+		let x = document.getElementById("departureDateInput").value;
+
+		// 거지같은 T 바꾸기
+		x = x.replace("T", " ");
+		departureDate.value = x;
+
+		return true;
+	};
 
 	
 	<!-- 에디터 -->
@@ -430,6 +470,7 @@ div h2 {
 		  modal.style.display = "block";
 		  document.body.style.overflow = "hidden"; // 스크롤바 제거
 		});
+		
 		// 모달창 닫기
 		closeModalBtn.addEventListener("click", () => {
 		  modal.style.display = "none";

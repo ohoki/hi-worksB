@@ -9,7 +9,7 @@
 	<select id="getTotalCount" resultType="int">
 	   SELECT count(*)
 		 FROM notice_board
-		WHERE company_id = #{companyId } <!-- 추가된 부분  -->
+		WHERE company_id = #{companyId}
 		<if test="searchkeyword != null and searchkeyword !=''">
 			<choose>
 				<when test="searchtype == 1 ">
@@ -35,7 +35,7 @@
         		from (select *
               		  from notice_board n JOIN member m
               		  on n.member_id = m.member_id
-              		  WHERE n.company_id = #{companyId }<!-- 추가 -->
+              		  WHERE n.company_id = #{searchVO.companyId}
 					<if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
 					<choose>
 					<when test="searchVO.searchtype == 1 ">

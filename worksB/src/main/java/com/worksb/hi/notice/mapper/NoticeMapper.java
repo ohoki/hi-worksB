@@ -14,7 +14,7 @@ public interface NoticeMapper {
 	public int getTotalCount(SearchVO searchVO);
 	
 	// 페이징 게시글 전체 조회
-	public List<NoticeVO> selectNoticeAll(@Param("pagingVO") PagingVO pagingVO, @Param("searchVO")SearchVO searchVO);
+	public List<NoticeVO> selectNoticeAll(@Param("pagingVO") PagingVO pagingVO, @Param("searchVO")SearchVO searchVO); // int companyId 추가
 	
 	// 공지 자세히보기
 	public NoticeVO getNoticeInfo(NoticeVO noticeVO);
@@ -30,6 +30,4 @@ public interface NoticeMapper {
 	
 	// 조회수 올리기
 	public int noticeHit(int noticeId);
-
-	public List<NoticeVO> selectNoticeByCompanyId(PagingVO pagingVO, SearchVO searchVO, int companyId);
 }
