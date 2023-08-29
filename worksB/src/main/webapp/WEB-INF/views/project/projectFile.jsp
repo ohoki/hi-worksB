@@ -131,10 +131,11 @@
 			if(checkedFileId!=null){
 				 // 다운로드 링크 생성
 		        let downloadLink = document.createElement('a');
+		        //다운로드링크주소만들기
 		        downloadLink.href = "${pageContext.request.contextPath}/downloadFile/" + checkedFileId;
 		        //새창에서열기
 		        downloadLink.target = '_blank'; 
-		        //다운로드링크주소만들기
+				//파일명설정
 		        downloadLink.download = $('#'+checkedFileId).closest('tr').find('td:first-child').text(); 
 		        // 링크를 클릭하여 할당된 링크로 파일 다운로드 시작
 		        downloadLink.click();
@@ -143,7 +144,11 @@
 		    }
 		}
 		downloadLink.addEventListener('download',function(){
-			location.href=${pageContext.request.contextPath}"+"/downloaded
+			//이거 ajax로 하면 화면전환 업당
+			let dataList={
+					'fileId',${fileId}
+			}
+			location.href=${pageContext.request.contextPath}"+"/downloadedList?fileId="+
 		})
 		
 
