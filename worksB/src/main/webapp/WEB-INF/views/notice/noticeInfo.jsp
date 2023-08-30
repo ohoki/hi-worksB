@@ -180,32 +180,21 @@ div h2 {
 			</div>
 		</div>
 		<div>
-			<form>
-				<table>
-					<thead>
-						<tr>
-							<th>
-							    <ul>
-							        <c:forEach items="${boardCmtList}" var="cmt">
-							            <li>${cmt.commentContent}</li>
-							            <ul>
-							                <c:forEach items="${cmt.replies}" var="reply">
-							                    <li>${reply.commentContent}</li>
-							                </c:forEach>
-							            </ul>
-							        </c:forEach>
-							    </ul>
-							</th>
-						</tr>
-					</thead>
-					<tr>
-					</tr>
-				</table>
+			<form action="boardCmtList" method="post">
+				<c:forEach items="${boardCmtList}" var="boardCmt">
+					<p>${boardCmt.commentId }</p>
+					<p>${boardCmt.commentRegdate }</p>
+					<p>${boardCmt.commentContent }</p>
+				</c:forEach>
 			</form>
 		</div>
 	</div>
 	<script>
-
+		$(document).ready(function(){
+			$.post("boardCmtList")
+		});
+	
+	
 	
 	 // 좋아요 버튼 클릭 시 호출되는 함수
     function toggleLike(boardId, memberId) {

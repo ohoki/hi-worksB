@@ -277,8 +277,6 @@ div h2 {
             return false;
             }
             
-
-            
         if (departureInput.length == 0) {
             alert("도착지를 입력해주세요.");
             return false;

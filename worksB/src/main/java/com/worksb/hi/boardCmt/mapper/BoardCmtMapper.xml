@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.boardCmt.mapper.BoardCmtMapper">
 	<!-- 댓글 리스트 -->
-	<select id="boardCmtList" resultType="BoardCmtVO">
+<!-- 	<select id="boardCmtList" resultType="BoardCmtVO">
 		SELECT comment_id,
 			   member_id,
 			   comment_regdate,
@@ -13,11 +13,11 @@
 			   board_type,
 			   comment_dep
 		  FROM board_comment
-		 WHERE board_id = #{boardId} and boardtype = #{boardType}
-	  ORDER BY 
+		 WHERE board_id = #{boardId} and boardtype = #{boardType} and comment_dep = 0
+	  ORDER BY comment_regdate
 	</select>
 	
-	<!-- 대댓글 리스트 -->
+	대댓글 리스트
 	<select id="boardCmtchildList" resultType="BoardCmtVO">
 		SELECT comment_id,
 			   member_id,
@@ -26,9 +26,35 @@
 			   board_id,
 			   board_type,
 			   comment_dep
-		      FROM board_comment
-		     WHERE board_id = #{boardId} and boardtype = #{boardType} and comment_dep = 1
-	  ORDER BY 
-	</select> 
-			
+		  FROM board_comment
+		 WHERE board_id = #{boardId} and boardtype = #{boardType} and comment_dep = 1 and comment_id = #{memberId}
+	  ORDER BY comment_regdate
+	</select>  -->
+	
+	<!-- 계층형 댓글 리스트 -->
+	<select id = "boardCmtList" resultType="BoardCmtVO">
+		SELECT comment_id,
+			   member_id,
+			   comment_regdate,
+			   comment_content,
+			   board_id,
+			   board_type,
+			   parent_id
+		  FROM (SELECT comment_id,
+			   		   member_id,
+			   		   comment_regdate,
+			   		   comment_content,
+			   		   board_id,
+			   		   board_type,
+			   		   parent_id
+		  		  FROM board_comment
+		  		 WHERE board_type = #{boardType }
+		  		 	   board_id = #{boardId }
+		  		 	   )
+	<!--  계층형 구조로 반환하는 쿼리  CONNECT BY 절에서 연결 조건을 찾음-->
+	START WITH parent_id = 1
+CONNECT BY PRIOR comment_id = parent_id
+	<!-- 계층 안에서 순서를 잡는? 쿼리 -->
+ORDER SIBLINGS BY comment_id
+	</select>
 </mapper>

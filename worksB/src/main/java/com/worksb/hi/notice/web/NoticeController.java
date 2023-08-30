@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.boardCmt.service.BoardCmtService;
+import com.worksb.hi.boardCmt.service.BoardCmtVO;
 import com.worksb.hi.comLike.service.ComLikeService;
 import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.common.PagingVO;
@@ -35,6 +37,9 @@ public class NoticeController {
 	
     @Autowired
     ComLikeService comLikeService;
+    
+    @Autowired
+    BoardCmtService boardCmtService;
 	
 	//페이징 전체조회
 	@GetMapping("noticeList")
@@ -82,6 +87,7 @@ public class NoticeController {
 		String memberId = member.getMemberId();
         comLikeVO.setMemberId(memberId);
         
+        //좋아요
 	    model.addAttribute("checkLike",comLikeService.checkLiked(comLikeVO));
 	    return "notice/noticeInfo";
 	}
@@ -141,7 +147,17 @@ public class NoticeController {
         return map;
     }
 
-	
+	// 댓글
+	@PostMapping("/boardCmtList")
+	@ResponseBody
+	public String boardCmtList(Model model) {
+        // 댓글 가져오기
+        model.addAttribute("boardCmt", boardCmtService.boardCmtList());
+		return "";
+	}
+    
+    
+    
     // noticeList에서 공지마다 좋아요
 	/*
 	 * @GetMapping("/noticeLikeCount")
