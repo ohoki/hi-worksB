@@ -74,4 +74,6 @@ public interface ProjectService {
 	public int insertFile(FileDataVO vo);
 	//파일다운로드
 	public FileDataVO getFileById(int fileId);
+	//파일다운로드 이력 추가
+	public int updateFile(FileDataVO vo);
 }

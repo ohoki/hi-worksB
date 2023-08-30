@@ -36,13 +36,15 @@
 			<tbody>
 				<c:forEach items="${fileList}" var="list" >							
 						<tr onclick="check(${list.fileId})">
-								<td>${list.fileName }</td>
-								<td>${list.convertedSize }</td>
+								<td id="${list.fileName }">${list.fileName }</td>
+								<td id="${list.convertedSize }">${list.convertedSize }</td>
 								<td>${list.memberName }</td>
 								<td><fmt:formatDate value="${list.fileRegdate }" pattern="YY/MM/dd" type="date"/></td>
 								<td hidden><input type="checkbox" id="${list.fileId }"></td>
 								<td hidden>${list.fileSize }</td>
 								<td hidden>${list.realFilePath }</td>
+								<td hidden>${list.memberId }</td>
+								<td hidden>${list.fileType }</td>
 						</tr>
 				</c:forEach>	
 			</tbody>
@@ -106,14 +108,17 @@
 			searchform.submit();
 		}
 		function check(fileId){
-		 	let checkbox = $('#' + fileId);
-		    if(checkbox.prop('checked')) {
-		        checkbox.prop('checked', false);
-		        checkbox.closest('tr').css({"background-color":"white"});
-		    }else{
-		        checkbox.prop('checked', true);
+		    let checkbox=$('#' + fileId);
+		    let isChecked=checkbox.prop('checked');
+
+		    $('input[type="checkbox"]').prop('checked', false);
+		    $('input[type="checkbox"]').closest('tr').css({"background-color":"white"});
+			//체크안된경우만 실행됨
+		    if (!isChecked) {
 		        checkbox.closest('tr').css({"background-color":"green"});
+		        checkbox.prop('checked',!isChecked)
 		    }
+		    
 		}
 
 		fileSizeAndnotEmpty.addEventListener('change',function(){
@@ -128,15 +133,57 @@
 			if(checkedFileId!=null){
 				 // 다운로드 링크 생성
 		        let downloadLink = document.createElement('a');
+		        //다운로드링크주소만들기
 		        downloadLink.href = "${pageContext.request.contextPath}/downloadFile/" + checkedFileId;
+		        //새창에서열기
 		        downloadLink.target = '_blank'; 
+				//파일명설정
 		        downloadLink.download = $('#'+checkedFileId).closest('tr').find('td:first-child').text(); 
-		        // 링크를 클릭하여 파일 다운로드 시작
+		        // 링크를 클릭하여 할당된 링크로 파일 다운로드 시작
 		        downloadLink.click();
+		        
+				let fileId=$('input[type="checkbox"]:checked').attr('id')
+				
+				
+				let row=$('#'+fileId).closest('tr')
+				let fileName=row.find('td:eq(0)').text()
+				let fileSize=row.find('td:eq(1)').text()
+				let memberName=row.find('td:eq(2)').text()
+				let fileRegdate=row.find('td:eq(3)').text()
+				
+				let hidden=row.find('td[hidden]')
+				let memberId=hidden[3].textContent
+				let fileType=hidden[4].textContent
+				
+				$.ajax({
+					url:'updateDownloadFile',
+					method:'POST',
+					contentType:'application/json',
+					data:JSON.stringify({
+						'fileId':fileId,
+						'fileName':fileName,
+						'fileRegdate':fileRegdate,
+						'convertedSize':fileSize,
+						'fileType':fileType
+						})
+					})
+					.done(data=>{
+						if(data<1){
+							alert('파일을 다시 다운로드해 주세요');
+						}
+					})
+					.fail(reject=>{
+							console.log(reject);
+							alert('파일을 다시 다운로드해 주세요');
+				})
+					
+
+		        
 		    } else {
 		        alert('파일을 선택해주세요.');
 		    }
 		}
+		
 		
 
 	</script>

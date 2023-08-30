@@ -200,6 +200,11 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectMapper.getMarkupInfo(projectId, memberId);
 	}
 
+	@Override
+	public int updateFile(FileDataVO vo) {
+		return projectMapper.updateFile(vo);
+	}
+
 	
 	
 
