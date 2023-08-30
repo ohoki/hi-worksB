@@ -98,19 +98,29 @@ public class MemberServiceImpl implements MemberService {
 	public List<MemberVO> getProjectList(MemberVO memberVO) {
 		return memberMapper.getProjectList(memberVO);
 	}
-
+	
+	// 메모 등록
 	@Override
 	public int insertMemo(MemberVO memberVO) {
-		return memberMapper.inserMemberInfo(memberVO);
+		return memberMapper.insertMemo(memberVO);
 	}
-
+	
+	// 메모 수정
 	@Override
 	public int updateMemo(MemberVO memberVO) {
 		return memberMapper.updateMemo(memberVO);
 	}
-
+	
+	// 메모 조회
+	@Override
+	public MemberVO getMemo(MemberVO memberVO) {
+		return memberMapper.getMemo(memberVO);
+	}
+	
+	// 공지사항 조회
 	@Override
 	public List<MemberVO> getNoticeList(MemberVO memberVO) {
 		return memberMapper.getNoticeList(memberVO);
 	}
+
 }

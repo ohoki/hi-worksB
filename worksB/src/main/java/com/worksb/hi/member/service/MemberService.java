@@ -29,6 +29,7 @@ public interface MemberService {
 	// 메모장
 	public int insertMemo(MemberVO memberVO);
 	public int updateMemo(MemberVO memberVO);
+	public MemberVO getMemo(MemberVO memberVO);
 	
 	// 공지사항
 	public List<MemberVO> getNoticeList(MemberVO memberVO);

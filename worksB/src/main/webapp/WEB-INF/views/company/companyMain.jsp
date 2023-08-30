@@ -27,7 +27,14 @@
 	width : 1300px;
 	margin: 0 auto;
 }
-
+#memoContent{
+	width: 600px;
+	height: 200px;
+	font-size: 15px;
+	border: 1px solid var(--color-dark-beigie);
+	padding: 10px;
+	resize: none;
+}
 
 
 </style>
@@ -60,9 +67,9 @@
 					</ul>
 				</li>
 				<li class="memo"><span>메모</span>
-					<ul>
-						
-					</ul>
+				<div>
+					<textarea id="memoContent" spellcheck="false" placeholder="메모를 입력하세요.">${memo.memoContent}</textarea>
+				</div>
 				</li>
 				<li class="weather"><span>날씨</span>
 					<ul>
@@ -74,28 +81,9 @@
 	</div>
  
 <script>
-	/*
+/*
 	//OpenWeatherMap API 키
 	const apiKey = '2f238cd00e432238f8fedcfe8ee3553e';
-	
-	
-	// 날씨 정보 가져오기
-	function getWeatherByCoordinates(latitude, longitude) {
-		const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
-		console.log(apiUrl)
-	
-	    $.ajax({
-	        url: apiUrl,
-	        method: 'GET',
-	        dataType: 'json',
-	        success: function(data) {
-	            console.log(data)
-	        },
-	        error: function(error) {
-	            console.error('Error fetching weather data:', error);
-	        }
-	    });
-	}
 	
 	// 현재 위치 정보 가져오기
 	function getCurrentPosition() {
@@ -103,6 +91,7 @@
 	        navigator.geolocation.getCurrentPosition(function(position) {
 	            const latitude = position.coords.latitude;
 	            const longitude = position.coords.longitude;
+	            
 	            getWeatherByCoordinates(latitude, longitude);
 	            console.log(latitude)
 	            console.log(longitude)
@@ -113,23 +102,44 @@
 	        console.error('Geolocation is not available.');
 	    }
 	}
-
+	
 	// 페이지 로딩 시 현재 위치 정보 가져오기
 	getCurrentPosition();
-	*/
+	
+	// 날씨 정보 가져오기
+	function getWeatherByCoordinates(latitude, longitude) {
+		//const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=2f238cd00e432238f8fedcfe8ee3553e`;
+		const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
+		console.log("========================="+apiUrl)
+		$.ajax({
+			url: apiUrl,
+			method: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				console.log(data)
+			},
+			error: function(error) {
+				console.error('Error fetching weather data:', error);
+			}
+		});
+	}
+*/
+
+
 	
 	
-	
-	// 인사 메세지
+//----------인사 메세지
 	
     let currentTime = new Date();
     let currentHour = currentTime.getHours();
     let timeMessage = "";
+    
     if (currentHour >= 12) {
         timeMessage = "님 즐거운 오후입니다.";
     } else {
         timeMessage = "님 즐거운 오전입니다.";
     }
+    
     let message = $('.memberName');
     message.append('<span>' + timeMessage + '</span>');
     
@@ -137,13 +147,38 @@
     let month = currentTime.getMonth() + 1;
     let day = currentTime.getDate();
     let dayOfWeek = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"][currentTime.getDay()];
+    
     let currentDate = year + '년 ' + month + '월 ' + day + '일 ' + dayOfWeek
+    
     message.append('<span>' + currentDate + '</span>');
+//----------인사 메세지   
     
-    
-    
-    
+//----------메모장
+    let memo = $('#memoContent');
+    let saveTimeout;
 
+	// 메모 변경 시 자동 저장
+	memo.on('keyup', function() {
+		// 이전 타이머 제거
+		clearTimeout(saveTimeout);
+		// 1초 후 자동 저장
+		saveTimeout = setTimeout(saveMemo, 1000);
+    });
+
+	// 메모 저장
+	function saveMemo() {
+		let memoContent = memo.val();
+        
+		$.ajax({
+			type: 'POST',
+			url: '${pageContext.request.contextPath}/saveMemo',
+			data: { memoContent: memoContent },
+			success: function(response) {
+				console.log('메모 저장 완료');
+			}
+		});
+	}
+//----------메모장
 	
 	
 	
