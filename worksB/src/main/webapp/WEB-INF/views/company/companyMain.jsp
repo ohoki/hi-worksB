@@ -81,7 +81,7 @@
 	</div>
  
 <script>
-
+/*
 	//OpenWeatherMap API 키
 	const apiKey = '2f238cd00e432238f8fedcfe8ee3553e';
 	
@@ -123,7 +123,7 @@
 			}
 		});
 	}
-
+*/
 
 
 	

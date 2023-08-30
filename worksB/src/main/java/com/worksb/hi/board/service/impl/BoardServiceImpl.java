@@ -191,6 +191,12 @@ public class BoardServiceImpl implements BoardService {
 		return 1;
 	};
 	
+	// 업무삭제
+	@Override
+	public int deleteTask(TaskVO taskVO) {
+		return boardMapper.deleteTask(taskVO);
+	}
+	
 	
 	
 	
@@ -211,4 +217,8 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO getScheBoardInfo(int prjBoardId) {
 		return boardMapper.getScheBoardInfo(prjBoardId);
 	}
+
+	
+
+	
 }
