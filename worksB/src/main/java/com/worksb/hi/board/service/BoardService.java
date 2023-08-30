@@ -59,7 +59,7 @@ public interface BoardService {
 	public int sheParticipate(ScheParticirVO spVO);
 	
 	//투표 하기 (삭제 -> 등록)
-	public int voteInsert(VoteVO voteVO);
+	public int voteInsert(List<VoteVO> voteList);
 	
 	
 	

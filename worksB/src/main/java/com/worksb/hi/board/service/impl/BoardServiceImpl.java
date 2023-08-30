@@ -178,17 +178,16 @@ public class BoardServiceImpl implements BoardService {
 	};
 	
 	//투표 하기 (삭제 -> 등록)
-	public int voteInsert(VoteVO voteVO) {
-		boardMapper.voteDelete(voteVO);
+	public int voteInsert(List<VoteVO> voteList){
+		int result = 0;
+		//참가자의 투표 내용 삭제
+		boardMapper.voteDelete(voteList.get(0));
+		//재등록
+		for(int i=0; i<voteList.size(); i++) {
+			result = boardMapper.voteInsert(voteList.get(i));
+		}
 		
-		String[] listContentArr = (String.valueOf(voteVO.getListId())).split(",");
-    	
-    	for(int i=0; i<listContentArr.length; i++) {
-    		voteVO.setListContent(listContentArr[i]);
-    		boardMapper.insertVoteList(voteVO);
-    	}
-		
-		return 1;
+		return result;
 	};
 	
 	
