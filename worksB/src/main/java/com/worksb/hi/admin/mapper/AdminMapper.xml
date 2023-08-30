@@ -4,14 +4,35 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.admin.mapper.AdminMapper">
 	<select id="downloadList" resultType="FileDataVO">
-		SELECT 
-				d.file_id,
-				d.file_name,
-				d.file_type,
-				d.file_regdate,
-				d.converted_size,
-				d.member_id,
-				m.company_id
+	     SELECT *
+			FROM (
+			    SELECT rownum rn, a.*
+			    FROM (
+				    SELECT 
+							d.file_id,
+							d.file_name,
+							d.file_type,
+							d.file_regdate,
+							d.converted_size,
+							d.member_id,
+							m.company_id
+					FROM download_file d
+					JOIN (
+			    		SELECT 
+			        		member_id,
+			       			company_id
+			    		FROM
+			        		member
+			    		WHERE 
+			    			company_id=#{companyId})m 
+						ON 
+							d.member_id=m.member_id) a ) 
+			WHERE rn BETWEEN #{pagingvo.start} AND #{pagingvo.end}
+	</select>
+<!-- 	downloadlist의 갯수 -->
+	<select id="downloadCount" resultType="int">
+		  SELECT 
+            COUNT(*)
 		FROM download_file d
 		JOIN (
     		SELECT 
@@ -22,5 +43,12 @@
     		WHERE company_id=#{companyId}
 				)m 
 			ON d.member_id=m.member_id
+	</select>
+	
+	
+	<select id="prjcount" resultType="int">
+		 SELECT COUNT(*)
+		 FROM project 
+		 WHERE dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})
 	</select>
 </mapper>
