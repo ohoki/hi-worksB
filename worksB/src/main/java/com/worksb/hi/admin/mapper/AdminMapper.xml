@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.worksb.hi.admin.mapper.AdminMapper">
+	<select id="downloadList" resultType="FileDataVO">
+		SELECT 
+				d.file_id,
+				d.file_name,
+				d.file_type,
+				d.file_regdate,
+				d.converted_size,
+				d.member_id,
+				m.company_id
+		FROM download_file d
+		JOIN (
+    		SELECT 
+        		member_id,
+       			company_id
+    		FROM
+        		member
+    		WHERE company_id=#{companyId}
+				)m 
+			ON d.member_id=m.member_id
+	</select>
+</mapper>

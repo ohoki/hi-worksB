@@ -3,6 +3,11 @@ package com.worksb.hi.project.web;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -629,14 +634,24 @@ public class ProjectController {
 	    
 
 	        // 파일 다운로드 설정
-	        response.setContentType("application/octet-stream");
-	        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileData.getFileName() + "\"");
+//	        response.setContentType("application/octet-stream");
+//	        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileData.getFileName() + "\"");
 
+	        String encodedFileName = URLEncoder.encode(fileData.getFileName(), StandardCharsets.UTF_8.toString());
+	        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
 	        try (OutputStream outputStream=response.getOutputStream()) {
 	            outputStream.write(fileData.getFileContent());
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
+		}
+		@PostMapping("/updateDownloadFile")
+		@ResponseBody
+		public int downloadList(@RequestBody FileDataVO data,HttpSession session) throws UnsupportedEncodingException, URISyntaxException {
+		    String encodedFilename = URLEncoder.encode(data.getFileName(), StandardCharsets.UTF_8.toString());
+			data.setFileName(encodedFilename);
+			data.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+			return projectService.updateFile(data);
 		}
 	
 		
