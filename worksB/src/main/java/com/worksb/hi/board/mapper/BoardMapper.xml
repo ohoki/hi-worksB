@@ -515,7 +515,7 @@
 		        AND t.end_date IS NOT NULL
 	</select>
 	<!-- 프로젝트 일정 상세 조회 -->
-	<select id="getScheBoardInfo">
+	<select id="getScheBoardInfo" resultType="BoardVO">
 		SELECT prj_board_id        
 			   , prj_board_title   
 			   , prj_board_subject     

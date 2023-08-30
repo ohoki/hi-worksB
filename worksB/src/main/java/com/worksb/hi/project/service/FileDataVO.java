@@ -6,6 +6,10 @@ package com.worksb.hi.project.service;
 import java.time.LocalDate;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -26,6 +30,8 @@ public class FileDataVO {
 	private String fileName;
 	private String filePath;
 	private String fileType;
+//	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	@JsonFormat(pattern = "yy/MM/dd")
 	private Date fileRegdate;
 	private long fileSize;
 	private Integer boardId;
@@ -44,4 +50,6 @@ public class FileDataVO {
 	
 	//file을 바이트타입으로 변환한 것
 	private byte[] fileContent;
+	
+
 }

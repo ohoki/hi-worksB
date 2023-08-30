@@ -26,6 +26,7 @@ import com.worksb.hi.board.service.ScheParticirVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
+import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
@@ -40,6 +41,9 @@ public class BoardController {
 	
 	@Autowired
 	ProjectService projectService;
+	
+	@Autowired
+	MemberService memberService;
 	
 	// 이진
 	// 게시글 등록 폼
@@ -303,6 +307,7 @@ public class BoardController {
 		return boardVO.getProjectId();
 	}
 	
+
 	// 일정 참가,미참
 	@RequestMapping("/sheParticipate")
 	@ResponseBody
@@ -326,16 +331,71 @@ public class BoardController {
 	
 	
 	
-	
+
+	//정현
 	//프로젝트 일정 캘린더 상세조회
 	@GetMapping("getScheBoardInfo")
 	@ResponseBody
-	public BoardRequestVO getScheBoardInfo(@RequestParam int prjBoardId) {
+	public BoardRequestVO getScheBoardInfo(@RequestParam("prjBoardId") int prjBoardId) {
 		BoardRequestVO vo = new BoardRequestVO();
 		ScheVO scheVO = new ScheVO();
 		scheVO.setPrjBoardId(prjBoardId);
 		vo.setBoardVO(boardService.getScheBoardInfo(prjBoardId));
 		vo.setScheVO(boardService.getScheInfo(scheVO));
+		
+		MemberVO memberVO = new MemberVO();
+		String memberId = vo.getBoardVO().getMemberId();
+		memberVO.setMemberId(memberId);
+		memberVO = memberService.selectMember(memberVO);
+		System.out.println(memberVO);
+		vo.setMemberName(memberVO.getMemberName());
+		vo.setRealProfilePath(memberVO.getRealProfilePath());
 		return vo;
+	}
+	
+	//프로젝트 업무 캘린더 상세조회
+	@GetMapping("getTaskBoardInfo")
+	@ResponseBody
+	public Map<String, Object> getTaskBoardInfo(@RequestParam("prjBoardId") int prjBoardId) {
+		//BoardRequestVO vo = new BoardRequestVO();
+		Map<String, Object> resultMap = new HashMap<>();
+	    
+	    // 해당 게시글 번호
+	    AllTaskBoardVO allTaskBoardVO = new AllTaskBoardVO();
+	    allTaskBoardVO.setPrjBoardId(prjBoardId);
+
+	    // 해당 업무 정보
+	    List<AllTaskBoardVO> highTask = boardService.getTaskInfo(allTaskBoardVO);
+	    // 업무 담당자 리스트
+	    List<AllTaskBoardVO> highManager = boardService.getManager(allTaskBoardVO);
+
+	    // 하위 업무
+	    // 상위 업무의 업무번호
+	    int taskId = boardService.getHighTaskId(allTaskBoardVO);
+	    // 해당 업무의 하위 업무 리스트
+	    List<AllTaskBoardVO> subTask = boardService.getSubTask(taskId);
+	    // 각 하위 업무의 담당자 리스트
+	    Map<Integer, List<AllTaskBoardVO>> subManager = new HashMap<>();
+
+	    for (int i = 0; i < subTask.size(); i++) {
+	        // 하위 업무 정보
+	        AllTaskBoardVO subTaskInfo = subTask.get(i);
+	        // 하위 업무의 게시글Id
+	        int subTaskPrjBoardId = subTaskInfo.getPrjBoardId();
+	        // 객체에 하위 업무의 게시글 Id 설정하기
+	        allTaskBoardVO.setPrjBoardId(subTaskPrjBoardId);
+	        // 하위 업무의 담당자 정보 조회
+	        List<AllTaskBoardVO> subManagerInfo = boardService.getManager(allTaskBoardVO);
+	        // 하위 업무 담당자 정보 추가
+	        subManager.put(subTaskPrjBoardId, subManagerInfo);
+	    }
+
+	    resultMap.put("highTask", highTask);
+	    resultMap.put("subTask", subTask);
+	    resultMap.put("highManager", highManager);
+	    resultMap.put("subManager", subManager);
+	    
+
+	    return resultMap;
 	}
 }
