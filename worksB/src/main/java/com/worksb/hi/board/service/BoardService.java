@@ -58,6 +58,11 @@ public interface BoardService {
 	// 일정 참가,미참
 	public int sheParticipate(ScheParticirVO spVO);
 	
+	//투표 하기 (삭제 -> 등록)
+	public int voteInsert(VoteVO voteVO);
+	
+	
+	
 	
 	
 	

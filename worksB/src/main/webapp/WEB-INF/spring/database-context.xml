@@ -10,12 +10,10 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	<!-- <context:property-placeholder location="classpath:config/db.properties" />  -->
-
 	<bean id="environmentVariablesConfiguration"
 		class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
 		<property name="algorithm" value="PBEWithMD5AndDES" />
-		<property name="password"
-			value="${jasypt.encryptor.password}" />
+		<property name="password" value="${jasypt.encryptor.password}" />
 	</bean>
 
 	<bean id="configurationEncryptor"
