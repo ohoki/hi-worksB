@@ -13,6 +13,14 @@ import com.worksb.hi.boardCmt.service.BoardCmtVO;
 @Service
 public class BoardCmtServiceImpl implements BoardCmtService {
 
+	@Autowired
+	BoardCmtMapper boardCmtMapper; 
+	
+	@Override
+	public List<BoardCmtVO> boardCmtList() {
+		return boardCmtMapper.boardCmtList();
+	}
+
 
 	
 

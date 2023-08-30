@@ -13,8 +13,5 @@ public class BoardCmtVO {
 	private String commentContent; // 댓글 내용
 	private int boardId; // 게시글 ID
 	private String boardType; // 게시글 타입 (필요시)
-	private int commentDep; // 댓글 깊이 (0: 댓글, 1 이상: 대댓글)
-	
-	private List<BoardCmtVO> replies; // 대댓글 목록
-	
+	private String parentId; // 부모 댓글 작성자 ID
 }
