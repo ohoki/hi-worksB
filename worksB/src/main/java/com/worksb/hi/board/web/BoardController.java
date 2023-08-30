@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.AllTaskBoardVO;
 import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
@@ -102,7 +103,7 @@ public class BoardController {
 	    		
 	    		// 하위 업무 담당자 boardId 설정
 	        	for(int j=0; j<subManagerList.size(); j++) {
-	        		TaskVO subManager = subManagerList.get(i);
+	        		TaskVO subManager = subManagerList.get(j);
 	        		if(subManager.getPrjBoardId() == i) {
 	        			subManager.setPrjBoardId(subBoardVO.getPrjBoardId());
 	        		}
@@ -283,6 +284,22 @@ public class BoardController {
 		return "z";
 	}
 */	
+	// 업무 삭제
+	@PostMapping("/deleteTask")
+	@ResponseBody
+	public int deleteTask(@RequestParam int prjBoardId){
+		TaskVO taskVO = new TaskVO();
+		taskVO.setPrjBoardId(prjBoardId);
+		int result = taskVO.getProjectId();
+		
+		boardService.deleteTask(taskVO);
+	    
+    	
+    	return result; 
+	}
+	
+	
+	
 	//상단 고정 여부 수정
 	@GetMapping("/updatePin")
 	public String updatePin(BoardVO boardVO) {

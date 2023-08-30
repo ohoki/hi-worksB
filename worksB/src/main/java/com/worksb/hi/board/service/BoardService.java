@@ -61,7 +61,8 @@ public interface BoardService {
 	//투표 하기 (삭제 -> 등록)
 	public int voteInsert(VoteVO voteVO);
 	
-	
+	// 업무 삭제
+	public int deleteTask(TaskVO taskVO);
 	
 	
 	
