@@ -26,7 +26,7 @@ RESULT_YN    NOT NULL VARCHAR2(5) 	결과 공개 여부 A1 YES / A2 NO
 	private String anonyVote;
 	private String compnoVote;
 	private String resultYn;
-	
+	private int voteAttendance;
 /*
 LIST_ID      NOT NULL NUMBER        항목번호
 LIST_CONTENT NOT NULL VARCHAR2(200) 항목내용
@@ -34,5 +34,5 @@ PRJ_BOARD_ID NOT NULL NUMBER
  */
 	private int listId;
 	private String listContent;
-	private String prjParticirId;
+	private int prjParticirId;
 }

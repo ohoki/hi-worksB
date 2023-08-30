@@ -61,7 +61,11 @@ public interface BoardService {
 	//투표 하기 (삭제 -> 등록)
 	public int voteInsert(List<VoteVO> voteList);
 	
+	//투표 취소
+	public void votePaticirDelete(VoteVO voteVO);
 	
+	//내가 선택한 투표 리스트
+	public List<VoteVO> getVoteListByMember(VoteVO voteVO);
 	
 	
 	

@@ -190,6 +190,20 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 	};
 	
+	//투표 취소
+	public void votePaticirDelete(VoteVO voteVO) {
+		boardMapper.voteDelete(voteVO);
+	};
+	
+	//내가 선택한 투표 리스트
+	public List<VoteVO> getVoteListByMember(VoteVO voteVO) {
+		return boardMapper.getVoteListByMember(voteVO);
+	};
+	
+	
+	
+	
+	
 	
 	
 	
