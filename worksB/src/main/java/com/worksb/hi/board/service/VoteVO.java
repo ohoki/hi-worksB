@@ -34,4 +34,5 @@ PRJ_BOARD_ID NOT NULL NUMBER
  */
 	private int listId;
 	private String listContent;
+	private String prjParticirId;
 }

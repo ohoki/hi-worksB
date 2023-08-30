@@ -177,7 +177,19 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.sheParticipate(spVO);
 	};
 	
-	
+	//투표 하기 (삭제 -> 등록)
+	public int voteInsert(VoteVO voteVO) {
+		boardMapper.voteDelete(voteVO);
+		
+		String[] listContentArr = (String.valueOf(voteVO.getListId())).split(",");
+    	
+    	for(int i=0; i<listContentArr.length; i++) {
+    		voteVO.setListContent(listContentArr[i]);
+    		boardMapper.insertVoteList(voteVO);
+    	}
+		
+		return 1;
+	};
 	
 	
 	

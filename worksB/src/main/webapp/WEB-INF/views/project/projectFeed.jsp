@@ -255,7 +255,7 @@
 		transition: all 0.3s;
 	}
 	
-	.sche-btns button:hover {
+	.sche-btns button:hover, .sche-btns button.active {
 		background-color: var(--color-dark-red);
 	}
 	
@@ -263,9 +263,10 @@
 		background-color: #def4c6 !important;
 	}
 	
-	.btn-green:hover {
+	.btn-green:hover, .btn-green.active {
 		background-color: var(--color-green) !important;
 	}
+	
 	
 	.sche-particir, .sche-nonParticir {
 		font-size: var(--font-micro);
@@ -273,11 +274,11 @@
 		cursor: pointer;
 	}
 	
-	.sche-particir {
+	.sche-particir, .sche-particir-count {
 		color: var(--color-green) !important;
 	}
 	
-	.sche-nonParticir {
+	.sche-nonParticir, .sche-nonParticir-count {
 		color: var(--color-dark-red) !important;
 	}
 	
@@ -1017,8 +1018,8 @@
 								<span>[일정]</span> ${board.prjBoardTitle }
 							</div>
 							<div>
-								<span class="sche-particir">참석 2</span>
-								<span class="sche-nonParticir">불참 3</span>
+								<span class="sche-particir">참석 <span class="sche-particir-count"></span></span>
+								<span class="sche-nonParticir">불참 <span class="sche-nonParticir-count"></span></span>
 							</div>
 						</div>
 						<div class="d-flex" style="margin-right: 40px;">
@@ -1430,14 +1431,17 @@
 					$.ajax({
 						url : '${pageContext.request.contextPath}/getScheInfo',
 						type : 'GET',
-						data : {'prjBoardId' : boardList[i].dataset.id},
+						data : {'prjBoardId': boardList[i].dataset.id, 'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}' },
 						success : function(sche) {
 							let startDate = $(boardList[i]).find('span[data-start]');
 							let endDate = $(boardList[i]).find('span[data-end]');
 							let alarmSpan = $(boardList[i]).find('.sche-alarm').children('span');
 							let addrSpan = $(boardList[i]).find('.sche-addr');
-
-							startDate.text(sche.startDate);
+							let attendYesCount = $(boardList[i]).find('.sche-particir-count');
+							let attendNoCount = $(boardList[i]).find('.sche-nonParticir-count');
+							let attendBtn = $(boardList[i]).find('button[name="attend"]');
+							let nonAttendBtn = $(boardList[i]).find('button[name="nonAttend"]');
+							
 			                endDate.text(sche.endDate);
 			                //알림 설정 여부
 			                if(sche.alarmDateCodeLiteral != null) {
@@ -1449,6 +1453,18 @@
 			                }else {
 			                	$(addrSpan).empty();
 			                }
+			                //참석 인원 값
+			                attendYesCount.text(sche.attendanceYes);
+			                attendNoCount.text(sche.attendanceNo);
+			                
+			                //일정 참여 여부
+			                if(sche.myAttendance == 'A1') {
+			                	attendBtn.attr('class', 'btn-green active');
+			                } else if(sche.myAttendance == 'A2'){
+			                	nonAttendBtn.attr('class', 'active');
+			                }
+							
+			                
 						}, error : function(reject) {
 							console.log(reject);
 						}
@@ -1655,37 +1671,53 @@
 			}
 		}; 
 		
-		$('.sche-btns button[name="attend"]').on('click', function(e) {
+		// 일정 참여
+		$('.sche-btns button').on('click', function(e) {
 			let btn = $(e.currentTarget);
 			let prjParticirId = '${particirInfo.prjParticirId }';
 			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let attendYesCount = boardContainer.find('.sche-particir-count');
+			let attendNoCount = boardContainer.find('.sche-nonParticir-count');
 			let boardId = boardContainer.data('id');
+			let attendance = '';
+			//DB 저장
+			if (btn.hasClass('btn-green')) {
+					btn.next().removeClass('active');
+					btn.attr('class', 'btn-green active');	
+					attendance = 'A1';
+				}	
+				else {
+					btn.prev().removeClass('active');
+					btn.attr('class', 'active');
+					attendance = 'A2';
+				}
 			
 			$.ajax({
 				url : '${pageContext.request.contextPath}/sheParticipate',
 				type : 'POST',
-				data : {'prjParticirId' : prjParticirId ,'prjBoardId' : boardId, 'attendance' : 'A1'},
+				data : {'prjParticirId' : prjParticirId ,'prjBoardId' : boardId, 'attendance' : attendance},
+				success : function() {
+					//새 정보
+					$.ajax({
+						url : '${pageContext.request.contextPath}/getScheInfo',
+						type : 'GET',
+						data : {'prjBoardId': boardId, 'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}' },
+						success : function(sche) {
+			                //참석 인원 값
+			                attendYesCount.text(sche.attendanceYes);
+			                attendNoCount.text(sche.attendanceNo);
+						}, error : function(reject) {
+							console.log(reject);
+						}
+					})
+				},
 				error : function(reject) {
 					console.log(reject);
 				}
 			});
 		})
 		
-		$('.sche-btns button[name="nonAttend"]').on('click', function(e) {
-			let btn = $(e.currentTarget);
-			let prjParticirId = '${particirInfo.prjParticirId }';
-			let boardContainer = $(e.currentTarget).closest('.board-container');
-			let boardId = boardContainer.data('id');
-			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/sheParticipate',
-				type : 'POST',
-				data : {'prjParticirId' : prjParticirId ,'prjBoardId' : boardId, 'attendance' : 'A2'},
-				error : function(reject) {
-					console.log(reject);
-				}
-			});
-		})
+		
 	</script>
 	<!-- 게시글 출력 종료 -->
 	
