@@ -1,5 +1,10 @@
 package com.worksb.hi.admin.service;
 
-public interface AdminService {
+import java.util.List;
 
+import com.worksb.hi.project.service.FileDataVO;
+
+public interface AdminService {
+	//downloadList
+	public List<FileDataVO> downloadList(int companyId);
 }
