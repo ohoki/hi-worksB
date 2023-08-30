@@ -81,6 +81,7 @@
 	</div>
  
 <script>
+/*
 	//OpenWeatherMap API 키
 	const apiKey = '2f238cd00e432238f8fedcfe8ee3553e';
 	
@@ -101,7 +102,7 @@
 	        console.error('Geolocation is not available.');
 	    }
 	}
-
+	
 	// 페이지 로딩 시 현재 위치 정보 가져오기
 	getCurrentPosition();
 	
@@ -122,7 +123,7 @@
 			}
 		});
 	}
-
+*/
 
 
 	
