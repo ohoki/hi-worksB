@@ -35,6 +35,10 @@ ALARM_DATE            DATE
 	private String scheAddr;
 	private String scheAddrDetail;
 	
+	private String memberId;
 	private int projectId;
 	private String prjBoardTitle;
+	private int attendanceYes;
+	private int attendanceNo;
+	private String myAttendance;
 }

@@ -255,7 +255,7 @@
 		transition: all 0.3s;
 	}
 	
-	.sche-btns button:hover {
+	.sche-btns button:hover, .sche-btns button.active {
 		background-color: var(--color-dark-red);
 	}
 	
@@ -263,9 +263,10 @@
 		background-color: #def4c6 !important;
 	}
 	
-	.btn-green:hover {
+	.btn-green:hover, .btn-green.active {
 		background-color: var(--color-green) !important;
 	}
+	
 	
 	.sche-particir, .sche-nonParticir {
 		font-size: var(--font-micro);
@@ -273,11 +274,11 @@
 		cursor: pointer;
 	}
 	
-	.sche-particir {
+	.sche-particir, .sche-particir-count {
 		color: var(--color-green) !important;
 	}
 	
-	.sche-nonParticir {
+	.sche-nonParticir, .sche-nonParticir-count {
 		color: var(--color-dark-red) !important;
 	}
 	
@@ -1017,8 +1018,8 @@
 								<span>[일정]</span> ${board.prjBoardTitle }
 							</div>
 							<div>
-								<span class="sche-particir">참석 2</span>
-								<span class="sche-nonParticir">불참 3</span>
+								<span class="sche-particir">참석 <span class="sche-particir-count"></span></span>
+								<span class="sche-nonParticir">불참 <span class="sche-nonParticir-count"></span></span>
 							</div>
 						</div>
 						<div class="d-flex" style="margin-right: 40px;">
@@ -1043,8 +1044,8 @@
 							</div>
 						</div>
 						<div class="sche-btns">
-							<button type="button" class="btn-green">참석</button>
-							<button type="button">불참</button>
+							<button type="button" class="btn-green" name="attend">참석</button>
+							<button type="button" name="nonAttend">불참</button>
 						</div>
 						<div class="board-footer">
 							<div >
@@ -1349,7 +1350,7 @@
 				</c:if>
 			</c:forEach>
 		</div>	
-				<!-- 게시글 조회 끝 -->
+		<!-- 게시글 조회 끝 -->
 		<div style="width: 25%;">
 			<div class="bookmark-board">
 				<div class="bookmark-board-title">북마크</div>
@@ -1420,76 +1421,6 @@
 	
 	<!-- 게시글 출력 SCRIPT -->
 	<script>
-		//북마크
-		$('span[data-bookmark]').on('click', function(e) {
-			let boardContainer = $(e.currentTarget).closest('.board-container');
-			let prjBoardId = boardContainer.data('id');
-			let boardType = boardContainer.data('type');
-			let prjId = '${projectInfo.projectId}';
-			let memberId = '${memberInfo.memberId}';
-			let bookmark = $(e.currentTarget).data('bookmark');
-			let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
-			
-			if(bookmark == 'no') {
-				if(confirm('이 게시글을 북마크 하시겠습니까?')) {
-					$.ajax({
-						url : '${pageContext.request.contextPath}/insertBookmark',
-						type : 'POST',
-						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-						success : function(projectId) {
-							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
-						},
-						error : function(reject) {
-							console.log(reject);
-						}
-					});	
-				}
-			}else if(bookmark == 'yes') {
-				if(confirm('북마크를 해제 하시겠습니까?')) {
-					$.ajax({
-						url : '${pageContext.request.contextPath}/deleteBookmark',
-						type : 'POST',
-						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-						success : function(projectId) {
-							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
-						},
-						error : function(reject) {
-							console.log(reject);
-						}
-					});	
-				}
-			}
-		});
-		//투표 항목 선택 시 버튼 색상 변경 && 복수 투표 여부
-		function checkBtn(e) {
-			let checkBox = $(e).closest('.vote-lists').find('input[type=checkbox]');
-			let voteBtn = $(e).closest('.vote-lists').next().children('button');
-			let compnoSpan = $(e).closest('.vote-lists').prev().children('.compnoVote');
-			let count = $(e).closest('.vote-lists').find('input[type=checkbox]:checked').length;
-			let isChecked = false;
-			
-			for(let i=0; i<checkBox.length; i++) {
-				if(checkBox[i].checked == true) {
-					isChecked = true;
-				}	
-			}
-			
-			if(isChecked) {
-				voteBtn.css('background-color', 'var(--color-dark-red)');
-				voteBtn.attr("disabled", false);
-			} else {
-				voteBtn.css('background-color', 'var(--color-light-red)');
-				voteBtn.attr("disabled", true);
-			}
-			
-			if(compnoSpan.text() == '') { //단일 투표
-				if(count > 1) {
-					alert('한개의 항목만 투표 가능합니다.');
-					$(e).prop("checked", false);
-				}	
-			}
-		}; 
-			
 		// 게시글 조회
 		$(window).on('DOMContentLoaded', function() {
 			let boardList = $('[data-list="board"]');
@@ -1500,14 +1431,17 @@
 					$.ajax({
 						url : '${pageContext.request.contextPath}/getScheInfo',
 						type : 'GET',
-						data : {'prjBoardId' : boardList[i].dataset.id},
+						data : {'prjBoardId': boardList[i].dataset.id, 'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}' },
 						success : function(sche) {
 							let startDate = $(boardList[i]).find('span[data-start]');
 							let endDate = $(boardList[i]).find('span[data-end]');
 							let alarmSpan = $(boardList[i]).find('.sche-alarm').children('span');
 							let addrSpan = $(boardList[i]).find('.sche-addr');
-
-							startDate.text(sche.startDate);
+							let attendYesCount = $(boardList[i]).find('.sche-particir-count');
+							let attendNoCount = $(boardList[i]).find('.sche-nonParticir-count');
+							let attendBtn = $(boardList[i]).find('button[name="attend"]');
+							let nonAttendBtn = $(boardList[i]).find('button[name="nonAttend"]');
+							
 			                endDate.text(sche.endDate);
 			                //알림 설정 여부
 			                if(sche.alarmDateCodeLiteral != null) {
@@ -1519,6 +1453,18 @@
 			                }else {
 			                	$(addrSpan).empty();
 			                }
+			                //참석 인원 값
+			                attendYesCount.text(sche.attendanceYes);
+			                attendNoCount.text(sche.attendanceNo);
+			                
+			                //일정 참여 여부
+			                if(sche.myAttendance == 'A1') {
+			                	attendBtn.attr('class', 'btn-green active');
+			                } else if(sche.myAttendance == 'A2'){
+			                	nonAttendBtn.attr('class', 'active');
+			                }
+							
+			                
 						}, error : function(reject) {
 							console.log(reject);
 						}
@@ -1653,6 +1599,125 @@
 				}
 			}
 		});
+		
+		//북마크
+		$('span[data-bookmark]').on('click', function(e) {
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let prjBoardId = boardContainer.data('id');
+			let boardType = boardContainer.data('type');
+			let prjId = '${projectInfo.projectId}';
+			let memberId = '${memberInfo.memberId}';
+			let bookmark = $(e.currentTarget).data('bookmark');
+			let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
+			
+			if(bookmark == 'no') {
+				if(confirm('이 게시글을 북마크 하시겠습니까?')) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/insertBookmark',
+						type : 'POST',
+						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+						success : function(projectId) {
+							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					});	
+				}
+			}else if(bookmark == 'yes') {
+				if(confirm('북마크를 해제 하시겠습니까?')) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/deleteBookmark',
+						type : 'POST',
+						data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+						success : function(projectId) {
+							location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					});	
+				}
+			}
+		});
+		
+		//투표 항목 선택 시 버튼 색상 변경 && 복수 투표 여부
+		function checkBtn(e) {
+			let checkBox = $(e).closest('.vote-lists').find('input[type=checkbox]');
+			let voteBtn = $(e).closest('.vote-lists').next().children('button');
+			let compnoSpan = $(e).closest('.vote-lists').prev().children('.compnoVote');
+			let count = $(e).closest('.vote-lists').find('input[type=checkbox]:checked').length;
+			let isChecked = false;
+			
+			for(let i=0; i<checkBox.length; i++) {
+				if(checkBox[i].checked == true) {
+					isChecked = true;
+				}	
+			}
+			
+			if(isChecked) {
+				voteBtn.css('background-color', 'var(--color-dark-red)');
+				voteBtn.attr("disabled", false);
+			} else {
+				voteBtn.css('background-color', 'var(--color-light-red)');
+				voteBtn.attr("disabled", true);
+			}
+			
+			if(compnoSpan.text() == '') { //단일 투표
+				if(count > 1) {
+					alert('한개의 항목만 투표 가능합니다.');
+					$(e).prop("checked", false);
+				}	
+			}
+		}; 
+		
+		// 일정 참여
+		$('.sche-btns button').on('click', function(e) {
+			let btn = $(e.currentTarget);
+			let prjParticirId = '${particirInfo.prjParticirId }';
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let attendYesCount = boardContainer.find('.sche-particir-count');
+			let attendNoCount = boardContainer.find('.sche-nonParticir-count');
+			let boardId = boardContainer.data('id');
+			let attendance = '';
+			//DB 저장
+			if (btn.hasClass('btn-green')) {
+					btn.next().removeClass('active');
+					btn.attr('class', 'btn-green active');	
+					attendance = 'A1';
+				}	
+				else {
+					btn.prev().removeClass('active');
+					btn.attr('class', 'active');
+					attendance = 'A2';
+				}
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/sheParticipate',
+				type : 'POST',
+				data : {'prjParticirId' : prjParticirId ,'prjBoardId' : boardId, 'attendance' : attendance},
+				success : function() {
+					//새 정보
+					$.ajax({
+						url : '${pageContext.request.contextPath}/getScheInfo',
+						type : 'GET',
+						data : {'prjBoardId': boardId, 'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}' },
+						success : function(sche) {
+			                //참석 인원 값
+			                attendYesCount.text(sche.attendanceYes);
+			                attendNoCount.text(sche.attendanceNo);
+						}, error : function(reject) {
+							console.log(reject);
+						}
+					})
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+		})
+		
+		
 	</script>
 	<!-- 게시글 출력 종료 -->
 	
