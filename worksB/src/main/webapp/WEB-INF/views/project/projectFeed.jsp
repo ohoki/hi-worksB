@@ -1717,8 +1717,39 @@
 			});
 		})
 		
+		//투표기능
+		$('.vote-btn button').on('click', function(e) {
+			let btn = $(e.currentTarget);
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let inputList = boardContainer.find('.vote-list input:checked');
+			let prjBoardId = boardContainer.data('id');
+			let prjParticirId = '${particirInfo.prjParticirId}';
+			let voteParticir = [];
+			
+			
+			for(let i=0; i<inputList.length; i++) {
+				let listId = $(inputList[i]).prop('id');
+				listId = listId.substring(listId.indexOf('-')+1, listId.length);
+				
+				voteParticir.push({prjParticirId, prjBoardId, listId});		
+			}
+			
+			console.log(JSON.stringify(voteParticir));
+			$.ajax({
+				url : '${pageContext.request.contextPath}/votePaticir',
+				type : 'POST',
+				data:JSON.stringify(voteParticir),
+				contentType:'application/json',
+				success : function(string) {
+					console.log(string);
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+		});
 		
-	</script>
+		</script>
 	<!-- 게시글 출력 종료 -->
 	
 	<!-- 게시글 작성 HTML -->

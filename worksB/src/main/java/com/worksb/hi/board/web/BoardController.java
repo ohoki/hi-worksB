@@ -58,7 +58,6 @@ public class BoardController {
     @ResponseBody
     public int taskInsert(@RequestBody BoardRequestVO brVO) {
     	
-    	System.out.println(brVO);
     	// 게시글 등록
     	BoardVO boardVO = brVO.getBoardVO();
     	boardService.insertBoard(brVO.getBoardVO());
@@ -315,7 +314,12 @@ public class BoardController {
 		return boardService.sheParticipate(spVO);
 	}
 	
-	
+	// 투표 삭제 및 등록
+	@PostMapping("/votePaticir")
+	@ResponseBody
+	public int votePaticir(@RequestBody List<VoteVO> voteParticir) {
+		return boardService.voteInsert(voteParticir);
+	};
 	
 	
 	
