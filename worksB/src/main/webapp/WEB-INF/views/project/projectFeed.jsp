@@ -1419,7 +1419,7 @@
 					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A2';	
 				}
 			}else if(type == 'update') {
-				
+				console.log(boardContainer.html);
 			}else if(type == 'delete') {
 				
 			}
@@ -2425,11 +2425,6 @@
 					});               
 	            }
 			});
-			
-			// 빈객체 지우기
-			/* if (subTask.length > 0 && !subTask[subTask.length - 1].prjBoardTitle) {
-	        	subTask.pop();
-	   		} */
 			
 			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}));
 			$.ajax({

@@ -101,7 +101,7 @@ public class BoardController {
 	    		
 	    		// 하위 업무 담당자 boardId 설정
 	        	for(int j=0; j<subManagerList.size(); j++) {
-	        		TaskVO subManager = subManagerList.get(i);
+	        		TaskVO subManager = subManagerList.get(j);
 	        		if(subManager.getPrjBoardId() == i) {
 	        			subManager.setPrjBoardId(subBoardVO.getPrjBoardId());
 	        		}
