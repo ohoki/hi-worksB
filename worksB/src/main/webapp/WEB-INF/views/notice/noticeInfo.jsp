@@ -121,6 +121,10 @@ div h2 {
 	color: black;
 }
 
+.cmtName {
+	text-align: right;
+}
+
 </style>
 </head>
 <body>
@@ -179,21 +183,22 @@ div h2 {
 				</c:if>
 			</div>
 		</div>
-		<div id="boardCmtList">
+		<div class="boardCmtList">
 		</div>
 	</div>
 	<script>
+		// 댓글 출력 ajax
 		$(document).ready(function(){
 			
-			var cmt = $("#boardCmtList");
-			
+			var cmt = $(".boardCmtList");
 			var str = "";
 			$.get("boardCmtList",{boardId : ${noticeInfo.noticeId}, boardType : 'C2'},function(list) {
 				for(var i = 0 , len = list.length || 0; i < len; i++ ){
-					str += "<div>" + list[i].commentId + "</div>";
-					str += "<"
+					str += "<li class ='cmtName'>" + list[i].memberId + "<br>" ;
+					str +=  list[i].commentContent + "</li>";
+					console.log(list[i].commentId);
 				}
-				
+				cmt.html(str);
 			})
 		});
 	
