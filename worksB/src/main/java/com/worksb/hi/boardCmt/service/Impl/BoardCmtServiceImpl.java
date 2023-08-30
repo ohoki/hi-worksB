@@ -17,8 +17,8 @@ public class BoardCmtServiceImpl implements BoardCmtService {
 	BoardCmtMapper boardCmtMapper; 
 	
 	@Override
-	public List<BoardCmtVO> boardCmtList() {
-		return boardCmtMapper.boardCmtList();
+	public List<BoardCmtVO> boardCmtList(BoardCmtVO boardCmtVO) {
+		return boardCmtMapper.boardCmtList(boardCmtVO);
 	}
 
 
