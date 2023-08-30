@@ -81,7 +81,7 @@
 	</div>
  
 <script>
-/*
+
 	//OpenWeatherMap API 키
 	const apiKey = '2f238cd00e432238f8fedcfe8ee3553e';
 	
@@ -93,8 +93,8 @@
 	            const longitude = position.coords.longitude;
 	            
 	            getWeatherByCoordinates(latitude, longitude);
-	            console.log(latitude)
-	            console.log(longitude)
+	            console.log(latitude, longitude)
+
 	        }, function(error) {
 	            console.error('Error getting current position:', error);
 	        });
@@ -123,7 +123,7 @@
 			}
 		});
 	}
-*/
+
 
 
 	
