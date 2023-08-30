@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.worksb.hi.admin.service.AdminService;
 import com.worksb.hi.company.service.CompanyService;
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberService;
@@ -30,9 +31,10 @@ public class AdminController {
 	
 	@Autowired
 	CompanyService companyService;
-	
 	@Autowired
 	MemberService memberService;
+	@Autowired
+	AdminService adminservice;
 	
 	
 	
@@ -51,7 +53,7 @@ public class AdminController {
 			message = "이미 존재하는 회사 url 입니다. 다시 입력해 주세요.";
 			model.addAttribute("message", message);
 			
-			return "member/companyRegisterForm";
+			return "/companyInfo";
 		} 
 		
 		String originalName = logo.getOriginalFilename();	
@@ -106,6 +108,13 @@ public class AdminController {
 		}
 		public String setImagePath(String uploadFileName) {
 			return uploadFileName.replace(File.separator, "/");
+		}
+		
+		@RequestMapping("/downloadlist")
+		public String downloaded(Model m,HttpSession session) {
+			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+			m.addAttribute("list",adminservice.downloadList(companyId));
+			return "admin/downloadedfile";
 		}
 
 }

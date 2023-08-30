@@ -565,5 +565,23 @@
 		AND
 		project_id=#{projectId}
 </select>
+<insert id="updateFile" parameterType="FileDataVO">
+	INSERT INTO download_file(
+			file_id,             
+			file_name, 
+			file_type,   
+			file_regdate,       
+			converted_size,   
+			member_id    
+	)values(
+		#{fileId},
+		#{fileName},
+		#{fileType},
+		SYSDATE,
+		#{convertedSize},
+		#{memberId}
+	)
+	
+</insert>
 
 </mapper>
