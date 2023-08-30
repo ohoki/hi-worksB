@@ -150,7 +150,15 @@
 		ORDER BY p.project_id DESC
 	</select>
 	
-	<!-- 메모 -->
+	<!-- 메모 조회 -->
+	<select id="getMemo" resultType="MemberVO">
+		SELECT	member_id,
+				memo_content
+		FROM	memo
+		WHERE	member_id = #{memberId}
+	</select>
+	
+	<!-- 메모 등록-->
 	<insert id="insertMemo" parameterType="MemberVO">
 		INSERT INTO memo (
 							member_id,
@@ -163,10 +171,10 @@
 					
 	</insert>
 	
+	<!-- 메모 수정 -->
 	<update id="updateMemo" parameterType="MemberVO">
 		UPDATE	memo
-		SET		memberId = #{memberId},
-				memo_content = #{memoContent}
+		SET		memo_content = #{memoContent}
 		WHERE	member_id = #{memberId}
 	</update>
 	

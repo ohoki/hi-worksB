@@ -121,8 +121,12 @@
 			<div class="modal-body">
 				<ul id="menuList">
 					<li data-toggle="modal" data-target="#subMenuModal11">알림설정</li>
-					<li onclick="location.href='projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>
-					<li data-toggle="modal" data-target="#subMenuModal14">프로젝트 삭제</li>
+					<c:if test="${particirInfo.manager eq 'A1'}">
+						<li onclick="location.href='projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
+					</c:if>
+					<c:if test="${particirInfo.manager eq 'A1'}">
+						<li data-toggle="modal" data-target="#subMenuModal14">프로젝트 삭제</li>	
+					</c:if>
 					<li data-toggle="modal" data-target="#subMenuModal12">프로젝트 나가기</li>
 				</ul>
 			</div>
