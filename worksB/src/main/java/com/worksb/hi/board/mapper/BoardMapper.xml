@@ -180,16 +180,27 @@
 	
 	<!-- 일정 조회 -->
 	<select id="getScheInfo" resultType="ScheVO">
-		SELECT	start_date,
-				end_date,
-				prj_board_id,
-				alarm_date,
-				alarm_date_code,
-				find_subcode(alarm_date_code) AS alarm_date_code_literal,
-				sche_addr,
-				sche_addr_detail
-		FROM	prj_sche 
-		WHERE	prj_board_id = #{prjBoardId}
+		WITH p AS ( SELECT prj_board_id, 
+					SUM(CASE WHEN attendance='A1' THEN  1 ELSE 0 END) attendance_yes, 
+         			SUM(CASE WHEN attendance='A2' THEN  1 ELSE 0 END) attendance_no 
+         			FROM sche_particir p 
+         			GROUP BY prj_board_id )
+		SELECT	s.start_date,
+		        s.end_date,
+		        s.prj_board_id,
+		        s.alarm_date,
+		        s.alarm_date_code,
+		        find_subcode(s.alarm_date_code) AS alarm_date_code_literal,
+		        s.sche_addr,
+		        s.sche_addr_detail,
+		        p.attendance_yes,
+		        p.attendance_no,
+		        (SELECT attendance 
+		         	FROM sche_particir p where s.prj_board_id = p.prj_board_id 
+		         	AND prj_particir_id = (SELECT prj_particir_id FROM prj_particir 
+		         	WHERE member_id = #{memberId} AND project_id = #{projectId}) ) AS my_attendance
+					FROM prj_sche s JOIN  p ON (s.prj_board_id = p.prj_board_id)
+				WHERE   s.prj_board_id = #{prjBoardId}
 	</select>
 	
 	<!-- 투표 조회 -->
@@ -427,7 +438,60 @@
 		DELETE bookmark
 		WHERE member_id = #{memberId} AND board_id = #{prjBoardId} AND board_type = #{boardType}
 	</delete>
+	
+	<!-- 일정 참가,미참 -->
+	<insert id="sheParticipate" statementType="CALLABLE" parameterType="ScheParticirVO" >
+		{ CALL
+			sche_attend(
+				#{prjBoardId},
+				#{prjParticirId},
+				#{attendance}
+			)
+	</insert>
+	
+	<!-- 투표 하기 (삭제 -> 등록) -->
+	<delete id="voteDelete" parameterType="VoteVO">
+		DELETE  vote_particir 
+    	WHERE list_id IN (
+        	(SELECT l.list_id 
+         	FROM vote_particir p JOIN vote_list l 
+         	ON (p.list_id = l.list_id) 
+         	WHERE prj_particir_id = #{prjParticirId} And prj_board_id =#{prjBoardId})
+         	)
+	</delete>
+	<insert id="voteInsert" parameterType="VoteVO">
+		<selectKey keyProperty="voteParticirId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(vote_particir_id), 0) + 1
+			FROM vote_particir
+		</selectKey>
+		INSERT INTO vote_particir(
+								vote_particir_id,
+								list_id,
+								prj_particir_id
+								)
+				         VALUES(
+				         		#{voteParticirId},
+				         		#{listId},
+				         		#{prjParticirId}
+				         		)
+	</insert>
+	
+	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	<!-- 정현 -->
 	<!-- 프로젝트 일정 캘린더 조회 -->

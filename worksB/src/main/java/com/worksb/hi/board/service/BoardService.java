@@ -55,6 +55,18 @@ public interface BoardService {
 	// 게시글 북마크 삭제
 	public int deleteBookmark(BoardVO boardVO);
 
+	// 일정 참가,미참
+	public int sheParticipate(ScheParticirVO spVO);
+	
+	//투표 하기 (삭제 -> 등록)
+	public int voteInsert(VoteVO voteVO);
+	
+	
+	
+	
+	
+	
+	
 	//정현
 	//프로젝트 일정 캘린더 조회
 	public List<ScheVO> getScheCalendar(int projectId);
