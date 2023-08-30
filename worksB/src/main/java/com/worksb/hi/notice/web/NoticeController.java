@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.boardCmt.service.BoardCmtService;
+import com.worksb.hi.boardCmt.service.BoardCmtVO;
 import com.worksb.hi.comLike.service.ComLikeService;
 import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
+import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.notice.service.NoticeService;
 import com.worksb.hi.notice.service.NoticeVO;
@@ -34,6 +37,9 @@ public class NoticeController {
 	
     @Autowired
     ComLikeService comLikeService;
+    
+    @Autowired
+    BoardCmtService boardCmtService;
 	
 	//페이징 전체조회
 	@GetMapping("noticeList")
@@ -42,9 +48,17 @@ public class NoticeController {
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
 						, @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage, HttpSession session) {
 		
+	    // 세션의 companyid값 가져오기
+		CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
+		Integer companyId = company.getCompanyId();
+		// searchVO에 담아준다
+		searchVO.setCompanyId(companyId);
+		
 		int total = noticeService.noticeCount(searchVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO,searchVO);
+		
+		List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO, searchVO); //추가된 부분
+		//List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO,searchVO);
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("paging", pagingVO);
@@ -75,6 +89,7 @@ public class NoticeController {
 		String memberId = member.getMemberId();
         comLikeVO.setMemberId(memberId);
         
+        //좋아요
 	    model.addAttribute("checkLike",comLikeService.checkLiked(comLikeVO));
 	    return "notice/noticeInfo";
 	}
@@ -134,12 +149,26 @@ public class NoticeController {
         return map;
     }
 
-	
+	// 댓글
+	@PostMapping("/boardCmtList")
+	@ResponseBody
+	public String boardCmtList(Model model) {
+        // 댓글 가져오기
+        model.addAttribute("boardCmt", boardCmtService.boardCmtList());
+		return "";
+	}
+    
+    
+    
     // noticeList에서 공지마다 좋아요
-    @GetMapping("/noticeLikeCount")
-    @ResponseBody
-    public int getLikeCountForNotice(@RequestParam("noticeId") int noticeId) {
-        // 해당 공지마다의 좋아요 총 갯수 조회
-        return comLikeService.noticeLikeCount(noticeId);
-    }
+	/*
+	 * @GetMapping("/noticeLikeCount")
+	 * 
+	 * @ResponseBody public String getLikeCountForNotice(@RequestParam("noticeId")
+	 * int noticeId, ComLikeVO comLikeVO, NoticeVO noticeVO) {
+	 * 
+	 * comLikeVO.setBoardId(noticeVO.getNoticeId()); comLikeVO.setBoardType("C2");
+	 * // 해당 공지마다의 좋아요 총 갯수 조회 return comLikeService.noticeLikeCount(noticeId,
+	 * comLikeVO); }
+	 */
 }
