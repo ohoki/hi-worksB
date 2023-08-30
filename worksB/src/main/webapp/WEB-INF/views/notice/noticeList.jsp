@@ -159,7 +159,7 @@ form {
 							pattern="yyyy/MM/dd" /></td>
 					<td>
 						<span id="likeCount-${notice.noticeId}">0</span>
-                    	<script>
+<!--                     	 /*<script>
                         // 좋아요 총 갯수 조회하는 함수
                         function getLikeCountForNotice(noticeId) {
                             $.get("noticeLikeCount", { noticeId: noticeId }, function (count) {
@@ -170,7 +170,7 @@ form {
                         $(document).ready(function () {
                             getLikeCountForNotice(${notice.noticeId});
                         });
-                    	</script>
+                    	</script> */ -->
 					</td>
 					<td>${notice.boardHit}</td>
 				</tr>

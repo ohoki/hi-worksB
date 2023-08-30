@@ -11,5 +11,5 @@ public interface ComLikeService {
     // 좋아요 눌렀는지 체크
     public boolean checkLiked(ComLikeVO comLikeVO);
 	// noticeList에서 좋아요 총 갯수
-	public int noticeLikeCount(int noticeId);
+	// public String noticeLikeCount(int noticeId, ComLikeVO comLikeVO);
 }

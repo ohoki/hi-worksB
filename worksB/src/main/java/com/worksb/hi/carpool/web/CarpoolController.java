@@ -23,7 +23,7 @@ public class CarpoolController {
 	CarpoolService carpoolService;
 	
 	//페이징 전체조회
-	@GetMapping("carpoolList")
+	@GetMapping("/carpoolList")
 	public String carpoolList(Model model
 						, SearchVO searchVO
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
