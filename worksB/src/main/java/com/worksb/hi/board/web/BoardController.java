@@ -287,15 +287,8 @@ public class BoardController {
 	// 업무 삭제
 	@PostMapping("/deleteTask")
 	@ResponseBody
-	public int deleteTask(@RequestParam int prjBoardId){
-		TaskVO taskVO = new TaskVO();
-		taskVO.setPrjBoardId(prjBoardId);
-		int result = taskVO.getProjectId();
-		
-		boardService.deleteTask(taskVO);
-	    
-    	
-    	return result; 
+	public int deleteTask(TaskVO taskVO){
+    	return boardService.deleteTask(taskVO); 
 	}
 	
 	
