@@ -41,18 +41,22 @@
 	</insert>
 	
 	<select id="getProjectInfo" resultType="projectVO">
-		SELECT project_id,
-				project_name,
-				project_access,
-				manager_accp,
-				write_access,
-				update_access,
-				board_access,
-				comment_access,
-				file_access,
-				dept_id
-		FROM project
-		WHERE project_id = #{projectId}
+		WITH j AS (SELECT * FROM prj_particir WHERE manager = 'A1')
+		SELECT  p.project_id,
+				p.project_name,
+				p.project_access,
+				p.manager_accp,
+				p.write_access,
+				p.update_access,
+				p.board_access,
+				p.comment_access,
+				p.file_access,
+				p.dept_id,
+                j.prj_particir_id AS manager_particir_id,
+                j.member_id,
+                (SELECT member_name FROM member WHERE member_id = j.member_id) AS manager_name
+		FROM project p LEFT JOIN j ON (p.project_id = j.project_id)
+		WHERE p.project_id = #{projectId}
 	</select>
 
 	<!-- 프로젝트 수정 -->

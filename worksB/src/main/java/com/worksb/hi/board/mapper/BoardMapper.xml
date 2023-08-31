@@ -181,8 +181,8 @@
 	<!-- 일정 조회 -->
 	<select id="getScheInfo" resultType="ScheVO">
 		WITH p AS ( SELECT prj_board_id, 
-					SUM(CASE WHEN attendance='A1' THEN  1 ELSE 0 END) attendance_yes, 
-         			SUM(CASE WHEN attendance='A2' THEN  1 ELSE 0 END) attendance_no 
+						SUM(CASE WHEN attendance='A1' THEN  1 ELSE 0 END) attendance_yes, 
+	         			SUM(CASE WHEN attendance='A2' THEN  1 ELSE 0 END) attendance_no 
          			FROM sche_particir p 
          			GROUP BY prj_board_id )
 		SELECT	s.start_date,
@@ -205,12 +205,26 @@
 	
 	<!-- 투표 조회 -->
 	<select id="getVoteInfo" resultType="VoteVO">
-		SELECT	end_date,
-				anony_vote,
-				compno_vote,
-				result_yn
-		FROM	prj_vote
-		WHERE	prj_board_id = #{prjBoardId}
+		WITH c AS ( SELECT v.prj_board_id, 
+							p.prj_particir_id 
+					FROM vote_list v JOIN vote_particir p 
+					ON (v.list_id = p.list_id) 
+					GROUP BY v.prj_board_id, p.prj_particir_id
+				   )
+		SELECT	v.prj_board_id,
+		        v.end_date,
+		        v.anony_vote,
+		        v.compno_vote,
+		        v.result_yn,
+		        COUNT(c.prj_particir_id) AS voteAttendance
+		FROM	prj_vote v LEFT JOIN c 
+		ON (v.prj_board_id = c.prj_board_id)
+		WHERE	v.prj_board_id = #{prjBoardId}
+		GROUP BY v.prj_board_id, 
+				 v.end_date, 
+				 v.anony_vote, 
+				 v.compno_vote, 
+				 v.result_yn
 	</select>
 	
 	<!-- 투표 항목 조회 -->
@@ -221,6 +235,15 @@
 		WHERE	prj_board_id = #{prjBoardId}
 		ORDER BY	list_id
 	</select>
+	
+	<!-- 게시글 별 선택한 투표 리스트 -->
+	<select id="getVoteListByMember" resultType="VoteVO">
+		SELECT v.list_id 
+		FROM vote_list v JOIN vote_particir p 
+		ON (v.list_id = p.list_id) 
+		WHERE v.prj_board_id= #{prjBoardId} AND p.prj_particir_id = #{prjParticirId}
+	</select>
+	
 	
 	<!-- 업무 조회 -->
 	<select id="getTaskInfo" parameterType="int" resultType="allTaskBoardVO">

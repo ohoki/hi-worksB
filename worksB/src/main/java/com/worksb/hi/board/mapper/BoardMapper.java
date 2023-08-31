@@ -71,6 +71,8 @@ public interface BoardMapper {
 	public int voteDelete(VoteVO voteVO);
 	public int voteInsert(VoteVO voteVO);
 	
+	//내가 선택한 투표 리스트
+	public List<VoteVO> getVoteListByMember(VoteVO voteVO);
 	
 	
 	
