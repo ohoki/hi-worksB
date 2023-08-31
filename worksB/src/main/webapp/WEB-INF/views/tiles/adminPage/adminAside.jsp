@@ -23,7 +23,7 @@
 		<p class="side__menu__cate">프로젝트 관리</p>
 		<div class="side__menu">
 			<ul class="side__menu__items">
-				<li class="side__menu__item"><a>전체 프로젝트</a></li>
+				<li class="side__menu__item"><a href="${pageContext.request.contextPath}/admin/projectlist">전체 프로젝트</a></li>
 				<li class="side__menu__item"><a href="${pageContext.request.contextPath}/admin/downloadlist">파일 다운로드 이력</a></li>
 			</ul>
 		</div>

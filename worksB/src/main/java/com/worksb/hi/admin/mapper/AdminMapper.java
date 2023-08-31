@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.project.service.FileDataVO;
+import com.worksb.hi.project.service.ProjectVO;
 
 public interface AdminMapper {
 	//downloadList
@@ -15,4 +16,6 @@ public interface AdminMapper {
 	
 	//prjlist갯수
 	public int prjcount(int companyId);
+	//projectList
+	public List<ProjectVO>projectList(@Param("companyId")int companyId,@Param("pagingvo")PagingVO pagingVO);
 }
