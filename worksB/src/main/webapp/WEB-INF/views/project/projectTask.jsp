@@ -753,13 +753,14 @@ tr:hover{
 			$.ajax({
 				url: '${pageContext.request.contextPath}/deleteTask',
 				type: 'POST',
-				data: {prjBoardId : prjBoardId},
+				data: {'prjBoardId' : prjBoardId},
 				success: function(response){
 					alert("삭제되었습니다.");
-					location.href='${pageContext.request.contextPath}/projectTask?projectId=' + response;
+					location.href='${pageContext.request.contextPath}/projectTask?projectId=${projectInfo.projectId}';
 				},
 				error: function(error){
 					alert("삭제에 실패했습니다.");
+					console.log(error);
 				}
 					
 			});
