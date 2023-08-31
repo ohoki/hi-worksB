@@ -150,12 +150,11 @@ public class NoticeController {
     }
 
 	// 댓글
-	@PostMapping("/boardCmtList")
+	@GetMapping("/boardCmtList")
 	@ResponseBody
-	public String boardCmtList(Model model) {
+	public List<BoardCmtVO> boardCmtList(Model model, BoardCmtVO boardCmtVO) {
         // 댓글 가져오기
-        model.addAttribute("boardCmt", boardCmtService.boardCmtList());
-		return "";
+        return boardCmtService.boardCmtList(boardCmtVO);
 	}
     
     
