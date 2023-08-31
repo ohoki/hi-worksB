@@ -141,7 +141,13 @@ public class BoardServiceImpl implements BoardService {
 	public int updateTask(TaskVO taskVO) {
 		return boardMapper.updateTask(taskVO);
 	}
-
+  
+  // 업무삭제
+	@Override
+	public int deleteTask(TaskVO taskVO) {
+		return boardMapper.deleteTask(taskVO);
+	}
+  
 	@Override
 	public int updateBoard(BoardVO boardVO) {
 		return boardMapper.updateBoard(boardVO);
@@ -204,10 +210,6 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	
-	
-	
-	
-	
 	//정현
 	//프로젝트 일정 캘린더 조회
 	@Override
@@ -224,4 +226,8 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO getScheBoardInfo(int prjBoardId) {
 		return boardMapper.getScheBoardInfo(prjBoardId);
 	}
+
+	
+
+	
 }

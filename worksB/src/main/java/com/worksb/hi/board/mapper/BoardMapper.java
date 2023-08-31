@@ -49,6 +49,9 @@ public interface BoardMapper {
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
 	
+	// 업무 삭제
+	public int deleteTask(TaskVO taskVO);
+	
 	
 	
 //주현

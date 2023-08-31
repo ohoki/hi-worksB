@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.AllTaskBoardVO;
 import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
@@ -282,6 +283,15 @@ public class BoardController {
 		return "z";
 	}
 */	
+	// 업무 삭제
+	@PostMapping("/deleteTask")
+	@ResponseBody
+	public int deleteTask(TaskVO taskVO){
+    	return boardService.deleteTask(taskVO); 
+	}
+	
+	
+	
 	//상단 고정 여부 수정
 	@GetMapping("/updatePin")
 	public String updatePin(BoardVO boardVO) {

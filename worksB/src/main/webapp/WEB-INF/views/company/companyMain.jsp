@@ -93,8 +93,8 @@
 	            const longitude = position.coords.longitude;
 	            
 	            getWeatherByCoordinates(latitude, longitude);
-	            console.log(latitude)
-	            console.log(longitude)
+	            console.log(latitude, longitude)
+
 	        }, function(error) {
 	            console.error('Error getting current position:', error);
 	        });

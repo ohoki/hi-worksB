@@ -400,7 +400,6 @@
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
-
 	<!-- 담당자 수정 -->
 	<!-- 
 	<update id="updateTaskManager" parameterType="TaskVO">
@@ -408,6 +407,25 @@
 	</update>
 	-->
 	
+	<!-- 하위업무 삭제 -->
+	<insert id="deleteTask" statementType="CALLABLE" parameterType="TaskVO" >
+		{ CALL 
+			delete_sub_task(
+				#{prjBoardId}
+				) 
+		}
+	</insert>
+	
+	<!-- 
+		<insert id="sheParticipate" statementType="CALLABLE" parameterType="ScheParticirVO" >
+		{ CALL
+			sche_attend(
+				#{prjBoardId},
+				#{prjParticirId},
+				#{attendance}
+			)
+	</insert>
+	 -->
 	
 	
 <!-- 	주현 -->

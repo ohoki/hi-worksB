@@ -15,7 +15,7 @@ table{
 
 th, td {
 	border: 1px solid var(--color-light-grey);
-	width : 120px;
+	width : 140px;
 }
   
 tr{
@@ -309,7 +309,7 @@ tr:hover{
 		<div class="task-menu__content">
 			<ul>
 				<li class="update-task-btn">수정</li>
-				<li>삭제</li>
+				<li class="delete-task-btn">삭제</li>
 			</ul>
 		</div>
 	</div>
@@ -593,6 +593,7 @@ tr:hover{
 		        }
 		     	
 		     	$('.update-task-btn').attr('data-id', prjBoardId);
+		     	$('.delete-task-btn').attr('data-id', prjBoardId);
 		     	
 		     	
 		    }, error : function(reject) {
@@ -743,6 +744,29 @@ tr:hover{
 		
 		
 	})
+	
+	// 업무 삭제
+	$(".delete-task-btn").on('click', function(e){
+		let prjBoardId = $(this).data('id');
+		let check = confirm("삭제하시겠습니까?");
+		if(check){
+			$.ajax({
+				url: '${pageContext.request.contextPath}/deleteTask',
+				type: 'POST',
+				data: {'prjBoardId' : prjBoardId},
+				success: function(response){
+					alert("삭제되었습니다.");
+					location.href='${pageContext.request.contextPath}/projectTask?projectId=${projectInfo.projectId}';
+				},
+				error: function(error){
+					alert("삭제에 실패했습니다.");
+					console.log(error);
+				}
+					
+			});
+			
+		}
+	});
 	
 	
 </script>
