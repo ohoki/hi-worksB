@@ -268,13 +268,13 @@
 	}
 	
 	
-	.sche-particir, .sche-nonParticir {
+	.sche-particir, .sche-nonParticir, .vote-particir {
 		font-size: var(--font-micro);
 		padding: 0 10px;
 		cursor: pointer;
 	}
 	
-	.sche-particir, .sche-particir-count {
+	.sche-particir, .sche-particir-count, .vote-particir, .vote-particir-count {
 		color: var(--color-green) !important;
 	}
 	
@@ -353,6 +353,12 @@
 		border-radius: 5px;
 		color: white;
 		font-weight: var(--weight-bold);
+		margin: 0 auto;
+		transition: all 0.5s;
+	}
+	
+	.vote-btn button.active {
+		background-color: var(--color-dark-red);
 	}
 	
 	
@@ -1134,7 +1140,7 @@
 								<span>[투표]</span> ${board.prjBoardTitle }						
 							</div>
 							<div>
-								<span class="sche-particir">참여인원 2</span>
+								<span class="vote-particir">참여인원 <span class="vote-particir-count"></span></span>
 							</div>
 						</div>
 						<div class="sche-date">
@@ -1157,7 +1163,8 @@
 								</ul>
 							</div>
 							<div class="vote-btn">
-								<button type="button" disabled>투표</button>
+								<button type="button" disabled name="voteAttend" class="dis-none d-b">투표</button>
+								<button type="button" name="voteNonAttend" class="dis-none">투표취소</button>
 							</div>
 						</div>
 						<div class="board-footer">
@@ -1412,7 +1419,7 @@
 					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A2';	
 				}
 			}else if(type == 'update') {
-				
+				console.log(boardContainer.html);
 			}else if(type == 'delete') {
 				
 			}
@@ -1474,12 +1481,15 @@
 					$.ajax({
 						url : '${pageContext.request.contextPath}/getVoteInfo',
 						type : 'GET',
-						data : {'prjBoardId' : boardList[i].dataset.id},
+						data : {'prjBoardId': boardList[i].dataset.id, 'prjParticirId': '${particirInfo.prjParticirId }'},
 						success : function(voteData) {
 							let endDate = $(boardList[i]).find('span[data-end]');
 							let compnoVote = $(boardList[i]).find('.compnoVote');
 							let anonyVote = $(boardList[i]).find('.anonyVote');
 							let voteList = $(boardList[i]).find('.vote-lists ul');
+							let voteParticirCount = $(boardList[i]).find('.vote-particir-count');
+							let attendBtn = $(boardList[i]).find('button[name="voteAttend"]');
+							let nonAttendBtn = $(boardList[i]).find('button[name="voteNonAttend"]');
 							
 							// 종료일
 							endDate.text(voteData.voteInfo[0].endDate);
@@ -1495,6 +1505,9 @@
 							} else if (voteData.voteInfo[0].anonyVote == 'A2') {
 								anonyVote.text('');
 							}
+							// 투표 참여 인원
+							voteParticirCount.text(voteData.voteInfo[0].voteAttendance);	
+							
 							// 투표 항목
 							for (let j = 0; j < voteData.voteList.length; j++) {
 								//li 태그 생성
@@ -1512,6 +1525,17 @@
 								li.append(voteData.voteList[j].listContent);
 								
 								voteList.append(li);
+							}
+							// 투표 여부 확인
+							if(voteData.voteListMine.length != 0) {
+								attendBtn.removeClass('d-b');
+								nonAttendBtn.addClass('d-b');
+								nonAttendBtn.addClass('active');
+								
+								for(let j=0; j<voteData.voteListMine.length; j++) {
+									$('#' + boardList[i].dataset.id + '-' + voteData.voteListMine[j].listId).prop('checked',true);
+									voteList.find('.vote-list input').prop('disabled', true);
+								}
 							}
 						}, error : function(reject) {
 							console.log(reject);
@@ -1656,10 +1680,10 @@
 			}
 			
 			if(isChecked) {
-				voteBtn.css('background-color', 'var(--color-dark-red)');
+				voteBtn.addClass('active');
 				voteBtn.attr("disabled", false);
 			} else {
-				voteBtn.css('background-color', 'var(--color-light-red)');
+				voteBtn.removeClass('active');
 				voteBtn.attr("disabled", true);
 			}
 			
@@ -1717,8 +1741,86 @@
 			});
 		})
 		
-		
-	</script>
+		//투표기능
+		$('.vote-btn button').on('click', function(e) {
+			let btn = $(e.currentTarget);
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let inputList = boardContainer.find('.vote-list input:checked');
+			let prjBoardId = boardContainer.data('id');
+			let prjParticirId = '${particirInfo.prjParticirId}';
+			let voteParticir = [];
+			
+			//투표참여
+			if(btn.attr('name') == 'voteAttend') {
+				
+				for(let i=0; i<inputList.length; i++) {
+					let listId = $(inputList[i]).prop('id');
+					listId = listId.substring(listId.indexOf('-')+1, listId.length);
+					
+					voteParticir.push({prjParticirId, prjBoardId, listId});		
+				}
+				
+				$.ajax({
+					url : '${pageContext.request.contextPath}/votePaticir',
+					type : 'POST',
+					data:JSON.stringify(voteParticir),
+					contentType:'application/json',
+					success : function(string) {
+						btn.removeClass('d-b');
+						btn.next().addClass('d-b');
+						boardContainer.find('.vote-list input').prop('disabled', true);
+						
+						//새정보 입력
+						$.ajax({
+							url : '${pageContext.request.contextPath}/getVoteInfo',
+							type : 'GET',
+							data : {'prjBoardId': prjBoardId, 'prjParticirId': '${particirInfo.prjParticirId }'},
+							success : function(voteData) {
+								let voteParticirCount = boardContainer.find('.vote-particir-count');
+								// 투표 참여 인원
+								voteParticirCount.text(voteData.voteInfo[0].voteAttendance);
+							}, error : function(reject) {
+								console.log(reject);
+							}
+						});
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				});
+			} //투표취소 
+			else if(btn.attr('name') == 'voteNonAttend') {
+				$.ajax({
+					url : '${pageContext.request.contextPath}/votePaticirDelete',
+					type : 'POST',
+					data:{'prjParticirId': prjParticirId, 'prjBoardId': prjBoardId},
+					success : function(string) {
+						btn.removeClass('d-b');
+						btn.prev().addClass('d-b');
+						boardContainer.find('.vote-list input').prop('disabled', false);
+						boardContainer.find('.vote-list input').prop('checked', false);
+						
+						//새정보 입력
+						$.ajax({
+							url : '${pageContext.request.contextPath}/getVoteInfo',
+							type : 'GET',
+							data : {'prjBoardId': prjBoardId, 'prjParticirId': '${particirInfo.prjParticirId }'},
+							success : function(voteData) {
+								let voteParticirCount = boardContainer.find('.vote-particir-count');
+								// 투표 참여 인원
+								voteParticirCount.text(voteData.voteInfo[0].voteAttendance);
+							}, error : function(reject) {
+								console.log(reject);
+							}
+						});
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				});
+			}
+		});
+		</script>
 	<!-- 게시글 출력 종료 -->
 	
 	<!-- 게시글 작성 HTML -->
@@ -2323,11 +2425,6 @@
 					});               
 	            }
 			});
-			
-			// 빈객체 지우기
-			/* if (subTask.length > 0 && !subTask[subTask.length - 1].prjBoardTitle) {
-	        	subTask.pop();
-	   		} */
 			
 			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}));
 			$.ajax({

@@ -30,7 +30,7 @@ public class FileDataVO {
 	private String fileName;
 	private String filePath;
 	private String fileType;
-//	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	@DateTimeFormat(pattern = "YY/MM/dd")
 	@JsonFormat(pattern = "yy/MM/dd")
 	private Date fileRegdate;
 	private long fileSize;
@@ -50,6 +50,9 @@ public class FileDataVO {
 	
 	//file을 바이트타입으로 변환한 것
 	private byte[] fileContent;
+	
+	//downloadlist
+	private int companyId;
 	
 
 }

@@ -33,6 +33,13 @@
 	font-weight: var(--weight-bold);
 }
 
+.project__title-manager {
+	align-self: flex-end;
+	font-size: var(--font-micro);
+	margin: 0 10px;
+	padding-bottom: 2px;
+	color: var(--color-light-blue);
+}
 .project__nav {
 	display: flex;
 }
@@ -104,6 +111,7 @@
 		</c:if>
 		<img class="icon" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg" data-bs-toggle="modal" data-bs-target="#firstModal">
     	<span>${projectInfo.projectName}</span>
+    	<span class="project__title-manager">담당자(${projectInfo.managerName})</span>
     </div>
     <div>
 		<ul class="project__nav">

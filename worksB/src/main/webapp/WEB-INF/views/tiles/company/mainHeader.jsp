@@ -20,8 +20,10 @@
 				class="header__logo"></a>
 		</div>
 		<!-- 검색창 -->
+		<div>
 			<input type="text" id="searchInput" placeholder="검색" value="${searchVO.searchkeyword}" name="searchkeyword" class="header__search">
 			<button type="button" onclick="sendDataToController()">검색</button>
+		</div>
 		<!-- 상단 메뉴들 -->
 		<div class="header__icon">
 			<!-- 구성원 -->
