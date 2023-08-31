@@ -48,11 +48,10 @@
 			   		   board_type,
 			   		   parent_id
 		  		  FROM board_comment
-		  		 WHERE board_type = #{boardType }
-		  		 	   board_id = #{boardId }
+		  		 WHERE board_type = #{boardType } and board_id = #{boardId }
 		  		 	   )
 	<!--  계층형 구조로 반환하는 쿼리  CONNECT BY 절에서 연결 조건을 찾음-->
-	START WITH parent_id = 1
+	START WITH parent_id = 0
 CONNECT BY PRIOR comment_id = parent_id
 	<!-- 계층 안에서 순서를 잡는? 쿼리 -->
 ORDER SIBLINGS BY comment_id

@@ -121,6 +121,10 @@ div h2 {
 	color: black;
 }
 
+.cmtName {
+	text-align: right;
+}
+
 </style>
 </head>
 <body>
@@ -179,19 +183,23 @@ div h2 {
 				</c:if>
 			</div>
 		</div>
-		<div>
-			<form action="boardCmtList" method="post">
-				<c:forEach items="${boardCmtList}" var="boardCmt">
-					<p>${boardCmt.commentId }</p>
-					<p>${boardCmt.commentRegdate }</p>
-					<p>${boardCmt.commentContent }</p>
-				</c:forEach>
-			</form>
+		<div class="boardCmtList">
 		</div>
 	</div>
 	<script>
+		// 댓글 출력 ajax
 		$(document).ready(function(){
-			$.post("boardCmtList")
+			
+			var cmt = $(".boardCmtList");
+			var str = "";
+			$.get("boardCmtList",{boardId : ${noticeInfo.noticeId}, boardType : 'C2'},function(list) {
+				for(var i = 0 , len = list.length || 0; i < len; i++ ){
+					str += "<li class ='cmtName'>" + list[i].memberId + "<br>" ;
+					str +=  list[i].commentContent + "</li>";
+					console.log(list[i].commentId);
+				}
+				cmt.html(str);
+			})
 		});
 	
 	
