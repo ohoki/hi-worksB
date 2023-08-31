@@ -9,6 +9,7 @@ import com.worksb.hi.admin.mapper.AdminMapper;
 import com.worksb.hi.admin.service.AdminService;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.project.service.FileDataVO;
+import com.worksb.hi.project.service.ProjectVO;
 @Service
 public class AdminServiceImpl implements AdminService {
 	@Autowired
@@ -27,6 +28,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int prjcount(int companyId) {
 		return adminmapper.prjcount(companyId);
+	}
+
+	@Override
+	public List<ProjectVO> projectList(int companyId, PagingVO pagingVO) {
+		return adminmapper.projectList(companyId, pagingVO);
 	}
 
 }

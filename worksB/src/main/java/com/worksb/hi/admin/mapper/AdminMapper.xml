@@ -49,6 +49,31 @@
 	<select id="prjcount" resultType="int">
 		 SELECT COUNT(*)
 		 FROM project 
-		 WHERE dept_id IN (SELECT dept_id FROM department WHERE company_id= #{companyId})
+		 WHERE dept_id 
+		 IN (SELECT dept_id FROM department WHERE company_id= #{companyId})
+	</select>
+	
+	<select id="projectList" resultType="ProjectVO">
+		SELECT *
+			FROM (
+			    SELECT rownum rn, a.*
+			    FROM (
+					SELECT
+						project_id,    
+						project_name, 
+						project_access,  
+						manager_accp,   
+						write_access,   
+						update_access,  
+						board_access,  
+						comment_access, 
+						file_access,  
+						dept_id,       
+						project_cls    
+					FROM
+						project
+					WHERE dept_id 
+						IN (SELECT dept_id FROM department WHERE company_id= #{companyId})) a ) 
+			WHERE rn BETWEEN #{pagingvo.start} AND #{pagingvo.end}
 	</select>
 </mapper>

@@ -20,12 +20,12 @@
 		</thead>
 		<tbody>
 			<tr>
-<%-- 				<c:forEach> --%>
-<!-- 					<td></td> -->
-<!-- 					<td></td> -->
-<!-- 					<td></td> -->
-<!-- 					<td></td> -->
-<%-- 				</c:forEach> --%>
+				<c:forEach items="${list }" var="list">
+					<td>${list.projectName }</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</c:forEach>
 			</tr>
 		</tbody>
 	</table>
@@ -54,7 +54,7 @@
 </body>
 <script type="text/javascript">
 	function search(p){
-		location.href="${pageContext.request.contextPath }/downloadlist?nowPage="+p
+		location.href="${pageContext.request.contextPath }/admin/projectlist?nowPage="+p
 }
 </script>
 </html>

@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -26,6 +27,7 @@ import com.worksb.hi.company.service.CompanyService;
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.ProjectVO;
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
@@ -125,6 +127,7 @@ public class AdminController {
 			m.addAttribute("paging", pagingvo);
 			return "admin/downloadedfile";
 		}
+		
 		@GetMapping("/projectlist")
 		public String prjList(Model m,HttpSession session,
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
@@ -132,6 +135,9 @@ public class AdminController {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 			int total=adminservice.prjcount(companyId);
 			PagingVO pagingvo=new PagingVO(total,nowPage,cntPerPage);
+			List<ProjectVO> list=adminservice.projectList(companyId, pagingvo);
+			m.addAttribute("paging", pagingvo);
+			m.addAttribute("list",list);
 			return "";
 		}
 

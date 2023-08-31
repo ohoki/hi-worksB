@@ -22,7 +22,7 @@
 		<tbody>
 			<c:forEach items="${list }" var="list">
 				<tr>
-					<td><fmt:formatDate value="${list.fileRegdate }" pattern="YY/MM/dd" type="date"/></td>
+					<td><fmt:formatDate value="${list.fileRegdate }" pattern="YY/MM/dd HH시mm분" type="date"/></td>
 					<td>${list.fileName }</td>
 					<td>${list.convertedSize }</td>
 					<td>${list.memberId }</td>
@@ -56,7 +56,7 @@
 </body>
 <script type="text/javascript">
 	function search(p){
-		location.href="/admin/downloadlist?nowPage="+p
+		location.href="${pageContext.request.contextPath }/admin/downloadlist?nowPage="+p
 }
 </script>
 </html>

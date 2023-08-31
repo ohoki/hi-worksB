@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.project.service.FileDataVO;
+import com.worksb.hi.project.service.ProjectVO;
 
 public interface AdminService {
 	//downloadList
@@ -13,4 +14,6 @@ public interface AdminService {
 	
 	//prjlist갯수
 	public int prjcount(int companyId);
+	//projectlist
+	public List<ProjectVO>projectList(int companyId,PagingVO pagingVO);
 }
