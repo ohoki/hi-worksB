@@ -58,7 +58,6 @@ public class BoardController {
     @ResponseBody
     public int taskInsert(@RequestBody BoardRequestVO brVO) {
     	
-    	System.out.println(brVO);
     	// 게시글 등록
     	BoardVO boardVO = brVO.getBoardVO();
     	boardService.insertBoard(brVO.getBoardVO());
@@ -102,7 +101,7 @@ public class BoardController {
 	    		
 	    		// 하위 업무 담당자 boardId 설정
 	        	for(int j=0; j<subManagerList.size(); j++) {
-	        		TaskVO subManager = subManagerList.get(i);
+	        		TaskVO subManager = subManagerList.get(j);
 	        		if(subManager.getPrjBoardId() == i) {
 	        			subManager.setPrjBoardId(subBoardVO.getPrjBoardId());
 	        		}
@@ -189,21 +188,21 @@ public class BoardController {
 	// 투표 조회
 	@GetMapping("getVoteInfo")
 	@ResponseBody
-	public Map<String, List<VoteVO>> getVoteInfo(@RequestParam("prjBoardId") int prjBoardId) {
+	public Map<String, List<VoteVO>> getVoteInfo(VoteVO voteVO) {
 		
         Map<String, List<VoteVO>> resultMap = new HashMap<>();
-        
-        VoteVO voteVO = new VoteVO();
-        voteVO.setPrjBoardId(prjBoardId);
         
         // 투표글
         List<VoteVO> voteInfo = boardService.getVoteInfo(voteVO);
         // 투표 항목
         List<VoteVO> voteList = boardService.getVoteList(voteVO);
+        // 내가 선택한 투표 항목
+        List<VoteVO> voteListMine = boardService.getVoteListByMember(voteVO);
         
         resultMap.put("voteInfo", voteInfo);
         resultMap.put("voteList", voteList);
-        		
+        resultMap.put("voteListMine", voteListMine);
+        
         return resultMap;
 	}
 	
@@ -315,9 +314,19 @@ public class BoardController {
 		return boardService.sheParticipate(spVO);
 	}
 	
+	// 투표 삭제 및 등록
+	@PostMapping("/votePaticir")
+	@ResponseBody
+	public int votePaticir(@RequestBody List<VoteVO> voteParticir) {
+		return boardService.voteInsert(voteParticir);
+	};
 	
-	
-	
+	// 투표 취소
+	@PostMapping("/votePaticirDelete")
+	@ResponseBody
+	public void votePaticirDelete(VoteVO voteVO) {
+		boardService.votePaticirDelete(voteVO);
+	}
 	
 	
 	
