@@ -199,7 +199,7 @@
 		         	FROM sche_particir p where s.prj_board_id = p.prj_board_id 
 		         	AND prj_particir_id = (SELECT prj_particir_id FROM prj_particir 
 		         	WHERE member_id = #{memberId} AND project_id = #{projectId}) ) AS my_attendance
-					FROM prj_sche s JOIN  p ON (s.prj_board_id = p.prj_board_id)
+					FROM prj_sche s LEFT JOIN  p ON (s.prj_board_id = p.prj_board_id)
 				WHERE   s.prj_board_id = #{prjBoardId}
 	</select>
 	
