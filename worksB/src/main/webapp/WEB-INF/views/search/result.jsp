@@ -99,7 +99,7 @@
 		$('#board-list').text('사내게시판')
 		$('#notice-list').text('공지사항')
 	}
-	if(${carpoolList ne null}){
+	if(${carpoolList[0].boardId ne null}){
 		$('#board-list').text('사내게시판')
 		$('#carpool-list').text('카풀게시판')
 	}

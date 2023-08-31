@@ -17,7 +17,7 @@
 	.modal-prjSche-visible {
 	display: block !important;
 	}
-	#prjSche-modal{
+	#prjSche-modal, #prjTask-modal{
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -27,7 +27,7 @@
 	left: 0;
 	top: 0;
 	}
-	.prjSche-modal__content{
+	.prjSche-modal__content, .prjTask-modal__content{
 	position: absolute;
 	right: 0;
 	top: 62px;
@@ -175,6 +175,93 @@
 	.sche-addr-info{
 		width: 200%;
 	}
+	.sche-date {
+	font-weight: var(--weight-bold);
+	font-size: 15px;
+	color: var(--color-dark-red);
+	margin: 10px 40px;
+	}
+	.sche-date .text, .task-manager .text {
+	font-size: 15px;
+	color: var(--color-dark-grey);
+	}
+	div[data-prioriy] {
+	font-size: var(--font-micro);
+	color: var(--color-green);
+	font-weight: var(--weight-bold);
+	}
+	
+	div[data-state] {
+		margin: 0 40px;
+		text-align: left;
+	}
+	
+	div[data-state] button{
+		width: 50px;
+		height: 10px;
+		background-color: var(--color-dark-beigie);
+		padding: 10px;
+		border-radius: 5px;
+		color: white;
+		font-weight: var(--weight-bold);
+		line-height: 10px;
+	}
+	
+	div[data-processivity] {
+		display: flex;
+		align-items: center;
+		color: var(--color-green);
+	}
+	
+	.processivity {
+		width: 150px;
+		height: 7px;
+		border-radius:2px;
+		background-color: var(--color-light-white);
+		margin-right: 10px;
+	}
+	
+	.processivity-value {
+		width: 1%;
+		height: 7px;
+		border-radius:2px;
+		background-color: var(--color-green);
+	}
+	
+	.sub-task-lists {
+		margin: 0 40px 30px 40px;
+	}
+	
+	.sub-task-lists-title {
+		margin: 10px 0;
+		font-size: var(--font-micro);
+		font-weight: var(--weight-bold);
+		color: var(--color-dark-grey);
+	}
+	
+	.sub-task-item {
+		display: flex;
+		align-items: center;
+		padding: 5px 10px;
+		background-color: rgba(240, 240, 240, 0.2);
+		justify-content: flex-start;
+		margin: 5px 0;
+		border-radius: 5px;
+		text-align: center;
+	}
+	
+	.sub-state {
+		width: 50px;
+		height: 7px;
+		background-color: var(--color-blue);
+		padding: 10px;
+		border-radius: 5px;
+		color: white;
+		font-weight: var(--weight-bold);
+		font-size: var(--font-micro);
+		line-height: 7px;
+		margin-right: 20px;
+	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -243,32 +330,85 @@
 					<span class="board-footer-info">좋아요 14</span>
 				</div>
 			</div>
+			<!-- 댓글 -->
+			
 		</div>
 	</div>
 	
-	
-	
-	<!-- 일정 조회 모달 -->
-	<div class="modal fade" id="scheModal" tabindex="-1" aria-labelledby="scheModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-				  <h1 class="modal-title fs-5" id="scheModalLabel"></h1>
-				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	<!-- 업무 상세조회 모달 -->
+	<div id="prjTask-modal">
+		<div class="prjTask-modal__content">
+			<div class="board-header">
+				<div class="board-header-info">
+					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+					<div class="board-headder-info__memberName"></div>
+					<input type="text" class="board-headder-info__regDate">
 				</div>
-				<div class="modal-body">
-				
-				</div>
-				<div class="modal-footer">
-				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				  <button type="button" class="btn btn-primary">Save changes</button>
+				<div>
+					<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 				</div>
 			</div>
+			<div class="board-title">
+				<div>
+					<span>[업무]</span><input type="text" class="board-title-boardTitle">
+				</div>
+				<div data-hightaskid></div>
+			</div>
+			<div class="sche-date d-flex">
+				<div>
+					<span class="text">기간 : </span>
+					<span data-start></span>
+					<span> ~ </span>
+					<span data-end></span>
+				</div>
+				<div data-processivity>
+					<div class="processivity">
+						<div class="processivity-value"></div>
+					</div>
+					<span data-processivityvalue></span>
+				</div>
+			</div>
+			<div class="d-flex" style="margin-right: 40px;">
+				<div class="task-manager"> 
+					<span class="text">담당자 : </span>
+				</div>
+				<div data-prioriy></div>
+			</div>
+			<div data-state>
+				<button type="button" value="G1">요청</button>
+				<button type="button" value="G2">진행</button>
+				<button type="button" value="G3">피드백</button>
+				<button type="button" value="G4">완료</button>
+				<button type="button" value="G5">보류</button>
+			</div>
+			<div class="board-content">
+				<div>
+				</div>
+			</div>
+			<div class="sub-task-lists">
+				<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+				<div class="sub-task-list">
+				</div>
+			</div>
+			<div class="board-footer">
+				<div>
+					<span class="board-footer-icon"><img alt="좋아요 아이콘" src="/hi/resources/icon/face-laugh-wink-solid.svg">
+						좋아요</span>
+					<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘"
+							src="/hi/resources/icon/bookmark-regular.svg"> 북마크</span>
+				</div>
+				<div>
+					<span class="board-footer-info">댓글 7</span>
+					<span class="board-footer-info">좋아요 14</span>
+				</div>
+			</div>
+			<!-- 댓글 구현 -->
+			
 		</div>
 	</div>
+	
 </body>
 <script>
-let scheModal = new bootstrap.Modal(document.getElementById('scheModal'))
 
 var calendar 
 //풀캘린더 불러오기
@@ -286,14 +426,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		},
 		customButtons : {
-			myCustomButton : {
-				text : '일정추가',
-				click : function(){}
-			},
-			tdlBtn : {
-				text : 'to-do-List',
-				click : function(){}
-			},
 			scheBtn : {
 				text : '일정필터',
 				click : function(){
@@ -310,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		headerToolbar : {
 			left : 'prev,today,next scheBtn,taskBtn',
 			center : 'title',
-			right : 'tdlBtn,myCustomButton dayGridMonth,timeGridWeek'
+			right : 'dayGridMonth,timeGridWeek'
 		},
 		locale : "ko",
 		navLinks : false, // can click day/week names to navigate views
@@ -340,6 +472,20 @@ document.addEventListener('DOMContentLoaded', function() {
 				dataType : 'JSON',
 				success : function(result){
 					console.log(result)
+					console.log(result.highTask[0])
+					$('#prjTask-modal').addClass('modal-prjSche-visible');
+					
+					//프사 확인
+					let realPath = result.highTask[0].realProfilePath
+					if(result.realProfilePath!==null){
+						let profilePath = "${pageContext.request.contextPath}/images/"+realPath
+						$('.profile').attr("src", profilePath)
+					}
+					$('.board-headder-info__regDate').val(result.highTask[0].prjBoardRegdate)
+					$('.board-headder-info__memberName').text(result.highTask[0].memberName)
+					$('.board-title-boardTitle').val(result.highTask[0].prjBoardTitle)
+					$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
+					$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).css('background-color', 'var(--color-dark-red)');
 				},
 				error : function(error){
 					console.log(error)
@@ -352,7 +498,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				data: {"prjBoardId" : boardId},
 				dataType:"JSON",
 				success:function(result){
-					$('#scheModalLabel').text("일정 조회")
 					$('#prjSche-modal').addClass('modal-prjSche-visible');
 					$('.board-headder-info__memberName').text(result.memberName)
 					$('.board-headder-info__regDate').val(result.boardVO.prjBoardRegdate)
@@ -390,6 +535,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	        $('.board-content div').children().remove();
 	    }
 	});
+	$('#prjTask-modal').on('click', function(e) {
+	    if ($(e.target).is('#prjTask-modal')) {
+	        $('#prjTask-modal').removeClass('modal-prjSche-visible');
+	        $('.board-content div').children().remove();
+	    }
+	});
+	
 });
 </script>
 </html>

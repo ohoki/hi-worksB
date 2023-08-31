@@ -42,6 +42,9 @@ public interface BoardService {
 	public int updateTask(TaskVO taskVO);
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
+  
+  // 업무 삭제
+	public int deleteTask(TaskVO taskVO);
 	
 	// 상단 고정 업데이트
 	public int updatePin(BoardVO boardVO);
@@ -59,10 +62,14 @@ public interface BoardService {
 	public int sheParticipate(ScheParticirVO spVO);
 	
 	//투표 하기 (삭제 -> 등록)
-	public int voteInsert(VoteVO voteVO);
+	public int voteInsert(List<VoteVO> voteList);
 	
-	// 업무 삭제
-	public int deleteTask(TaskVO taskVO);
+	//투표 취소
+	public void votePaticirDelete(VoteVO voteVO);
+	
+	//내가 선택한 투표 리스트
+	public List<VoteVO> getVoteListByMember(VoteVO voteVO);
+
 	
 	
 	
