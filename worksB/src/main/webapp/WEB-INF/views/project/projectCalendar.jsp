@@ -485,6 +485,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					$('.board-headder-info__memberName').text(result.highTask[0].memberName)
 					$('.board-title-boardTitle').val(result.highTask[0].prjBoardTitle)
 					$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
+					$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).css('background-color', 'var(--color-dark-red)');
 				},
 				error : function(error){
 					console.log(error)
