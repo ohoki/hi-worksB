@@ -400,6 +400,13 @@
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard" parameterType="BoardVO">
+		DELETE	prj_board
+		WHERE	prj_board_id = #{prjBoardId}
+	</delete>
+  
 	<!-- 업무게시글의의 담당자 전체 리스트 삭제 -->
 	<delete id="deleteManagerList" parameterType="TaskVO">
 		DELETE task_manager 
@@ -416,11 +423,48 @@
 	
 	
 	
-	
-	<!-- 업무 삭제 -->
+	<!-- 업무 삭제 (상위,하위,담당자) -->
 	<insert id="deleteTask" statementType="CALLABLE" parameterType="TaskVO" >
 		{ CALL 
 			delete_sub_task(
+				#{prjBoardId}
+				) 
+		}
+	</insert>
+	
+	<!-- 투표한 인원수 -->
+	<select id="countVoteParticir" resultType="int" parameterType="VoteVO">
+		SELECT	COUNT(*)
+		FROM	vote_particir
+		WHERE	list_id
+				IN (
+						SELECT	list_id
+						FROM	vote_list
+						WHERE	prj_board_id = #{prj_board_id}
+					)
+	</select>
+	
+	<!-- 투표 수정 (보드,투표글은 수정 / 투표항목은 삭제)-->
+	<insert id="updateVote" statementType="CALLABLE" parameterType="VoteVO">
+		{ CALL
+			update_vote(
+						#{prjBoardId},
+						#{prjBoardTitle},
+						#{prjBoardSubject},
+						#{inspYn},
+						#{endDate},
+						#{anonyVote},
+						#{compnoVote},
+						#{resultYn}
+						)
+		}
+			
+	</insert>
+	
+	<!-- 투표 삭제 (투표,항목,참여) -->
+	<insert id="deleteVote" statementType="CALLABLE" parameterType="VoteVO" >
+		{ CALL 
+			delete_vote(
 				#{prjBoardId}
 				) 
 		}

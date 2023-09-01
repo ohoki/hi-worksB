@@ -60,9 +60,20 @@ public interface BoardMapper {
 	
 	
 	
-	// 업무 삭제
+	// 일반게시글 삭제
+	public int deleteBoard(BoardVO boardVO);
+	
+	// 업무글 삭제
 	public int deleteTask(TaskVO taskVO);
 	
+	// 투표글 수정
+	public int updateVote(VoteVO voteVO);
+	
+	// 투표 인원수
+	public int countVoteParticir(VoteVO voteVO);
+	
+	// 투표글 삭제
+	public int deleteVote(VoteVO voteVO);
 	
 	
 //주현

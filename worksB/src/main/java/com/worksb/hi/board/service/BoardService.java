@@ -42,13 +42,29 @@ public interface BoardService {
 	public int updateTask(TaskVO taskVO);
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
+  
+	// 일반게시글 삭제
+	public int deleteBoard(BoardVO boardVO);
+	
+	// 업무 삭제
 	public int deleteManagerList(TaskVO taskVO); // 업무게시글의의 담당자 전체 리스트 삭제
 	
 	
 	
 	
-	// 업무 삭제
+	
+  // 업무글 삭제
 	public int deleteTask(TaskVO taskVO);
+	
+	// 투표글 수정
+	public int updateVote(VoteVO voteVO);
+	
+	// 투표 인원수
+	public int countVoteParticir(VoteVO voteVO);
+	
+	// 투표글 삭제
+	public int deleteVote(VoteVO voteVO);
+	
 	
 	// 상단 고정 업데이트
 	public int updatePin(BoardVO boardVO);

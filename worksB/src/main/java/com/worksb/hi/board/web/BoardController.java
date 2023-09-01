@@ -355,6 +355,43 @@ public class BoardController {
     	return boardService.deleteTask(taskVO); 
 	}
 	
+	// 투표 삭제
+	@PostMapping("/deleteVote")
+	@ResponseBody
+	public int deleteVote(VoteVO voteVO) {
+		return boardService.deleteVote(voteVO);
+	}
+	
+	/* 투표참여자 있으면 수정안됨!! 없으면 수정가능 투표항목수정은 다지우고 새로 추가~~
+	// 투표 수정
+	@PostMapping("/updateVote")
+	@ResponseBody
+	public String update(VoteVO voteVO) {
+		
+		int countVoteParticir = boardService.countVoteParticir(voteVO);
+		
+		if(countVoteParticir > 0) {
+			return 
+		}else {
+			//투표항목은 다지우고 새로 insert하기~~~~
+			
+			boardService.updateVote(voteVO);
+			
+			String[] listContentArr = voteVO.getListContent().split(",");
+			for(int i=0; i<listContentArr.length; i++) {
+				voteVO.setListContent(listContentArr[i]);
+				boardService.insertVoteList(voteVO);
+			}
+			return
+		}
+	}
+	*/
+	// 일반글 삭제
+	@PostMapping("/deleteBoard")
+	@ResponseBody
+	public int deleteBoard(BoardVO boardVO) {
+		return boardService.deleteBoard(boardVO);
+	}
 	
 	
 	//상단 고정 여부 수정
