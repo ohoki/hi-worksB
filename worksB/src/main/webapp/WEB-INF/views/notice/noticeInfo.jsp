@@ -89,6 +89,7 @@ div h2 {
 	width: 800px;
 	height: 50px;
 	border-bottom: 1px solid rgb(174, 213, 245);
+	margin-bottom: 10px;
 }
 
 .button1 {
@@ -121,8 +122,71 @@ div h2 {
 	color: black;
 }
 
+/* 부모댓글 css */
 .cmtName {
-	text-align: right;
+	float: left;
+	width: 400px
+}
+
+.cmtInsert {
+	float:right;
+	margin-left: 5px;
+}
+
+.cmtDate {
+	float: right;
+	
+}
+
+.cmtComment {
+	width: 800px;
+	height: 80px;
+	float: left;
+}
+
+/* 자식댓글 css */
+.cmtNamec {
+	float: left;
+	width: 400px;
+	margin-left: 50px;
+}
+
+.cmtInsertc {
+	float:right;
+	margin-left: 5px;
+}
+
+.cmtDatec {
+	float: right;
+	
+}
+
+.cmtCommentc {
+	width: 750px;
+	height: 80px;
+	float: left;
+	margin-left: 50px;
+}
+
+button {
+	color: black;
+}
+
+.cmtList__cmtInsert {
+	float: left;
+}
+
+#commentContent {
+	resize: none;
+	width: 800px;
+	height: 80px;
+	margin-bottom: 20px;
+}
+
+
+/* 대댓글 작성폼 */
+#cmtList__cmtInsertc {
+	
 }
 
 </style>
@@ -183,26 +247,97 @@ div h2 {
 				</c:if>
 			</div>
 		</div>
+		<!-- 댓글 -->
 		<div class="boardCmtList">
 		</div>
+		<!-- 댓글 입력 폼 -->
+		<form id="cmtInsert" method="post">
+			<div class="cmtList">
+				<p class="cmtList__cmtInsert">댓글 작성 | ${memberInfo.memberName }</p>
+				<div id="cmtInsert__text">
+					<textarea id="commentContent" name="commentContent" placeholder="댓글을 입력하세요"></textarea>
+					<button type="button" id="insertButton">버튼</button>
+				</div>
+			</div>
+		</form>
+		<!-- 대댓글 작성 폼 -->
+		<form class="cmtInsertForm" style="display: none;">
+			<div class="cmtList">
+	    	<p class="cmtList__cmtInsertc">댓글 작성 | ${memberInfo.memberName }</p>
+	    	<div id="cmtInsert__textc">
+	        	<textarea class="commentContentc" name="commentContentc" placeholder="댓글을 입력하세요"></textarea>
+	        	<button type="button" id="insertButtonc">버튼</button>
+	    	</div>
+    	</div>
+    
+		</form>
 	</div>
 	<script>
-		// 댓글 출력 ajax
+		
 		$(document).ready(function(){
-			
+			// 댓글 리스트 출력
+			getcmtList();
+		});
+		
+		$(document).on('click', '#cmtUpdate', function(e){
+			console.log('버튼 누르기 성공')
+			var saveUpdate = this.parentNode.parentNode.lastChild.previousElementSibling.children;
+			console.log(saveUpdate);
+		})
+		
+		
+		
+		// 댓글 리스트를 출력하는 함수
+		function getcmtList(){
 			var cmt = $(".boardCmtList");
 			var str = "";
 			$.get("boardCmtList",{boardId : ${noticeInfo.noticeId}, boardType : 'C2'},function(list) {
 				for(var i = 0 , len = list.length || 0; i < len; i++ ){
-					str += "<li class ='cmtName'>" + list[i].memberId + "<br>" ;
-					str +=  list[i].commentContent + "</li>";
-					console.log(list[i].commentId);
+					/* 부모/자식 댓글 구분 */
+					if(list[i].parentId == 0){
+						/* 부모 댓글일 경우 */
+						str += "<ul>" + "<li class='cmtName'>" + list[i].memberName + "</li>";
+					 	str +=	"<li class='cmtInsert'>" + "<button type='button' id='cmtInsertFormButton'>" + "대댓글작성" + "</button>" + "</li>";
+					 	/* 내가 쓴 글일경우 */
+					 	if(list[i].memberId == "${memberInfo.memberId}"){
+					 		str += "<li class='cmtInsert'>" + "<button type='button' id='cmtUpdate''>" + "수정" + "</button>" + "</li>";
+					 		str += "<li class='cmtInsert'>" + "<button type='button' '>" + "삭제" + "</button>" + "</li>";
+					 	}
+						str += "<li class='cmtDate'>" + list[i].commentRegdate + " |" + "</li>";
+						str += "<li class='cmtComment'>" + list[i].commentContent + "</li>";
+						str += "<li>" + "<input type='hidden' id='commentIdd' value='" + list[i].commentId +" '>" + "</li>" + "</ul>" /* 나중에 삭제해야됨 */
+					}else {
+						/* 자식 댓글일 경우 */
+						str +=  "<ul class = 'cmts'>" + "<li class='cmtNamec'>" + list[i].memberName + "</li>";
+					 	/* 내가 쓴 글일경우 */
+					 	if(list[i].memberId == "${memberInfo.memberId}"){
+					 		str += "<li class='cmtInsert'>" + "<button type='button'>" + "수정" + "</button>" + "</li>";
+					 		str += "<li class='cmtInsert'>" + "<button type='button'>" + "삭제" + "</button>" + "</li>";
+					 	}
+						str += "<li class='cmtDatec'>" + list[i].commentRegdate + " |" + "</li>";
+						str += "<li class='cmtCommentc'>" + list[i].commentContent + "</li>" + "</ul>" ;
+					}
 				}
 				cmt.html(str);
 			})
-		});
-	
-	
+		};
+		
+		
+		
+		// 댓글 등록 ajax
+		document.getElementById('insertButton').addEventListener('click', function(){
+			var commentContent = $("textarea[name='commentContent']").val();
+			console.log(commentContent);
+	    	$.post("boardCmtInsert", {boardId: ${noticeInfo.noticeId}, boardType: 'C2',
+	    							  memberId: '${memberInfo.memberId}',
+	 								  commentContent: commentContent, 
+	 								  parentId : 0
+			    }, function (response) {
+			    	$('#commentContent').val('');
+			    	getcmtList();
+			    });
+		})
+		
 	
 	 // 좋아요 버튼 클릭 시 호출되는 함수
     function toggleLike(boardId, memberId) {
@@ -219,7 +354,7 @@ div h2 {
             $("#likeCount").text(response.count);
         });
 	 }
-    
+
 	</script>
 </body>
 </html>
