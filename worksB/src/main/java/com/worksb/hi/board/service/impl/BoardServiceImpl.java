@@ -141,7 +141,19 @@ public class BoardServiceImpl implements BoardService {
 	public int updateTask(TaskVO taskVO) {
 		return boardMapper.updateTask(taskVO);
 	}
-  
+	
+	// 업무게시글의의 담당자 전체 리스트 삭제
+	public int deleteManagerList(TaskVO taskVO) {
+		return boardMapper.deleteManagerList(taskVO);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
   // 업무삭제
 	@Override
 	public int deleteTask(TaskVO taskVO) {

@@ -36,7 +36,7 @@ COMPANY_ID   NOT NULL NUMBER
 	private String state;
 	private String stateName;
 	private String processivity;
-	private int prjBoardId;
+	private Integer prjBoardId;
 	private int taskId;
 	private int companyId;
 	private String prjBoardTitle;
