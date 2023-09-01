@@ -635,10 +635,6 @@
 			color: var(--color-light-white);
 		}
 		
-		.board-taskManager {
-			margin-bottom: 20px;
-		}
-		
 		.board-taskManager span {
 			margin-right: 10px;
 		}
@@ -1942,7 +1938,6 @@
 						<!-- 업무 담당자 -->
 						<div class="board-taskManager">
 							<span class="add-manager-btn">담당자 추가</span>
-							<div class="highManagerList"></div>
 						</div>
 						<!-- 업무 담당자 끝 -->
 						
@@ -2336,15 +2331,13 @@
 						// 업무 담당자 리스트
 						let managers = taskData.highManager;
 		            	let managerList = $(task).find('.board-taskManager');
-		            	let memberId = $(task).find('.highManagerList');
 						
 		            	//상위 업무 담당자 공간 비우고 내용 추가	
 		            	managerList.empty();
 		            	
 		            	if(managers.length != 0) {
 			            	for (let i = 0; i < managers.length; i++) {
-			                	managerList.prepend('<span name='+ managers[i].prjParticirId +'>'  + managers[i].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor" style="margin-left:5px;"></span>');
-			                	memberId.prepend('<input type="hidden" name="taskManager" value="' + managers[i].prjParticirId + '">')
+			                	managerList.prepend('<span name='+ managers[i].prjParticirId +'>'  + managers[i].memberName + '<img class="deleteManager" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:5px;"></span>');
 			            	}
 		            	}
 						// 셀렉트 박스 생성		            	
@@ -2388,42 +2381,46 @@
 	        				let state = taskData.subTask[i].state != null ? taskData.subTask[i].state : '';
 	        				
 	        				let subtaskForm = `
-	        		            <div class="task-add" style="padding-right: 150px;">
-	        		        		<div class="d-flex m-bt">
-	        		        			<div>
-	        		        				<span>업무 제목 : </span>
-	        		        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요." style="margin-left: 20px;">
-	        		        			</div>
-	        			                <div class="select-state">
-	        			                	<span>진행 상태 : </span>
-	        			                	<select name="state" class="task-select" style="margin-left: 20px;">
-		    							        <option value="G1">요청</option>
-		    							        <option value="G2">진행</option>
-		    							        <option value="G3">피드백</option>
-		    							        <option value="G4">완료</option>
-		    							        <option value="G5">보류</option>
-		    							    </select>
+	        		            <div class="d-flex task-add" style="align-items: center; margin-bottom:20px; padding: 0 15px;">
+	        		            	<div>
+	        		            		<div>
+			        		        		<div class="d-flex m-bt">
+			        		        			<div>
+			        		        				<span>업무 제목 : </span>
+			        		        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요." style="margin-left: 20px;">
+			        		        			</div>
+			        			                <div class="select-state" style="margin-left:60px;">
+			        			                	<span>진행 상태 : </span>
+			        			                	<select name="state" class="task-select" style="margin-left: 20px;">
+				    							        <option value="G1">요청</option>
+				    							        <option value="G2">진행</option>
+				    							        <option value="G3">피드백</option>
+				    							        <option value="G4">완료</option>
+				    							        <option value="G5">보류</option>
+				    							    </select>
+			        							</div>
+			        		        		</div>
+			        		                <div class="d-flex m-bt">
+			        			        		<div class="select-priority">
+			        			        			<span>우선 순위 : </span>
+			        			                    <select name="priority">
+			        			                        <option value="">=======</option>
+			        			                        <option value="F3">낮음</option>
+			        			                        <option value="F2">보통</option>
+			        			                        <option value="F1">긴급</option>
+			        			                    </select>
+			        			                </div>
+			        			                <div style="margin-left:100px;">
+			        			                    <label for="endDate">마감일 : </label>
+			        			                    <input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
+			        			                </div>
+			        		                </div>
+			        		            </div>
+			        		            <div class="board-taskManager">
+		        							<span class="add-manager-btn">담당자 추가</span>
 	        							</div>
-	        		        		</div>
-	        		                <div class="d-flex m-bt">
-	        			        		<div class="select-priority">
-	        			        			<span>우선 순위 : </span>
-	        			                    <select name="priority">
-	        			                        <option value="">=======</option>
-	        			                        <option value="F3">낮음</option>
-	        			                        <option value="F2">보통</option>
-	        			                        <option value="F1">긴급</option>
-	        			                    </select>
-	        			                </div>
-	        			                <div>
-	        			                    <label for="endDate">마감일 : </label>
-	        			                    <input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
-	        			                </div>
-	        		                </div>
-	        		                <div class="board-taskManager">
-	        							<span class="add-manager-btn">담당자 추가</span>
-	        							<div class="subManagerList"></div>
-	        						</div>
+	        		               	</div>
+	        		               	<img class="deleteSubtask" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:20px;">
 	        		            </div>`;
 	        		            
 							subManagerList.append(subtaskForm);
@@ -2433,7 +2430,6 @@
 	        				let subtaskForm = subManagerList.find('.task-add').eq(i);
 	        				let subTaskManagerBox = subtaskForm.find('.board-taskManager');
 	        				let subManagers = taskData.subManager[taskData.subTask[i].prjBoardId];
-	        				let subMember = subtaskForm.find('.subManagerList');
 	        				
 	        				subtaskForm.find('input[name=prjBoardTitle]').val(taskData.subTask[i].prjBoardTitle);
 	        				subtaskForm.find('input[name=endDate]').val(taskData.subTask[i].endDate != null ? taskData.subTask[i].endDate : '');
@@ -2443,8 +2439,7 @@
 	        				subTaskManagerBox.empty();
 	        				if(subManagers.length != 0) {
 	        					for (let j = 0; j < subManagers.length; j++) {
-				            		subTaskManagerBox.prepend('<span name='+ subManagers[j].prjParticirId +'>' + subManagers[j].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor" style="margin-left:5px;"></span>');
-				            		subMember.prepend('<input type="hidden" name="taskManager" value="' + subManagers[j].prjParticirId + '">')
+				            		subTaskManagerBox.prepend('<span name='+ subManagers[j].prjParticirId +'>' + subManagers[j].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:5px;"></span>');
 				            	}	
 	        				}
 	        				// 셀렉트 박스 생성		            	
@@ -2486,11 +2481,13 @@
 			}
 		});
 		
+		//담당자 선택 삭제
 		$(document).on('click', '.deleteManager', function(e) {
 			let managerSpan = $(e.currentTarget).parent();
 			let prjParticirId = managerSpan.attr('name');
 			
 			managerSpan.parent().find('option[value=' + prjParticirId +']').prop('disabled', false);
+			managerSpan.remove();
 			
 		});
 	</script>
@@ -2694,7 +2691,7 @@
 		//담당자 선택시 스팬 추가
 		$(document).on('change','.add-taskManager-select', function(e) {
 			let managerSpan = $('<span>');
-			let deleteManager = $('<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor" style="margin-left:5px;">');
+			let deleteManager = $('<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:5px;">');
 			let memberId = `<input type="hidden" name="taskManager">`;
 			let selectBox = $(e.currentTarget);
 			let checkedOption = selectBox.find('option:checked');
@@ -2786,42 +2783,46 @@
 		// 하위 업무 추가하기
 	    $('.add-sub-task-btn').on('click', function(e) {
 	        let subtaskForm = `
-	            <div class="task-add" style="padding-right: 150px;">
-	        		<div class="d-flex m-bt">
-	        			<div>
-	        				<span>업무 제목 : </span>
-	        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요." style="margin-left: 20px;">
-	        			</div>
-		                <div class="select-state">
-		                	<span>진행 상태 : </span>
-						    <select name="state" class="task-select" style="margin-left: 20px;">
-						        <option value="G1">요청</option>
-						        <option value="G2">진행</option>
-						        <option value="G3">피드백</option>
-						        <option value="G4">완료</option>
-						        <option value="G5">보류</option>
-						    </select>
+	        	<div class="d-flex task-add" style="align-items: center; margin-bottom:20px; padding: 0 15px;">
+	            	<div>
+	            		<div>
+			        		<div class="d-flex m-bt">
+			        			<div>
+			        				<span>업무 제목 : </span>
+			        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요." style="margin-left: 20px;">
+			        			</div>
+				                <div class="select-state" style="margin-left:60px;">
+				                	<span>진행 상태 : </span>
+				                	<select name="state" class="task-select" style="margin-left: 20px;">
+								        <option value="G1">요청</option>
+								        <option value="G2">진행</option>
+								        <option value="G3">피드백</option>
+								        <option value="G4">완료</option>
+								        <option value="G5">보류</option>
+								    </select>
+								</div>
+			        		</div>
+			                <div class="d-flex m-bt">
+				        		<div class="select-priority">
+				        			<span>우선 순위 : </span>
+				                    <select name="priority">
+				                        <option value="">=======</option>
+				                        <option value="F3">낮음</option>
+				                        <option value="F2">보통</option>
+				                        <option value="F1">긴급</option>
+				                    </select>
+				                </div>
+				                <div style="margin-left:100px;">
+				                    <label for="endDate">마감일 : </label>
+				                    <input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
+				                </div>
+			                </div>
+			            </div>
+			            <div class="board-taskManager">
+							<span class="add-manager-btn">담당자 추가</span>
 						</div>
-	        		</div>
-	                <div class="d-flex m-bt">
-		        		<div class="select-priority">
-		        			<span>우선 순위 : </span>
-		                    <select name="priority">
-		                        <option value="">=======</option>
-		                        <option value="F3">낮음</option>
-		                        <option value="F2">보통</option>
-		                        <option value="F1">긴급</option>
-		                    </select>
-		                </div>
-		                <div>
-		                    <label for="endDate">마감일 : </label>
-		                    <input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
-		                </div>
-	                </div>
-	                <div class="board-taskManager">
-						<span class="add-manager-btn">담당자 추가</span>
-						<div class="subManagerList"></div>
-					</div>
+	               	</div>
+	               	<img class="deleteSubtask" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:20px;">
 	            </div>`;
 	        	$(e.currentTarget).prev().append(subtaskForm);
 	    	});
@@ -2847,8 +2848,8 @@
 			
 			// 상위 업무 담당자 리스트
 			let prjManager =[];
-			$('#boardInsertModal .highManagerList input[name="taskManager"]').each(function(index, item){
-		        let prjParticirId = $(item).val();
+			$('#boardInsertModal .board-taskManager').eq(0).find('span:not(:eq(0))').each(function(index, item){
+		        let prjParticirId = $(item).attr('name');
 		        prjManager.push({prjParticirId});
 		    });
 			
@@ -2862,13 +2863,13 @@
 	                state = $(item).find('[name=state]').val();
 	                let endDate = $(item).find('[name=endDate]').val();
 	                let priority = $(item).find('[name=priority]').val();
-	                let managerList = $(item).find('input[name="taskManager"]');
+	                let managerList = $(item).find('.board-taskManager').find('span:not(:eq(0))');
 	                
 	                subTask.push({ prjBoardTitle, state, endDate, priority });
 	            	
 	            // 하위 업무 담당자
 					$(managerList).each(function(idx, manager) {
-						let prjParticirId = $(manager).val();
+						let prjParticirId = $(manager).attr('name');
 						let prjBoardId = index;
 						console.log()
 						subManager.push({prjBoardId, prjParticirId});
