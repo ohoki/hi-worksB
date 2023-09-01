@@ -148,14 +148,6 @@ public class NoticeController {
         map.put("count", comLikeService.countLikes(comLikeVO));
         return map;
     }
-
-	// 댓글
-	@GetMapping("/boardCmtList")
-	@ResponseBody
-	public List<BoardCmtVO> boardCmtList(Model model, BoardCmtVO boardCmtVO) {
-        // 댓글 가져오기
-        return boardCmtService.boardCmtList(boardCmtVO);
-	}
     
     
     

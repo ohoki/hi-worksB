@@ -3,43 +3,16 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.boardCmt.mapper.BoardCmtMapper">
-	<!-- 댓글 리스트 -->
-<!-- 	<select id="boardCmtList" resultType="BoardCmtVO">
-		SELECT comment_id,
-			   member_id,
-			   comment_regdate,
-			   comment_content,
-			   board_id,
-			   board_type,
-			   comment_dep
-		  FROM board_comment
-		 WHERE board_id = #{boardId} and boardtype = #{boardType} and comment_dep = 0
-	  ORDER BY comment_regdate
-	</select>
-	
-	대댓글 리스트
-	<select id="boardCmtchildList" resultType="BoardCmtVO">
-		SELECT comment_id,
-			   member_id,
-			   comment_regdate,
-			   comment_content,
-			   board_id,
-			   board_type,
-			   comment_dep
-		  FROM board_comment
-		 WHERE board_id = #{boardId} and boardtype = #{boardType} and comment_dep = 1 and comment_id = #{memberId}
-	  ORDER BY comment_regdate
-	</select>  -->
-	
 	<!-- 계층형 댓글 리스트 -->
 	<select id = "boardCmtList" resultType="BoardCmtVO">
-		SELECT comment_id,
-			   member_id,
-			   comment_regdate,
-			   comment_content,
-			   board_id,
-			   board_type,
-			   parent_id
+		SELECT n.comment_id,
+			   n.member_id,
+			   n.comment_regdate,
+			   n.comment_content,
+			   n.board_id,
+			   n.board_type,
+			   n.parent_id,
+			   m.member_name
 		  FROM (SELECT comment_id,
 			   		   member_id,
 			   		   comment_regdate,
@@ -49,11 +22,49 @@
 			   		   parent_id
 		  		  FROM board_comment
 		  		 WHERE board_type = #{boardType } and board_id = #{boardId }
-		  		 	   )
+		  		 	   ) n LEFT JOIN member m
+		  		 			 ON n.member_id = m.member_id
 	<!--  계층형 구조로 반환하는 쿼리  CONNECT BY 절에서 연결 조건을 찾음-->
 	START WITH parent_id = 0
 CONNECT BY PRIOR comment_id = parent_id
 	<!-- 계층 안에서 순서를 잡는? 쿼리 -->
 ORDER SIBLINGS BY comment_id
 	</select>
+	<!-- 댓글 insert -->
+	<insert id="boardCmtInsert" parameterType="BoardCmtVO">
+		<selectKey keyProperty="commentId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(comment_id), 0) + 1
+			  FROM board_comment
+		</selectKey>
+			INSERT INTO board_comment(
+									  comment_id,
+									  member_id,
+									  comment_regdate,
+									  comment_content,
+									  board_id,
+									  board_type,
+									  parent_id
+									  )
+									  values
+									 (
+									  #{commentId}
+									  ,#{memberId}
+									  ,sysdate
+									  ,#{commentContent}
+									  ,#{boardId}
+									  ,#{boardType}
+									  ,#{parentId}									  
+									  )
+	</insert>
+	<!-- 수정 -->
+	<update id="boardCmtUpdate" parameterType="BoardCmtVO">
+		UPDATE board_comment
+			<set>
+				board_content = #{boardContent}
+			</set>
+		WHERE board_type = #{boardType} and comment_id = #{commentID} and board_id = #{boardId}
+	</update>
+	
+	<!-- 삭제인척 하는 수정 -->
+	
 </mapper>
