@@ -657,10 +657,9 @@ public class ProjectController {
 		
 		
 		//정현
-		
 		//프로젝트 캘린더 페이지 이동
 		@GetMapping("projectCalendar")
-		public String prjCalendar(@RequestParam int projectId, Model model) {
+		public String prjCalendar(@RequestParam int projectId, Model model, HttpSession session) {
 	        ProjectVO projectInfo = projectService.getProjectInfo(projectId);
 	        
 	        //해당 프로젝트의 모든 일정 캘린더화
@@ -700,10 +699,16 @@ public class ProjectController {
 				jsonObj = new JSONObject(hash);
 				taskArr.add(jsonObj);
 			}
+			//참여자 정보
+			PrjParticirVO particir = new PrjParticirVO();
+	        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+	        particir.setProjectId(projectId);
+	        PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
 			model.addAttribute("scheList",scheArr);
 	        model.addAttribute("taskList", taskArr);
 	        model.addAttribute("projectInfo", projectInfo);
-			
+	        model.addAttribute("particirInfo", particirInfo);
+	        
 			return "project/projectCalendar";
 		}
 }
