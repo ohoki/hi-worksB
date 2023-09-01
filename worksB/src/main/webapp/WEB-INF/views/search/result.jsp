@@ -22,7 +22,7 @@
 	</form>
 	
 	<p id="search-result">" ${searchkeyword } "의 검색결과</p>
-	<div>
+	<div style="border:solid black 1px;">
 	<a onclick="searchType('${searchkeyword }',3)">전체</a>
 	<a onclick="searchType('${searchkeyword }',1)">프로젝트</a>
 	<a onclick="searchType('${searchkeyword }',2)">사내게시판</a>
@@ -30,11 +30,11 @@
 	
 	
 	<p id="prj-list"></p>
-	<div>
+	<div style="border:solid black 1px;">
 		<c:forEach items="${prjList }" var="list">
-			<ul onclick="moveToPrj(${list.projectId})">
-				<li>${list.boardType } ${list.prjBoardTitle }</li>
-				<li>${list.memberName } <fmt:formatDate value="${list.prjBoardRegdate }" pattern="YY/MM/dd" type="date"/>${list.projectName }</li>
+			<ul style="border:dotted black 1px;" onclick="moveToPrj(${list.projectId})">
+				<li>${list.boardType } 제목: ${list.prjBoardTitle }</li>
+				<li>${list.memberName } <fmt:formatDate value="${list.prjBoardRegdate }" pattern="YY/MM/dd" type="date"/> 프로젝트이름:${list.projectName }</li>
 			</ul>
 		</c:forEach>
 		<div id="pick-date">
@@ -45,13 +45,13 @@
 	</div>
 	
 	
-	<div >
+	<div style="border:solid black 1px;">
 		<p id="board-list"></p>
 		<div>
 			<p id="club-list"></p>
 			<c:forEach items="${clubList }" var="list">
-				<ul>
-					<li>${list.boardTitle }</li>
+				<ul style="border:dotted black 1px;">
+					<li>제목 :${list.boardTitle }</li>
 					<li>${list.memberId } <fmt:formatDate value="${list.boardRegdate }" pattern="YY/MM/dd" type="date"/></li>
 				</ul>
 			</c:forEach>
@@ -59,8 +59,8 @@
 		<div>
 			<p id="notice-list"></p>
 			<c:forEach items="${noticeList }" var="list">
-				<ul onclick="moveToNotice(${list.noticeId})">
-					<li>${list.noticeTitle }</li>
+				<ul style="border:dotted black 1px;" onclick="moveToNotice(${list.noticeId})">
+					<li>제목 :${list.noticeTitle }</li>
 					<li><fmt:formatDate value="${list.boardRegdate }" pattern="YY/MM/dd" type="date"/></li>
 				</ul>
 			</c:forEach>
@@ -68,8 +68,8 @@
 		<div>
 			<p id="carpool-list"></p>
 			<c:forEach items="${carpoolList }" var="list">
-				<ul onclick="moveToCarpool(${list.boardId})">
-					<li>${list.boardTitle }</li>
+				<ul style="border:dotted black 1px;" onclick="moveToCarpool(${list.boardId})">
+					<li>제목 :${list.boardTitle }</li>
 					<li>${list.memberId } <fmt:formatDate value="${list.boardRegdate }" pattern="YY/MM/dd" type="date"/></li>
 					<li>출발:${list.departure } 도착:${list.arrival }</li>
 				</ul>
@@ -93,15 +93,15 @@
 
 	if(${clubList[0].boardId ne null}){
 		$('#board-list').text('사내게시판')
-		$('#club-list').text('동호회게시판')
+		$('#club-list').text('--동호회게시판')
 	}
 	if(${noticeList[0].noticeId ne null}){
 		$('#board-list').text('사내게시판')
-		$('#notice-list').text('공지사항')
+		$('#notice-list').text('--공지사항')
 	}
 	if(${carpoolList[0].boardId ne null}){
 		$('#board-list').text('사내게시판')
-		$('#carpool-list').text('카풀게시판')
+		$('#carpool-list').text('--카풀게시판')
 	}
 	//클릭 시 개별 프로젝트로 이동
 	function moveToPrj(prjId){

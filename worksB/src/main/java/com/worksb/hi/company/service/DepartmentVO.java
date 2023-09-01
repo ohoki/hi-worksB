@@ -10,4 +10,8 @@ public class DepartmentVO {
 	private int deptId;
 	private String deptName;
 	private Integer companyId;
+	
+	//관리자페이지용
+	private int counting;
+	private String ProjectName;
 }
