@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.worksb.hi.admin.service.AdminService;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.company.service.CompanyService;
 import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectVO;
@@ -138,7 +140,25 @@ public class AdminController {
 			List<ProjectVO> list=adminservice.projectList(companyId, pagingvo);
 			m.addAttribute("paging", pagingvo);
 			m.addAttribute("list",list);
-			return "";
+			return "admin/projectList";
+		}
+		
+		
+		@GetMapping("/editRole")
+		public String editRole(Model m,HttpSession session) {
+			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+			m.addAttribute("dlist",adminservice.departmentList(companyId));
+			m.addAttribute("jList",adminservice.jobList(companyId));
+			return "admin/editRole";
+		}
+		
+		@PostMapping("updateDept")
+		@ResponseBody
+		public int updateDept(HttpSession session,@RequestParam("deptName")String deptName,DepartmentVO vo) {
+			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+			vo.setCompanyId(companyId);
+			vo.setDeptName(deptName);
+			return adminservice.updateDept(vo);
 		}
 
 }

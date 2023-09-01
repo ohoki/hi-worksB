@@ -9,24 +9,28 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+	<div>
+		<p>프로젝트 목록</p>
+	</div>
 	<table>
 		<thead>
 			<tr>
 				<td>프로젝트명</td>
 				<td>관리자</td>
-				<td>참여자</td>
+				<td>참여자수</td>
 				<td>글 수 </td>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<c:forEach items="${list }" var="list">
+			<c:forEach items="${list }" var="list">
+				<tr>
 					<td>${list.projectName }</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</c:forEach>
-			</tr>
+					<td>${list.memberId }</td>
+					<td>${list.mnumber }</td>
+					<td>${list.boardcount }</td>
+				</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 	<div class="paging" style="text-align: center">

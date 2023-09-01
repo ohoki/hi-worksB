@@ -404,8 +404,9 @@ public class ProjectController {
 				int total=projectService.countWhenWriter(vo,searchVO);
 				//갯수에 따른 페이징
 				PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+				vo.setMemberId(memberId);
 				//내용
-				List<FileDataVO> list=projectService.viewFileWhenPublic(vo,pagingVO,searchVO);
+				List<FileDataVO> list=projectService.viewFileWhenRestricted(vo,pagingVO,searchVO);
 				//크기단위변경
 				for(FileDataVO fvo:list) {
 					double bytes=fvo.getFileSize();
@@ -508,7 +509,7 @@ public class ProjectController {
 				int total=projectService.countWhenWriter(vo,searchVO);
 				//갯수에 따른 페이징
 				PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-				
+				vo.setMemberId(memberId);
 				List<FileDataVO> list=projectService.viewFileWhenRestricted(vo,pagingVO,searchVO);
 				//크기단위변경
 				for(FileDataVO fvo:list) {
@@ -648,10 +649,16 @@ public class ProjectController {
 		@PostMapping("/updateDownloadFile")
 		@ResponseBody
 		public int downloadList(@RequestBody FileDataVO data,HttpSession session) throws UnsupportedEncodingException, URISyntaxException {
-		    String encodedFilename = URLEncoder.encode(data.getFileName(), StandardCharsets.UTF_8.toString());
-			data.setFileName(encodedFilename);
+		    //String encodedFilename = URLEncoder.encode(data.getFileName(), StandardCharsets.UTF_8.toString());
+			//data.setFileName(encodedFilename);
+			//System.out.println(data);
 			data.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
 			return projectService.updateFile(data);
+		}
+		
+		@GetMapping("/chat")
+		public String chatting() {
+			return "prj/chatting";
 		}
 	
 		

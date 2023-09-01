@@ -16,7 +16,7 @@
 				<li class="side__menu__item"><a href="${pageContext.request.contextPath}/admin/companyInfo">회사정보</a></li>
 				<li class="side__menu__item"><a>구성원</a></li>
 				<li class="side__menu__item"><a>동호회</a></li>
-				<li class="side__menu__item"><a>부서편집</a></li>
+				<li class="side__menu__item"><a href="${pageContext.request.contextPath}/admin/editRole">부서 및 직급편집</a></li>
 			</ul>
 		</div>
 		<!-- 게시판 -->
