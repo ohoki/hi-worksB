@@ -12,6 +12,7 @@ public class BoardRequestVO {
 	List<TaskVO> subTask;
 	List<TaskVO> prjManager;
 	List<TaskVO> subManager;
+	List<TaskVO> deleteSubtask;
 	//VoteVO voteVO, ScheVO scheVO
 	
 	String memberName;

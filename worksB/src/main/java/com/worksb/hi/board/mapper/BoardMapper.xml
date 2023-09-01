@@ -375,7 +375,7 @@
 		<set>
 			prj_board_title = #{prjBoardTitle},
 			prj_board_subject = #{prjBoardSubject},
-			prj_board_regdate = sysdate
+			insp_yn = #{inspYn}
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
@@ -384,8 +384,9 @@
 	<update id="updateTask" parameterType="TaskVO">
 		UPDATE prj_task
 		<set>
+				state = #{state}
 			<if test="startDate !=null">
-				, start_date = #{startDate}
+				,start_date = #{startDate}
 			</if>
 			<if test="endDate !=null">
 				, end_date = #{endDate}
@@ -393,24 +394,34 @@
 			<if test="priority !=null and !priority.equals('')">
 				, priority = #{priority}
 			</if>
-			, state = #{state}
 			<if test="processivity !=null and !processivity.equals('')">
 				, processivity = #{processivity}
 			</if>
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
-	<!-- 담당자 수정 -->
-	<!-- 
-	<update id="updateTaskManager" parameterType="TaskVO">
 
-	</update>
-	-->
 	<!-- 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="BoardVO">
 		DELETE	prj_board
 		WHERE	prj_board_id = #{prjBoardId}
 	</delete>
+  
+	<!-- 업무게시글의의 담당자 전체 리스트 삭제 -->
+	<delete id="deleteManagerList" parameterType="TaskVO">
+		DELETE task_manager 
+		WHERE prj_board_id = #{prjBoardId}
+	</delete>
+	 
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<!-- 업무 삭제 (상위,하위,담당자) -->
 	<insert id="deleteTask" statementType="CALLABLE" parameterType="TaskVO" >

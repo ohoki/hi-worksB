@@ -144,10 +144,10 @@ public class BoardController {
         	if(!scheVO.getAlarmDateCode().equals("")) {
         		//알람 시간 구하기
             	String code = scheVO.getAlarmDateCode();
-            	Date endDate = scheVO.getEndDate();
+            	Date startDate = scheVO.getStartDate();
             	Calendar cal = Calendar.getInstance();
             	// L1 -> 10분전, L2 -> 1시간 전, L3 -> 1일 전, L4 -> 7일 전
-            	cal.setTime(endDate);
+            	cal.setTime(startDate);
             	if(code.equals("L1")) {
             		cal.add(Calendar.MINUTE, -10);
             	} else if(code.equals("L2")) {
@@ -266,23 +266,88 @@ public class BoardController {
 		return "project/projectTask";
 	}
 
-/*
+
 	// 업무 수정
 	@PostMapping("/updateTask")
-	public String updateTask(@RequestBody BoardRequestVO brVO) {
-		BoardVO boardVO = brVO.getBoardVO();
-		boardService.updateBoard(boardVO);
-		
-		TaskVO taskVO = brVO.getTaskVO();
-		taskVO.setPrjBoardId(boardVO.getPrjBoardId());
-		boardService.updateTask(taskVO);
-		
-		List<TaskVO> managerList = brVO.getPrjManager();
-		
-		
-		return "z";
+	@ResponseBody
+	public int updateTask(@RequestBody BoardRequestVO brVO) {
+    	// 게시글 수정
+    	BoardVO boardVO = brVO.getBoardVO();
+    	boardService.updateBoard(brVO.getBoardVO());
+    	// 상위 업무 수정
+    	TaskVO taskVO = brVO.getTaskVO();
+    	taskVO.setPrjBoardId(boardVO.getPrjBoardId());
+    	boardService.updateTask(taskVO);
+    	
+    	// 상위 업무 담당자 수정 (삭제 후 등록)
+    	List<TaskVO> managerList = brVO.getPrjManager();
+    	//해당 업무의 담당자 전체 삭제
+    	boardService.deleteManagerList(managerList.get(0));
+    	//수정된 업무의 담당자 등록
+    	if(managerList != null) {
+    		for(int i=0; i < managerList.size(); i++) {
+    			TaskVO taskManager = managerList.get(i);
+    			
+    			boardService.insertTaskManager(taskManager);
+    		}
+    	}
+    	
+    	// 하위 업무 수정
+    	List<TaskVO> taskList = brVO.getSubTask();
+    	List<TaskVO> subManagerList = brVO.getSubManager();
+    	if(taskList != null){
+    		TaskVO subtaskVO ;
+	    	for(int i=0; i < taskList.size(); i++) {
+	    		BoardVO subBoardVO = new BoardVO();
+	    		subtaskVO = taskList.get(i);
+	    		
+	    		
+	    		//수정 중 --> 프로시저 사용..?!
+	    		if(subtaskVO.getPrjBoardId() == null) {
+	    			// 하위 업무 - 게시글 테이블 저장
+		    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
+		    		subBoardVO.setMemberId(boardVO.getMemberId());
+		    		subBoardVO.setProjectId(boardVO.getProjectId());
+		    		subBoardVO.setBoardType(boardVO.getBoardType());
+		    		subBoardVO.setInspYn("E2");
+		    		boardService.insertBoard(subBoardVO);
+		    		
+		    		// 하위 업무 - 업무 테이블 저장
+		    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
+		    		subtaskVO.setHighTaskId(taskVO.getTaskId());
+		    		boardService.insertTask(subtaskVO);
+	    		} else {
+	    			// 하위 업무 - 게시글 테이블 수정
+		    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
+		    		subBoardVO.setProjectId(subtaskVO.getProjectId());
+		    		subBoardVO.setInspYn("E2");
+		    		boardService.updateBoard(subBoardVO);
+		    		
+		    		// 하위 업무 - 업무 테이블 수정
+		    		boardService.updateTask(subtaskVO);
+		    		
+		    		//해당 하위 업무의 담당자 전체 삭제
+		    		boardService.deleteManagerList(subManagerList.get(i));
+	    		}
+	    	}
+    	}
+    	//하위 업무 삭제
+    	List<TaskVO> deleteSubtask = brVO.getDeleteSubtask();
+    	if(deleteSubtask != null) {
+    		for(int i=0; i<deleteSubtask.size(); i++) {
+    			boardService.deleteTask(deleteSubtask.get(i));
+    		}
+    	}
+    	
+    	//하위 업무 담당자 수정 (새 등록)
+    	if(subManagerList != null) {
+    		for(int i=0; i<subManagerList.size(); i++) {
+    			boardService.insertTaskManager(subManagerList.get(i));
+    		}
+    	}
+    	return boardVO.getProjectId(); 
 	}
-*/	
+
 	// 업무 삭제
 	@PostMapping("/deleteTask")
 	@ResponseBody

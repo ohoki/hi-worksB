@@ -854,7 +854,7 @@
 			border: 1px solid var(--color-light-blue);
 		}
 		
-		.deleteManager {
+		.deleteManager, .deleteSubtask {
 			cursor: pointer;	
 		}
 		
@@ -1987,7 +1987,7 @@
 						</div>
 						
 						<!-- 업무 담당자 -->
-						<div class="board-taskManager">
+						<div class="board-taskManager" style="margin-bottom: 20px;">
 							<span class="add-manager-btn">담당자 추가</span>
 						</div>
 						<!-- 업무 담당자 끝 -->
@@ -2132,6 +2132,7 @@
 	    	</ul>
 	    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
 			<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
+			<input type="hidden" value="" name="prjBoardId" id="prjBoardId">
 		</div>
 		<!-- 일반 게시글 작성 폼 -->
 		<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none d-b" name="board">
@@ -2207,8 +2208,8 @@
 					</div>
 					
 					<!-- 업무 담당자 -->
-					<div class="board-taskManager">
-						<div class="highManagerList"></div>
+					<div class="board-taskManager" style="margin-bottom: 20px;">
+						
 					</div>
 					<!-- 업무 담당자 끝 -->
 					
@@ -2231,7 +2232,7 @@
 				<input type="hidden" name="boardType" value="C5">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	             	<button type="reset" class="modal-footer-btn">임시저장</button>
-	             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">등록</button>
+	             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
 	             	<div><a href="#">임시저장 게시글 보기</a></div>
 			</div>
 		</form>
@@ -2337,6 +2338,7 @@
 		// 글 수정 폼
 		$('p[data-type="update"]').on('click', function(e){
 			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let prjBoardIdInput = $('#prjBoardId');
 			let prjBoardId = boardContainer.data('id');
 			let boardType = boardContainer.data('type');
 			let prjId = '${projectInfo.projectId}';
@@ -2345,6 +2347,8 @@
 			let sche = boardUpdateModal.find('form[name="sche"]');
 			let vote = boardUpdateModal.find('form[name="vote"]');
 			let task = boardUpdateModal.find('form[name="task"]');
+			
+			prjBoardIdInput.val(prjBoardId);
 			
 			if(boardType == 'C5') {
 				
@@ -2372,7 +2376,7 @@
 					data : {'prjBoardId' : prjBoardId},
 					success : function(taskData) {
 						let highTask = taskData.highTask[0];
-						
+
 						// 폼에 데이터 출력하기!!!!!!!!!!!!
 						$(task).find('[name=prjBoardTitle]').val(highTask.prjBoardTitle);
 						// state 값 - radio
@@ -2495,6 +2499,7 @@
 	        				let subTaskManagerBox = subtaskForm.find('.board-taskManager');
 	        				let subManagers = taskData.subManager[taskData.subTask[i].prjBoardId];
 	        				
+	        				subtaskForm.attr('name', taskData.subTask[i].prjBoardId);
 	        				subtaskForm.find('input[name=prjBoardTitle]').val(taskData.subTask[i].prjBoardTitle);
 	        				subtaskForm.find('input[name=endDate]').val(taskData.subTask[i].endDate != null ? taskData.subTask[i].endDate : '');
 	        				subtaskForm.find('.select-state').find('option[value=' + taskData.subTask[i].state + ']').prop('selected', true);
@@ -2553,6 +2558,91 @@
 			managerSpan.parent().find('option[value=' + prjParticirId +']').prop('disabled', false);
 			managerSpan.remove();
 			
+		});
+		
+		//업무 수정
+		// 업무 등록하기
+		$('#boardUpdateModal button[name="btnAddTask"]').on('click', function(){
+			let data={}
+			let prjBoardId = $('#prjBoardId').val();
+			let prjBoardTitle = $('#boardUpdateModal form[name="task"]').find('[name=prjBoardTitle]').val();
+			let prjBoardSubject = editor6.getData();
+			let state = $('#boardUpdateModal form[name="task"]').find('[name=state]:checked').val();
+			let inspYn = $('#boardUpdateModal form[name="task"]').find('[name=inspYn]').val();
+			let startDate = $('#boardUpdateModal form[name="task"]').find('[name=startDate]').val();
+			let endDate = $('#boardUpdateModal form[name="task"]').find('[name=endDate]').val();
+			let priority = $('#boardUpdateModal form[name="task"]').find('[name=priority]').val();
+			let processivity = $('#boardUpdateModal form[name="task"]').find('[name=processivity]').val();
+			let boardType = 'C8';
+			let memberId = $('#memberId').val();
+			let projectId = $('#projectId').val();
+			
+			
+			let boardVO = {prjBoardId, prjBoardTitle, prjBoardSubject, inspYn, projectId, boardType, memberId};
+			let taskVO = {state, startDate, endDate, priority, processivity};
+			
+			// 상위 업무 담당자 리스트
+			let prjManager =[];
+			$('#boardUpdateModal .board-taskManager').eq(0).find('span:not(:eq(0))').each(function(index, item){
+		        let prjParticirId = $(item).attr('name');
+		        prjManager.push({prjBoardId, prjParticirId});
+		    });
+			
+			//삭제할 하위업무
+			let deleteSubtask = [];
+			$('#boardUpdateModal .sub-task-manager input[type="hidden"]').each(function(index, item) {
+				prjBoardId = Number($(item).val());
+				console.log($(item));
+				console.log(prjBoardId);
+				deleteSubtask.push({prjBoardId});
+			});
+			
+			// 하위 업무
+			let subTask = [];
+			let subManager = [];
+			$('#boardUpdateModal .task-add').each(function(index,item){
+				prjBoardId = $(item).attr('name');
+				let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
+				// 하위 업무 리스트
+				if (prjBoardTitle !== "") {
+	                state = $(item).find('[name=state]').val();
+	                let endDate = $(item).find('[name=endDate]').val();
+	                let priority = $(item).find('[name=priority]').val();
+	                let managerList = $(item).find('.board-taskManager').find('span:not(:eq(0))');
+	                
+	                subTask.push({ prjBoardId, prjBoardTitle, state, endDate, priority });
+	            	
+	            	// 하위 업무 담당자
+					$(managerList).each(function(idx, manager) {
+						let prjParticirId = $(manager).attr('name');
+						subManager.push({prjBoardId, prjParticirId});
+					});               
+	            }
+			});
+			
+			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager, deleteSubtask}));
+			$.ajax({
+				url:'${pageContext.request.contextPath}/updateTask',
+				type:'POST',
+				data:JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager, deleteSubtask}),
+				contentType:'application/json',
+				success:function(data){
+					alert('정상적으로 수정되었습니다.');
+					location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + data;
+				},error: function(reject) {
+					console.log(reject);
+				}
+			});
+		});
+		// 업무 수정 종료
+		
+		$(document).on('click', '.deleteSubtask' , function(e) {
+			let subtask = $(e.currentTarget).closest('.task-add');
+			let prjBoardId = subtask.attr('name');
+			let subtaskBox = $(e.currentTarget).closest('.sub-task-manager');
+			
+			subtaskBox.append('<input type="hidden" value=' + prjBoardId + '>');
+			subtask.remove();
 		});
 	</script>
 	<!-- 게시글 수정 종료 -->
@@ -2964,6 +3054,7 @@
             ); // end append                            
         });                                           
 	</script>
-	<!-- 게시글 작성 종료 -->
+	
+<!-- 게시글 작성 종료 -->
 </body>
 </html>
