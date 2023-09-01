@@ -181,7 +181,7 @@ tr:hover{
 			<tbody class="taskList" >
 				<c:forEach items="${taskList }" var="task">
 					<tr data-id="${task.prjBoardId}" class="highTask taskTr">
-						<td><button class="subTaskBtn">버튼</button></td>
+						<td class="taskBtn"></td>
 			            <td class="prjBoardTitle">${task.prjBoardTitle}</td>
 			            <td class="state">${task.stateName}</td>
 			            <td class="priority">${task.priorityName}</td>
@@ -414,6 +414,12 @@ tr:hover{
 	                
 					// 하위 업무
 					let subTasks = taskData.subTask;
+					
+					// 하위업무 있을때 버튼
+					if(subTasks.length > 0){
+						let taskBtn = taskInfo.find('.taskBtn');
+						taskBtn.append('<button class="subTaskBtn">버튼</button>');
+					}
 					
 					for (let j = 0; j < subTasks.length; j++) {
 						let subTask = subTasks[j];
@@ -755,6 +761,7 @@ tr:hover{
 				type: 'POST',
 				data: {'prjBoardId' : prjBoardId},
 				success: function(response){
+					console.log(response)
 					alert("삭제되었습니다.");
 					location.href='${pageContext.request.contextPath}/projectTask?projectId=${projectInfo.projectId}';
 				},

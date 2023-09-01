@@ -35,4 +35,8 @@ PRJ_BOARD_ID NOT NULL NUMBER
 	private int listId;
 	private String listContent;
 	private int prjParticirId;
+	
+	private String prjBoardTitle;
+	private String prjBoardSubject;
+	private String inspYn;
 }

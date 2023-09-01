@@ -147,7 +147,27 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteTask(TaskVO taskVO) {
 		return boardMapper.deleteTask(taskVO);
 	}
-  
+	
+	// 투표글 삭제
+	@Override
+	public int deleteVote(VoteVO voteVO) {
+		return boardMapper.deleteVote(voteVO);
+	}
+	// 일반글 삭제
+	@Override
+	public int deleteBoard(BoardVO boardVO) {
+		return boardMapper.deleteBoard(boardVO);
+	}
+	// 투표한 인원수
+	@Override
+	public int countVoteParticir(VoteVO voteVO) {
+		return boardMapper.countVoteParticir(voteVO);
+	}
+	@Override
+	public int updateVote(VoteVO voteVO) {
+		return boardMapper.updateVote(voteVO);
+	}
+
 	@Override
 	public int updateBoard(BoardVO boardVO) {
 		return boardMapper.updateBoard(boardVO);
@@ -226,6 +246,12 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO getScheBoardInfo(int prjBoardId) {
 		return boardMapper.getScheBoardInfo(prjBoardId);
 	}
+
+	
+
+	
+
+	
 
 	
 

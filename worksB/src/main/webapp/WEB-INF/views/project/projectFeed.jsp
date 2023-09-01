@@ -1438,7 +1438,58 @@
 					$(task).addClass('d-b');
 				}
 			}else if(type == 'delete') {
-				
+				let check = confirm("삭제하시겠습니까?");
+				if(boardType == 'C5'){
+					if(check){
+						$.ajax({
+							url: '${pageContext.request.contextPath}/deleteBoard',
+							type: 'POST',
+							data: {'prjBoardId' : boardId},
+							success: function(response){
+								alert("삭제되었습니다.");
+								location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + prjId;
+							},
+							error: function(error){
+								alert("삭제에 실패했습니다.");
+								console.log(error);
+							}
+						});
+					}
+				}else if(boardType == 'C6'){
+					
+				}else if(boardType == 'C7'){
+					if(check){
+						$.ajax({
+							url: '${pageContext.request.contextPath}/deleteVote',
+							type: 'POST',
+							data: {'prjBoardId' : boardId},
+							success: function(response){
+								alert("삭제되었습니다.");
+								location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + prjId;
+							},
+							error: function(error){
+								alert("삭제에 실패했습니다.");
+								console.log(error);
+							}
+						});
+					}
+				}else if(boardType == 'C8'){
+					if(check){
+						$.ajax({
+							url: '${pageContext.request.contextPath}/deleteTask',
+							type: 'POST',
+							data: {'prjBoardId' : boardId},
+							success: function(response){
+								alert("삭제되었습니다.");
+								location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + prjId;
+							},
+							error: function(error){
+								alert("삭제에 실패했습니다.");
+								console.log(error);
+							}
+						});
+					}
+				}
 			}
 		});
 	</script>
@@ -2299,7 +2350,20 @@
 				
 			}else if(boardType == 'C6') {
 				
-			}else if(boardType == 'C7') {
+			}else if(boardType == 'C7') { //투표 게시글 수정 양식
+				$.ajax({
+					url: '${pageContext.request.contextPath}/getVoteInfo',
+					type: 'GET',
+					data: {'prjBoardId' : prjBoardId},
+					success: function(voteData){
+						console.log(voteData)
+						
+					},
+					error: function(reject){
+						console.log(reject);
+					}
+						
+				});
 				
 			}else if(boardType == 'C8') { //업무 게시글 수정 양식
 				$.ajax({
