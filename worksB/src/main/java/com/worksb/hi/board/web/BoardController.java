@@ -189,9 +189,12 @@ public class BoardController {
 	// 투표 조회
 	@GetMapping("getVoteInfo")
 	@ResponseBody
-	public Map<String, List<VoteVO>> getVoteInfo(VoteVO voteVO) {
+	public Map<String, Object> getVoteInfo(VoteVO voteVO) {
 		
-        Map<String, List<VoteVO>> resultMap = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
+        
+        int prjBoardId = voteVO.getPrjBoardId();
+        BoardVO boardInfo = boardService.getBoardInfo(prjBoardId);
         
         // 투표글
         List<VoteVO> voteInfo = boardService.getVoteInfo(voteVO);
@@ -203,6 +206,7 @@ public class BoardController {
         resultMap.put("voteInfo", voteInfo);
         resultMap.put("voteList", voteList);
         resultMap.put("voteListMine", voteListMine);
+        resultMap.put("boardInfo", boardInfo);
         
         return resultMap;
 	}
@@ -362,30 +366,45 @@ public class BoardController {
 		return boardService.deleteVote(voteVO);
 	}
 	
-	/* 투표참여자 있으면 수정안됨!! 없으면 수정가능 투표항목수정은 다지우고 새로 추가~~
 	// 투표 수정
 	@PostMapping("/updateVote")
-	@ResponseBody
-	public String update(VoteVO voteVO) {
-		
-		int countVoteParticir = boardService.countVoteParticir(voteVO);
-		
-		if(countVoteParticir > 0) {
-			return 
-		}else {
-			//투표항목은 다지우고 새로 insert하기~~~~
+	public String updateVote(VoteVO voteVO, int projectId) {
 			
-			boardService.updateVote(voteVO);
+        	voteVO.setAnonyVote(voteVO.getAnonyVote() == null ? "A2" : voteVO.getAnonyVote());
+        	voteVO.setCompnoVote(voteVO.getCompnoVote() == null ? "A2" : voteVO.getCompnoVote());
+        	voteVO.setResultYn(voteVO.getResultYn() == null ? "A2" : voteVO.getResultYn());
 			
+        	boardService.updateVote(voteVO);
+        	
 			String[] listContentArr = voteVO.getListContent().split(",");
 			for(int i=0; i<listContentArr.length; i++) {
 				voteVO.setListContent(listContentArr[i]);
 				boardService.insertVoteList(voteVO);
 			}
-			return
+			return "redirect:/projectFeed?projectId=" + projectId;
 		}
+	
+	// 투표 인원수
+	@GetMapping("/countVoteParticir")
+	@ResponseBody
+	public int countVoteParticir(VoteVO voteVO) {
+		return boardService.countVoteParticir(voteVO);
 	}
-	*/
+	
+	// 일반글 수정
+	@PostMapping("/updateBoard")
+	public String updateBoard(BoardVO boardVO) {
+		boardService.updateBoard(boardVO);
+		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+	}
+	
+	// 게시글 정보
+	@GetMapping("/getBoardInfo")
+	@ResponseBody
+	public BoardVO getBoardInfo(int prjBoardId) {
+		return boardService.getBoardInfo(prjBoardId);
+	}
+	
 	// 일반글 삭제
 	@PostMapping("/deleteBoard")
 	@ResponseBody

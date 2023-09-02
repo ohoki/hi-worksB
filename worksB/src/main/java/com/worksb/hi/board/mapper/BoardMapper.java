@@ -46,11 +46,13 @@ public interface BoardMapper {
 	
 	// 업무 수정
 	public int updateTask(TaskVO taskVO);
+	// 일반글 수정
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
 	public int deleteManagerList(TaskVO taskVO); // 업무게시글의의 담당자 전체 리스트 삭제
 	
-	
+	// 게시글 정보
+	public BoardVO getBoardInfo(int prjBoardId);
 	
 	
 	

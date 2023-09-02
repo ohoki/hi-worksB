@@ -1433,7 +1433,25 @@
 				} else if(boardType == 'C6') {
 					$(sche).addClass('d-b');
 				} else if(boardType == 'C7') {
-					$(vote).addClass('d-b');
+					$.ajax({
+						url: '${pageContext.request.contextPath}/countVoteParticir',
+						type: 'GET',
+						data: {'prjBoardId' : boardId},
+						success: function(data){
+					console.log(data);
+							if(data > 0){
+								alert("진행 중인 투표는 수정할 수 없습니다.");
+								$('#boardUpdateModal').css('display', 'none');
+								$('.modal-backdrop').css('display', 'none');
+							}else{
+								visibleDiv.removeClass('d-b');
+								$(vote).addClass('d-b');
+							}
+						},
+						error: function(error){
+							console.log(error);
+						}
+					});
 				} else if(boardType == 'C8') {
 					$(task).addClass('d-b');
 				}
@@ -2135,7 +2153,7 @@
 			<input type="hidden" value="" name="prjBoardId" id="prjBoardId">
 		</div>
 		<!-- 일반 게시글 작성 폼 -->
-		<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none d-b" name="board">
+		<form action="${pageContext.request.contextPath }/updateBoard" method="post" class="dis-none d-b" name="board">
 			<div class="insert-board-area">
 				<div class="board-form" >
 					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -2281,7 +2299,7 @@
 		</form>
 	        
 		<!-- 투표 작성 폼!!! -->
-		<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none" id="vote" name="vote">
+		<form action="${pageContext.request.contextPath }/updateVote" method="post" class="dis-none" id="vote" name="vote">
 			<div class="insert-board-area">
 				<div class="board-form" >
 					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -2351,7 +2369,20 @@
 			prjBoardIdInput.val(prjBoardId);
 			
 			if(boardType == 'C5') {
-				
+				$.ajax({
+					url: '${pageContext.request.contextPath}/getBoardInfo',
+					type: 'GET',
+					data: {'prjBoardId' : prjBoardId},
+					success: function(boardData){
+						$(board).find('[name=prjBoardTitle]').val(boardData.prjBoardTitle);
+						editor5.setData(boardData.prjBoardSubject);
+						$("select[name='inspYn']").val(boardData.inspYn);
+						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
+					},
+					error: function(reject){
+						console.log(reject);
+					}
+				});
 			}else if(boardType == 'C6') {
 				
 			}else if(boardType == 'C7') { //투표 게시글 수정 양식
@@ -2360,7 +2391,29 @@
 					type: 'GET',
 					data: {'prjBoardId' : prjBoardId},
 					success: function(voteData){
-						console.log(voteData)
+						let boardInfo = voteData.boardInfo;
+						let voteInfo = voteData.voteInfo[0];
+						
+						$(vote).find('[name=prjBoardTitle]').val(boardInfo.prjBoardTitle);
+						
+						editor8.setData(boardInfo.prjBoardSubject);
+						
+						$("input[name='anonyVote']").prop('checked', voteInfo.anonyVote == "A1" ? true : false);
+						$("input[name='compnoVote']").prop('checked', voteInfo.compnoVote == "A1" ? true : false);
+						$("input[name='resultYn']").prop('checked', voteInfo.resultYn == "A1" ? true : false);
+						
+						$(vote).find('[name=endDate]').val(voteInfo.endDate);
+						
+						$("select[name='inspYn']").val(voteInfo.inspYn);
+						
+						// 투표 항목
+						let voteList = $(vote).find('.board-vote-list');
+						voteList.empty();
+						for(let i=0; i<voteData.voteList.length; i++){
+							voteList.append('<div><input type="text" name="listContent" value="' + voteData.voteList[i].listContent + '"><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>');
+						}
+						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
+						
 						
 					},
 					error: function(reject){
@@ -3048,11 +3101,14 @@
 		
 		
 		// 투표 항목 추가하기           
-        $('#boardInsertModal .add-vote-list-btn').on('click', function () {                                        
-            $('#boardInsertModal .board-vote-list').append (                        
+        $('.add-vote-list-btn').on('click', function () {                                        
+            $('.board-vote-list').append (                        
                 '<input type="text" name="listContent" placeholder="내용을 입력해주세요.">'                    
             ); // end append                            
-        });                                           
+        });        
+		$('.board-vote-list').on('click', '.deleteListContent', function() {
+			$(this).parent().remove();
+		})
 	</script>
 	
 <!-- 게시글 작성 종료 -->
