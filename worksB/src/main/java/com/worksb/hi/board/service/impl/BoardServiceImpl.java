@@ -151,8 +151,11 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	
-	
-	
+	// 게시글 정보
+	@Override
+	public BoardVO getBoardInfo(int prjBoardId) {
+		return boardMapper.getBoardInfo(prjBoardId);
+	}
 	
   // 업무삭제
 	@Override
@@ -179,7 +182,8 @@ public class BoardServiceImpl implements BoardService {
 	public int updateVote(VoteVO voteVO) {
 		return boardMapper.updateVote(voteVO);
 	}
-
+	
+	//일반글 수정
 	@Override
 	public int updateBoard(BoardVO boardVO) {
 		return boardMapper.updateBoard(boardVO);
@@ -258,6 +262,8 @@ public class BoardServiceImpl implements BoardService {
 	public BoardVO getScheBoardInfo(int prjBoardId) {
 		return boardMapper.getScheBoardInfo(prjBoardId);
 	}
+
+	
 
 	
 

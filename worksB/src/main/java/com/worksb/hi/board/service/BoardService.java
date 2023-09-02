@@ -40,6 +40,7 @@ public interface BoardService {
 	
 	// 업무 수정
 	public int updateTask(TaskVO taskVO);
+	// 일반글 수정
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
   
@@ -51,7 +52,8 @@ public interface BoardService {
 	
 	
 	
-	
+	// 게시글 정보
+	public BoardVO getBoardInfo(int prjBoardId);
 	
   // 업무글 삭제
 	public int deleteTask(TaskVO taskVO);

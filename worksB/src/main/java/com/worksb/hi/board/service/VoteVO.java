@@ -39,4 +39,5 @@ PRJ_BOARD_ID NOT NULL NUMBER
 	private String prjBoardTitle;
 	private String prjBoardSubject;
 	private String inspYn;
+	private int projectId;
 }

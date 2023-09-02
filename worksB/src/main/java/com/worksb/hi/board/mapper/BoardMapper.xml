@@ -421,7 +421,15 @@
 	
 	
 	
-	
+	<!-- 게시글 정보 -->
+	<select id="getBoardInfo" resultType="BoardVO">
+		SELECT	project_id,
+				prj_board_title,
+				prj_board_subject,
+				insp_yn
+		FROM	prj_board
+		WHERE	prj_board_id = #{prjBoardId}
+	</select>
 	
 	<!-- 업무 삭제 (상위,하위,담당자) -->
 	<insert id="deleteTask" statementType="CALLABLE" parameterType="TaskVO" >
@@ -440,7 +448,7 @@
 				IN (
 						SELECT	list_id
 						FROM	vote_list
-						WHERE	prj_board_id = #{prj_board_id}
+						WHERE	prj_board_id = #{prjBoardId}
 					)
 	</select>
 	
