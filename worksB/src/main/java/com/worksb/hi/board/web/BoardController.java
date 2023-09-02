@@ -32,6 +32,8 @@ import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 // 이진 0818 게시판관리 - 게시글,업무,일정,투표 등록
 
 @Controller
@@ -480,7 +482,20 @@ public class BoardController {
 		return boardService.getVoteParticir(particir);
 	} 
 	
+    //업무 정보 변경
+    @PostMapping("/updateTaskInfo")
+    @ResponseBody
+    public int updateTaskInfo(AllTaskBoardVO taskVO) {
+    	return boardService.updateTaskInfo(taskVO);
+    }
 	
+    //북마크 정보 가져오기
+    @PostMapping("/getBookmarkByMe")
+    @ResponseBody
+    public List<BoardVO> getBookmarkByMe(ProjectVO projectInfo) {
+    	return boardService.getBookmarkList(projectInfo);
+    }
+    
 	
 	
 	

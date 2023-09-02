@@ -90,7 +90,9 @@
 		}
 		
 		.pin-board-icon {
-			margin: 0 10px;
+		    padding: 10px;
+		    padding-left: 20px;
+		    cursor: pointer;
 		}
 		
 		.board-container{
@@ -410,6 +412,10 @@
 			color: white;
 			font-weight: var(--weight-bold);
 			line-height: 10px;
+		}
+		
+		div[data-state] button.active{
+			background-color: var(--color-dark-red);
 		}
 		
 		div[data-processivity] {
@@ -840,8 +846,8 @@
 		    display: flex;
 			align-items: center;
 			justify-content: flex-start;
-			padding: 10px 0;
 			background-color: rgba(240, 240, 240, 0.1);
+			padding: 5px 0;
 			margin: 5px 0;
 			border-radius: 5px;
 			border: 1px solid var(--color-dark-beigie);
@@ -1423,8 +1429,8 @@
 						<c:if test="${bookmarkList ne null}">
 							<c:forEach items="${bookmarkList }" var="bookmark">
 								<li>
+									<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
 									<a href="#${bookmark.boardType }${bookmark.prjBoardId}" style="width: 100%">
-										<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
 										<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/${bookmark.boardIconName}" alt="게시글 아이콘">
 										<!-- <img alt="게시글 아이콘" src=""> -->
 										<span>${bookmark.prjBoardTitle }</span>									
@@ -1470,8 +1476,6 @@
 			<div id="voteParticirs"></div>
 		</div>			
 	</div>
-	
-	
 	
 	<!-- 모달 페이지 -->
 	<script >
@@ -1966,7 +1970,7 @@
 				        	startDate.parent().remove();
 				        }
 		                // 진행상태 버튼 활성화
-		                state.children('button[value=' + highTask.state + ']' ).css('background-color', 'var(--color-dark-red)');
+		                state.children('button[value=' + highTask.state + ']' ).addClass('active');
 		                //진척도
 		                processivityValueDiv.css('width', highTask.processivity + "%");
 		                processivityValue.text(highTask.processivity + "%");		                
@@ -2023,6 +2027,53 @@
 		
 	});
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//북마크
 	$('span[data-bookmark]').on('click', function(e) {
 		let boardContainer = $(e.currentTarget).closest('.board-container');
@@ -2217,6 +2268,92 @@
 					console.log(reject);
 				}
 			});
+		}
+	});
+	
+	//업무 게시글 진행상태 변경
+	$('div[data-state] button').on('click', function(e) {
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let targetBtn = $(e.currentTarget);
+		let prjBoardId = boardContainer.data('id');
+		let state = targetBtn.val();
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'state' : state},
+			success : function(result) {
+				//업무
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : prjBoardId},
+					success : function(taskData) {
+		                let state = boardContainer.find('div[data-state]');
+		                let activeBtn = state.find('.active');
+		                // 진행상태 버튼 활성화
+		                activeBtn.removeClass('active');
+		                state.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+				    }, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	
+	$(document).on('click', '.bookmark-board-contets .pin-board-icon', function(e) {
+		let prjBoardId = $(e.currentTarget).next().attr('href').substring(3);
+		let boardType = $(e.currentTarget).next().attr('href').substring(1,3);
+
+		if(confirm('북마크를 해제 하시겠습니까?')) {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/deleteBookmark',
+				type : 'POST',
+				data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}', 'prjBoardId': prjBoardId, 'boardType':boardType},
+				success : function(pinProjects) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/getBookmarkByMe',
+						type : 'POST',
+						data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+						success : function(pinProjects) {
+							let bookmarkUl = $('.bookmark-board-contets ul');
+							console.log(pinProjects);
+							bookmarkUl.empty();
+							
+							if(pinProjects.length != 0) {
+								for(let i=0; i<pinProjects.length; i++) {
+									let pinProject = pinProjects[i];
+									
+									let bookmarkList = `
+										<li>
+											<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+											<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+												<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+												<span>\${pinProject.prjBoardTitle}</span>									
+											</a>
+										</li>`;
+										
+									bookmarkUl.append(bookmarkList);	
+								}
+							} else {
+								let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+								
+								bookmarkUl.append(noBookmark);
+							}
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					})
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
 		}
 	});
 	</script>
@@ -3448,7 +3585,6 @@
 		
 		
 	</script>
-	
-<!-- 게시글 작성 종료 -->
+	<!-- 게시글 작성 종료 -->
 </body>
 </html>
