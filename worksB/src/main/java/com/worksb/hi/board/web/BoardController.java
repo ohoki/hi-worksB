@@ -466,7 +466,12 @@ public class BoardController {
 		return boardService.getManager(allTaskBoardVO);
 	} 
 	
-	
+	//게시글 별 일정 참여자 리스트 출력
+    @GetMapping("getParticir")
+    @ResponseBody
+    public List<ScheParticirVO> getParticir(ScheParticirVO particir) {
+		return boardService.getParticir(particir);
+	} 
 	
 	
 	

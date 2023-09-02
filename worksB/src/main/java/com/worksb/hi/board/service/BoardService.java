@@ -92,7 +92,8 @@ public interface BoardService {
 	//내가 선택한 투표 리스트
 	public List<VoteVO> getVoteListByMember(VoteVO voteVO);
 
-	
+	//게시글 별 일정 참여자 리스트 출력
+	public List<ScheParticirVO> getParticir(ScheParticirVO particir);
 	
 	
 	
