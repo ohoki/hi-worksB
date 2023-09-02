@@ -894,6 +894,20 @@
 			margin: 10px auto;
 		}
 		
+		.board-comment {
+			padding: 5px 40px;
+			border-top: 1px solid var(--color-dark-beigie);	
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			color: var(--color-dark-grey);
+			
+		}
+		
+		.board-comment img {
+			margin: 10px 20px 10px 0;
+		}
+			
 		.m-bt {
 			margin-bottom: 10px;
 		}
@@ -989,30 +1003,33 @@
 								<span class="board-footer-info">좋아요 14</span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
+						<%-- <c:if test="ㄴㅇㄹ"> --%>
+						<div>
+							<div style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
 								댓글 더보기
 							</div>
 							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
+							<div class="board-comment">
+								<div class="d-flex">
+									<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
+										<div style="margin: 5px 0;">
+											<span style="font-weight: var(--weight-bold);">최영호</span>
+											<span>2023-09-02 20:00</span>
 										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
+										<div style="margin: 5px 0;">
+											안녕하세요~~
+										</div>
+									</div>								
 								</div>
+								<div>
+									<span style="margin-right: 10px;">수정</span>
+									<span>삭제</span>
+								</div>
+							</div>
+						</div>
 							<!-- 여기까지 -->	
-						</c:if>
+						<%-- </c:if> --%>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -1443,7 +1460,7 @@
 		</div>			
 	</div>
 	
-	<!-- 일정 참여자 모달 -->
+	<!-- 투표 참여자 모달 -->
 	<div id="voteParticr-modal">
 		<div class="voteParticr-modal-content">
 			<div class="d-flex voteParticr-modal-title">
@@ -1608,62 +1625,72 @@
 		//투표 참여자
 		$('.vote-particir').on('click', function(e) {
 			let boardId = $(e.currentTarget).closest('.board-container').data('id');
+			let anonyVoteText = $(e.currentTarget).closest('.board-container').find('.anonyVote').text();
 			let x = e.clientX + 30;
 			let y = e.clientY;
+			let voteParticirDiv = $('#voteParticirs');
 			
 			$('.voteParticr-modal-content').css('left', x + 'px');
 			$('.voteParticr-modal-content').css('top', y + 'px');
 			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/getVoteParticir',
-				type : 'GET',
-				data : {'prjBoardId' : boardId},
-				success : function(voteParticir) {
-					let voteParticirDiv = $('#voteParticirs');
-					voteParticirDiv.empty();
-					
-					if(voteParticir.length != 0) {
-						//멤버 리스트 태그 만들기
-						for(let i=0; i<voteParticir.length; i++) {
-							//div태그
-							let employeeDiv = document.createElement('div');
-							employeeDiv.classList.add('flex');
-							employeeDiv.classList.add('employee');
-							//이미지 태그
-							let employeeProfile = document.createElement('img');
-							employeeProfile.setAttribute('alt', '회원사진');
-							employeeProfile.classList.add('employee-img');
-							if(voteParticir[i].realProfilePath != null) {
-								employeeProfile.src = "${pageContext.request.contextPath}/images/"+voteParticir[i].realProfilePath;
-							}else {
-								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
-							}
-							//스팬 태그
-							let span = document.createElement('span');
-							span.innerText = voteParticir[i].memberName;
-							//히든 인풋 태그 (멤버id값)
-							let input = document.createElement('input');
-							input.setAttribute('type', 'hidden');
-							input.value = voteParticir[i].memberId;
-							//태그 삽입
-							employeeDiv.append(employeeProfile);
-							employeeDiv.append(span);
-							employeeDiv.append(input);
-							
-							voteParticirDiv.append(employeeDiv);
-						}
-					} else {
-						let noParticirDiv = document.createElement('div');
-						noParticirDiv.classList.add('noManager');
-						noParticirDiv.innerText = '담당자가 존재하지 않습니다.';
+			voteParticirDiv.empty();
+			
+			if(anonyVoteText != '') {
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getVoteParticir',
+					type : 'GET',
+					data : {'prjBoardId' : boardId},
+					success : function(voteParticir) {
 						
-						voteParticirDiv.append(noManagerDiv);
+						if(voteParticir.length != 0) {
+							//멤버 리스트 태그 만들기
+							for(let i=0; i<voteParticir.length; i++) {
+								//div태그
+								let employeeDiv = document.createElement('div');
+								employeeDiv.classList.add('flex');
+								employeeDiv.classList.add('employee');
+								//이미지 태그
+								let employeeProfile = document.createElement('img');
+								employeeProfile.setAttribute('alt', '회원사진');
+								employeeProfile.classList.add('employee-img');
+								if(voteParticir[i].realProfilePath != null) {
+									employeeProfile.src = "${pageContext.request.contextPath}/images/"+voteParticir[i].realProfilePath;
+								}else {
+									employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+								}
+								//스팬 태그
+								let span = document.createElement('span');
+								span.innerText = voteParticir[i].memberName;
+								//히든 인풋 태그 (멤버id값)
+								let input = document.createElement('input');
+								input.setAttribute('type', 'hidden');
+								input.value = voteParticir[i].memberId;
+								//태그 삽입
+								employeeDiv.append(employeeProfile);
+								employeeDiv.append(span);
+								employeeDiv.append(input);
+								
+								voteParticirDiv.append(employeeDiv);
+							}
+						} else {
+							let noParticirDiv = document.createElement('div');
+							noParticirDiv.classList.add('noManager');
+							noParticirDiv.innerText = '참여자가 존재하지 않습니다.';
+							
+							voteParticirDiv.append(noParticirDiv);
+						}
+					},
+					error : function(reject) {
+						console.log(reject);
 					}
-				},
-				error : function(reject) {
-					console.log(reject);
-				}
-			});
+				});
+			} else {
+				let noPublic = document.createElement('div');
+				noPublic.classList.add('noManager');
+				noPublic.innerText = '익명투표입니다.';
+				
+				voteParticirDiv.append(noPublic);
+			}
 			
 			$('#voteParticr-modal').addClass('d-b');
 		});
