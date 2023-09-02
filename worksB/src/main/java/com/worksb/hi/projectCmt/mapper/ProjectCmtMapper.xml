@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.worksb.hi.projectCmt.mapper.ProjectCmtMapper">
+
+	<select id="projectCmtList" resultType="ProjectCmtVO">
+		SELECT	comment_id,
+				member_id,
+				comment_regdate,
+				comment_content,
+				comment_id,
+				board_type,
+				board_id,
+				del_upd_auth,
+				member_name
+		FROM	prj_comment	c	JOIN member m	ON	c.member_id=m.member_id
+		WHERE	board_type = #{boardType}
+			AND	board_id = #{prjBoardId}
+	</select>
+
+	
+	<!-- 댓글 등록 -->
+	<insert id="insertProjectCmt" parameterType="ProjectCmtVO">
+		<selectKey keyProperty="commentId" resultType="int" order="BEFORE">
+			SELECT	NVL(MAX(comment_id), 0) + 1
+			  FROM	prj_comment	
+		</selectKey>
+			INSERT INTO prj_comment(
+									 comment_id,
+									 member_id,
+									 comment_regdate,
+									 comment_content,
+									 board_type,
+									 board_id,
+									 del_upd_auth
+									)
+							VALUES(
+									#{commentId},
+									#{memberId},
+									sysdate,
+									#{commentContent},
+									#{boardType},
+									#{prjBoardId},
+									'A1'
+							)
+	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateProjectCmt" parameterType="ProjectCmtVO">
+		UPDATE	prj_comment
+			<set>
+				board_content = #{boardContent
+			</set>
+		WHERE	comment_id = #{commentId}
+	</update>
+</mapper>
