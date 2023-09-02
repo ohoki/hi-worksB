@@ -984,7 +984,7 @@
 							<c:if test="${memberInfo.realProfilePath ne null }">
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
-								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
@@ -1100,7 +1100,7 @@
 							<c:if test="${memberInfo.realProfilePath ne null }">
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
-								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
@@ -1214,7 +1214,7 @@
 							<c:if test="${memberInfo.realProfilePath ne null }">
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
-								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
@@ -1339,7 +1339,7 @@
 							<c:if test="${memberInfo.realProfilePath ne null }">
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
-								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
@@ -1438,7 +1438,6 @@
 						type: 'GET',
 						data: {'prjBoardId' : boardId},
 						success: function(data){
-					console.log(data);
 							if(data > 0){
 								alert("진행 중인 투표는 수정할 수 없습니다.");
 								$('#boardUpdateModal').css('display', 'none');
@@ -1709,6 +1708,11 @@
 				});
 			}
 		}
+		//댓글
+		
+		
+		
+		
 	});
 
 	//북마크
@@ -1720,7 +1724,7 @@
 		let memberId = '${memberInfo.memberId}';
 		let bookmark = $(e.currentTarget).data('bookmark');
 		let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
-		
+		console.log(prjBoardId)
 		if(bookmark == 'no') {
 			if(confirm('이 게시글을 북마크 하시겠습니까?')) {
 				$.ajax({
@@ -2368,7 +2372,7 @@
 			
 			prjBoardIdInput.val(prjBoardId);
 			
-			if(boardType == 'C5') {
+			if(boardType == 'C5') { // 일반 게시글 수정 양식
 				$.ajax({
 					url: '${pageContext.request.contextPath}/getBoardInfo',
 					type: 'GET',
@@ -2383,7 +2387,7 @@
 						console.log(reject);
 					}
 				});
-			}else if(boardType == 'C6') {
+			}else if(boardType == 'C6') { // 일정 게시글 수정 양식
 				
 			}else if(boardType == 'C7') { //투표 게시글 수정 양식
 				$.ajax({
@@ -3106,9 +3110,35 @@
                 '<input type="text" name="listContent" placeholder="내용을 입력해주세요.">'                    
             ); // end append                            
         });        
+		// 투표 항목 삭제
 		$('.board-vote-list').on('click', '.deleteListContent', function() {
 			$(this).parent().remove();
 		})
+		
+		// 댓글 등록
+		$('.cmtBtn').on('click', function(e){
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let prjBoardId = boardContainer.data('id');
+			let boardType = boardContainer.data('type');
+			let prjId = '${projectInfo.projectId}';
+			let memberId = '${memberInfo.memberId}';
+			let cmtContent = $('.cmtContent').val();
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/insertProjectCmt',
+				type : 'POST',
+				data : {'memberId': memberId, 'prjBoardId': prjBoardId, 'boardType':boardType, 'commentContent': cmtContent},
+				success : function(success) {
+					
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
+		})
+		
+		
+		
 	</script>
 	
 <!-- 게시글 작성 종료 -->
