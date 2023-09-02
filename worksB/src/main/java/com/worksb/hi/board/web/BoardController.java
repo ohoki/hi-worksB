@@ -416,7 +416,7 @@ public class BoardController {
 	
 	
 	//상단 고정 여부 수정
-	@GetMapping("/updatePin")
+	@PostMapping("/updatePin")
 	public String updatePin(BoardVO boardVO) {
 		boardService.updatePin(boardVO);
 		
@@ -496,6 +496,12 @@ public class BoardController {
     	return boardService.getBookmarkList(projectInfo);
     }
     
+    //상단 고정 정보 가져오기
+    @PostMapping("/getPinBoard")
+    @ResponseBody
+    public List<BoardVO> getPinBoard(ProjectVO projectInfo) {
+    	return projectService.getPinBoardList(projectInfo);
+    }
 	
 	
 	

@@ -929,7 +929,7 @@
 	<!--부드러운 스크롤 효과-->
 	<script>	
 		$(document).ready(function(){
-		    $('a[href^="#"]').on('click',function (e) {
+		    $(document).on('click', 'a[href^="#"]', function (e) {
 		        e.preventDefault();
 
 		        let target = this.hash;
@@ -949,12 +949,12 @@
 			<!-- 상단 고정 게시글 -->
 			<c:if test="${pinBoardInfo.size() ne 0 }">
 				<div class="pin-board">
-					<div class="pin-board-title">상단고정 ${pinBoardInfo.size() }</div>
+					<div class="pin-board-title">상단고정</div>
 					<ul>
 						<c:forEach items="${pinBoardInfo }" var="pinBoard">
 							<li>
+								<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
 								<a href="#${pinBoard.boardType }${pinBoard.prjBoardId}" style="width: 100%">
-									<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
 									<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/${pinBoard.boardIconName}" alt="게시글 아이콘">
 									<!-- <img alt="게시글 아이콘" src=""> -->
 									<span>${pinBoard.prjBoardTitle }</span>
@@ -1716,6 +1716,67 @@
 			$(e.currentTarget).removeClass('d-b');
 		});
 		
+		function updatePinBoard(boardId, pinYn) {
+			$('div[data-boardmodal]').removeClass('d-b');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/updatePin',
+				type : 'POST',
+				data : {'projectId': '${projectInfo.projectId}', 'prjBoardId': boardId, 'pinYn' : pinYn},
+				success : function() {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/getPinBoard',
+						type : 'POST',
+						data : {'projectId': '${projectInfo.projectId}'},
+						success : function(pinProjects) {
+							let pinUl = $('.pin-board ul');
+							pinUl.empty();
+							
+							if(pinProjects.length != 0) {
+								for(let i=0; i<pinProjects.length; i++) {
+									let pinProject = pinProjects[i];
+									
+									let pinList = `
+										<li>
+											<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
+											<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+												<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+												<span>\${pinProject.prjBoardTitle }</span>
+											</a>	
+										</li>`;
+										
+										pinUl.append(pinList);	
+								}
+							} else {
+								let noPin = `<span style="font-size: var(--font-micro);">상단고정 된 게시글이 없습니다.</span>`;
+								
+								pinUl.append(noPin);
+							}
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					})
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});				
+		}
+		
+		$(document).on('click', '.pin-board .pin-board-icon', function(e) {
+			let prjBoardId = $(e.currentTarget).next().attr('href').substring(3);
+			let realBoardId = $(e.currentTarget).next().attr('href');
+			let realBoardModalText = $(realBoardId).find('p[data-type="pinN"]');
+			
+			if(confirm('상단게시글 고정을 해제 하시겠습니까?')) {
+				updatePinBoard(prjBoardId, 'A2');
+				realBoardModalText.text('상단고정');
+				realBoardModalText.data('type', 'pinY');
+			}
+		});
+		
+		
+		
 		$('.board-modal-content p').on('click', function(e) {
 			e.stopPropagation();
 			let boardContainer = $(e.currentTarget).closest('.board-container');
@@ -1731,12 +1792,16 @@
 			let vote = boardUpdateModal.find('[name=vote]');
 			
 			if(type == 'pinY') {
-				if(confirm('상단게시글에 고정하시겠습니까?')) {
-					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A1';						
+				if(confirm('이 게시글을 상단고정 하시겠습니까?')) {
+					updatePinBoard(boardId, 'A1');
+					$(e.currentTarget).text('상단고정 해제');								
+					$(e.currentTarget).data('type', 'pinN');
 				}
 			}else if(type == 'pinN') {
 				if(confirm('상단게시글 고정을 해제 하시겠습니까?')) {
-					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A2';	
+					updatePinBoard(boardId, 'A2');
+					$(e.currentTarget).text('상단고정');								
+					$(e.currentTarget).data('type', 'pinY');
 				}
 			}else if(type == 'update') {
 				visibleDiv.removeClass('d-b');
@@ -2083,15 +2148,50 @@
 		let memberId = '${memberInfo.memberId}';
 		let bookmark = $(e.currentTarget).data('bookmark');
 		let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
-		console.log(prjBoardId)
+		
 		if(bookmark == 'no') {
 			if(confirm('이 게시글을 북마크 하시겠습니까?')) {
 				$.ajax({
 					url : '${pageContext.request.contextPath}/insertBookmark',
 					type : 'POST',
 					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-					success : function(projectId) {
-						location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+					success : function() {
+						$.ajax({
+							url : '${pageContext.request.contextPath}/getBookmarkByMe',
+							type : 'POST',
+							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+							success : function(pinProjects) {
+								let bookmarkUl = $('.bookmark-board-contets ul');
+								
+								bookmarkUl.empty();
+								
+								if(pinProjects.length != 0) {
+									for(let i=0; i<pinProjects.length; i++) {
+										let pinProject = pinProjects[i];
+										
+										let bookmarkList = `
+											<li>
+												<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+												<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+													<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+													<span>\${pinProject.prjBoardTitle}</span>									
+												</a>
+											</li>`;
+											
+										bookmarkUl.append(bookmarkList);	
+									}
+								} else {
+									let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+									
+									bookmarkUl.append(noBookmark);
+								}
+								$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+								$(e.currentTarget).data('bookmark', 'yes');
+							},
+							error : function(reject) {
+								console.log(reject);
+							}
+						})
 					},
 					error : function(reject) {
 						console.log(reject);
@@ -2104,14 +2204,51 @@
 					url : '${pageContext.request.contextPath}/deleteBookmark',
 					type : 'POST',
 					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-					success : function(projectId) {
-						location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+					success : function() {
+						$.ajax({
+							url : '${pageContext.request.contextPath}/getBookmarkByMe',
+							type : 'POST',
+							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+							success : function(pinProjects) {
+								let bookmarkUl = $('.bookmark-board-contets ul');
+								console.log(pinProjects);
+								bookmarkUl.empty();
+								
+								if(pinProjects.length != 0) {
+									for(let i=0; i<pinProjects.length; i++) {
+										let pinProject = pinProjects[i];
+										
+										let bookmarkList = `
+											<li>
+												<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+												<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+													<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+													<span>\${pinProject.prjBoardTitle}</span>									
+												</a>
+											</li>`;
+											
+										bookmarkUl.append(bookmarkList);	
+									}
+								} else {
+									let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+									
+									bookmarkUl.append(noBookmark);
+								}
+								
+								$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg').data('data-bookmark', 'no');
+								$(e.currentTarget).data('bookmark', 'no');
+							},
+							error : function(reject) {
+								console.log(reject);
+							}
+						})
 					},
 					error : function(reject) {
 						console.log(reject);
 					}
-				});	
+				})
 			}
+			
 		}
 	});
 

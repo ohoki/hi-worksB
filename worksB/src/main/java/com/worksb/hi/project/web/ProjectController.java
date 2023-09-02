@@ -202,7 +202,6 @@ public class ProjectController {
         		for(int j=0; j<bookmarkListByMember.size(); j++) {
         			if( boards.get(i).getPrjBoardId() == bookmarkListByMember.get(j).getPrjBoardId()) {
         				boards.get(i).setBookmarkByMember(1);
-        				System.out.println("==========================================================boardId => " + boards.get(i).getPrjBoardId());
         				break;
         			} else {
         				boards.get(i).setBookmarkByMember(0);
