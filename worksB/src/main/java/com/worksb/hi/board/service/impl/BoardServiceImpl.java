@@ -152,6 +152,11 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getParticir(particir);
 	};
 	
+	//게시글 별 투표 참여자 리스트 출력
+	public List<VoteVO> getVoteParticir(VoteVO particir) {
+		return boardMapper.getVoteParticir(particir);
+	} 
+	
 	
 	
 	
