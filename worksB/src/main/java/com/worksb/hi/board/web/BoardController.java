@@ -459,6 +459,13 @@ public class BoardController {
 		boardService.votePaticirDelete(voteVO);
 	}
 	
+	//게시글 별 매니저 리스트 출력
+    @GetMapping("/getManager")
+    @ResponseBody
+    public List<AllTaskBoardVO> getManager(AllTaskBoardVO allTaskBoardVO) {
+		return boardService.getManager(allTaskBoardVO);
+	} 
+	
 	
 	
 	

@@ -284,7 +284,8 @@
 	<!-- 업무 담당자 리스트 조회 -->
 	<select id="getManager" parameterType="int" resultType="allTaskBoardVO">
 	SELECT	m.member_name,
-			pp.prj_particir_id
+			pp.prj_particir_id,
+			m.real_profile_path
 	FROM	prj_task t 
 		JOIN	task_manager tm	ON t.prj_board_id = tm.prj_board_id
 		JOIN	prj_particir pp ON tm.prj_particir_id = pp.prj_particir_id 

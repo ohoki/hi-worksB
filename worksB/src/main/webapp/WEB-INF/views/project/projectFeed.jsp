@@ -858,6 +858,42 @@
 			cursor: pointer;	
 		}
 		
+		#taskManager-modal {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.1);
+			font-size: 12px;
+			display: none;
+			left: 0;
+			top: 0;
+		}
+		
+		.taskManager-modal-content {
+			position: absolute;
+			width: 15%;
+			height: 30%;
+			background-color: white;
+			font-size: 12px;
+			padding: 20px 15px;
+			z-index: 10;
+			overflow: auto;
+			overflow-x: hidden;
+			border-radius: 5px;
+		}
+		
+		.taskManager-modal-title {
+			font-size: 15px;
+			justify-content: space-between;
+			font-weight: var(--weight-bold);
+			padding: 5px 10px;
+		}
+		
+		.noManager {
+			text-align: center;
+			margin: 10px auto;
+		}
+		
 		.m-bt {
 			margin-bottom: 10px;
 		}
@@ -1384,12 +1420,23 @@
 			</div>
 		</div>
 	</div>
-
+	
+	<!-- 업무 담당자 모달 -->
+	<div id="taskManager-modal">
+		<div class="taskManager-modal-content">
+			<div class="d-flex taskManager-modal-title">
+				<span>구성원</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="managers"></div>
+		</div>			
+	</div>
+	
 	<!-- 모달 페이지 -->
 	<script >
 		//모달페이지 출력
 		$('.board-header-btn').on('click', function(e) {
-			let modal = $(e.currentTarget).closest('.board-container').find('div[data-boardmodal]');
+			let boardId = $(e.currentTarget).closest('.board-container').find('div[data-boardmodal]');
 			let modalContent = modal.children('.board-modal-content');
 			let x = e.clientX + 15;
 			let y = e.clientY + 5;
@@ -1399,10 +1446,78 @@
 			modal.addClass('d-b');
 		});
 		
+		$(document).on('click', '.task-manager span', function(e) {
+			let boardId = $(e.currentTarget).closest('.board-container').data('id');
+			let x = e.clientX + 30;
+			let y = e.clientY;
+			
+			$('.taskManager-modal-content').css('left', x + 'px');
+			$('.taskManager-modal-content').css('top', y + 'px');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getManager',
+				type : 'GET',
+				data : {'prjBoardId' : boardId},
+				success : function(managers) {
+					let managerDiv = $('#managers');
+					managerDiv.empty();
+					
+					if(managers.length != 0) {
+						//멤버 리스트 태그 만들기
+						for(let i=0; i<managers.length; i++) {
+							//div태그
+							let employeeDiv = document.createElement('div');
+							employeeDiv.classList.add('flex');
+							employeeDiv.classList.add('employee');
+							//이미지 태그
+							let employeeProfile = document.createElement('img');
+							employeeProfile.setAttribute('alt', '회원사진');
+							employeeProfile.classList.add('employee-img');
+							if(managers[i].realProfilePath != null) {
+								employeeProfile.src = "${pageContext.request.contextPath}/images/"+managers[i].realProfilePath;
+							}else {
+								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+							}
+							//스팬 태그
+							let span = document.createElement('span');
+							span.innerText = managers[i].memberName;
+							//히든 인풋 태그 (멤버id값)
+							let input = document.createElement('input');
+							input.setAttribute('type', 'hidden');
+							input.value = managers[i].memberId;
+							//태그 삽입
+							employeeDiv.append(employeeProfile);
+							employeeDiv.append(span);
+							employeeDiv.append(input);
+							
+							managerDiv.append(employeeDiv);
+						}
+					} else {
+						let noManagerDiv = document.createElement('div');
+						noManagerDiv.classList.add('noManager');
+						noManagerDiv.innerText = '담당자가 존재하지 않습니다.';
+						
+						managerDiv.append(noManagerDiv);
+					}
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+			$('#taskManager-modal').addClass('d-b');
+		});
+		
+		
+		
 		//여백 누르면 모달페이지 종료
 		$('div[data-boardmodal]').on('click', function(e) {
 			$(e.currentTarget).removeClass('d-b');
 		});
+		
+		$('#taskManager-modal').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
 		
 		$('.board-modal-content p').on('click', function(e) {
 			e.stopPropagation();

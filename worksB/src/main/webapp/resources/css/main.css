@@ -303,6 +303,7 @@ body {
 }
 .modal-visible {
 	display: block !important;
+	z-index: 1px;
 }
 
 .flex {
