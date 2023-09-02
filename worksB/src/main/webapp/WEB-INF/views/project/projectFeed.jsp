@@ -857,7 +857,57 @@
 		.deleteManager, .deleteSubtask {
 			cursor: pointer;	
 		}
+
+		#taskManager-modal, #scheParticr-modal, #voteParticr-modal {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.1);
+			font-size: 12px;
+			display: none;
+			left: 0;
+			top: 0;
+		}
 		
+		.taskManager-modal-content, .scheParticr-modal-content, .voteParticr-modal-content {
+			position: absolute;
+			width: 15%;
+			height: 30%;
+			background-color: white;
+			font-size: 12px;
+			padding: 20px 15px;
+			z-index: 10;
+			overflow: auto;
+			overflow-x: hidden;
+			border-radius: 5px;
+		}
+		
+		.taskManager-modal-title, .scheParticr-modal-title, voteParticr-modal-title {
+			font-size: 15px;
+			justify-content: space-between;
+			font-weight: var(--weight-bold);
+			padding: 5px 10px;
+		}
+		
+		.noManager {
+			text-align: center;
+			margin: 10px auto;
+		}
+		
+		.board-comment {
+			padding: 5px 40px;
+			border-top: 1px solid var(--color-dark-beigie);	
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			color: var(--color-dark-grey);
+			
+		}
+		
+		.board-comment img {
+			margin: 10px 20px 10px 0;
+		}
+			
 		.m-bt {
 			margin-bottom: 10px;
 		}
@@ -953,30 +1003,33 @@
 								<span class="board-footer-info">좋아요 14</span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
+						<%-- <c:if test="ㄴㅇㄹ"> --%>
+						<div>
+							<div style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
 								댓글 더보기
 							</div>
 							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
+							<div class="board-comment">
+								<div class="d-flex">
+									<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
+										<div style="margin: 5px 0;">
+											<span style="font-weight: var(--weight-bold);">최영호</span>
+											<span>2023-09-02 20:00</span>
 										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
+										<div style="margin: 5px 0;">
+											안녕하세요~~
+										</div>
+									</div>								
 								</div>
+								<div>
+									<span style="margin-right: 10px;">수정</span>
+									<span>삭제</span>
+								</div>
+							</div>
+						</div>
 							<!-- 여기까지 -->	
-						</c:if>
+						<%-- </c:if> --%>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -1024,7 +1077,7 @@
 							<div>
 								<span>[일정]</span> ${board.prjBoardTitle }
 							</div>
-							<div>
+							<div class="sche-particir-list">
 								<span class="sche-particir">참석 <span class="sche-particir-count"></span></span>
 								<span class="sche-nonParticir">불참 <span class="sche-nonParticir-count"></span></span>
 							</div>
@@ -1384,7 +1437,42 @@
 			</div>
 		</div>
 	</div>
-
+	
+	<!-- 업무 담당자 모달 -->
+	<div id="taskManager-modal">
+		<div class="taskManager-modal-content">
+			<div class="d-flex taskManager-modal-title">
+				<span>담당자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="managers"></div>
+		</div>			
+	</div>
+	
+	<!-- 일정 참여자 모달 -->
+	<div id="scheParticr-modal">
+		<div class="scheParticr-modal-content">
+			<div class="d-flex scheParticr-modal-title">
+				<span></span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="particirs"></div>
+		</div>			
+	</div>
+	
+	<!-- 투표 참여자 모달 -->
+	<div id="voteParticr-modal">
+		<div class="voteParticr-modal-content">
+			<div class="d-flex voteParticr-modal-title">
+				<span>투표 참여자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="voteParticirs"></div>
+		</div>			
+	</div>
+	
+	
+	
 	<!-- 모달 페이지 -->
 	<script >
 		//모달페이지 출력
@@ -1399,8 +1487,228 @@
 			modal.addClass('d-b');
 		});
 		
+		//업무 담당자
+		$(document).on('click', '.task-manager span', function(e) {
+			let boardId = $(e.currentTarget).closest('.board-container').data('id');
+			let x = e.clientX + 30;
+			let y = e.clientY;
+			
+			$('.taskManager-modal-content').css('left', x + 'px');
+			$('.taskManager-modal-content').css('top', y + 'px');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getManager',
+				type : 'GET',
+				data : {'prjBoardId' : boardId},
+				success : function(managers) {
+					let managerDiv = $('#managers');
+					managerDiv.empty();
+					
+					if(managers.length != 0) {
+						//멤버 리스트 태그 만들기
+						for(let i=0; i<managers.length; i++) {
+							//div태그
+							let employeeDiv = document.createElement('div');
+							employeeDiv.classList.add('flex');
+							employeeDiv.classList.add('employee');
+							//이미지 태그
+							let employeeProfile = document.createElement('img');
+							employeeProfile.setAttribute('alt', '회원사진');
+							employeeProfile.classList.add('employee-img');
+							if(managers[i].realProfilePath != null) {
+								employeeProfile.src = "${pageContext.request.contextPath}/images/"+managers[i].realProfilePath;
+							}else {
+								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+							}
+							//스팬 태그
+							let span = document.createElement('span');
+							span.innerText = managers[i].memberName;
+							//히든 인풋 태그 (멤버id값)
+							let input = document.createElement('input');
+							input.setAttribute('type', 'hidden');
+							input.value = managers[i].memberId;
+							//태그 삽입
+							employeeDiv.append(employeeProfile);
+							employeeDiv.append(span);
+							employeeDiv.append(input);
+							
+							managerDiv.append(employeeDiv);
+						}
+					} else {
+						let noManagerDiv = document.createElement('div');
+						noManagerDiv.classList.add('noManager');
+						noManagerDiv.innerText = '담당자가 존재하지 않습니다.';
+						
+						managerDiv.append(noManagerDiv);
+					}
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+			$('#taskManager-modal').addClass('d-b');
+		});
+		
+		//일정 참여자
+		$('.sche-particir-list span').on('click', function(e) {
+			let boardId = $(e.currentTarget).closest('.board-container').data('id');
+			let scheSpan = $(e.currentTarget);
+			let x = e.clientX + 30;
+			let y = e.clientY;
+			
+			$('.scheParticr-modal-content').css('left', x + 'px');
+			$('.scheParticr-modal-content').css('top', y + 'px');
+			
+			if(scheSpan.hasClass('sche-particir')) {
+				$('.scheParticr-modal-title').text('참석자');
+				getScheParticirList(boardId, 'A1');
+			}else {
+				$('.scheParticr-modal-title').text('불참자');
+				getScheParticirList(boardId, 'A2');
+			}
+			$('#scheParticr-modal').addClass('d-b');
+		});
+		
+		function getScheParticirList(prjBoardId, commonCode) {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getParticir',
+				type : 'GET',
+				data : {'prjBoardId' : prjBoardId, 'attendance' : commonCode},
+				success : function(particirs) {
+					let particirDiv = $('#particirs');
+					particirDiv.empty();
+					
+					if(particirs.length != 0) {
+						//멤버 리스트 태그 만들기
+						for(let i=0; i<particirs.length; i++) {
+							//div태그
+							let employeeDiv = document.createElement('div');
+							employeeDiv.classList.add('flex');
+							employeeDiv.classList.add('employee');
+							//이미지 태그
+							let employeeProfile = document.createElement('img');
+							employeeProfile.setAttribute('alt', '회원사진');
+							employeeProfile.classList.add('employee-img');
+							if(particirs[i].realProfilePath != null) {
+								employeeProfile.src = "${pageContext.request.contextPath}/images/"+particirs[i].realProfilePath;
+							}else {
+								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+							}
+							//스팬 태그
+							let span = document.createElement('span');
+							span.innerText = particirs[i].memberName;
+							//히든 인풋 태그 (멤버id값)
+							let input = document.createElement('input');
+							input.setAttribute('type', 'hidden');
+							input.value = particirs[i].memberId;
+							//태그 삽입
+							employeeDiv.append(employeeProfile);
+							employeeDiv.append(span);
+							employeeDiv.append(input);
+							
+							particirDiv.append(employeeDiv);
+						}
+					} else {
+						let noParticirDiv = document.createElement('div');
+						noParticirDiv.classList.add('noManager');
+						noParticirDiv.innerText = '인원이 존재하지 않습니다.';
+						
+						particirDiv.append(noParticirDiv);
+					}
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+		}
+		
+		//투표 참여자
+		$('.vote-particir').on('click', function(e) {
+			let boardId = $(e.currentTarget).closest('.board-container').data('id');
+			let anonyVoteText = $(e.currentTarget).closest('.board-container').find('.anonyVote').text();
+			let x = e.clientX + 30;
+			let y = e.clientY;
+			let voteParticirDiv = $('#voteParticirs');
+			
+			$('.voteParticr-modal-content').css('left', x + 'px');
+			$('.voteParticr-modal-content').css('top', y + 'px');
+			
+			voteParticirDiv.empty();
+			
+			if(anonyVoteText != '') {
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getVoteParticir',
+					type : 'GET',
+					data : {'prjBoardId' : boardId},
+					success : function(voteParticir) {
+						
+						if(voteParticir.length != 0) {
+							//멤버 리스트 태그 만들기
+							for(let i=0; i<voteParticir.length; i++) {
+								//div태그
+								let employeeDiv = document.createElement('div');
+								employeeDiv.classList.add('flex');
+								employeeDiv.classList.add('employee');
+								//이미지 태그
+								let employeeProfile = document.createElement('img');
+								employeeProfile.setAttribute('alt', '회원사진');
+								employeeProfile.classList.add('employee-img');
+								if(voteParticir[i].realProfilePath != null) {
+									employeeProfile.src = "${pageContext.request.contextPath}/images/"+voteParticir[i].realProfilePath;
+								}else {
+									employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+								}
+								//스팬 태그
+								let span = document.createElement('span');
+								span.innerText = voteParticir[i].memberName;
+								//히든 인풋 태그 (멤버id값)
+								let input = document.createElement('input');
+								input.setAttribute('type', 'hidden');
+								input.value = voteParticir[i].memberId;
+								//태그 삽입
+								employeeDiv.append(employeeProfile);
+								employeeDiv.append(span);
+								employeeDiv.append(input);
+								
+								voteParticirDiv.append(employeeDiv);
+							}
+						} else {
+							let noParticirDiv = document.createElement('div');
+							noParticirDiv.classList.add('noManager');
+							noParticirDiv.innerText = '참여자가 존재하지 않습니다.';
+							
+							voteParticirDiv.append(noParticirDiv);
+						}
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				});
+			} else {
+				let noPublic = document.createElement('div');
+				noPublic.classList.add('noManager');
+				noPublic.innerText = '익명투표입니다.';
+				
+				voteParticirDiv.append(noPublic);
+			}
+			
+			$('#voteParticr-modal').addClass('d-b');
+		});
+		
 		//여백 누르면 모달페이지 종료
 		$('div[data-boardmodal]').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		$('#taskManager-modal').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		$('#scheParticr-modal').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		$('#voteParticr-modal').on('click', function(e) {
 			$(e.currentTarget).removeClass('d-b');
 		});
 		
@@ -1438,7 +1746,6 @@
 						type: 'GET',
 						data: {'prjBoardId' : boardId},
 						success: function(data){
-					console.log(data);
 							if(data > 0){
 								alert("진행 중인 투표는 수정할 수 없습니다.");
 								$('#boardUpdateModal').css('display', 'none');

@@ -459,7 +459,26 @@ public class BoardController {
 		boardService.votePaticirDelete(voteVO);
 	}
 	
+	//게시글 별 매니저 리스트 출력
+    @GetMapping("/getManager")
+    @ResponseBody
+    public List<AllTaskBoardVO> getManager(AllTaskBoardVO allTaskBoardVO) {
+		return boardService.getManager(allTaskBoardVO);
+	} 
 	
+	//게시글 별 일정 참여자 리스트 출력
+    @GetMapping("getParticir")
+    @ResponseBody
+    public List<ScheParticirVO> getParticir(ScheParticirVO particir) {
+		return boardService.getParticir(particir);
+	} 
+    
+    //게시글 별 투표 참여자 리스트 출력
+    @GetMapping("getVoteParticir")
+    @ResponseBody
+    public List<VoteVO> getVoteParticir(VoteVO particir) {
+		return boardService.getVoteParticir(particir);
+	} 
 	
 	
 	

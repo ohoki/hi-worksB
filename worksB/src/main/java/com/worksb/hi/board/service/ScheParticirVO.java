@@ -8,4 +8,7 @@ public class ScheParticirVO {
 	int prjBoardId;
 	int prjParticirId;
 	int scheParticirId;
+	String memberId;
+	String memberName;
+	String realProfilePath;
 }

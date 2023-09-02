@@ -147,6 +147,18 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.deleteManagerList(taskVO);
 	}
 	
+	// //게시글 별 일정 참여자 리스트 출력
+	public List<ScheParticirVO> getParticir(ScheParticirVO particir) {
+		return boardMapper.getParticir(particir);
+	};
+	
+	//게시글 별 투표 참여자 리스트 출력
+	public List<VoteVO> getVoteParticir(VoteVO particir) {
+		return boardMapper.getVoteParticir(particir);
+	} 
+	
+	
+	
 	
 	
 	
