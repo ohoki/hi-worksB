@@ -17,8 +17,8 @@
 <body>
 	<div id="department">
 		<p>부서설정</p>
-		<button  onclick="addDepartment()">추가</button>
-		<table>
+		<button onclick="addDepartment()">추가</button>
+		<table id="deptTable">
 			<thead>
 				<tr>
 					<td>부서명</td>
@@ -30,8 +30,9 @@
 				<c:forEach items="${dlist }" var="list">
 					<tr>
 						<td hidden>${list.deptId }</td>
-						<td>${list.deptName }</td>
+						<td><input type="text" value="${list.deptName }"></td>
 						<td>${list.counting }</td>
+						<td><button onclick="updateDep(this)">수정</button></td>
 						<td><button onclick="deleteDep(this)">삭제</button></td>
 					</tr>
 				</c:forEach>
@@ -40,8 +41,8 @@
 	</div>
 	<div id="role">
 		<p>직급설정</p>
-		<button onclick="addRole()">추가</button>
-		<table>
+		<button  onclick="addRole()">추가</button>
+		<table id="jobTable">
 			<thead>
 				<tr>
 					<td>직급명</td>
@@ -52,7 +53,8 @@
 				<c:forEach items="${jList }" var="list">
 					<tr>
 						<td hidden>${list.jobId }</td>
-						<td>${list.jobName }</td>
+						<td><input type="text" value="${list.jobName }"></td>
+						<td><button onclick="updateRole(this)">수정</button></td>
 						<td><button onclick="deleteRole(this)">삭제</button></td>
 					</tr>
 				</c:forEach>
@@ -60,17 +62,18 @@
 		</table>
 	</div>
 </body>
+
 <script>
-			//부서추가
+	//부서추가
 	function addDepartment(){
 		let newData=`<tr>
 						<td><input type="text" placeholder="부서명"></td>
 						<td>0</td>
-						<td><button onclick="updateDept(this)">완료</button></td>
+						<td><button onclick="insertDept(this)">완료</button></td>
 					</tr>`
 		$('#department tbody').append(newData);
 	}
-	function updateDept(data){
+	function insertDept(data){
 		let tr=$(data).parent().parent()
 		let input=tr.find('input')
 		let depName=input.eq(0).val()
@@ -80,7 +83,7 @@
 		}else{
 			 $.ajax({
 				    type: "POST",
-				    url: "${pageContext.request.contextPath}/admin/updateDept",
+				    url: "${pageContext.request.contextPath}/admin/insertDept",
 				    data: { 'deptName': depName },
 				    success:function(response){
 				    	if(response!=1){alert('부서추가에 실패했습니다.')}
@@ -95,9 +98,12 @@
 	}
 	//부서삭제
 	function deleteDep(data){
-		//삭제할 부서의 id
-		let deptId=$(data).parent().parent().find('td').eq(0).text()
-		let deptName=$(data).parent().parent().find('td').eq(1).text()
+		
+		let tr=$(data).parent().parent()
+		let input=tr.find('input')
+
+		let deptId=tr.find('td[hidden]').text()
+		let deptName=input.eq(0).val()
 		if(confirm(deptName+'부서를 삭제하시겠습니까?')){
 			 $.ajax({
 				    type: "POST",
@@ -121,15 +127,16 @@
 	
 	
 	
+	
 	//직급추가
 	function addRole(){
 		let newData=`<tr>
 						<td><input type="text" placeholder="직급명"></td>
-						<td><button onclick="updateRole(this)">완료</button></td>
+						<td><button onclick="insertRole(this)">완료</button></td>
 					</tr>`
 		$('#role tbody').append(newData);
 	}
-	function updateRole(data){
+	function insertRole(data){
 		let tr=$(data).parent().parent()
 		let input=tr.find('input')
 		let roleName=input.eq(0).val()
@@ -139,7 +146,7 @@
 		}else{
 			 $.ajax({
 				    type: "POST",
-				    url: "${pageContext.request.contextPath}/admin/updateRole",
+				    url: "${pageContext.request.contextPath}/admin/insertRole",
 				    data: { 'roleName': roleName },
 				    success:function(response){
 				    	if(response!=1){alert('직급추가에 실패했습니다.')}
@@ -150,19 +157,81 @@
 				    }
 					  })
 		}
-		//직급삭제
-		function deleteRole(data){
-			//삭제할 부서의 id
-			let roleId=$(data).parent().parent().find('td').eq(0).text()
-			let roleName=$(data).parent().parent().find('td').eq(1).text()
-			if(confirm(roleName+'을 삭제하시겠습니까?')){
+	}
+	//직급삭제
+	function deleteRole(data){
+		let tr=$(data).parent().parent()
+		let input=tr.find('input')
+
+		let roleId=tr.find('td[hidden]').text()
+		let roleName=input.eq(0).val()
+		
+
+		if(confirm(roleName+'을 삭제하시겠습니까?')){
+			 $.ajax({
+				    type: "POST",
+				    url: "${pageContext.request.contextPath}/admin/deleteRole",
+				    data: { 'roleId': roleId },
+				    success:function(response){
+				    	if(response!=1){
+				    		alert('직급삭제에 실패했습니다.')
+				    		}
+				    	location.reload(true)
+				    },
+				    error:function(error){
+				    	console.error(error)
+				    }
+					  })
+		}else{
+			alert('부서삭제를 취소합니다')
+		}
+	}
+	
+	//부서수정
+	function updateDep(data){
+		let tr=$(data).parent().parent()
+		let input=tr.find('input')
+
+		let deptId=tr.find('td[hidden]').text()
+		let deptName=input.eq(0).val()
+		if(confirm(deptName+'(으)로 수정하시겠습니까?')){
+			 $.ajax({
+				    type: "POST",
+				    url: "${pageContext.request.contextPath}/admin/updateDept",
+				    data: { 'deptId': deptId,
+				    		'deptName':deptName},
+				    success:function(response){
+				    	if(response!=1){
+				    		alert('부서수정에 실패했습니다.')
+				    		}
+				    	location.reload(true)
+				    },
+				    error:function(error){
+				    	console.error(error)
+				    }
+					  })
+		}else{
+			alert('부서수정을 취소합니다')
+		}
+	}
+
+
+	//직급수정
+		function updateRole(data){
+			let tr=$(data).parent().parent()
+			let input=tr.find('input')
+
+			let roleId=tr.find('td[hidden]').text()
+			let roleName=input.eq(0).val()
+			if(confirm(roleName+'(으)로 수정하시겠습니까?')){
 				 $.ajax({
 					    type: "POST",
-					    url: "${pageContext.request.contextPath}/admin/deleteRole",
-					    data: { 'roleId': roleId },
+					    url: "${pageContext.request.contextPath}/admin/updateRole",
+					    data: { 'roleId': roleId,
+					    		'roleName':roleName},
 					    success:function(response){
 					    	if(response!=1){
-					    		alert('직급삭제에 실패했습니다.')
+					    		alert('직급수정에 실패했습니다.')
 					    		}
 					    	location.reload(true)
 					    },
@@ -171,10 +240,9 @@
 					    }
 						  })
 			}else{
-				alert('부서삭제를 취소합니다')
+				alert('부서수정을 취소합니다')
 			}
 		}
-		
-	}
+
 </script>
 </html>

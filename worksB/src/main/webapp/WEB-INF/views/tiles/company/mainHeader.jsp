@@ -160,13 +160,22 @@
 								<img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/circle-info-solid.svg" class="item-icon">
 								<span id="e-dept"></span></li>
 						</ul>
-						<button type="button" class="chat__btn">채팅하기</button>
+						<form name="chatForm" action="${pageContext.request.contextPath}/sendRequest" method="POST">
+							<input type="hidden" name="roomName" id="roomNameField" value="">
+							<button type="submit" class="chat__btn" onclick="sendRequest()">채팅하기</button>
+						</form>
 					</div>	
 				</div>			
 			</div>
 		</div>
 	</header>
 <script>
+	function sendRequest(){
+		let roomName=$('.employee-modal__name').text()
+		$('#roomNameField').val(roomName);
+		$('#chatForm').submit()
+
+	}
 	//접속상태 표시
 	$(window).on('load', function() {
 		let status = '${memberInfo.empStatus}';

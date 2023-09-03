@@ -119,6 +119,8 @@
 		    d.company_id=#{companId}
 		GROUP BY
 		    d.dept_id,d.dept_name,d.company_id
+		ORDER BY
+			d.dept_id
 
 	</select>
 	
@@ -130,11 +132,12 @@
 			job
 		WHERE
 			company_id=#{companId}
+		ORDER BY job_id
 	</select>
-	<insert id="updateDept" parameterType="DepartmentVO">
+	<insert id="insertDept" parameterType="DepartmentVO">
 		<selectKey keyProperty="deptId" resultType="int" order="BEFORE">
 			SELECT NVL(MAX(dept_id),0)+1
-			FROM project
+			FROM department
 		</selectKey>
 		INSERT INTO department
 					(
@@ -149,4 +152,44 @@
 				)
 		
 	</insert>
+	<select id="getNewestDep" resultType="DepartmentVO">
+		SELECT dept_id,dept_name,company_id 
+		FROM department
+		WHERE dept_id=(SELECT MAX(dept_id) FROM department)
+	</select>
+	<delete id="deleteDept" parameterType="int">
+		DELETE department where dept_id=#{deptId}
+	</delete>
+	
+	<insert id="insertRole" parameterType="JobVO">
+		<selectKey keyProperty="jobId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(job_id),0)+1
+			FROM job
+		</selectKey>
+		INSERT INTO job
+				(
+					job_id,
+					job_name,
+					company_id
+				)
+			VALUES(
+				#{jobId},
+				#{jobName},
+				#{companyId}
+			)
+	</insert>
+	
+	<delete id="deleteRole" parameterType="int">
+		DELETE JOB where job_id=#{jobId}
+	</delete>
+	
+	<update id="updateDept" parameterType="departmentVO">
+		 UPDATE department SET dept_name=#{deptName} 
+		 WHERE dept_id=#{deptId}
+	</update>
+	
+	<update id="updateRole" parameterType="JOBVO">
+		UPDATE job set job_name=#{jobName}
+		WHERE job_id=#{jobId}
+	</update>
 </mapper>
