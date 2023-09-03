@@ -61,6 +61,8 @@ public interface BoardService {
 	public int deletePrjLike(BoardVO boardVO);
 	// 좋아요 확인
 	public BoardVO getMemLike(BoardVO boardVO);
+	// 좋아요 확인 - 게시글
+	public List<BoardVO> getPrjLike(BoardVO boardVO);
 
 	
 	

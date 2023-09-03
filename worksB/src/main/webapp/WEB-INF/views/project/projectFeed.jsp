@@ -989,7 +989,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span>좋아요</span></span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -1000,7 +1000,7 @@
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
-								<span class="board-footer-info">좋아요 14</span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span></span>
 							</div>
 						</div>
 						<!-- 댓글창 -->
@@ -1085,7 +1085,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
 								</c:if>
@@ -1095,7 +1095,7 @@
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
-								<span class="board-footer-info">좋아요 14</span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span>
 							</div>
 						</div>
 						<!-- 댓글창 -->
@@ -1178,7 +1178,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -1188,7 +1188,7 @@
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
-								<span class="board-footer-info">좋아요 14</span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span>
 							</div>
 						</div>
 						<!-- 댓글창 -->
@@ -1282,7 +1282,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -1292,7 +1292,7 @@
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
-								<span class="board-footer-info">좋아요 14</span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span>
 							</div>
 						</div>
 						<!-- 댓글창 -->
@@ -1932,10 +1932,13 @@
 			getCommentList(boardList[i].dataset.id, boardList[i].dataset.type);
 			
 			// 좋아요 여부 (내꺼) / 좋아요 전체 수
-			/* function 사용 ( 컨트롤러 반환은 map으로 받아와서 정보 뿌려주기) */
+			getPrjLike('${memberInfo.memberId}', boardList[i].dataset.id);
+			
+			
 		}
 		
 	});
+	
 	
 	// 댓글 리스트
 	function getCommentList(boardId, boardType){
@@ -2143,7 +2146,7 @@
 		})
 	})
 	
-	// 좋아요
+	// 좋아요 등록/해제
 	$('span[name="prjLike"]').on('click', function(e){
 		let boardContainer = $(e.currentTarget).closest('.board-container');
 		let boardId = boardContainer.data('id');
@@ -2154,11 +2157,12 @@
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
 			success : function(like){
-				//function 사용
-				console.log(like)
+				// 게시글 좋아요 수
+				getPrjLike(memberId, boardId);
+				
 				let likeSpan = $('div[data-id=' + boardId + ']').find('span[name="prjLike"] span');
 				likeSpan.empty();
-				
+				// 좋아요 상태 표시
 				if(like.checkLike == 'like'){
 					likeSpan.append("좋아요 해제");
 				}else{
@@ -2171,6 +2175,33 @@
 		})
 		
 	})
+	
+	
+	// 좋아요 정보
+	function getPrjLike(memberId, boardId){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/gePrjLike',
+			type : 'GET',
+			data : {'memberId': memberId, 'boardId' : boardId},
+			success : function(likeInfo){
+				// 게시글 좋아요 수
+				$('div[data-id=' + boardId + ']').find('span[name="likeCount"]').text(likeInfo.boardLike.length);
+				
+				// 좋아요 여부
+				let likeSpan = $('div[data-id=' + boardId + ']').find('span[name="prjLike"] span');
+				likeSpan.empty();
+				
+				if(likeInfo.memberLike != null) {
+					likeSpan.append("좋아요 해제");
+				} else {
+					likeSpan.append("좋아요");
+				}
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	}
 	
 	
 	

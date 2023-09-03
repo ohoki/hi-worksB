@@ -456,7 +456,6 @@
 	 </select>
 	
 	 <!-- 좋아요 -->
-	
 	<select id="getMemLike" resultType="BoardVO">
 		SELECT	board_id,
 				board_type,
@@ -492,7 +491,14 @@
 			AND	member_id = #{memberId}
 	</delete> 
 	
-	
+	<select id="getPrjLike" resultType="BoardVO">
+		SELECT	board_id,
+				board_type,
+				member_id,
+				like_id
+		FROM	prj_like
+		WHERE	board_id = #{boardId}	
+	</select>
 	
 	
 	

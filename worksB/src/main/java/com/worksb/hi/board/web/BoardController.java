@@ -413,7 +413,7 @@ public class BoardController {
 		return boardService.deleteBoard(boardVO);
 	}
 	
-	// 게시글 좋아요
+	// 게시글 좋아요 등록/해제
 	@GetMapping("/likeBoard")
 	@ResponseBody
 	public  Map<String, Object> like(BoardVO boardVO){
@@ -429,6 +429,22 @@ public class BoardController {
 		}
 		return resultMap;
 	}
+	
+	// 게시글별 좋아요 확인
+	@GetMapping("/gePrjLike")
+	@ResponseBody
+	public Map<String, Object> gePrjLike(BoardVO boardVO) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		BoardVO memberLike = boardService.getMemLike(boardVO);
+		List<BoardVO> boardLike = boardService.getPrjLike(boardVO);
+		
+		resultMap.put("memberLike", memberLike);
+		resultMap.put("boardLike", boardLike);
+		
+		return resultMap;
+	}
+	
 	
 	
 	//상단 고정 여부 수정

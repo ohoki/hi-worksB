@@ -58,8 +58,10 @@ public interface BoardMapper {
 	public int insertPrjLike(BoardVO boardVO);
 	// 좋아요 취소
 	public int deletePrjLike(BoardVO boardVO);
-	// 좋아요 확인
+	// 좋아요 확인 - 회원
 	public BoardVO getMemLike(BoardVO boardVO);
+	// 좋아요 확인 - 게시글
+	public List<BoardVO> getPrjLike(BoardVO boardVO);
 
 	
 	
