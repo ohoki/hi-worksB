@@ -202,10 +202,29 @@
 	
 	//비밀번호 변경
 	$('#updatePwBtn').on('click', function() {
+		let special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+		
 		//현재 비밀번호 확인 여부
 		if($('#oldPw').attr('disabled') != 'disabled') {
 			alert('현재 비밀번호를 확인해주세요.');
 			$('#oldPw').focus();
+			return false;
+		}
+		//비밀번호 길이 확인
+		if(newPw.length < 6 || newPw.length > 12) {
+			alert('비밀번호는 6~12자 사이로 입력해주세요.');
+			$('#newPw').val('');
+			$('#newPwCheck').val('');
+			$('#newPw').focus();
+			return false;
+		}
+		
+		//특수 문자 확인
+		if(special_pattern.test(newPw) != true){
+		    alert('비밀번호에 특수문자를 넣어주세요.');
+		    $('#newPw').val('');
+			$('#newPwCheck').val('');
+			$('#newPw').focus();
 			return false;
 		}
 		//새 비밀번호 일치 여부
@@ -221,7 +240,7 @@
 		}
 		//비밀번호 변경
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/updateMember',
+			url : '${pageContext.request.contextPath}/updateMember',
 			type : 'POST',
 			data : {'memberId' : '${memberInfo.memberId}', 'memberPw' : newPw},
 			success : function(data) {

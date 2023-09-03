@@ -21,7 +21,7 @@
 			<input type="text" placeholder="이름" id="memberName" name="memberName" required>
 			</label>
 			<label for="memberPw">비밀번호
-			<input type="password" placeholder="비밀번호는 특수문자(!, @, #, $, %)포함 6~12자만 가능합니다." id="memberPw" name="memberPw" required>
+			<input type="password" placeholder="비밀번호는 특수문자를 포함해서 6~12자만 가능합니다." id="memberPw" name="memberPw" required>
 			</label>
 			<label for="pwChek">비밀번호 확인
 			<input type="password" placeholder="비밀번호 재입력" id="pwCheck" required>
