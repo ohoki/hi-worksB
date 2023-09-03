@@ -989,7 +989,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span>좋아요</span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -999,37 +999,13 @@
 								
 							</div>
 							<div>
-								<span class="board-footer-info">댓글 7</span>
+								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
 								<span class="board-footer-info">좋아요 14</span>
 							</div>
 						</div>
-						<%-- <c:if test="ㄴㅇㄹ"> --%>
-						<div>
-							<div style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
-								댓글 더보기
-							</div>
-							<!-- for each로 최신 댓글 2개만 -->
-							<div class="board-comment">
-								<div class="d-flex">
-									<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
-									<div>
-										<div style="margin: 5px 0;">
-											<span style="font-weight: var(--weight-bold);">최영호</span>
-											<span>2023-09-02 20:00</span>
-										</div>
-										<div style="margin: 5px 0;">
-											안녕하세요~~
-										</div>
-									</div>								
-								</div>
-								<div>
-									<span style="margin-right: 10px;">수정</span>
-									<span>삭제</span>
-								</div>
-							</div>
+						<!-- 댓글창 -->
+						<div name="board-comment-box">
 						</div>
-							<!-- 여기까지 -->	
-						<%-- </c:if> --%>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -1109,7 +1085,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
 								</c:if>
@@ -1118,34 +1094,13 @@
 								</c:if>
 							</div>
 							<div>
-								<span class="board-footer-info">댓글 7</span>
+								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
 								<span class="board-footer-info">좋아요 14</span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
-								댓글 더보기
-							</div>
-							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
-									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
-										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
-								</div>
-							<!-- 여기까지 -->
-						</c:if>
+						<!-- 댓글창 -->
+						<div name="board-comment-box">
+						</div>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -1223,7 +1178,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -1232,34 +1187,13 @@
 								</c:if>
 							</div>
 							<div>
-								<span class="board-footer-info">댓글 7</span>
+								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
 								<span class="board-footer-info">좋아요 14</span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
-								댓글 더보기
-							</div>
-							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
-									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
-										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
-								</div>
-							<!-- 여기까지 -->	
-						</c:if>
+						<!-- 댓글창 -->
+						<div name="board-comment-box">
+						</div>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -1348,7 +1282,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -1357,34 +1291,13 @@
 								</c:if>
 							</div>
 							<div>
-								<span class="board-footer-info">댓글 7</span>
+								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
 								<span class="board-footer-info">좋아요 14</span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
-								댓글 더보기
-							</div>
-							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
-									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
-										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
-								</div>
-							<!-- 여기까지 -->	
-						</c:if>
+						<!-- 댓글창 -->
+						<div name="board-comment-box">
+						</div>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -2015,14 +1928,257 @@
 					}
 				});
 			}
+			// 댓글 불러오기
+			getCommentList(boardList[i].dataset.id, boardList[i].dataset.type);
+			
+			// 좋아요 여부 (내꺼) / 좋아요 전체 수
+			/* function 사용 ( 컨트롤러 반환은 map으로 받아와서 정보 뿌려주기) */
 		}
-		//댓글
-		
-		
-		
 		
 	});
-
+	
+	// 댓글 리스트
+	function getCommentList(boardId, boardType){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/projectCmtList',
+			type : 'GET',
+			data : {'boardId' : boardId, 'boardType': boardType},
+			success : function(comments){
+				let boardCommentBox = $('div[data-id=' + boardId + ']').find('div[name="board-comment-box"]');
+				
+				boardCommentBox.empty();
+				
+				if(comments.length != 0) {
+					if(comments.length > 2) {
+						for(let i =0; i<2; i++) {
+							let boardComment =`
+								<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+									<div class="d-flex">
+										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+										<div>
+											<div style="margin: 5px 0;">
+												<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+												<span>\${comments[i].commentRegdate }</span>
+											</div>
+											<div style="margin: 5px 0;">
+												\${comments[i].commentContent }
+											</div>
+										</div>								
+									</div>
+									<div>
+										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+										<span name="deleteComment" class="cursor">삭제</span>
+									</div>
+								</div>`;
+								
+							boardCommentBox.prepend(boardComment);
+							
+						}
+							let moreComment=`
+								<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
+									댓글 더보기
+								</div>`;
+							boardCommentBox.prepend(moreComment);
+					} else {
+						boardCommentBox.empty();
+						
+						for(let i =0; i<comments.length; i++) {
+							let boardComment =`
+								<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+									<div class="d-flex">
+										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+										<div>
+											<div style="margin: 5px 0;">
+												<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+												<span>\${comments[i].commentRegdate }</span>
+											</div>
+											<div style="margin: 5px 0;">
+												\${comments[i].commentContent }
+											</div>
+										</div>								
+									</div>
+									<div>
+										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+										<span name="deleteComment" class="cursor">삭제</span>
+									</div>
+								</div>`;
+								
+							boardCommentBox.prepend(boardComment);
+						}
+					}
+				}
+				// 댓글 수
+				$('div[data-id=' + boardId + ']').find('span[name="commentCount"]').text(comments.length);
+				
+			}, error : function(reject) {
+				console.log(reject);
+			}
+		});
+	}
+	
+	// 댓글 더보기
+	$(document).on('click', 'div[name="moreComment"]', function(e){
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let prjBoardId = boardContainer.data('id');
+		let boardType = boardContainer.data('type');
+		let boardCommentBox = boardContainer.find('div[name="board-comment-box"]');
+		$.ajax({
+			url : '${pageContext.request.contextPath}/projectCmtList',
+			type : 'GET',
+			data : {'boardId' : prjBoardId, 'boardType': boardType},
+			success : function(comments){
+				boardCommentBox.empty();
+				for(let i =0; i<comments.length; i++) {
+					let boardComment =`
+						<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+							<div class="d-flex">
+								<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+								<div>
+									<div style="margin: 5px 0;">
+										<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+										<span>\${comments[i].commentRegdate }</span>
+									</div>
+									<div style="margin: 5px 0;">
+										\${comments[i].commentContent }
+									</div>
+								</div>								
+							</div>
+							<div>
+								<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+								<span name="deleteComment" class="cursor">삭제</span>
+							</div>
+						</div>`;
+						
+					boardCommentBox.prepend(boardComment);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+		
+	})
+	
+	// 댓글 삭제
+	$(document).on('click', 'span[name="deleteComment"]', function(e){
+		let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let prjBoardId = boardContainer.data('id');
+		let boardType = boardContainer.data('type');
+		
+		let boardComment = $(e.currentTarget).closest('.board-comment');
+		let commentId = boardComment.data('cmtid');
+		if(confirm('삭제하시겠습니까?')){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/deleteProjectCmt',
+				type : 'POST',
+				data : {'commentId' : commentId},
+				success : function() {
+					alert("삭제되었습니다.");
+					boardCommentBox.empty();
+					getCommentList(prjBoardId, boardType);
+				},
+				error : function(reject) {
+					alert("삭제에 실패했습니다.");
+					console.log(reject);
+				}
+			});
+		}
+	})
+	
+	
+	
+	// 댓글 수정 폼
+	$(document).on('click', 'span[name="updateComment"]', function(e){
+		let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
+		let boardComment = $(e.currentTarget).closest('.board-comment');
+		let commentId = boardComment.data('cmtid');
+		$.ajax({
+			url : '${pageContext.request.contextPath}/commentInfo',
+			type : 'GET', 
+			data : {'commentId' : commentId},
+			success : function(comments){
+				let commentUpdate = `
+						<div class="d-flex">
+							<img src="${pageContext.request.contextPath}/images/\${comments.realProfilePath }" alt="회원 프로필 사진" class="profile">
+							<div>
+								<input type="text" name="commentContent" value="\${comments.commentContent}">
+							</div>								
+						</div>
+						<div>
+							<span name="saveUpdate" class="cursor" style="margin-right: 10px;">확인</span>
+						</div>`;
+					
+				boardComment.empty().append(commentUpdate);
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		});
+	})
+	
+	// 댓글 수정하기
+	$(document).on('click', 'span[name="saveUpdate"]', function(e){
+		let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let prjBoardId = boardContainer.data('id');
+		let boardType = boardContainer.data('type');
+		
+		let boardComment = $(this).closest('.board-comment')
+		let commentId = boardComment.data('cmtid');
+		let commentContent = boardComment.find('input[name="commentContent"]').val();
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/updateProjectCmt',
+			type : 'POST',
+			data : { 'commentId' : commentId, 'commentContent' : commentContent},
+			success : function(comments){
+				boardCommentBox.empty();
+				getCommentList(prjBoardId, boardType);
+				
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	})
+	
+	// 좋아요
+	$('span[name="prjLike"]').on('click', function(e){
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let boardId = boardContainer.data('id');
+		let boardType = boardContainer.data('type');
+		let memberId = '${memberInfo.memberId}';
+		$.ajax({
+			url : '${pageContext.request.contextPath}/likeBoard',
+			type : 'GET',
+			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
+			success : function(like){
+				//function 사용
+				console.log(like)
+				let likeSpan = $('div[data-id=' + boardId + ']').find('span[name="prjLike"] span');
+				likeSpan.empty();
+				
+				if(like.checkLike == 'like'){
+					likeSpan.append("좋아요 해제");
+				}else{
+					likeSpan.append("좋아요");
+				}
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+		
+	})
+	
+	
+	
+	
+	
+	
+	
+	
 	//북마크
 	$('span[data-bookmark]').on('click', function(e) {
 		let boardContainer = $(e.currentTarget).closest('.board-container');
@@ -3426,17 +3582,23 @@
 		// 댓글 등록
 		$('.cmtBtn').on('click', function(e){
 			let boardContainer = $(e.currentTarget).closest('.board-container');
-			let prjBoardId = boardContainer.data('id');
+			let boardComment = $(e.currentTarget).closest('.board-comment');
+			let boardId = boardContainer.data('id');
 			let boardType = boardContainer.data('type');
 			let prjId = '${projectInfo.projectId}';
 			let memberId = '${memberInfo.memberId}';
-			let cmtContent = $('.cmtContent').val();
+			let cmtContent = boardContainer.find('.cmtContent');
+			
+			let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
 			
 			$.ajax({
 				url : '${pageContext.request.contextPath}/insertProjectCmt',
 				type : 'POST',
-				data : {'memberId': memberId, 'prjBoardId': prjBoardId, 'boardType':boardType, 'commentContent': cmtContent},
+				data : {'memberId': memberId, 'boardId': boardId, 'boardType':boardType, 'commentContent': cmtContent.val()},
 				success : function(success) {
+					cmtContent.val('');
+					boardCommentBox.empty();
+					getCommentList(boardId, boardType);
 					
 				},
 				error : function(reject) {
@@ -3445,7 +3607,7 @@
 			})
 		})
 		
-		
+
 		
 	</script>
 	

@@ -17,10 +17,10 @@ public class ProjectCmtController {
 	@Autowired
 	ProjectCmtService projectCmtService;
 	
-	// 댓글 목록
+	// 댓글 전체 조회
 	@GetMapping("/projectCmtList")
 	@ResponseBody
-	public List<ProjectCmtVO> projectCmtList(Model model, ProjectCmtVO projectCmtVO){
+	public List<ProjectCmtVO> projectCmtList(ProjectCmtVO projectCmtVO){
 		return projectCmtService.projectCmtList(projectCmtVO);
 	}
 	
@@ -31,6 +31,13 @@ public class ProjectCmtController {
 		return projectCmtService.insertProjectCmt(projectCmtVO);
 	}
 	
+	// 댓글 조회
+	@GetMapping("/commentInfo")
+	@ResponseBody
+	public ProjectCmtVO projectCmtInfo(ProjectCmtVO projectCmtVO) {
+		return projectCmtService.projectCmtInfo(projectCmtVO);
+	}
+	
 	// 댓글 수정
 	@PostMapping("/updateProjectCmt")
 	@ResponseBody
@@ -39,4 +46,9 @@ public class ProjectCmtController {
 	}
 	
 	// 댓글 삭제
+	@PostMapping("/deleteProjectCmt")
+	@ResponseBody
+	public int deleteProjectCmt(ProjectCmtVO projectCmtVO) {
+		return projectCmtService.deleteProjectCmt(projectCmtVO);
+	}
 }

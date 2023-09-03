@@ -54,6 +54,13 @@ public interface BoardMapper {
 	// 게시글 정보
 	public BoardVO getBoardInfo(int prjBoardId);
 	
+	// 좋아요 등록
+	public int insertPrjLike(BoardVO boardVO);
+	// 좋아요 취소
+	public int deletePrjLike(BoardVO boardVO);
+	// 좋아요 확인
+	public BoardVO getMemLike(BoardVO boardVO);
+
 	
 	
 	

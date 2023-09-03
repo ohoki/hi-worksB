@@ -39,4 +39,6 @@ COORDINATE                 VARCHAR2(60)
 	private String boardIconName;
 	private int bookmarkByMember; //개인 회원 별 북마크 여부 (북마크O -> 1 / 북마크X -> 0)
 	private int bookmarkId;
+	private int boardId;
+	private int likeId;
 }

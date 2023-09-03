@@ -27,6 +27,7 @@ import com.worksb.hi.board.service.ScheParticirVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
+import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectService;
@@ -410,6 +411,23 @@ public class BoardController {
 	@ResponseBody
 	public int deleteBoard(BoardVO boardVO) {
 		return boardService.deleteBoard(boardVO);
+	}
+	
+	// 게시글 좋아요
+	@GetMapping("/likeBoard")
+	@ResponseBody
+	public  Map<String, Object> like(BoardVO boardVO){
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		BoardVO likeCheck = boardService.getMemLike(boardVO);
+		if(likeCheck == null) {
+			boardService.insertPrjLike(boardVO);
+			resultMap.put("checkLike", "like");
+		} else {
+			boardService.deletePrjLike(boardVO);
+			resultMap.put("checkLike", "unlike");
+		}
+		return resultMap;
 	}
 	
 	

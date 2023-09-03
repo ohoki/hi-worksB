@@ -161,6 +161,21 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	
+	@Override
+	public int insertPrjLike(BoardVO boardVO) {
+		return boardMapper.insertPrjLike(boardVO);
+	}
+
+	@Override
+	public int deletePrjLike(BoardVO boardVO) {
+		return boardMapper.deletePrjLike(boardVO);
+	}
+
+	@Override
+	public BoardVO getMemLike(BoardVO boardVO) {
+		return boardMapper.getMemLike(boardVO);
+	}
+
 	
 	
 	// 게시글 정보
@@ -275,6 +290,7 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getScheBoardInfo(prjBoardId);
 	}
 
+	
 	
 
 	
