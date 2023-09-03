@@ -273,7 +273,7 @@ public class BoardController {
 	}
 
 
-	// 업무 수정
+	//상위 업무 수정
 	@PostMapping("/updateTask")
 	@ResponseBody
 	public int updateTask(@RequestBody BoardRequestVO brVO) {
@@ -295,60 +295,6 @@ public class BoardController {
     			TaskVO taskManager = managerList.get(i);
     			
     			boardService.insertTaskManager(taskManager);
-    		}
-    	}
-    	
-    	// 하위 업무 수정
-    	List<TaskVO> taskList = brVO.getSubTask();
-    	List<TaskVO> subManagerList = brVO.getSubManager();
-    	if(taskList != null){
-    		TaskVO subtaskVO ;
-	    	for(int i=0; i < taskList.size(); i++) {
-	    		BoardVO subBoardVO = new BoardVO();
-	    		subtaskVO = taskList.get(i);
-	    		
-	    		
-	    		//수정 중 --> 프로시저 사용..?!
-	    		if(subtaskVO.getPrjBoardId() == null) {
-	    			// 하위 업무 - 게시글 테이블 저장
-		    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
-		    		subBoardVO.setMemberId(boardVO.getMemberId());
-		    		subBoardVO.setProjectId(boardVO.getProjectId());
-		    		subBoardVO.setBoardType(boardVO.getBoardType());
-		    		subBoardVO.setInspYn("E2");
-		    		boardService.insertBoard(subBoardVO);
-		    		
-		    		// 하위 업무 - 업무 테이블 저장
-		    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
-		    		subtaskVO.setHighTaskId(taskVO.getTaskId());
-		    		boardService.insertTask(subtaskVO);
-	    		} else {
-	    			// 하위 업무 - 게시글 테이블 수정
-		    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
-		    		subBoardVO.setProjectId(subtaskVO.getProjectId());
-		    		subBoardVO.setInspYn("E2");
-		    		boardService.updateBoard(subBoardVO);
-		    		
-		    		// 하위 업무 - 업무 테이블 수정
-		    		boardService.updateTask(subtaskVO);
-		    		
-		    		//해당 하위 업무의 담당자 전체 삭제
-		    		boardService.deleteManagerList(subManagerList.get(i));
-	    		}
-	    	}
-    	}
-    	//하위 업무 삭제
-    	List<TaskVO> deleteSubtask = brVO.getDeleteSubtask();
-    	if(deleteSubtask != null) {
-    		for(int i=0; i<deleteSubtask.size(); i++) {
-    			boardService.deleteTask(deleteSubtask.get(i));
-    		}
-    	}
-    	
-    	//하위 업무 담당자 수정 (새 등록)
-    	if(subManagerList != null) {
-    		for(int i=0; i<subManagerList.size(); i++) {
-    			boardService.insertTaskManager(subManagerList.get(i));
     		}
     	}
     	return boardVO.getProjectId(); 

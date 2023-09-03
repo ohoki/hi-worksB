@@ -212,7 +212,6 @@
 						let employeeDiv = document.createElement('div');
 						employeeDiv.classList.add('flex');
 						employeeDiv.classList.add('employee');
-						/* employeeDiv.setAttribute('onclick', 'abc(this)'); */
 						//이미지 태그
 						let employeeProfile = document.createElement('img');
 						employeeProfile.setAttribute('alt', '회원사진');
@@ -225,12 +224,32 @@
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = members[i].memberName;
+						
+						let imgSpan = document.createElement('span');
+							imgSpan.style.position = 'relative';	
+						
+						let stateDiv = document.createElement('div');
+						
+						if(members[i].empStatus == 'S1') {
+							stateDiv.classList.add('state');
+							stateDiv.classList.add('status-green');
+						} else if (members[i].empStatus == 'S2') {
+							stateDiv.classList.add('state');
+							stateDiv.classList.add('status-yellow');
+						} else if (members[i].empStatus == 'S3') {
+							stateDiv.classList.add('state');
+							stateDiv.classList.add('status-red');
+						}
+						
 						//히든 인풋 태그 (멤버id값)
 						let input = document.createElement('input');
 						input.setAttribute('type', 'hidden');
 						input.value = members[i].memberId;
+						
 						//태그 삽입
-						employeeDiv.append(employeeProfile);
+						imgSpan.append(employeeProfile);
+						imgSpan.append(stateDiv);
+						employeeDiv.append(imgSpan);
 						employeeDiv.append(span);
 						employeeDiv.append(input);
 						
@@ -260,7 +279,7 @@
 		e.stopPropagation();
 		let value = e.currentTarget.innerText;
 		let statusDiv = $('.status');
-
+		console.log(value);
 		if(value == '접속 중') {
 			value = 'S1';
 			statusDiv.removeClass('status-green status-yellow status-red');
@@ -279,7 +298,7 @@
 		}
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/updateMember',
+			url : '${pageContext.request.contextPath}/updateMember',
 			type : 'get',
 			data : {'memberId' : '${memberInfo.memberId}', 'empStatus' : value},
 			error : function(reject) {

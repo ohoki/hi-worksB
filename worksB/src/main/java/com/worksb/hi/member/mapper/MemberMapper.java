@@ -37,4 +37,7 @@ public interface MemberMapper {
 	// 공지사항
 	public List<MemberVO> getNoticeList(MemberVO memberVO);
 	
+	//접속상태 변경
+	public void updateMemberState(MemberVO member);
+	
 }

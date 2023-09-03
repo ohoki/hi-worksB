@@ -459,6 +459,12 @@
 			margin: 5px 0;
 			border-radius: 5px;
 			text-align: center;
+			border: 1px solid transparent;
+			cursor: pointer;
+		}
+		
+		.sub-task-item:hover {
+			border: 1px solid var(--color-light-blue);
 		}
 		
 		.sub-state {
@@ -864,7 +870,7 @@
 			cursor: pointer;	
 		}
 
-		#taskManager-modal, #scheParticr-modal, #voteParticr-modal {
+		#taskManager-modal, #scheParticr-modal, #voteParticr-modal, #updateSubTask-modal {
 			position: absolute;
 			width: 100%;
 			height: 100%;
@@ -873,6 +879,10 @@
 			display: none;
 			left: 0;
 			top: 0;
+		}
+		
+		#updateSubTask-modal {
+			z-index: 2000;
 		}
 		
 		.taskManager-modal-content, .scheParticr-modal-content, .voteParticr-modal-content {
@@ -886,6 +896,21 @@
 			overflow: auto;
 			overflow-x: hidden;
 			border-radius: 5px;
+		}
+		
+		.updateSubTask-modal-content {
+			position: absolute;
+			background-color: white;
+			width: 40%;
+			height: 30%;
+			top:40%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 10px;
+			text-align: center;
+			padding: 30px 0 15px 0;
+			color: var(--color-dark-grey);
+			border: 1px solid var(--color-dark-beigie);
 		}
 		
 		.taskManager-modal-title, .scheParticr-modal-title, voteParticr-modal-title {
@@ -912,6 +937,23 @@
 		
 		.board-comment img {
 			margin: 10px 20px 10px 0;
+		}
+			
+		#updateSubTask-modal button[type=button] {
+			width: 100px;
+			height: 40px;
+			background-color: var(--color-dark-red);
+			border-radius: 5px;
+			color: var(--color-white);
+			font-weight: var(--weight-bold);
+			margin-left: 10px;
+			transition: all 0.5s;
+		}
+		
+		#updateSubTask-modal button[type=button]:hover {
+			background-color: var(--color-white);
+			color: var(--color-dark-red);
+			border: 1px solid var(--color-dark-red);
 		}
 			
 		.m-bt {
@@ -1348,7 +1390,10 @@
 							</div>
 						</div>
 						<div class="sub-task-lists">
-							<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+							<div class="d-flex">
+								<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+								<div class="add-manager-btn">하위업무 추가</div>
+							</div>
 							<div class="sub-task-list">
 							</div>
 						</div>
@@ -1477,6 +1522,62 @@
 		</div>			
 	</div>
 	
+	<!-- 하위 업무 정보 모달 -->
+	<div id="updateSubTask-modal">
+		<div class="updateSubTask-modal-content">
+			<!-- 모달페이지 띄우기 위함 -->
+	    	<input type="hidden" class="modal-dialog d-none">
+			<input type="hidden" class="modal-content d-none">
+			<input type="hidden" name="boardId" value="">
+			<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+			<div class="board-state">
+				<input type="radio" class="btn-check" name="state" value="G1" id="option11" autocomplete="off" checked>
+				<label for="option11">요청</label>
+				
+				<input type="radio" class="btn-check" name="state" value="G2" id="option12" autocomplete="off">
+				<label for="option12">진행</label>
+				
+				<input type="radio" class="btn-check" name="state" value="G3" id="option13" autocomplete="off">
+				<label for="option13">피드백</label>
+				
+				<input type="radio" class="btn-check" name="state" value="G4" id="option14" autocomplete="off">
+				<label for="option14">완료</label>
+				
+				<input type="radio" class="btn-check" name="state" value="G5" id="option15" autocomplete="off">
+				<label for="option15">보류</label>
+			</div>
+     		<div class="d-flex m-bt">
+				<div class="select-priority">
+					<span>우선 순위 : </span>
+		          	<select name="priority">
+		                <option value="">=======</option>
+		                <option value="F3">낮음</option>
+		                <option value="F2">보통</option>
+		                <option value="F1">긴급</option>
+		          	</select>
+	      		</div>
+		      	<div style="margin-left:100px;">
+					<label for="endDate">마감일 : </label>
+					<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
+			 	</div>
+			</div>
+			<div class="select-state" style="margin-left:60px;">
+               	<span>진행 상태 : </span>
+               	<select name="state" class="task-select" style="margin-left: 20px;">
+			        <option value="G1">요청</option>
+			        <option value="G2">진행</option>
+			        <option value="G3">피드백</option>
+			        <option value="G4">완료</option>
+			        <option value="G5">보류</option>
+			    </select>
+			</div>
+            <div class="board-taskManager">
+			</div>
+			<button type="reset">삭제하기</button>
+			<button type="button">수정하기</button>
+		</div>
+	</div>
+	
 	<!-- 모달 페이지 -->
 	<script >
 		//모달페이지 출력
@@ -1490,6 +1591,123 @@
 			modalContent.css('left',x + 'px');
 			modal.addClass('d-b');
 		});
+		
+		//하위 업무 정보 모달 페이지 출력
+		$(document).on('click', '.sub-task-item', function(e) {
+			let prjBoardId = $(e.currentTarget).data('id');
+			let taskModal = $('#updateSubTask-modal');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getTaskInfo',
+				type : 'GET',
+				data : {'prjBoardId' : prjBoardId},
+				success : function(taskData) {
+					
+					taskModal.find('input').prop('disabled', true);
+					taskModal.find('select').prop('disabled', true);
+					taskModal.find('button[type="radio"]').prop('disabled', true);
+					taskModal.find('input[name="boardId"]').val(prjBoardId);
+					
+        			// 하위 업무 추가하기
+        			let subTask = taskData.highTask[0];
+        			let managers = taskData.highManager;
+        			let boardTitle = taskModal.find('input[name="prjBoardTitle"]');
+        			let boardState = taskModal.find('.board-state');
+        			let boardPriority = taskModal.find('.select-priority');
+        			let inputDate = taskModal.find('input[name=endDate]');
+        			let taskManagerBox = taskModal.find('.board-taskManager');
+        			
+        			boardTitle.val(subTask.prjBoardTitle);
+        			boardState.find('input[value=' + subTask.state + ']').prop('checked', true);
+        			boardPriority.find('option[value=' + subTask.priority + ']').prop('selected', true);
+        			inputDate.val(subTask.endDate != null ? subTask.endDate : '-');
+        			
+        			taskManagerBox.empty();
+        			
+       				if(managers.length != 0) {
+       					for (let i = 0; i < managers.length; i++) {
+       						taskManagerBox.prepend('<span name='+ managers[i].prjParticirId +'>' + managers[i].memberName + '</span>');
+		            	}	
+       				} else {
+       					taskManagerBox.prepend('<span name=""> 없음 </span>');
+       				}
+       				taskManagerBox.prepend('<span>담당자 : </span>');
+			    }, error : function(reject) {
+					console.log(reject);
+				}
+			});	
+		});
+		
+		//하위 업무 수정 폼 전환
+		$('#updateSubTask-modal button[type="button"]').on('click', function(e) {
+			e.stopPropagation();
+			let taskModal = $('#updateSubTask-modal');
+			let boardId = taskModal.find('input[name="boardId"]').val();
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getTaskInfo',
+				type : 'GET',
+				data : {'prjBoardId' : boardId},
+				success : function(taskData) {
+					console.log(taskData);
+					
+					taskModal.find('input').prop('disabled', false);
+					taskModal.find('select').prop('disabled', false);
+					taskModal.find('button[type="radio"]').prop('disabled', false);
+					
+        			// 하위 업무 추가하기
+        			let subTask = taskData.highTask[0];
+        			let managers = taskData.highManager;
+        			let taskManagerBox = taskModal.find('.board-taskManager');
+        			
+        			taskManagerBox.empty();
+        			
+  					for (let i = 0; i < managers.length; i++) {
+  						taskManagerBox.prepend('<span name='+ managers[i].prjParticirId +'>' + managers[i].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:5px;"></span>');
+	            	}	
+       				
+  					// 셀렉트 박스 생성		            	
+        			let subSelectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
+        			$.ajax({
+        		    	url : '${pageContext.request.contextPath}/particirList',
+        		        type: 'GET',
+        		        data: {'projectId': '${projectInfo.projectId}'},
+        		        success: function(particir){
+        		        	for(let i=0; i<particir.length; i++) {
+        						let option = $('<option>');
+        						
+        						option.val(particir[i].prjParticirId);
+        						option.text(particir[i].memberName);
+        						
+        						for(let k=0; k<managers.length; k++) {
+        							if(particir[i].prjParticirId == managers[k].prjParticirId) {
+        								option.prop('disabled', true);
+        							}	        						}
+        						subSelectBox.append(option);
+        					}
+        		        },
+        		        error: function(reject){
+        		            console.log(reject);
+        		        }
+        		    });	
+        			
+       				taskManagerBox.append(subSelectBox);
+       				taskManagerBox.prepend('<span>담당자 : </span>');
+			    }, error : function(reject) {
+					console.log(reject);
+				}
+			})
+		});
+			
+			
+			
+			
+			
+			
+			
+			
+		
+		
 		
 		//업무 담당자
 		$(document).on('click', '.task-manager span', function(e) {
@@ -1713,6 +1931,9 @@
 		});
 		
 		$('#voteParticr-modal').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		$('#updateSubTask-modal').on('click', function(e) {
 			$(e.currentTarget).removeClass('d-b');
 		});
 		
@@ -2067,8 +2288,9 @@
 				     	// 정보 입력
 				        for (let j = 0; j < subTasks.length; j++) {
 				        	let subTask = subTasks[j];
-							let li = $('<li class="sub-task-item">');
-				        	let subState = $('<span class="sub-state">');
+							let li = $('<li class="sub-task-item" data-id=' + subTask.prjBoardId + ' data-bs-target="#updateSubTask-modal" data-bs-toggle="modal">');
+				        	let infoDiv = $('<div>');
+							let subState = $('<span class="sub-state">');
 				        	let subTitle = $('<span class="sub-title">');
 						
 				        	subState.text(subTask.stateName);
@@ -2092,6 +2314,9 @@
 		
 	});
 
+	
+	
+	
 	
 	
 	
@@ -2442,6 +2667,7 @@
 		})
 	});
 	
+	//북마크
 	$(document).on('click', '.bookmark-board-contets .pin-board-icon', function(e) {
 		let prjBoardId = $(e.currentTarget).next().attr('href').substring(3);
 		let boardType = $(e.currentTarget).next().attr('href').substring(1,3);
@@ -2718,224 +2944,222 @@
 	
 	<!-- 게시글 수정 HTML -->
 	<div class="modal modalBoard" tabindex="-1" id="boardUpdateModal">
-	<div class="insert-board-modal">
-		<!-- 공통 양식 -->
-	    <div class="insert-board-modal-header">
-	    	<!-- 모달페이지 띄우기 위함 -->
-	    	<input type="hidden" class="modal-dialog d-none">
-			<input type="hidden" class="modal-content d-none">
-	    	<div class="insert-board-modal-title">
-	    		<div>게시물 작성</div>		
-	    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	    	</div>
-	    	<ul class="insert-board-list">
-	    		<li class="insert-list-item">글</li>
-	    		<li class="insert-list-item">업무</li>
-	    		<li class="insert-list-item">일정</li>
-	    		<li class="insert-list-item">투표</li>
-	    	</ul>
-	    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
-			<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
-			<input type="hidden" value="" name="prjBoardId" id="prjBoardId">
-		</div>
-		<!-- 일반 게시글 작성 폼 -->
-		<form action="${pageContext.request.contextPath }/updateBoard" method="post" class="dis-none d-b" name="board">
-			<div class="insert-board-area">
-				<div class="board-form" >
-					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor5"></textarea>
-				</div>
-	        </div>
-	        <div class="modal-footer">
-				<select name="inspYn" class="modal-footer-select">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-				<input type="hidden" name="boardType" value="C5">
-         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-              	<button type="reset" class="modal-footer-btn">임시저장</button>
-              	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-              	<div><a href="#">임시저장 게시글 보기</a></div>
+		<div class="insert-board-modal">
+			<!-- 공통 양식 -->
+		    <div class="insert-board-modal-header">
+		    	<!-- 모달페이지 띄우기 위함 -->
+		    	<input type="hidden" class="modal-dialog d-none">
+				<input type="hidden" class="modal-content d-none">
+		    	<div class="insert-board-modal-title">
+		    		<div>게시물 작성</div>		
+		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		    	</div>
+		    	<ul class="insert-board-list">
+		    		<li class="insert-list-item">글</li>
+		    		<li class="insert-list-item">업무</li>
+		    		<li class="insert-list-item">일정</li>
+		    		<li class="insert-list-item">투표</li>
+		    	</ul>
+		    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
+				<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
+				<input type="hidden" value="" name="prjBoardId" id="prjBoardId">
 			</div>
-		</form>
-		
-		<!-- 상위 업무 작성 폼!!! -->
-		<form class="dis-none" name="task">
-			<div class="insert-board-area">
-				<div class="board-form" >
-					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					<div class="board-state">
-						<input type="radio" class="btn-check" name="state" value="G1" id="option6" autocomplete="off" checked>
-						<label for="option6">요청</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G2" id="option7" autocomplete="off">
-						<label for="option7">진행</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G3" id="option8" autocomplete="off">
-						<label for="option8">피드백</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G4" id="option9" autocomplete="off">
-						<label for="option9">완료</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G5" id="option10" autocomplete="off">
-						<label for="option10">보류</label>
+			<!-- 일반 게시글 작성 폼 -->
+			<form action="${pageContext.request.contextPath }/updateBoard" method="post" class="dis-none d-b" name="board">
+				<div class="insert-board-area">
+					<div class="board-form" >
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor5"></textarea>
 					</div>
-					<div>
-						<label for="startDate">시작일 : </label>
-						<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
+		        </div>
+		        <div class="modal-footer">
+					<select name="inspYn" class="modal-footer-select">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+					<input type="hidden" name="boardType" value="C5">
+	         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	              	<button type="reset" class="modal-footer-btn">임시저장</button>
+	              	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
+	              	<div><a href="#">임시저장 게시글 보기</a></div>
+				</div>
+			</form>
+			
+			<!-- 상위 업무 작성 폼!!! -->
+			<form class="dis-none" name="task">
+				<div class="insert-board-area">
+					<div class="board-form" >
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<div class="board-state">
+							<input type="radio" class="btn-check" name="state" value="G1" id="option6" autocomplete="off" checked>
+							<label for="option6">요청</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G2" id="option7" autocomplete="off">
+							<label for="option7">진행</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G3" id="option8" autocomplete="off">
+							<label for="option8">피드백</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G4" id="option9" autocomplete="off">
+							<label for="option9">완료</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G5" id="option10" autocomplete="off">
+							<label for="option10">보류</label>
+						</div>
+						<div>
+							<label for="startDate">시작일 : </label>
+							<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
+							
+							<label for="endDate">마감일 : </label>
+							<input type="text" name="endDate" class="date-input endDate" autocomplete="off">
+						</div>
 						
-						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" autocomplete="off">
+						<!-- 진척도 -->
+						<div class="js-progress create-content-cell">
+							<!-- 우선 순위 -->
+							<div class="select-priority">
+								<div>우선 순위 : </div>
+								<select name="priority">
+									<option value="">=======</option>
+									<option value="F3">낮음</option>
+									<option value="F2">보통</option>
+									<option value="F1">긴급</option>
+								</select>
+							</div>
+							<!-- 진행율 -->
+							<div class="board-progress">
+								<div>진행율 : </div>
+								<div class="progress-bar">
+						       		<div class="progress-bar-size"></div>
+								</div>
+								<div class="progress-value">0%</div>
+								<input type="hidden" name="processivity" value="0">
+							</div>
+						</div>
+						
+						<!-- 업무 담당자 -->
+						<div class="board-taskManager" style="margin-bottom: 20px;">
+							
+						</div>
+						<!-- 업무 담당자 끝 -->
+						
+						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor6"></textarea>
 					</div>
 					
-					<!-- 진척도 -->
-					<div class="js-progress create-content-cell">
-						<!-- 우선 순위 -->
-						<div class="select-priority">
-							<div>우선 순위 : </div>
-							<select name="priority">
-								<option value="">=======</option>
-								<option value="F3">낮음</option>
-								<option value="F2">보통</option>
-								<option value="F1">긴급</option>
+					<!-- 하위업무 등록 -->
+					<div class="board-sub-task">
+						<div class="board-sub-task-title">하위 업무 수정은 피드에서 가능합니다.</div>
+					</div>
+		        </div>
+		        
+		        <div class="modal-footer">
+					<select name="inspYn" class="modal-footer-select">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+					<input type="hidden" name="boardType" value="C5">
+		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+		             	<button type="reset" class="modal-footer-btn">임시저장</button>
+		             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
+		             	<div><a href="#">임시저장 게시글 보기</a></div>
+				</div>
+			</form>
+		
+			<!-- 일정 작성 폼!!! -->
+			<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none" id="sche" name="sche">
+				<div class="insert-board-area">
+					<div class="board-form" >
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<div class="m-bt">
+							<label for="startDate">시작일 : </label>
+							<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
+							
+							<label for="endDate">마감일 : </label>
+							<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
+						</div>
+						<div class="d-flex m-bt" style="justify-content: flex-start;">
+							<div>
+								<label>장소 : </label>
+								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddr" name="scheAddr">
+								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
+							</div>
+							<select name="alarmDateCode">
+								<option value="" selected>알림 설정</option>
+								<option value="L1">10분 전 미리 알림</option>
+								<option value="L2">1시간 전 미리 알림</option>
+								<option value="L3">1일 전 미리 알림</option>
+								<option value="L4">7일 전 미리 알림</option>
 							</select>
 						</div>
-						<!-- 진행율 -->
-						<div class="board-progress">
-							<div>진행율 : </div>
-							<div class="progress-bar">
-					       		<div class="progress-bar-size"></div>
+						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor7"></textarea>
+					</div>
+		        </div>
+		        
+		        <div class="modal-footer">
+					<select name="inspYn" class="modal-footer-select">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+						<input type="hidden" name="boardType" value="C6">
+		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+		             	<button type="reset" class="modal-footer-btn">임시저장</button>
+		             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
+		             	<div><a href="#">임시저장 게시글 보기</a></div>
+				</div>
+			</form>
+		        
+			<!-- 투표 작성 폼!!! -->
+			<form action="${pageContext.request.contextPath }/updateVote" method="post" class="dis-none" id="vote" name="vote">
+				<div class="insert-board-area">
+					<div class="board-form" >
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						
+						<div class="d-flex m-bt" style="justify-content: flex-start;">
+							<div class="form-check form-switch">
+								<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+								<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
 							</div>
-							<div class="progress-value">0%</div>
-							<input type="hidden" name="processivity" value="0">
+							<div class="form-check form-switch">
+								<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+								<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
+							</div>
+							<div class="form-check form-switch">
+								<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+								<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
+							</div>
 						</div>
+						
+						
+						<div class="m-bt">
+							<label for="endDate">마감일 : </label>
+							<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off">
+						</div>
+						
+						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor8"></textarea>
 					</div>
 					
-					<!-- 업무 담당자 -->
-					<div class="board-taskManager" style="margin-bottom: 20px;">
-						
+					<!-- 하위업무 등록 -->
+					<div class="board-sub-task">
+						<div class="board-sub-task-title">투표 항목</div>
+						<div class="board-vote-list"></div>
+						<span class="add-vote-list-btn">투표 항목 추가</span>
 					</div>
-					<!-- 업무 담당자 끝 -->
-					
-					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor6"></textarea>
-				</div>
-				
-				<!-- 하위업무 등록 -->
-				<div class="board-sub-task">
-					<div class="board-sub-task-title">하위 업무</div>
-					<div class="sub-task-manager"></div>
-					<span class="add-sub-task-btn">하위 업무 추가</span>
-				</div>
-	        </div>
-	        
-	        <div class="modal-footer">
-				<select name="inspYn" class="modal-footer-select">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-				<input type="hidden" name="boardType" value="C5">
-	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	             	<button type="reset" class="modal-footer-btn">임시저장</button>
-	             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
-	             	<div><a href="#">임시저장 게시글 보기</a></div>
-			</div>
-		</form>
-	
-		<!-- 일정 작성 폼!!! -->
-		<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none" id="sche" name="sche">
-			<div class="insert-board-area">
-				<div class="board-form" >
-					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					<div class="m-bt">
-						<label for="startDate">시작일 : </label>
-						<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
-						
-						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
-					</div>
-					<div class="d-flex m-bt" style="justify-content: flex-start;">
-						<div>
-							<label>장소 : </label>
-							<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddr" name="scheAddr">
-							<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
-						</div>
-						<select name="alarmDateCode">
-							<option value="" selected>알림 설정</option>
-							<option value="L1">10분 전 미리 알림</option>
-							<option value="L2">1시간 전 미리 알림</option>
-							<option value="L3">1일 전 미리 알림</option>
-							<option value="L4">7일 전 미리 알림</option>
-						</select>
-					</div>
-					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor7"></textarea>
-				</div>
-	        </div>
-	        
-	        <div class="modal-footer">
-				<select name="inspYn" class="modal-footer-select">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-					<input type="hidden" name="boardType" value="C6">
+		        </div>
+		        
+		        <div class="modal-footer">
+					<select name="inspYn" class="modal-footer-select">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+					<input type="hidden" name="boardType" value="C7">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	             	<button type="reset" class="modal-footer-btn">임시저장</button>
 	             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
 	             	<div><a href="#">임시저장 게시글 보기</a></div>
-			</div>
-		</form>
-	        
-		<!-- 투표 작성 폼!!! -->
-		<form action="${pageContext.request.contextPath }/updateVote" method="post" class="dis-none" id="vote" name="vote">
-			<div class="insert-board-area">
-				<div class="board-form" >
-					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					
-					<div class="d-flex m-bt" style="justify-content: flex-start;">
-						<div class="form-check form-switch">
-							<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-							<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
-						</div>
-						<div class="form-check form-switch">
-							<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-							<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
-						</div>
-						<div class="form-check form-switch">
-							<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-							<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
-						</div>
-					</div>
-					
-					
-					<div class="m-bt">
-						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off">
-					</div>
-					
-					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor8"></textarea>
 				</div>
-				
-				<!-- 하위업무 등록 -->
-				<div class="board-sub-task">
-					<div class="board-sub-task-title">투표 항목</div>
-					<div class="board-vote-list"></div>
-					<span class="add-vote-list-btn">투표 항목 추가</span>
-				</div>
-	        </div>
-	        
-	        <div class="modal-footer">
-				<select name="inspYn" class="modal-footer-select">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-				<input type="hidden" name="boardType" value="C7">
-	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	             	<button type="reset" class="modal-footer-btn">임시저장</button>
-	             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-	             	<div><a href="#">임시저장 게시글 보기</a></div>
-			</div>
-		</form>
-    </div>
-</div>
+			</form>
+	    </div>
+	</div>
 	
 	<!-- 게시글 수정 SCRIPT -->
 	<script>
@@ -3008,7 +3232,7 @@
 						
 				});
 				
-			}else if(boardType == 'C8') { //업무 게시글 수정 양식
+			}else if(boardType == 'C8') { //상위 업무 게시글 수정 양식
 				$.ajax({
 					url : '${pageContext.request.contextPath}/getTaskInfo',
 					type : 'GET',
@@ -3078,109 +3302,6 @@
 	        			
 		            	//상위 업무 게시글 내용
 	        			editor6.setData(highTask.prjBoardSubject);
-		            	
-	        			// 하위 업무 추가하기
-	        			let subManagerList = $(task).find('.sub-task-manager');
-	        			subManagerList.empty();
-	        			
-	        			for(let i=0; i<taskData.subTask.length; i++) {
-	        				let endDate = taskData.subTask[i].endDate != null ? taskData.subTask[i].endDate : '';  
-	        				let state = taskData.subTask[i].state != null ? taskData.subTask[i].state : '';
-	        				
-	        				let subtaskForm = `
-	        		            <div class="d-flex task-add" style="align-items: center; margin-bottom:20px; padding: 0 15px;">
-	        		            	<div>
-	        		            		<div>
-			        		        		<div class="d-flex m-bt">
-			        		        			<div>
-			        		        				<span>업무 제목 : </span>
-			        		        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요." style="margin-left: 20px;">
-			        		        			</div>
-			        			                <div class="select-state" style="margin-left:60px;">
-			        			                	<span>진행 상태 : </span>
-			        			                	<select name="state" class="task-select" style="margin-left: 20px;">
-				    							        <option value="G1">요청</option>
-				    							        <option value="G2">진행</option>
-				    							        <option value="G3">피드백</option>
-				    							        <option value="G4">완료</option>
-				    							        <option value="G5">보류</option>
-				    							    </select>
-			        							</div>
-			        		        		</div>
-			        		                <div class="d-flex m-bt">
-			        			        		<div class="select-priority">
-			        			        			<span>우선 순위 : </span>
-			        			                    <select name="priority">
-			        			                        <option value="">=======</option>
-			        			                        <option value="F3">낮음</option>
-			        			                        <option value="F2">보통</option>
-			        			                        <option value="F1">긴급</option>
-			        			                    </select>
-			        			                </div>
-			        			                <div style="margin-left:100px;">
-			        			                    <label for="endDate">마감일 : </label>
-			        			                    <input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
-			        			                </div>
-			        		                </div>
-			        		            </div>
-			        		            <div class="board-taskManager">
-		        							<span class="add-manager-btn">담당자 추가</span>
-	        							</div>
-	        		               	</div>
-	        		               	<img class="deleteSubtask" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:20px;">
-	        		            </div>`;
-	        		            
-							subManagerList.append(subtaskForm);
-	        			}
-		            	
-	        			for(let i=0; i<taskData.subTask.length; i++) {
-	        				let subtaskForm = subManagerList.find('.task-add').eq(i);
-	        				let subTaskManagerBox = subtaskForm.find('.board-taskManager');
-	        				let subManagers = taskData.subManager[taskData.subTask[i].prjBoardId];
-	        				
-	        				subtaskForm.attr('name', taskData.subTask[i].prjBoardId);
-	        				subtaskForm.find('input[name=prjBoardTitle]').val(taskData.subTask[i].prjBoardTitle);
-	        				subtaskForm.find('input[name=endDate]').val(taskData.subTask[i].endDate != null ? taskData.subTask[i].endDate : '');
-	        				subtaskForm.find('.select-state').find('option[value=' + taskData.subTask[i].state + ']').prop('selected', true);
-	        				subtaskForm.find('.select-priority').find('option[value=' + taskData.subTask[i].priority + ']').prop('selected', true);
-	        				
-	        				subTaskManagerBox.empty();
-	        				if(subManagers.length != 0) {
-	        					for (let j = 0; j < subManagers.length; j++) {
-				            		subTaskManagerBox.prepend('<span name='+ subManagers[j].prjParticirId +'>' + subManagers[j].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:5px;"></span>');
-				            	}	
-	        				}
-	        				// 셀렉트 박스 생성		            	
-		        			let subSelectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
-		        			$.ajax({
-		        		    	url : '${pageContext.request.contextPath}/particirList',
-		        		        type: 'GET',
-		        		        data: {'projectId': "${projectInfo.projectId}"},
-		        		        success: function(particir){
-		        		        	for(let j=0; j<particir.length; j++) {
-		        						let option = $('<option>');
-		        						
-		        						option.val(particir[j].prjParticirId);
-		        						option.text(particir[j].memberName);
-		        						
-		        						for(let k=0; k<subManagers.length; k++) {
-		        							if(particir[j].prjParticirId == subManagers[k].prjParticirId) {
-		        								option.prop('disabled', true);
-		        							}	        						}
-		        						
-		        						subSelectBox.append(option);
-		        					}
-		        		        },
-		        		        error: function(reject){
-		        		            console.log(reject);
-		        		        }
-		        		    });	
-		        			
-		        			subTaskManagerBox.append(subSelectBox);
-		        			subTaskManagerBox.prepend('<span>담당자 : </span>');
-	        			}
-	        				
-	        			
 	        			
 				    }, error : function(reject) {
 						console.log(reject);
@@ -3191,16 +3312,16 @@
 		
 		//담당자 선택 삭제
 		$(document).on('click', '.deleteManager', function(e) {
+			e.stopPropagation();
 			let managerSpan = $(e.currentTarget).parent();
 			let prjParticirId = managerSpan.attr('name');
-			
+			console.log('gg');
 			managerSpan.parent().find('option[value=' + prjParticirId +']').prop('disabled', false);
 			managerSpan.remove();
 			
 		});
 		
-		//업무 수정
-		// 업무 등록하기
+		//상위 업무 수정
 		$('#boardUpdateModal button[name="btnAddTask"]').on('click', function(){
 			let data={}
 			let prjBoardId = $('#prjBoardId').val();
@@ -3227,43 +3348,11 @@
 		        prjManager.push({prjBoardId, prjParticirId});
 		    });
 			
-			//삭제할 하위업무
-			let deleteSubtask = [];
-			$('#boardUpdateModal .sub-task-manager input[type="hidden"]').each(function(index, item) {
-				prjBoardId = Number($(item).val());
-				console.log($(item));
-				console.log(prjBoardId);
-				deleteSubtask.push({prjBoardId});
-			});
-			
-			// 하위 업무
-			let subTask = [];
-			let subManager = [];
-			$('#boardUpdateModal .task-add').each(function(index,item){
-				prjBoardId = $(item).attr('name');
-				let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
-				// 하위 업무 리스트
-				if (prjBoardTitle !== "") {
-	                state = $(item).find('[name=state]').val();
-	                let endDate = $(item).find('[name=endDate]').val();
-	                let priority = $(item).find('[name=priority]').val();
-	                let managerList = $(item).find('.board-taskManager').find('span:not(:eq(0))');
-	                
-	                subTask.push({ prjBoardId, prjBoardTitle, state, endDate, priority });
-	            	
-	            	// 하위 업무 담당자
-					$(managerList).each(function(idx, manager) {
-						let prjParticirId = $(manager).attr('name');
-						subManager.push({prjBoardId, prjParticirId});
-					});               
-	            }
-			});
-			
-			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager, deleteSubtask}));
+			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			$.ajax({
 				url:'${pageContext.request.contextPath}/updateTask',
 				type:'POST',
-				data:JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager, deleteSubtask}),
+				data:JSON.stringify({boardVO, taskVO, prjManager}),
 				contentType:'application/json',
 				success:function(data){
 					alert('정상적으로 수정되었습니다.');
@@ -3273,7 +3362,7 @@
 				}
 			});
 		});
-		// 업무 수정 종료
+		//상위 업무 수정 종료
 		
 		$(document).on('click', '.deleteSubtask' , function(e) {
 			let subtask = $(e.currentTarget).closest('.task-add');
@@ -3283,6 +3372,9 @@
 			subtaskBox.append('<input type="hidden" value=' + prjBoardId + '>');
 			subtask.remove();
 		});
+		
+		//하위 업무 수정
+		
 	</script>
 	<!-- 게시글 수정 종료 -->
 	
