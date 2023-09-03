@@ -3,6 +3,7 @@ package com.worksb.hi.admin.service;
 import java.util.List;
 
 import com.worksb.hi.common.PagingVO;
+import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.project.service.FileDataVO;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -16,4 +17,7 @@ public interface AdminService {
 	public int prjcount(int companyId);
 	//projectlist
 	public List<ProjectVO>projectList(int companyId,PagingVO pagingVO);
+	
+	// 회사 정보 수정
+	public int updateCompany(CompanyVO companyVO);
 }

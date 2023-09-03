@@ -272,7 +272,7 @@ div h2 {
         
             
             
-        if (inputTitle.length == 0) {
+       /*  if (inputTitle.length == 0) {
             alert("제목을 입력해주세요.");
             return false;
             }
@@ -290,7 +290,7 @@ div h2 {
         if (passelect == 0) {
             alert("인원수를 설정해주세요");
             return false;
-            }
+            } */
 
         
 			

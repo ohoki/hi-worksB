@@ -15,4 +15,10 @@ public interface BoardCmtService {
 	
 	// 댓글 수정
 	public int boardCmtUpdate(BoardCmtVO boardCmtVO);
+	
+	// 댓글 삭제
+	public int boardCmtDelete(BoardCmtVO boardCmtVO);
+	
+	// 진짜 댓글 삭제
+	public int realCmtDelete(BoardCmtVO boardCmtVO);
 }

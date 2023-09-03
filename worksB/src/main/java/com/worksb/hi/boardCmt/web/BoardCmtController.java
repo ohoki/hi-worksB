@@ -41,4 +41,20 @@ public class BoardCmtController {
 	public int boardCmtUpdate(BoardCmtVO boardCmtVO) {
 		return boardCmtService.boardCmtUpdate(boardCmtVO);
 	}
+	
+	// 부모면 '삭제된 댓글입니다' 만 띄우는 용도
+	@PostMapping("boardCmtDelete")
+	@ResponseBody
+	public int boardCmtDelete(BoardCmtVO boardCmtVO) {
+		return boardCmtService.boardCmtDelete(boardCmtVO);
+	}
+	
+	// 부모가 아니고 댓글없는 부모의 경우 삭제 처리하기위함
+	@PostMapping("realCmtDelete")
+	@ResponseBody
+	public int realCmtDelete(BoardCmtVO boardCmtVO) {
+		return boardCmtService.realCmtDelete(boardCmtVO);
+	}
+	
+	// 
 }

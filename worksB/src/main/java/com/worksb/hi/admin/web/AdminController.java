@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.worksb.hi.admin.service.AdminService;
@@ -39,7 +40,7 @@ public class AdminController {
 	@Autowired
 	MemberService memberService;
 	@Autowired
-	AdminService adminservice;
+	AdminService adminService;
 	
 	
 	
@@ -120,10 +121,10 @@ public class AdminController {
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
 				@RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
-			int total=adminservice.downloadCount(companyId);
+			int total=adminService.downloadCount(companyId);
 			PagingVO pagingvo=new PagingVO(total,nowPage,cntPerPage);
 			
-			m.addAttribute("list",adminservice.downloadList(companyId,pagingvo));
+			m.addAttribute("list",adminService.downloadList(companyId,pagingvo));
 			m.addAttribute("paging", pagingvo);
 			return "admin/downloadedfile";
 		}
@@ -133,12 +134,35 @@ public class AdminController {
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
 				@RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
-			int total=adminservice.prjcount(companyId);
+			int total=adminService.prjcount(companyId);
 			PagingVO pagingvo=new PagingVO(total,nowPage,cntPerPage);
-			List<ProjectVO> list=adminservice.projectList(companyId, pagingvo);
+			List<ProjectVO> list=adminService.projectList(companyId, pagingvo);
 			m.addAttribute("paging", pagingvo);
 			m.addAttribute("list",list);
 			return "";
 		}
-
+		
+		
+		// 회사 정보 수정폼
+		@GetMapping("/company/companyInfoForm")
+		public String companyInfoForm(Model model, HttpSession session) {
+			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
+			model.addAttribute("companyInfo", company);
+			return "adminPage/companyInfo";
+		}
+		
+		// 회사 정보 수정
+		@RequestMapping("company/updateCompany")
+		@ResponseBody
+		public boolean updateCompany(CompanyVO companyVO, HttpSession session) {
+			
+			int result = adminService.updateCompany(companyVO);
+			if(result == 0) {
+				return false;
+			}
+			
+			CompanyVO updatedCompany = companyService.getCompanyById(companyVO);
+			session.setAttribute("companyInfo", updatedCompany);
+			return true;
+		}
 }
