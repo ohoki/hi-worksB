@@ -104,6 +104,10 @@ public interface BoardMapper {
 	
 	
 	//정현
+	//일정 수정
+	public int updateSche(ScheVO scheVO);
+	//일정 삭제
+	public int deleteSche(int scheId);
 	//프로젝트 일정 캘린더 조회
 	public List<ScheVO> getScheCalendar(int projectId);
 	//프로젝트 업무 캘린더 조회

@@ -375,7 +375,9 @@
 		<set>
 			prj_board_title = #{prjBoardTitle},
 			prj_board_subject = #{prjBoardSubject},
+			<if test="inspYn !=null and !inspYn.equals('')">
 			insp_yn = #{inspYn}
+			</if>
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
@@ -589,6 +591,33 @@
 	
 
 	<!-- 정현 -->
+	<!-- 프로젝트 일정 수정 -->
+	<update id="updateSche" parameterType="ScheVO">
+		UPDATE prj_sche
+		<set>
+			<if test="startDate !=null">
+				start_date = #{startDate}
+			</if>
+			<if test="endDate !=null">
+				, end_date = #{endDate}
+			</if>
+			<if test="scheAddr !=null and !scheAddr.equals('')">
+				, sche_addr = #{scheAddr}
+			</if>
+			<if test="scheAddrDetail !=null and !scheAddrDetail.equals('')">
+				, sche_addr_detail = #{scheAddrDetail}
+			</if>
+			<if test="alarmDateCode !=null and !alarmDateCode.equals('')">
+				, alarm_date_code = #{alarmDateCode}
+			</if>		
+		</set>
+		WHERE prj_board_id = #{prjBoardId}
+	</update>
+	<!-- 프로젝트 일정 삭제 -->
+	<delete id="deleteSche">
+		DELETE prj_sche
+		WHERE prj_board_id = #{prjBoardId}
+	</delete>
 	<!-- 프로젝트 일정 캘린더 조회 -->
 	<select id="getScheCalendar" resultType="ScheVO">
 		SELECT b.prj_board_id

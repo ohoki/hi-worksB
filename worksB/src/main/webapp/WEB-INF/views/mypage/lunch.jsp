@@ -13,6 +13,9 @@
 	    color: black;
 	    text-decoration: none;
 	}
+	body{
+		color: black;
+	}
 </style>
 </head>
 <!-- jquerry -->
