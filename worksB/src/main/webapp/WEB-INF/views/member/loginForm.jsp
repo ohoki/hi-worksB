@@ -26,6 +26,31 @@
 			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 		</form>
 	</div>
+	
+	<!-- 비밀번호 찾기 모달 -->
+	<div id="searchPw-modal">
+		<div class="searchPw-modal-content">
+			<div class="taskManager-modal-title">
+				<span>비밀번호 찾기</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div>
+				<div>
+					<label></label>
+					<input>
+					<button></button>
+				</div>
+				<div>
+					<label></label>
+					<input>
+				</div>
+			</div>
+			<div>
+				<button></button>
+				<button></button>
+			</div>			
+		</div>			
+	</div>
 </body>
 <script>
 	$(window).on('load',function() {
