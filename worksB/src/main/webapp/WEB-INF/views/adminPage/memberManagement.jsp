@@ -61,7 +61,7 @@
 				<span>구성원 정보 수정</span>
 				<label>이메일</label>
 				<input data-email type="text" value="" readonly="readonly">
-				<label>회사 아이디</label>
+				<label>회사 번호</label>
 				<input data-memberId type="text" value="" readonly="readonly">
 				<label>이름</label>
 				<input data-name type="text" value="">
@@ -70,7 +70,7 @@
 				<label>직책</label>
 				<input data-job type="text" value="">
 				<label>휴대폰 번호</label>
-				<input data-phon type="text" value="">
+				<input data-phone type="text" value="">
 				<label>등급</label>
 				<input data-grade type="text" value="">
 			</div>
@@ -86,7 +86,7 @@
 			console.log(trMemberId);
 			
 			$.ajax({
-				url : '${pageContext.request.contextPath}/memberManagements',
+				url : '${pageContext.request.contextPath}/admin/memberManagements',
 				type : 'GET',
 				data : {'memberId' : trMemberId },
 				success : function(memberData){
@@ -94,12 +94,12 @@
 					let memberInfo = $('#memberInserModal');
 					
 					memberInfo.find('input[data-email]').text(highTask.memberId);
-					memberInfo.find('input[data-memberId]').text(highTask.memberId);
-					memberInfo.find('input[data-email]').text(highTask.memberId);
-					memberInfo.find('input[data-email]').text(highTask.memberId);
-					memberInfo.find('input[data-email]').text(highTask.memberId);
-					memberInfo.find('input[data-email]').text(highTask.memberId);
-					memberInfo.find('input[data-email]').text(highTask.memberId);
+					memberInfo.find('input[data-memberId]').text(highTask.companyId);
+					memberInfo.find('input[data-name]').text(highTask.memberName);
+					memberInfo.find('input[data-dept]').text(highTask.dept_id);
+					memberInfo.find('input[data-job]').text(highTask.job_id);
+					memberInfo.find('input[data-phone]').text(highTask.memberPhone);
+					memberInfo.find('input[data-grade]').text(highTask.memberGrade);
 					
 				}
 			});

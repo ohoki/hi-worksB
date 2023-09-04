@@ -26,7 +26,7 @@ public interface AdminService {
 	// 구성원 리스트
 	public List<MemberVO> companyMemberList(int companyId);
 	// 회원 정보 가져오기
-	public String companyMemberInfo(MemberVO memberVO);
+	public List<MemberVO> companyMemberInfo(String memberId);
 
 	//부서목록
 	public List<DepartmentVO>departmentList(int companyId);

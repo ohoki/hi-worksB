@@ -214,19 +214,16 @@ public class AdminController {
 			// list넘기기
 			List<MemberVO> memberList = adminService.companyMemberList(companyId);
 			model.addAttribute("memberList", memberList );
-			
-			// info 넘기기
-			//MemberVO memberInfo = adminService.companyMemberInfo(memberId);
-			//model.addAttribute("memberInfo", memberInfo);
-			
 			return "adminPage/memberManagement";
 		}
 		
 		// 구성원 정보 단건조회
 		@RequestMapping("/memberManagements")
 		@ResponseBody
-		public String CompanyMemberInfo(MemberVO memberVO) {
-			return adminService.companyMemberInfo(memberVO);
+		public String CompanyMemberInfo(MemberVO memberVO, String memberId) {
+			List<MemberVO> member = adminService.companyMemberInfo(memberId);
+			
+			return member;
 		}
 
 		@PostMapping("/updateRole")

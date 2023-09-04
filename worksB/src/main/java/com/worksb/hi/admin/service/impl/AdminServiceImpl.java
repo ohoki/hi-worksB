@@ -52,8 +52,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public String companyMemberInfo(MemberVO memberVO) {
-		return adminmapper.companyMemberInfo(memberVO);
+	public List<MemberVO> companyMemberInfo(String memberId) {
+		return adminmapper.companyMemberInfo(memberId);
 	}
 	
 	@Override
