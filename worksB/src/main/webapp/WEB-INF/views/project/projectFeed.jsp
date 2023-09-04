@@ -13,7 +13,6 @@
 	
 	<link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
 	<script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
-	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<style type="text/css">
 		html{
 		  scroll-behavior: smooth;
@@ -875,7 +874,7 @@
 			border: 1px solid var(--color-light-blue);
 		}
 		
-		.deleteManager, .deleteSubtask {
+		.deleteManager {
 			cursor: pointer;	
 		}
 
@@ -3369,11 +3368,10 @@
 						<option value="E2">전체 공개</option>
 						<option value="E1">프로젝트 관리자만</option>
 					</select>
-					<input type="hidden" name="boardType" value="C5">
+					<input type="hidden" name="boardType" value="C8">
 		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		             	<button type="reset" class="modal-footer-btn">임시저장</button>
+		             	<button type="reset" class="modal-footer-btn">취소</button>
 		             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
-		             	<div><a href="#">임시저장 게시글 보기</a></div>
 				</div>
 			</form>
 		
