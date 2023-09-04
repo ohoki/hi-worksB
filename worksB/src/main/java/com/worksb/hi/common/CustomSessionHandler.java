@@ -28,9 +28,11 @@ public class CustomSessionHandler implements HttpSessionListener {
 		
 		//접속상태 수정
 		MemberVO member = new MemberVO();
-		member.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
-		member.setEmpStatus("S3");
-		
-		memberMapper.updateMember(member);
+		if((MemberVO)session.getAttribute("memberInfo") != null) {
+			member.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+			member.setEmpStatus("S3");
+			
+			memberMapper.updateMember(member);
+		}
 	}
 }

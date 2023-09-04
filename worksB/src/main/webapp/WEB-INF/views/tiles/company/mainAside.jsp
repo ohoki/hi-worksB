@@ -86,8 +86,8 @@
 			</div>
 			<div style="padding: 10px 30px; padding-left: 100px;">
 				<div class="invite-member-modal-info">
-					<label for="searchMemberId">아아디</label>
-					<input id="searchMemberId" name="searchMemberId" type="email">
+					<label for="invitedId">이메일</label>
+					<input id="invitedId" name="invitedId" type="email">
 					<button>인증번호 발송</button>
 				</div>
 				<div class="CertificationNumber">
@@ -97,7 +97,7 @@
 			</div>
 			<div>
 				<button type="reset">취소</button>
-				<button type="button">인증하기</button>
+				<button type="button" name="invite">인증하기</button>
 			</div>			
 		</div>			
 	</div>
@@ -126,6 +126,23 @@
 		$('img[name="removeModal"]').on('click', function(e) {
 			let modalBox = $(e.currentTarget).closest('div[id$="modal"]');
 			removeModal(modalBox);
+		});
+	</script>
+	<script>
+		$('button[name="invite"]').on('click', function() {
+			let invitedId = $('#invitedId').val();
+			console.log(invitedId);
+			$.ajax({
+				url: '${pageContext.request.contextPath}/member/inviteMember',
+				type: 'GET',
+				data: {'invitedId' : invitedId},
+				success : function(result) {
+					console.log(result);		
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
 		});
 	</script>
 </body>

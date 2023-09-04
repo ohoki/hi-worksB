@@ -15,16 +15,19 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.worksb.hi.common.MailHandler;
 import com.worksb.hi.common.UserSha256;
 import com.worksb.hi.company.service.CompanyService;
 import com.worksb.hi.company.service.CompanyVO;
@@ -44,7 +47,8 @@ public class memberController {
 	MemberService memberService;
 	@Autowired
 	CompanyService companyService;
-	
+	@Autowired
+	JavaMailSender mailSender;
 	@Autowired
 	CompanyController cc;
 	
@@ -139,7 +143,17 @@ public class memberController {
 		
 //	======== 이메일 인증 및 회원 가입 ===============
 	@GetMapping("/registerForm")
-	public String registerForm() {
+	public String registerForm(@RequestParam(required = false) Integer companyId, HttpSession session) {
+		if(companyId != null) {
+			CompanyVO cp = new CompanyVO();
+			cp.setCompanyId(companyId);
+			
+			cp = companyService.getCompanyById(cp);
+			
+			//초대받은 회원이면 세션을 저장해준다 (세션 시간 3분)
+			session.setAttribute("inviteCompany", cp);
+			session.setMaxInactiveInterval(60*3);
+		}
 		return "member/registerForm";
 	}// registerForm
 
@@ -323,5 +337,30 @@ public class memberController {
 	    }
     }
 
-
+	//회원 초대
+	@GetMapping("/member/inviteMember")
+	@ResponseBody
+	public int inviteMember(String invitedId, HttpSession session) {
+		CompanyVO cv = (CompanyVO)session.getAttribute("companyInfo");
+		String companyName = cv.getCompanyName();
+		int companyId = cv.getCompanyId();
+		int result = 1;
+		
+		try {
+			MailHandler sendMail = new MailHandler(mailSender);
+			sendMail.setSubject("hi-worksB 초대메일 입니다.");
+			sendMail.setText(
+					"<h1>hi-worksB 초대메일 입니다.</h1>" +
+			        "<br><br>" + companyName + "에서 회원님을 초대합니다!!" +
+			        "<br><br>아래 링크를 통해 회원가입을 진행해주세요." +
+	                "<br><br><a href='http://localhost/hi/registerForm?companyId=" + companyId +
+	                "' target='_blank'>회원가입 진행하기</a>", true);
+			sendMail.setFrom("cyh6237@gmail.com", "hi-worksB");
+			sendMail.setTo(invitedId);
+			sendMail.send();
+		} catch (Exception e) {
+			result = 0;
+		}
+		return result;
+	}
 }
