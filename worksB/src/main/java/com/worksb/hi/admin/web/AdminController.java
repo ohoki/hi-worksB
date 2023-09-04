@@ -43,7 +43,7 @@ public class AdminController {
 	@Autowired
 	MemberService memberService;
 	@Autowired
-	AdminService adminservice;
+	AdminService adminService;
 	
 	
 	
@@ -125,10 +125,10 @@ public class AdminController {
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
 				@RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
-			int total=adminservice.downloadCount(companyId);
+			int total=adminService.downloadCount(companyId);
 			PagingVO pagingvo=new PagingVO(total,nowPage,cntPerPage);
 			
-			m.addAttribute("list",adminservice.downloadList(companyId,pagingvo));
+			m.addAttribute("list",adminService.downloadList(companyId,pagingvo));
 			m.addAttribute("paging", pagingvo);
 			return "admin/downloadedfile";
 		}
@@ -138,9 +138,9 @@ public class AdminController {
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
 				@RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
-			int total=adminservice.prjcount(companyId);
+			int total=adminService.prjcount(companyId);
 			PagingVO pagingvo=new PagingVO(total,nowPage,cntPerPage);
-			List<ProjectVO> list=adminservice.projectList(companyId, pagingvo);
+			List<ProjectVO> list=adminService.projectList(companyId, pagingvo);
 			m.addAttribute("paging", pagingvo);
 			m.addAttribute("list",list);
 			return "admin/projectList";
@@ -183,6 +183,41 @@ public class AdminController {
 		@ResponseBody
 		public int deleteRole(HttpSession session,@RequestParam("roleId")int jobId) {
 			return adminservice.deleteRole(jobId);
+		}
+		
+		// 회사 정보 수정폼
+		@GetMapping("/company/companyInfoForm")
+		public String companyInfoForm(Model model, HttpSession session) {
+			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
+			model.addAttribute("companyInfo", company);
+			return "adminPage/companyInfo";
+		}
+		
+		// 회사 정보 수정
+		@RequestMapping("company/updateCompany")
+		@ResponseBody
+		public boolean updateCompany(CompanyVO companyVO, HttpSession session) {
+			
+			int result = adminService.updateCompany(companyVO);
+			if(result == 0) {
+				return false;
+			}
+			
+			CompanyVO updatedCompany = companyService.getCompanyById(companyVO);
+			session.setAttribute("companyInfo", updatedCompany);
+			return true;
+		}
+		
+		// 회사 구성원 리스트
+		@RequestMapping("/memberManagement")
+		public String CompanyMemberList(Model model, HttpSession session, MemberVO memberVO) {
+			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
+			Integer companyId = company.getCompanyId();
+			
+			List<MemberVO> memberList = adminService.CompanyMemberList(companyId);
+			
+			model.addAttribute("memberList", memberList  );
+			return "adminPage/memberManagement";
 		}
 
 		@PostMapping("/updateRole")

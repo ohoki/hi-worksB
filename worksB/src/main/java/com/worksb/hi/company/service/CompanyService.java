@@ -16,4 +16,6 @@ public interface CompanyService {
 
 	//직급조회
 	public List<JobVO> getJob(CompanyVO companyVO);
+	
+	
 }

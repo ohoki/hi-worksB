@@ -42,6 +42,24 @@ public class BoardCmtServiceImpl implements BoardCmtService {
 		return 0;
 	}
 
+	@Override
+	public int boardCmtDelete(BoardCmtVO boardCmtVO) {
+		int result = boardCmtMapper.boardCmtDelete(boardCmtVO);
+		if(result == 1) {
+			return boardCmtVO.getBoardId();
+		}
+		return 0;
+	}
+
+	@Override
+	public int realCmtDelete(BoardCmtVO boardCmtVO) {
+		int result = boardCmtMapper.realCmtDelete(boardCmtVO);
+		if(result == 1) {
+			return boardCmtVO.getBoardId();
+		}
+		return 0;
+	}
+
 
 	
 

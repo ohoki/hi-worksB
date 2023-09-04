@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.worksb.hi.admin.mapper.AdminMapper;
 import com.worksb.hi.admin.service.AdminService;
 import com.worksb.hi.common.PagingVO;
+import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.company.service.JobVO;
 import com.worksb.hi.project.service.FileDataVO;
@@ -36,7 +38,18 @@ public class AdminServiceImpl implements AdminService {
 	public List<ProjectVO> projectList(int companyId, PagingVO pagingVO) {
 		return adminmapper.projectList(companyId, pagingVO);
 	}
+	
+	//수정
+	@Override
+		public int updateCompany(CompanyVO companyVO) {
+		return adminmapper.updateCompany(companyVO);
+		}
 
+	// 회사 구성원 리스트
+	@Override
+	public List<MemberVO> CompanyMemberList(int companyId) {
+		return adminmapper.CompanyMemberList(companyId);
+	}
 	@Override
 	public List<DepartmentVO> departmentList(int companyId) {
 		return adminmapper.departmentList(companyId);
@@ -109,5 +122,4 @@ public class AdminServiceImpl implements AdminService {
 	public List<ProjectVO> getPrjId(int deptId) {
 		return adminmapper.getPrjId(deptId);
 	}
-
 }

@@ -60,11 +60,24 @@ ORDER SIBLINGS BY comment_id
 	<update id="boardCmtUpdate" parameterType="BoardCmtVO">
 		UPDATE board_comment
 			<set>
-				board_content = #{boardContent}
+				comment_content = #{commentContent}
 			</set>
-		WHERE board_type = #{boardType} and comment_id = #{commentID} and board_id = #{boardId}
+		WHERE board_type = #{boardType} and comment_id = #{commentId} and board_id = #{boardId}
 	</update>
 	
 	<!-- 삭제인척 하는 수정 -->
+	<update id="boardCmtDelete">
+		UPDATE board_comment
+			<set>
+				comment_content = '삭제된 댓글 입니다.'
+			</set>
+		WHERE board_type = #{boardType} and comment_id = #{commentId} and board_id = #{boardId }
+	</update>
+	
+	<!-- 진짜로 댓글 삭제하는 쿼리 -->
+	<delete id="realCmtDelete"> 
+        DELETE FROM board_comment
+        	  WHERE board_type = #{boardType} and comment_id = #{commentId} and board_id = #{boardId }
+    </delete>
 	
 </mapper>

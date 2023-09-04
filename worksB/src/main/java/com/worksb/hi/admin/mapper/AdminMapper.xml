@@ -103,6 +103,29 @@
 			WHERE rn BETWEEN #{pagingvo.start} AND #{pagingvo.end}
 	</select>
 	
+	<!-- 회사 정보 수정 -->
+	<update id="updateCompany" parameterType="CompanyVO">
+		UPDATE 	company
+	  		<set>
+	  			company_name = #{companyName}
+	  			, company_url = #{companyUrl}
+	  			<if test="logoPath != null">
+	  			, logo_path = #{logoPath}
+	  			</if>
+	  			<if test="realLogoPath != null">
+	  			, real_logo_path = #{realLogoPath}
+	  			</if> 
+	  			, company_addr = #{companyAddr}
+  			</set>
+  		WHERE company_id = #{companyId}
+	</update>
+	
+	<!-- 회사 구성원 조회 -->
+	<select id="CompanyMemberList" resultType="MemberVO">
+		SELECT *
+		  FROM member
+		 WHERE company_id = #{companyId}
+
 	<select id="departmentList" resultType="DepartmentVO">
 		SELECT
 		    d.dept_id,
