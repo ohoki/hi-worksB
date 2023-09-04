@@ -193,13 +193,21 @@ public class BoardController {
 	}
 	
 	// 일정 수정용 조회
-	/*
-	@GetMapping("getScheBoard")
-	@@ResponseBody
+	@GetMapping("getSche")
+	@ResponseBody
 	public Map<String, Object> getScheBoard(ScheVO scheVO){
 		Map<String, Object> resultMap = new HashMap<>();
+		
+		int prjBoardId = scheVO.getPrjBoardId();
+        BoardVO boardInfo = boardService.getBoardInfo(prjBoardId);
+        
+        ScheVO scheInfo = boardService.getScheInfo(scheVO);
+        
+        resultMap.put("boardInfo", boardInfo);
+        resultMap.put("scheInfo", scheInfo);
+        
+        return resultMap;
 	}
-	*/
 	// 투표 조회
 	@GetMapping("getVoteInfo")
 	@ResponseBody
@@ -319,6 +327,13 @@ public class BoardController {
 	@ResponseBody
 	public int deleteTask(TaskVO taskVO){
     	return boardService.deleteTask(taskVO); 
+	}
+	//프로젝트 일정 수정
+	@PostMapping("updateFeedSche")
+	public String updateFeedSche(ScheVO scheVO, BoardVO boardVO) {
+		boardService.updateBoard(boardVO);
+		boardService.updateSche(scheVO);
+		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
 	}
 	
 	// 투표 삭제

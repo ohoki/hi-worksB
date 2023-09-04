@@ -42,7 +42,10 @@ public interface ProjectMapper {
 	//프로젝트 즐겨찾기 여부
 	public PrjParticirVO getParticirByProject(PrjParticirVO particirVO);
   
-  
+	//프로젝트 참여 승인 조회
+	public List<PrjParticirVO> getCheckAccp(PrjParticirVO participant);
+	//프로젝트 참여 승인하기update
+	public int updateParticir(PrjParticirVO participant);
   
   
   

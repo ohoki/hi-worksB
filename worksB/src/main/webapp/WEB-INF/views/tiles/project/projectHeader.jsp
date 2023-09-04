@@ -119,6 +119,9 @@
 			<li><a href="${pageContext.request.contextPath }/projectTask?projectId=${projectInfo.projectId}">업무</a></li>
 			<li><a href="${pageContext.request.contextPath}/projectCalendar?projectId=${projectInfo.projectId}">캘린더</a></li>
 			<li onclick="location.href='${pageContext.request.contextPath }/filetab?projectId=${projectInfo.projectId}&fileAccess=${projectInfo.fileAccess }'">파일</li>
+			<c:if test="${particirInfo.manager eq 'A1'}">
+			<li><span>참여승인</span>
+			</c:if>
 		</ul>
 	</div>
 </div>

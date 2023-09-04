@@ -2053,13 +2053,14 @@
 					$(e.currentTarget).text('상단고정');								
 					$(e.currentTarget).data('type', 'pinY');
 				}
-			}else if(type == 'update') {
+			}else if(type == 'update') {		// ========= 수정
 				visibleDiv.removeClass('d-b');
 				if(boardType == 'C5') {
 					$(board).addClass('d-b');
 				} else if(boardType == 'C6') {
 					$(sche).addClass('d-b');
 				} else if(boardType == 'C7') {
+					// 투표 수정 가능 체크
 					$.ajax({
 						url: '${pageContext.request.contextPath}/countVoteParticir',
 						type: 'GET',
@@ -2081,7 +2082,7 @@
 				} else if(boardType == 'C8') {
 					$(task).addClass('d-b');
 				}
-			}else if(type == 'delete') {
+			}else if(type == 'delete') {		// ========= 삭제
 				let check = confirm("삭제하시겠습니까?");
 				if(boardType == 'C5'){
 					if(check){
@@ -2100,7 +2101,21 @@
 						});
 					}
 				}else if(boardType == 'C6'){
-					
+					if(check){
+						$.ajax({
+							url: '${pageContext.request.contextPath}/deleteSche',
+							type: 'POST',
+							data: {'prjBoardId' : boardId},
+							success: function(response){
+								alert("삭제되었습니다.");
+								location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + prjId;
+							},
+							error: function(error){
+								alert("삭제에 실패했습니다.");
+								console.log(error);
+							}
+						});
+					}
 				}else if(boardType == 'C7'){
 					if(check){
 						$.ajax({
@@ -3156,7 +3171,7 @@
 						<div class="d-flex m-bt" style="justify-content: flex-start;">
 							<div>
 								<label>장소 : </label>
-								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddr" name="scheAddr">
+								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrInsert" name="scheAddr">
 								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
 							</div>
 							<select name="alarmDateCode">
@@ -3361,7 +3376,7 @@
 			</form>
 		
 			<!-- 일정 작성 폼!!! -->
-			<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none" id="sche" name="sche">
+			<form action="${pageContext.request.contextPath }/updateFeedSche" method="post" class="dis-none" id="sche" name="sche">
 				<div class="insert-board-area">
 					<div class="board-form" >
 						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -3375,8 +3390,8 @@
 						<div class="d-flex m-bt" style="justify-content: flex-start;">
 							<div>
 								<label>장소 : </label>
-								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddr" name="scheAddr">
-								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
+								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrUpdate" name="scheAddr">
+								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소">
 							</div>
 							<select name="alarmDateCode">
 								<option value="" selected>알림 설정</option>
@@ -3489,20 +3504,29 @@
 					}
 				});
 			}else if(boardType == 'C6') { // 일정 게시글 수정 양식
-
-				/*
 				$.ajax({
-					url: '${pageContext.request.contextPath}/getScheInfo',
+					url: '${pageContext.request.contextPath}/getSche',
 					type: 'GET',
 					data: {'prjBoardId' : prjBoardId},
 					success: function(scheData){
+						let boardInfo = scheData.boardInfo;
+						let scheInfo = scheData.scheInfo;
+						
+						$(sche).find('[name=prjBoardTitle]').val(boardInfo.prjBoardTitle);
+						editor7.setData(boardInfo.prjBoardSubject);
+						$("select[name='inspYn']").val(boardInfo.inspYn);
+						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
+						
+						$(sche).find('[name=startDate]').val(scheInfo.startDate);
+						$(sche).find('[name=endDate]').val(scheInfo.endDate);
+						$(sche).find('[name=scheAddr]').val(scheInfo.scheAddr);
+						$(sche).find('[name=scheAddrDetail]').val(scheInfo.scheAddrDetail);
 						
 					},
 					error: function(reject){
 						console.log(reject);
 					}
 				});
-				*/
 				
 			}else if(boardType == 'C7') { //투표 게시글 수정 양식
 				$.ajax({
@@ -3951,8 +3975,10 @@
 		};
 		//ckeditor 종료
 		
-		//다음 주소 api
-		$('#scheAddr').on('click', function() {
+		$('#scheAddrInsert').on('click',getAddr)
+		$('#scheAddrUpdate').on('click',getAddr)
+		
+		function getAddr(){
 			new daum.Postcode({
 				oncomplete: function(data) {
 					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -3988,13 +4014,13 @@
 					    	addr = addr + extraAddr;
 					} 
 					// 주소 정보를 해당 필드에 넣는다.
-					document.getElementById("scheAddr").value = addr;
+					$('input[name="scheAddr"]').val(addr);
 					// 커서를 상세주소 필드로 이동한다.
-					document.getElementById("scheAddrDetail").focus();
+					$('input[name="scheAddrDetail"]').val('');
+					$('input[name="scheAddrDetail"]').focus();
 				}
 			}).open();
-		});
-		//다음 주소 api 종료
+		} 
 		
 		// 게시글 유형 폼 선택
 		$('ul.insert-board-list li').click(function(e){

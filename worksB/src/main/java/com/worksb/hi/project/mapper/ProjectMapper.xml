@@ -178,7 +178,7 @@
 		FROM	prj_particir p
 		JOIN	member m
 		ON		p.member_id=m.member_id
-		WHERE	project_id = #{projectId}
+		WHERE	project_id = #{projectId} AND p.particir_accp = 'A1'
 	</select>
 	
 	<!-- 프로젝트 즐겨찾기 여부 -->
@@ -194,7 +194,17 @@
 		WHERE member_id = #{memberId} AND project_id = #{projectId}
 	</select>
 	
-	
+	<!--  -->
+	<select id="getCheckAccp" resultType="PrjParticirVO">
+		SELECT	p.member_id,
+				m.member_name,
+				m.real_profile_path
+		FROM	prj_particir p
+		JOIN	member m
+		ON		p.member_id = m.member_id
+		WHERE	project_id = #{projectId}
+			AND p.particir_accp = 'A2';
+	</select>
 	
 	
 	
