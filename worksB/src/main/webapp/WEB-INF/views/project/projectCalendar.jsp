@@ -982,8 +982,7 @@
 		
 		// 일정 수정 폼
 		$('p[data-type="update"]').on('click', function(e){
-			let 
-			if()
+
 			let scheId = $('#prjScheId').val()
 			let prjBoardIdInput = $('#prjBoardId');
 			let prjId = '${projectInfo.projectId}';

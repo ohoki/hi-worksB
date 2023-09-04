@@ -150,8 +150,8 @@ public class AdminController {
 		@GetMapping("/editRole")
 		public String editRole(Model m,HttpSession session) {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
-			m.addAttribute("dlist",adminservice.departmentList(companyId));
-			m.addAttribute("jList",adminservice.jobList(companyId));
+			m.addAttribute("dlist",adminService.departmentList(companyId));
+			m.addAttribute("jList",adminService.jobList(companyId));
 			return "admin/editRole";
 		}
 		
@@ -161,13 +161,13 @@ public class AdminController {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 			vo.setCompanyId(companyId);
 			vo.setDeptName(deptName);
-			return adminservice.insertDept(vo);
+			return adminService.insertDept(vo);
 		}
 		
 		@PostMapping("/deleteDept")
 		@ResponseBody
 		public int deleteDept(HttpSession session,@RequestParam("deptId")int deptId) {
-			return adminservice.deleteDept(deptId);
+			return adminService.deleteDept(deptId);
 		}
 		
 		@PostMapping("/insertRole")
@@ -176,13 +176,13 @@ public class AdminController {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 			vo.setCompanyId(companyId);
 			vo.setJobName(roleName);
-			return adminservice.insertRole(vo);
+			return adminService.insertRole(vo);
 		}
 		
 		@PostMapping("/deleteRole")
 		@ResponseBody
 		public int deleteRole(HttpSession session,@RequestParam("roleId")int jobId) {
-			return adminservice.deleteRole(jobId);
+			return adminService.deleteRole(jobId);
 		}
 		
 		// 회사 정보 수정폼
@@ -226,7 +226,7 @@ public class AdminController {
 			JobVO vo=new JobVO();
 			vo.setJobId(jobId);
 			vo.setJobName(jobName);
-			return adminservice.updateRole(vo);
+			return adminService.updateRole(vo);
 		}
 		
 		@PostMapping("/updateDept")
@@ -238,8 +238,8 @@ public class AdminController {
 			
 			List<String> names=new ArrayList<>();
 			
-			List<ProjectVO> prjName=adminservice.getPrjName(deptId);
-			List<ProjectVO> prjIdx=adminservice.getPrjId(deptId);
+			List<ProjectVO> prjName=adminService.getPrjName(deptId);
+			List<ProjectVO> prjIdx=adminService.getPrjId(deptId);
 			for(ProjectVO name:prjName) {
 				String deptNameAndPrjName=name.getProjectName();
 				String nameList[]=deptNameAndPrjName.split("]");
