@@ -630,6 +630,25 @@
 	#updateSubTask-modal span, #updateSubTask-modal label{
 		font-size: var(--font-micro);
 	}
+	.board-footer {
+		display: flex;
+		justify-content: space-between;
+		margin: 10px 40px;
+		font-size: var(--font-micro);
+	}
+	
+	.board-footer-icon {
+		margin-right: 10px;
+	}
+	
+	.board-footer-icon:hover {
+		color: var(--color-dark-red);
+		cursor: pointer;
+	}
+	
+	.board-footer-info {
+		margin-left: 10px;
+	}
 </style>
 </head>
 <body>
@@ -736,7 +755,7 @@
 		</div>
 		<div class="board-footer">
 			<div >
-				<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+				<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 				<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
 			</div>
 				<div>
@@ -1238,6 +1257,16 @@
 				
 		     	//댓글 정보		     	
 		     	getCommentList(prjBoardId, 'C8');
+		     	
+				// 좋아요 여부 / 좋아요 전체 수
+				getPrjLike('${memberInfo.memberId}', prjBoardId);
+				
+				// 좋아요 등록/해제
+				$('span[name="prjLike"]').on('click', function() {
+				    likeBoard('${memberInfo.memberId}', prjBoardId, 'C8');
+				});
+				
+		     
 		    }, error : function(reject) {
 				console.log(reject);
 			}
@@ -1750,6 +1779,62 @@
 		managerSpan.remove();
 		
 	});
+	
+	
+	
+	// 좋아요 등록/해제
+	function likeBoard(memberId, boardId, boardType){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/likeBoard',
+			type : 'GET',
+			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
+			success : function(like){
+				// 게시글 좋아요 수
+				getPrjLike(memberId, boardId);
+				
+				let likeSpan = $('#task-modal').find('span[name="prjLike"] span');
+				likeSpan.empty();
+				// 좋아요 상태 표시
+				if(like.checkLike == 'like'){
+					likeSpan.append("좋아요 해제");
+				}else{
+					likeSpan.append("좋아요");
+				}
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	}
+	
+	
+	// 좋아요 정보
+	function getPrjLike(memberId, boardId){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getPrjLike',
+			type : 'GET',
+			data : {'memberId': memberId, 'boardId' : boardId},
+			success : function(likeInfo){
+				// 게시글 좋아요 수
+				console.log(likeInfo)
+				$('#task-modal').find('span[data-likeCount]').text(likeInfo.boardLike.length);
+				
+				// 좋아요 여부
+				let likeSpan = $('#task-modal').find('span[name="prjLike"] span');
+				likeSpan.empty();
+				
+				if(likeInfo.memberLike != null) {
+					likeSpan.append("좋아요 해제");
+				} else {
+					likeSpan.append("좋아요");
+				}
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	};
+	
 </script>
 
 
