@@ -45,8 +45,6 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 	
-	
-	
 	@RequestMapping("/companyInfo")
 	public String companyInfo() {
 		return "admin/companyInfo";
@@ -253,5 +251,4 @@ public class AdminController {
 			//return adminservice.updateDept(vo);
 			return 0;
 		}
-		
 }

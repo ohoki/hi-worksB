@@ -169,7 +169,6 @@
 							#{memberId},
 							#{memoContent}
 						)
-					
 	</insert>
 	
 	<!-- 메모 수정 -->
