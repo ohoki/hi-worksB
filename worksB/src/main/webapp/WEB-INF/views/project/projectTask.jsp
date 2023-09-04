@@ -9,154 +9,374 @@
 <title>Insert title here</title>
 <script src="${pageContext.request.contextPath }/resources/jquery/jquery-3.7.0.min.js"></script>
 <style>
-table{
-	border: 1px solid var(--color-light-grey);
-}
-
-th, td {
-	border: 1px solid var(--color-light-grey);
-	width : 140px;
-}
-  
-tr{
-	cursor: pointer;
-}
-
-tr:hover{
-	background-color : var(--color-beigie);
-}
-.highTask{
-	background-color : var(--color-light-white);
-}
-
-.subTaskBtn{
-	background-color : var(--color-dark-blue);
-}
-
-.modal-task-visible {
-	display: block !important;
-}
-
-#task-modal{
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,0.1);
-	font-size: 12px;
-	display: none;
-	left: 0;
-	top: 0;
-
-}
-
-.task-modal__content{
-	position: absolute;
-	right: 0;
-	top: 62px;
-	height: 100%;
-	width: 40%;
-	background-color: white;
-	font-size: 17px;
-	padding: 20px 15px;
-	z-index: 10;
-}
-
-.flex {
-	display: flex;
-}
-
-.task__search{
-	margin-top : 20px;
-	width : 350px;
-	margin-bottom : 20px;
-}
-
-#task-menu-modal{
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,0.1);
-	font-size: 12px;
-	display: none;
-	left: 0;
-	top: 0;
-	z-index: 100;
-}
-
-.task-menu__content{
-	width: 200px;
-	height: 150px;
-	border-radius: 50%;
-	position: absolute;
-	top: 100px;
-	right: 240px;
-	background-color: white;
-	border: 1px solid var(--color-dark-beigie);
-	border-radius: 10px;
-	padding: 10px 5px;
-	z-index: 10;
-}
-
-.task-menu__content li {
-	cursor: pointer;
-	padding: 5px 0;
-	font-size : 15px;
-}
-
-.task-menu__content li:hover {
-	background-color: var(--color-beigie);
-}
-
-.task-menu__content li span {
-	display: inline-block;
-	width: 10px;
-	height: 10px;
-	border-radius: 50%;
-	margin-right: 10px;
-}
-
-#update-task-modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.update-task-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%;
-    box-shadow: 0px 0px 10px 2px #888;
-}
-
-.board-state label {
-		width: 70px;
-		height: 14px;
-		background-color: var(--color-dark-beigie);
-		padding: 10px;
-		border-radius: 5px;
-		color: white;
-		font-weight: var(--weight-bold);
-		line-height: 14px;
-		cursor: pointer;
-		text-align: center;
-		margin: 0 10px;
-		margin-bottom: 20px;
+	table{
+		border: 1px solid var(--color-light-grey);
 	}
+	
+	th, td {
+		border: 1px solid var(--color-light-grey);
+		width : 140px;
+	}
+	  
+	tr{
+		cursor: pointer;
+	}
+	
+	tr:hover{
+		background-color : var(--color-beigie);
+	}
+	.highTask{
+		background-color : var(--color-light-white);
+	}
+	
+	.subTaskBtn{
+		background-color : var(--color-dark-blue);
+	}
+	
+	.modal-task-visible {
+		display: block !important;
+	}
+	
+	#task-modal{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.1);
+		font-size: 12px;
+		display: none;
+		left: 0;
+		top: 0;
+	
+	}
+	
+	#task-modal .board-header {
+		display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    padding: 10px 40px;
+	}
+	
+	#task-modal .board-header-info {
+		display: flex;
+    	align-items: center;
+	}
+	
+	#task-modal .profileImg {
+		width: 40px;
+	    height: 40px;
+	    border-radius: 10px;
+	}
+	
+	
+	#task-modal .board-headder-info__memberName {
+		margin: 0 20px;
+   		font-weight: var(--weight-bold);		
+	}
+	
+	#task-modal .board-title {
+		font-size: var(--font-small);
+	    font-weight: var(--weight-bold);
+	    padding: 5px;
+	    margin: 0 40px;
+	    border-bottom: 1px solid var(--color-dark-beigie);
+	    color: var(--color-dark-grey);
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	}
+		
+	#task-modal .board-title span {
+	    color: var(--color-blue);
+	}	
+	
+	#task-modal .board-title span[data-title] {
+		color: var(--color-dark-grey);
+	}
+	
+	.board-title div[data-hightaskid] {
+	    font-size: var(--font-micro);
+	    padding: 5px;
+	    border: 1px solid var(--color-dark-red);
+	    border-radius: 5px;
+	    color: var(--color-dark-red);
+	}
+	
+	#task-modal div[data-processivity] {
+	    display: flex;
+	    align-items: center;
+	    color: var(--color-green);
+	}
+	
+	#task-modal .processivity {
+	    width: 150px;
+	    height: 7px;
+	    border-radius: 2px;
+	    background-color: var(--color-light-white);
+	    margin-right: 10px;
+	}
+	
+	#task-modal .processivity-value {
+	    width: 1%;
+	    height: 7px;
+	    border-radius: 2px;
+	    background-color: var(--color-green);
+	}	
+	
+	#task-modal .sche-date {
+	    font-weight: var(--weight-bold);
+	    font-size: 15px;
+	    color: var(--color-dark-red);
+	    margin: 10px 40px;
+	}
+	
+	#task-modal div[data-state] {
+	    margin: 0 40px;
+	    text-align: left;
+	}
+	
+	#task-modal div[data-state] button {
+	    width: 50px;
+	    height: 10px;
+	    background-color: var(--color-dark-beigie);
+	    padding: 10px;
+	    border-radius: 5px;
+	    color: white;
+	    font-weight: var(--weight-bold);
+	    line-height: 10px;
+	}
+	
+	#task-modal div[data-state] button.active {
+	    background-color: var(--color-dark-red);
+	}
+	
+	#task-modal .board-content  {
+		margin: 30px 40px;
+	    font-size: var(--font-micro);
+	    color: var(--color-dark-grey);
+	}
+	
+	.task-modal__content{
+		position: absolute;
+		right: 0;
+		top: 62px;
+		width: 40%;
+		height: 90vh;
+		background-color: white;
+		font-size: 17px;
+		padding: 20px 15px;
+		z-index: 10;
+		overflow: scroll;
+		overflow-x:hidden;
+	}
+	
+	#task-modal .task-manager {
+	    display: flex;
+	    font-weight: var(--weight-bold);
+	    font-size: 13px;
+	    color: var(--color-blue);
+	    margin: 10px 40px;
+	    align-items: center;
+	}
+	
+	#task-modal .task-manager .text {
+	    font-size: 15px;
+	    color: var(--color-dark-grey);
+	}
+	
+	#task-modal div[data-priority] {
+	    font-size: var(--font-micro);
+	    color: var(--color-green);
+	    font-weight: var(--weight-bold);
+	}
+	
+	#task-modal .sub-task-lists {
+	    margin: 0 40px 30px 40px;
+	}
+	
+	#task-modal .sub-task-lists-title {
+	    margin: 10px 0;
+	    font-size: var(--font-micro);
+	    font-weight: var(--weight-bold);
+	    color: var(--color-dark-grey);
+	}
+	
+	#task-modal .sub-task-item {
+	    display: flex;
+	    align-items: center;
+	    padding: 5px 10px;
+	    background-color: rgba(240, 240, 240, 0.2);
+	    justify-content: flex-start;
+	    margin: 5px 0;
+	    border-radius: 5px;
+	    text-align: center;
+	    border: 1px solid transparent;
+	    cursor: pointer;
+	}
+
+	#task-modal .sub-state {
+	    width: 50px;
+	    height: 7px;
+	    background-color: var(--color-blue);
+	    padding: 10px;
+	    border-radius: 5px;
+	    color: white;
+	    font-weight: var(--weight-bold);
+	    font-size: var(--font-micro);
+	    line-height: 7px;
+	    margin-right: 20px;
+	}
+
+	.board-footer {
+	    display: flex;
+	    justify-content: space-between;
+	    margin: 10px 40px;
+	    font-size: var(--font-micro);
+	}
+	
+	.board-footer-icon {
+	    margin-right: 10px;
+	}
+
+	.board-footer-info {
+	    margin-left: 10px;
+	}
+
+	.d-flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	
+	#task-modal .board-comment {
+	    padding: 5px 40px;
+	    border-top: 1px solid var(--color-dark-beigie);
+	    display: flex;
+	    align-items: center;
+	    justify-content: space-between;
+	    color: var(--color-dark-grey);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	.task__search{
+		margin-top : 20px;
+		width : 350px;
+		margin-bottom : 20px;
+	}
+	
+	#task-menu-modal{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.1);
+		font-size: 12px;
+		display: none;
+		left: 0;
+		top: 0;
+		z-index: 100;
+	}
+	
+	.task-menu__content{
+		width: 100px;
+   	 	height: 70px;
+		border-radius: 50%;
+		position: absolute;
+		background-color: white;
+		border: 1px solid var(--color-dark-beigie);
+		border-radius: 10px;
+		padding: 10px 5px;
+		z-index: 10;
+		text-align: center;
+		font-size: var(--font-micro);
+	}
+	
+	.task-menu__content li {
+		cursor: pointer;
+		padding: 5px 0;
+		font-size : 15px;
+	}
+	
+	.task-menu__content li:hover {
+		background-color: var(--color-beigie);
+	}
+	
+	.task-menu__content li span {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		margin-right: 10px;
+	}
+	
+	#update-task-modal {
+	    display: none;
+	    position: fixed;
+	    z-index: 1;
+	    left: 0;
+	    top: 0;
+	    width: 100%;
+	    height: 100%;
+	    overflow: auto;
+	    background-color: rgba(0, 0, 0, 0.4);
+	}
+	
+	.update-task-content {
+	    background-color: white;
+	    margin: 15% auto;
+	    padding: 20px;
+	    border: 1px solid #888;
+	    width: 50%;
+	    box-shadow: 0px 0px 10px 2px #888;
+	}
+	
+	.board-state label {
+			width: 70px;
+			height: 14px;
+			background-color: var(--color-dark-beigie);
+			padding: 10px;
+			border-radius: 5px;
+			color: white;
+			font-weight: var(--weight-bold);
+			line-height: 14px;
+			cursor: pointer;
+			text-align: center;
+			margin: 0 10px;
+			margin-bottom: 20px;
+		}
 	
 	.board-state input:checked + label {
 		background-color: var(--color-dark-red);
 		border: 3px solid var(--color-dark-red);
 	}
-	
-
 </style>
 </head>
 <body>
@@ -198,113 +418,79 @@ tr:hover{
 		<!-- 전체 업무 조회 끝-->
 	</div>
 	<!-- 업무 상세 조회 모달-->
-	<div>
-		<div id="task-modal">
-			<div class="task-modal__content">
-				<div class="board-header">
-					<div class="board-header">
-						<div class="board-header-info">
-							<img class="profileImg"alt="" src="">
-							<div class="board-headder-info__memberName" data-memberName></div>
-							<span data-regdate></span>
-						</div>
-						<div>
-						<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
-						</div>
-					</div>
-					<div class="board-title">
-						<div>
-							<span>[업무]</span>
-							<span data-title></span>
-						</div>
-						<div data-hightaskid></div>
-					</div>
-					<div class="sche-date d-flex">
-						<div>
-							<span class="text">기간 : </span>
-							<span data-start></span>
-							<span> ~ </span>
-							<span data-end></span>
-						</div>
-						<div data-processivity>
-							<div class="processivity">
-								<div class="processivity-value"></div>
-							</div>
-							<span data-processivityvalue></span>
-						</div>
-					</div>
-					<div class="d-flex" style="margin-right: 40px;">
-						<div class="task-manager"> 
-							<span class="text">담당자 : </span>
-						</div>
-						<div data-priority></div>
-					</div>
-					<div data-state>
-						<button type="button" value="G1">요청</button>
-						<button type="button" value="G2">진행</button>
-						<button type="button" value="G3">피드백</button>
-						<button type="button" value="G4">완료</button>
-						<button type="button" value="G5">보류</button>
-					</div>
-					<div class="board-content">
-						<div>
-						</div>
-					</div>
-					<div class="sub-task-lists">
-						<div class="sub-task-lists-title"><span data-subtaskcount></span></div>
-						<div class="sub-task-list">
-						</div>
-					</div>
-					<div class="board-footer">
-						<div >
-							<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
-							<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
-						</div>
-						<div>
-							<span class="board-footer-info">댓글 7</span>
-							<span class="board-footer-info">좋아요 14</span>
-						</div>
-					</div>
-					<c:if test="ㄴㅇㄹ">
-						<div>
-							댓글 더보기
-						</div>
-						<!-- for each로 최신 댓글 2개만 -->
-							<div class="board-comment">
-								<div>
-									<img alt="#" src="#">
-									<div>
-										<div>
-											회원정보
-										</div>
-										<div>
-											댓글내용
-										</div>
-									</div>
-								</div>
-								<div>
-									<a href="#">수정</a>
-									<a href="#">삭제</a>
-								</div>
-							</div>
-						<!-- 여기까지 -->	
-					</c:if>
-					<!-- 
-					<div class="comment-input">
-						<c:if test="${memberInfo.realProfilePath eq null }">
-							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
-						</c:if>
-						<c:if test="${memberInfo.realProfilePath ne null }">
-							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
-						</c:if>
-							<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
-					</div>
-					-->
+	<div id="task-modal" data-tasktype="">
+		<div class="task-modal__content">
+			<div class="board-header">
+				<div class="board-header-info">
+					<img class="profileImg"alt="" src="">
+					<div class="board-headder-info__memberName" data-memberName></div>
+					<span data-regdate></span>
 				</div>
+				<div>
+				<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+				</div>
+			</div>
+			<div class="board-title">
+				<div>
+					<span>[업무]</span>
+					<span data-title></span>
+				</div>
+				<div data-hightaskid></div>
+			</div>
+			<div class="sche-date d-flex">
+				<div>
+					<span class="text" style="color: var(--color-dark-grey);">기간 : </span>
+					<span data-start></span>
+					<span> ~ </span>
+					<span data-end></span>
+				</div>
+				<div data-processivity>
+					<div class="processivity">
+						<div class="processivity-value"></div>
+					</div>
+					<span data-processivityvalue></span>
+				</div>
+			</div>
+				<div class="d-flex" style="margin-right: 40px;">
+					<div class="task-manager"> 
+						<span class="text">담당자 : </span>
+					</div>
+					<div data-priority></div>
+				</div>
+				<div data-state>
+					<button type="button" value="G1">요청</button>
+					<button type="button" value="G2">진행</button>
+					<button type="button" value="G3">피드백</button>
+					<button type="button" value="G4">완료</button>
+					<button type="button" value="G5">보류</button>
+				</div>
+				<div class="board-content"><div>
+			</div>
+		</div>
+		<div class="sub-task-lists">
+			<div class="d-flex">
+				<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+			</div>
+			<div class="sub-task-list">
+			</div>
+		</div>
+		<div class="board-footer">
+			<div >
+				<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+				<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+			</div>
+				<div>
+					<span class="board-footer-info">댓글 <span data-commentCount></span></span>
+					<span class="board-footer-info">좋아요 <span data-likeCount></span></span>
+				</div>
+			</div>
+			<!-- 댓글창 -->
+			<div name="board-comment-box">
 			</div>
 		</div>
 	</div>
 	<!-- 업무 상세 조회 모달 끝-->
+	
 	<!-- 업무글 메뉴 모달 -->
 	<div id="task-menu-modal">
 		<div class="task-menu__content">
@@ -315,17 +501,11 @@ tr:hover{
 		</div>
 	</div>
 	
-	<!-- 업무글 수정 -->
+	<!-- 상위 업무글 수정 -->
 	<div id="update-task-modal">
 		<div class="update-task-content" id="updateTask">
-			<!-- 
-		    <h3>업무수정폼~~!!~!~~~!!!!</h3>
-		    <input type="text">
-		    <button id="update-submit">저장</button>
-		    -->
 		    <form action="" method="post">
 		    	<div>
-		    	<h3>업무수정폼~~!!~!~~~!!!!</h3>
 		    		<input type="text" name="prjBoardTitle">
 		    		<div class="board-state">
 						<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off">
@@ -383,8 +563,8 @@ tr:hover{
 		    </form>
 		</div>
 	</div>
-<script>
 
+<script>
 // 업무 리스트
 	$(document).ready(function() {
 		let taskBoardList = $('.highTask');
@@ -497,14 +677,6 @@ tr:hover{
 	    
 	});
 	
-	
-/*
-	//여백 누르면 모달페이지 종료
-	$('[id*=modal]').on('click', function() {
-		$('.modal-task-visible').removeClass('modal-task-visible');
-	});
-*/
-
 	$('#task-modal').on('click', function(e) {
 	    if ($(e.target).is('#task-modal')) {
 	        $('#task-modal').removeClass('modal-task-visible');
@@ -522,19 +694,19 @@ tr:hover{
 	        $('#update-task-modal').removeClass('modal-task-visible');
 	    }
 	});
-
+	
 	// 업무 상세내용 모달
 	$(document).on("click", ".taskTr", function(e){
 		e.stopPropagation();
-		let highTask = $(this);
-		let prjBoardId = highTask.data('id');
+		let tr = $(this);
+		let prjBoardId = tr.data('id');
 		
 		$.ajax({
 			url : '${pageContext.request.contextPath}/getTaskInfo',
 			type : 'GET',
 			data : {'prjBoardId' : prjBoardId},
 			success : function(taskData) {
-				
+				console.log(taskData);
 				let taskInfo = $('#task-modal');
 				// 클릭한 업무 업무
 				let highTask = taskData.highTask[0];
@@ -543,38 +715,71 @@ tr:hover{
 				// 하위 업무리스트
 				let subTasks = taskData.subTask;
 				
+				//초기화
+				taskInfo.find('.board-content').children().remove();
+				taskInfo.find('div[data-state]').children('button').removeClass('active');
+				taskInfo.find('.processivity-value').css('width', "0%");
+				
+				if(tr.hasClass('highTask') == true) {
+					$('#task-modal').data('tasktype', 'high');	
+				} else {
+					$('#task-modal').data('tasktype', 'sub');
+				}
+				
 				// 클릭한 업무 정보
+				//이름
 				taskInfo.find('div[data-memberName]').text(highTask.memberName);
-				taskInfo.find('span[data-regdate]').text(highTask.prjBoardRegdate);
-				taskInfo.find('span[data-title]').text(highTask.prjBoardTitle);
-				taskInfo.find('div[data-hightaskid]').text('업무 번호 ' + highTask.taskId);
-				taskInfo.find('span[data-start]').text(highTask.startDate);
-				taskInfo.find('span[data-end]').text(highTask.endDate);
-				taskInfo.find('div[data-state]').text(highTask.state);
-				taskInfo.find('div[data-priority]').text('우선순위 : ' + highTask.priorityName);
-				taskInfo.find('div[data-processivity]').text(highTask.processivity);
-				taskInfo.find('.board-content').text(highTask.prjBoardSubject);
-		        
+				//프로필
 				let profileImg = taskInfo.find('.profileImg');
 				if (highTask.realProfilePath == null) {
 					profileImg.attr('src', '${pageContext.request.contextPath }/resources/img/user.png');
 				} else {
 					profileImg.attr('src', '${pageContext.request.contextPath}/images/' + highTask.realProfilePath);
 				}
+				//작성일자
+				taskInfo.find('span[data-regdate]').text(highTask.prjBoardRegdate);
+				//제목
+				taskInfo.find('span[data-title]').text(highTask.prjBoardTitle);
+				//업무번호
+				taskInfo.find('div[data-hightaskid]').text('업무 번호 ' + highTask.taskId);
+				// 기간
+		        if(taskData.highTask[0].startDate != null) {
+		        	taskInfo.find('span[data-start]').text(highTask.startDate);
+					taskInfo.find('span[data-end]').text(highTask.endDate);
+		        }else {
+		        	taskInfo.find('span[data-start]').parent().remove();
+		        }
+				//우선순위
+				 if(highTask.priorityName != null) {
+					 taskInfo.find('div[data-priority]').text('우선순위 : ' + highTask.priorityName);
+		        }else {
+		        	taskInfo.find('div[data-priority]').remove();
+		        }
+				// 진행상태 버튼 활성화
+                taskInfo.find('div[data-state]').children('button[value=' + highTask.state + ']' ).addClass('active');
+                //진척도
+                if( highTask.processivity == null) {
+                	highTask.processivity = 0;
+                }
+                taskInfo.find('.processivity-value').css('width', highTask.processivity + "%");
+                taskInfo.find('span[data-processivityvalue]').text(highTask.processivity + "%");
+                
+				//내용
+				if(highTask.prjBoardSubject != null) {
+					taskInfo.find('.board-content').prepend(highTask.prjBoardSubject);	
+				}
 				
 				// 업무 담당자 
-				let taskManagers = taskData.highManager;
 				let manager = taskInfo.find('.task-manager');
-				manager.empty();
-				if (taskManagers.length == 1) {
-						manager.append('<span>' + taskManagers[0].memberName + '</span>');
-					} else if (taskManagers.length > 1) {
-						for(let i=0; i<taskManagers.length; i++){
-							manager.append('<span>' + taskManagers[i].memberName + '</span>');
-						}
-					} else {
-						manager.append('<span>없음</span>');
-					}
+				manager.children('span:not(:eq(0))').empty();
+				
+				if(highManagers.length >1) {
+					manager.append('<span>' + highManagers[0].memberName + ' 외 ' + (highManagers.length-1) + '명</span>');	
+		     	} else if(highManagers.length == 0) {
+		     		manager.append('<span>없음</span>');
+		     	} else {
+		     		manager.append('<span>' + highManagers[0].memberName + '</span>');
+		     	} 
 				
 				// 하위 업무 리스트
 	     		taskInfo.find('span[data-subtaskcount]').empty();
@@ -584,7 +789,7 @@ tr:hover{
 		     	let subTaskList = taskInfo.find(".sub-task-list");
 				// 하위 업무 갯수 
 				if(subTasks.length != 0){
-		     		countSpan.text("하위업무 " + subTasks.length);
+		     		countSpan.text(subTasks.length);
 				}
 		     	// 정보 입력
 		        for (let j = 0; j < subTasks.length; j++) {
@@ -604,25 +809,83 @@ tr:hover{
 		     	
 		     	$('.update-task-btn').attr('data-id', prjBoardId);
 		     	$('.delete-task-btn').attr('data-id', prjBoardId);
-		     	
-		     	
+				
+		     	//댓글 정보		     	
+		     	getCommentList(prjBoardId, 'C8');
 		    }, error : function(reject) {
 				console.log(reject);
 			}
 		});
 	});
 	
+	// 댓글 리스트
+	function getCommentList(boardId, boardType){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/projectCmtList',
+			type : 'GET',
+			data : {'boardId' : boardId, 'boardType': boardType},
+			success : function(comments){
+				let boardCommentBox = $('#task-modal').find('div[name="board-comment-box"]');
+				
+				boardCommentBox.empty();
+				
+				if(comments.length != 0) {
+					for(let i =0; i<comments.length; i++) {
+						let boardComment =`
+							<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+								<div class="d-flex">
+									<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profileImg">
+									<div>
+										<div style="margin: 5px 0;">
+											<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+											<span>\${comments[i].commentRegdate }</span>
+										</div>
+										<div style="margin: 5px 0;">
+											\${comments[i].commentContent }
+										</div>
+									</div>								
+								</div>
+							</div>`;
+							
+						boardCommentBox.prepend(boardComment);
+					}
+					let moreComment=`
+						<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
+							댓글
+						</div>`;
+						
+					boardCommentBox.prepend(moreComment);
+				} 
+				// 댓글 수
+				$('#task-modal').find('span[data-commentCount]').text(comments.length);
+				
+			}, error : function(reject) {
+				console.log(reject);
+			}
+		});
+	};
+	
 	// 업무글 메뉴 모달
 	$('.task-menu-btn').on('click', function(e){
+		let x = e.clientX - 120;
+		let y = e.clientY;
+		let modalContent = $('.task-menu__content');
+		
+		modalContent.css('top', y + 'px');
+		modalContent.css('left',x + 'px');
+		
 		$('#task-menu-modal').addClass('modal-task-visible');
 	})
+	
 	// 수정 폼 모달
 	$('.update-task-btn').on('click', function(e){
+		
+		
 		$('.modal-task-visible').removeClass('modal-task-visible');
 		$('#update-task-modal').addClass('modal-task-visible');
 	})
 	
-	// 업무 글 수정 폼
+	// 상위 업무 글 수정 폼
 	$('.update-task-btn').on('click', function(e){
 		let taskInfo = $('.update-task-btn');
 		let prjBoardId = taskInfo.data('id');
@@ -675,84 +938,6 @@ tr:hover{
 				console.log(reject);
 			}
 		});
-	})
-	
-	/*
-	$(document).on('click', '.deleteManager', function(e){
-		let deleteManagerList = [];
-		let managerSpan = $(this).closest('.taskManagerName');
-		let prjParticirId = managerSpan.data('particirid');
-	    deleteManagerList.push(prjParticirId);
-
-	    managerSpan.remove();
-
-	    console.log(deleteManagerList);
-		
-	})
-	*/
-	
-	/*
-	//담당자 추가 클릭 시 구성원 불러오고 셀렉트 박스
-		$(document).on('click', '.add-manager-btn', function(e) {
-			let boardTaskManager = $(e.currentTarget).closest('.board-taskManager');
-			let addManagerBtn = $(e.currentTarget);
-			let selectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
-			
-			addManagerBtn.remove();
-			
-			$.ajax({
-		    	url : '${pageContext.request.contextPath}/particirList',
-		        type: 'GET',
-		        data: {'projectId': "${projectInfo.projectId}"},
-		        success: function(particir){
-		        	for(let i=0; i<particir.length; i++) {
-						let option = $('<option>');
-						
-						option.val(particir[i].prjParticirId);
-						option.text(particir[i].memberName);
-						
-						selectBox.append(option);
-					}
-		        },
-		        error: function(reject){
-		            console.log(reject);
-		        }
-		    });	
-			
-			boardTaskManager.prepend(selectBox);
-			boardTaskManager.prepend('<span>담당자 : </span>');
-		});
-		
-		//담당자 선택시 스팬 추가
-		$(document).on('change', '.add-taskManager-select', function(e) {
-			let managerSpan = $('<span>');
-			let memberId = `<input type="hidden" name="taskManager">`;
-			let selectBox = $(e.currentTarget);
-			let checkedOption = selectBox.find('option:checked');
-			
-			if(selectBox.find('option:disabled').length == 4) {
-				managerSpan.text('외 1명');
-				selectBox.before(managerSpan);
-			}else if (selectBox.find('option:disabled').length > 4) {
-				selectBox.prev().remove();
-				managerSpan.text('외' + (selectBox.find('option:disabled').length-3) + '명');
-				selectBox.before(managerSpan);
-			} else {
-				managerSpan.text(checkedOption.text());
-				selectBox.before(managerSpan);
-			}
-			//담당자 아이디 저장
-			memberId = $(memberId).val(checkedOption.val());
-			selectBox.next().append(memberId);
-			
-			checkedOption.prop('disabled', true);
-		});
-	*/
-
-	//업무 수정 처리하기
-	$('#update-submit').on('click', function(e){
-		
-		
 	})
 	
 	// 업무 삭제
