@@ -192,4 +192,16 @@
 		UPDATE job set job_name=#{jobName}
 		WHERE job_id=#{jobId}
 	</update>
+	<select id="getPrjName" resultType="ProjectVO">
+		SELECT project_name 
+		FROM project 
+		WHERE dept_id=#{deptId}
+		ORDER BY project_id
+	</select>
+	<select id="getPrjId"  resultType="ProjectVO">
+		SELECT project_id
+		FROM project
+		WHERE dept_id=#{deptId}
+		ORDER BY project_id
+	</select>
 </mapper>

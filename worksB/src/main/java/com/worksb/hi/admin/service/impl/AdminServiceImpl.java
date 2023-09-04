@@ -100,4 +100,14 @@ public class AdminServiceImpl implements AdminService {
 		return 1;
 	}
 
+	@Override
+	public List<ProjectVO> getPrjName(int deptId) {
+		return adminmapper.getPrjName(deptId);
+	}
+
+	@Override
+	public List<ProjectVO> getPrjId(int deptId) {
+		return adminmapper.getPrjId(deptId);
+	}
+
 }

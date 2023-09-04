@@ -34,6 +34,10 @@ public interface AdminMapper {
 	public int deleteDept(int deptId);
 	//부서업데이트
 	public int updateDept(DepartmentVO vo);
+	//해당 부서번호에 해당하는 프로젝트의 이름 불러오이
+	public List<ProjectVO>getPrjName(int deptId);
+	//해당 부서번호에 해당하는 프로젝트아이디를 불러오기
+	public List<ProjectVO>getPrjId(int deptId);
 	
 	//직급insert
 	public int insertRole(JobVO vo);

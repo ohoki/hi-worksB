@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +32,6 @@ import com.worksb.hi.company.service.JobVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectVO;
-import java.net.HttpURLConnection;
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
@@ -200,8 +200,23 @@ public class AdminController {
 			DepartmentVO vo=new DepartmentVO();
 			vo.setDeptId(deptId);
 			vo.setDeptName(deptName);
-			System.out.println(adminservice.updateDept(vo));
-			return adminservice.updateDept(vo);
+			
+			List<String> names=new ArrayList<>();
+			
+			List<ProjectVO> prjName=adminservice.getPrjName(deptId);
+			List<ProjectVO> prjIdx=adminservice.getPrjId(deptId);
+			for(ProjectVO name:prjName) {
+				String deptNameAndPrjName=name.getProjectName();
+				String nameList[]=deptNameAndPrjName.split("]");
+				names.add(nameList[1]);
+			}
+			for(int i=0;i<names.size();i++) {
+				names.set(i, "["+deptName+"]"+names.get(i));
+				System.out.println("수정한이름"+names.get(i));
+			}
+			//adminservice.updateprojectName(names,deptId);
+			//return adminservice.updateDept(vo);
+			return 0;
 		}
 		
 }

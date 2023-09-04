@@ -64,6 +64,18 @@
 </body>
 
 <script>
+	let size=${dlist.size()}
+	let oldDeptName=[];
+	oldDeptName.length=size;
+	for(let i=0;i<size;i++){
+		oldDeptName[i]=$('#deptTable').find('input').eq(i).val()
+	}
+	for(let i=0;i<size;i++){
+		console.log(oldDeptName[i])
+	}
+	
+// 	let oldDeptName=$('#deptTable').find('input').eq(0).val()
+// 	console.log(oldDeptName)
 	//부서추가
 	function addDepartment(){
 		let newData=`<tr>
@@ -189,8 +201,13 @@
 	
 	//부서수정
 	function updateDep(data){
-		let tr=$(data).parent().parent()
+		let tr=$(data).closest('tr')
+		let trIdx=$('#deptTable tbody tr').index(tr)
+		
 		let input=tr.find('input')
+		let oldName=oldDeptName[trIdx];
+		console.log(oldName)
+		
 
 		let deptId=tr.find('td[hidden]').text()
 		let deptName=input.eq(0).val()
@@ -199,7 +216,8 @@
 				    type: "POST",
 				    url: "${pageContext.request.contextPath}/admin/updateDept",
 				    data: { 'deptId': deptId,
-				    		'deptName':deptName},
+				    		'deptName':deptName
+				    		},
 				    success:function(response){
 				    	if(response!=1){
 				    		alert('부서수정에 실패했습니다.')
