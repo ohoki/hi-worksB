@@ -1,5 +1,6 @@
 package com.worksb.hi.board.web;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.AllTaskBoardVO;
 import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
@@ -27,10 +29,14 @@ import com.worksb.hi.board.service.ScheParticirVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
+import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
+
+import oracle.jdbc.proxy.annotation.Post;
 
 // 이진 0818 게시판관리 - 게시글,업무,일정,투표 등록
 
@@ -189,9 +195,12 @@ public class BoardController {
 	// 투표 조회
 	@GetMapping("getVoteInfo")
 	@ResponseBody
-	public Map<String, List<VoteVO>> getVoteInfo(VoteVO voteVO) {
+	public Map<String, Object> getVoteInfo(VoteVO voteVO) {
 		
-        Map<String, List<VoteVO>> resultMap = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
+        
+        int prjBoardId = voteVO.getPrjBoardId();
+        BoardVO boardInfo = boardService.getBoardInfo(prjBoardId);
         
         // 투표글
         List<VoteVO> voteInfo = boardService.getVoteInfo(voteVO);
@@ -203,6 +212,7 @@ public class BoardController {
         resultMap.put("voteInfo", voteInfo);
         resultMap.put("voteList", voteList);
         resultMap.put("voteListMine", voteListMine);
+        resultMap.put("boardInfo", boardInfo);
         
         return resultMap;
 	}
@@ -267,7 +277,7 @@ public class BoardController {
 	}
 
 
-	// 업무 수정
+	//상위,하위 업무 수정
 	@PostMapping("/updateTask")
 	@ResponseBody
 	public int updateTask(@RequestBody BoardRequestVO brVO) {
@@ -278,73 +288,21 @@ public class BoardController {
     	TaskVO taskVO = brVO.getTaskVO();
     	taskVO.setPrjBoardId(boardVO.getPrjBoardId());
     	boardService.updateTask(taskVO);
-    	
     	// 상위 업무 담당자 수정 (삭제 후 등록)
     	List<TaskVO> managerList = brVO.getPrjManager();
-    	//해당 업무의 담당자 전체 삭제
-    	boardService.deleteManagerList(managerList.get(0));
-    	//수정된 업무의 담당자 등록
-    	if(managerList != null) {
-    		for(int i=0; i < managerList.size(); i++) {
-    			TaskVO taskManager = managerList.get(i);
-    			
-    			boardService.insertTaskManager(taskManager);
-    		}
+    	if(managerList.size() != 0) {
+    		//해당 업무의 담당자 전체 삭제
+        	boardService.deleteManagerList(managerList.get(0));
+        	//수정된 업무의 담당자 등록
+        	if(managerList != null) {
+        		for(int i=0; i < managerList.size(); i++) {
+        			TaskVO taskManager = managerList.get(i);
+        			
+        			boardService.insertTaskManager(taskManager);
+        		}
+        	}
     	}
     	
-    	// 하위 업무 수정
-    	List<TaskVO> taskList = brVO.getSubTask();
-    	List<TaskVO> subManagerList = brVO.getSubManager();
-    	if(taskList != null){
-    		TaskVO subtaskVO ;
-	    	for(int i=0; i < taskList.size(); i++) {
-	    		BoardVO subBoardVO = new BoardVO();
-	    		subtaskVO = taskList.get(i);
-	    		
-	    		
-	    		//수정 중 --> 프로시저 사용..?!
-	    		if(subtaskVO.getPrjBoardId() == null) {
-	    			// 하위 업무 - 게시글 테이블 저장
-		    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
-		    		subBoardVO.setMemberId(boardVO.getMemberId());
-		    		subBoardVO.setProjectId(boardVO.getProjectId());
-		    		subBoardVO.setBoardType(boardVO.getBoardType());
-		    		subBoardVO.setInspYn("E2");
-		    		boardService.insertBoard(subBoardVO);
-		    		
-		    		// 하위 업무 - 업무 테이블 저장
-		    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
-		    		subtaskVO.setHighTaskId(taskVO.getTaskId());
-		    		boardService.insertTask(subtaskVO);
-	    		} else {
-	    			// 하위 업무 - 게시글 테이블 수정
-		    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
-		    		subBoardVO.setProjectId(subtaskVO.getProjectId());
-		    		subBoardVO.setInspYn("E2");
-		    		boardService.updateBoard(subBoardVO);
-		    		
-		    		// 하위 업무 - 업무 테이블 수정
-		    		boardService.updateTask(subtaskVO);
-		    		
-		    		//해당 하위 업무의 담당자 전체 삭제
-		    		boardService.deleteManagerList(subManagerList.get(i));
-	    		}
-	    	}
-    	}
-    	//하위 업무 삭제
-    	List<TaskVO> deleteSubtask = brVO.getDeleteSubtask();
-    	if(deleteSubtask != null) {
-    		for(int i=0; i<deleteSubtask.size(); i++) {
-    			boardService.deleteTask(deleteSubtask.get(i));
-    		}
-    	}
-    	
-    	//하위 업무 담당자 수정 (새 등록)
-    	if(subManagerList != null) {
-    		for(int i=0; i<subManagerList.size(); i++) {
-    			boardService.insertTaskManager(subManagerList.get(i));
-    		}
-    	}
     	return boardVO.getProjectId(); 
 	}
 
@@ -362,30 +320,45 @@ public class BoardController {
 		return boardService.deleteVote(voteVO);
 	}
 	
-	/* 투표참여자 있으면 수정안됨!! 없으면 수정가능 투표항목수정은 다지우고 새로 추가~~
 	// 투표 수정
 	@PostMapping("/updateVote")
-	@ResponseBody
-	public String update(VoteVO voteVO) {
-		
-		int countVoteParticir = boardService.countVoteParticir(voteVO);
-		
-		if(countVoteParticir > 0) {
-			return 
-		}else {
-			//투표항목은 다지우고 새로 insert하기~~~~
+	public String updateVote(VoteVO voteVO, int projectId) {
 			
-			boardService.updateVote(voteVO);
+        	voteVO.setAnonyVote(voteVO.getAnonyVote() == null ? "A2" : voteVO.getAnonyVote());
+        	voteVO.setCompnoVote(voteVO.getCompnoVote() == null ? "A2" : voteVO.getCompnoVote());
+        	voteVO.setResultYn(voteVO.getResultYn() == null ? "A2" : voteVO.getResultYn());
 			
+        	boardService.updateVote(voteVO);
+        	
 			String[] listContentArr = voteVO.getListContent().split(",");
 			for(int i=0; i<listContentArr.length; i++) {
 				voteVO.setListContent(listContentArr[i]);
 				boardService.insertVoteList(voteVO);
 			}
-			return
+			return "redirect:/projectFeed?projectId=" + projectId;
 		}
+	
+	// 투표 인원수
+	@GetMapping("/countVoteParticir")
+	@ResponseBody
+	public int countVoteParticir(VoteVO voteVO) {
+		return boardService.countVoteParticir(voteVO);
 	}
-	*/
+	
+	// 일반글 수정
+	@PostMapping("/updateBoard")
+	public String updateBoard(BoardVO boardVO) {
+		boardService.updateBoard(boardVO);
+		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+	}
+	
+	// 게시글 정보
+	@GetMapping("/getBoardInfo")
+	@ResponseBody
+	public BoardVO getBoardInfo(int prjBoardId) {
+		return boardService.getBoardInfo(prjBoardId);
+	}
+	
 	// 일반글 삭제
 	@PostMapping("/deleteBoard")
 	@ResponseBody
@@ -393,9 +366,42 @@ public class BoardController {
 		return boardService.deleteBoard(boardVO);
 	}
 	
+	// 게시글 좋아요 등록/해제
+	@GetMapping("/likeBoard")
+	@ResponseBody
+	public  Map<String, Object> like(BoardVO boardVO){
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		BoardVO likeCheck = boardService.getMemLike(boardVO);
+		if(likeCheck == null) {
+			boardService.insertPrjLike(boardVO);
+			resultMap.put("checkLike", "like");
+		} else {
+			boardService.deletePrjLike(boardVO);
+			resultMap.put("checkLike", "unlike");
+		}
+		return resultMap;
+	}
+	
+	// 좋아요 여부 / 좋아요 전체 수
+	@GetMapping("/gePrjLike")
+	@ResponseBody
+	public Map<String, Object> gePrjLike(BoardVO boardVO) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		BoardVO memberLike = boardService.getMemLike(boardVO);
+		List<BoardVO> boardLike = boardService.getPrjLike(boardVO);
+		
+		resultMap.put("memberLike", memberLike);
+		resultMap.put("boardLike", boardLike);
+		
+		return resultMap;
+	}
+	
+	
 	
 	//상단 고정 여부 수정
-	@GetMapping("/updatePin")
+	@PostMapping("/updatePin")
 	public String updatePin(BoardVO boardVO) {
 		boardService.updatePin(boardVO);
 		
@@ -440,9 +446,47 @@ public class BoardController {
 		boardService.votePaticirDelete(voteVO);
 	}
 	
+	//게시글 별 매니저 리스트 출력
+    @GetMapping("/getManager")
+    @ResponseBody
+    public List<AllTaskBoardVO> getManager(AllTaskBoardVO allTaskBoardVO) {
+		return boardService.getManager(allTaskBoardVO);
+	} 
 	
+	//게시글 별 일정 참여자 리스트 출력
+    @GetMapping("getParticir")
+    @ResponseBody
+    public List<ScheParticirVO> getParticir(ScheParticirVO particir) {
+		return boardService.getParticir(particir);
+	} 
+    
+    //게시글 별 투표 참여자 리스트 출력
+    @GetMapping("getVoteParticir")
+    @ResponseBody
+    public List<VoteVO> getVoteParticir(VoteVO particir) {
+		return boardService.getVoteParticir(particir);
+	} 
 	
+    //업무 정보 변경
+    @PostMapping("/updateTaskInfo")
+    @ResponseBody
+    public int updateTaskInfo(AllTaskBoardVO taskVO) {
+    	return boardService.updateTaskInfo(taskVO);
+    }
 	
+    //북마크 정보 가져오기
+    @PostMapping("/getBookmarkByMe")
+    @ResponseBody
+    public List<BoardVO> getBookmarkByMe(ProjectVO projectInfo) {
+    	return boardService.getBookmarkList(projectInfo);
+    }
+    
+    //상단 고정 정보 가져오기
+    @PostMapping("/getPinBoard")
+    @ResponseBody
+    public List<BoardVO> getPinBoard(ProjectVO projectInfo) {
+    	return projectService.getPinBoardList(projectInfo);
+    }
 	
 	
 	
@@ -454,6 +498,83 @@ public class BoardController {
 	
 
 	//정현
+	//프로젝트 일정,업무 캘린더 전체 조회
+	@GetMapping("projectCalendarRender")
+	@ResponseBody
+	public Map<String, List<Map<String, Object>>> prjCalendar(@RequestParam int projectId, HttpSession session) {
+        ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+        
+        //해당 프로젝트의 모든 일정 캘린더화
+        List<ScheVO> scheList =  boardService.getScheCalendar(projectInfo.getProjectId());
+        //해당 프로젝트의 상위 업무 캘린더화
+        List<TaskVO> taskList = boardService.getTaskCalendar(projectInfo.getProjectId());
+        
+		//json객체 리스트화
+		JSONObject jsonObj = new JSONObject();
+		JSONArray scheArr = new JSONArray();
+		JSONArray taskArr = new JSONArray();
+		HashMap<String, Object> hash = new HashMap<String, Object>();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+		for(int i=0;i<scheList.size();i++) {
+			hash.put("id", scheList.get(i).getPrjBoardId());//단건조회용 sche_id 입력
+			hash.put("title", scheList.get(i).getPrjBoardTitle()); //제목
+			//원하는 데이터 포맷 지정
+			String strStartDate = simpleDateFormat.format(scheList.get(i).getStartDate()); 
+			hash.put("start", strStartDate); //시작일자
+			String strEndDate = simpleDateFormat.format(scheList.get(i).getEndDate()); 
+			hash.put("end", strEndDate); //종료일자
+			
+			jsonObj = new JSONObject(hash);
+			scheArr.add(jsonObj);
+		}
+		for(int i=0;i<taskList.size();i++) {
+			hash.put("id", "t"+taskList.get(i).getPrjBoardId());//단건조회용 sche_id 입력
+			hash.put("title", taskList.get(i).getPrjBoardTitle()); //제목
+			//원하는 데이터 포맷 지정
+			String strStartDate = simpleDateFormat.format(taskList.get(i).getStartDate()); 
+			hash.put("start", strStartDate); //시작일자
+			String strEndDate = simpleDateFormat.format(taskList.get(i).getEndDate()); 
+			hash.put("end", strEndDate); //종료일자
+			hash.put("allDay", "true");
+			hash.put("color", "#2a9d8f");
+			
+			jsonObj = new JSONObject(hash);
+			taskArr.add(jsonObj);
+		}
+//		//참여자 정보
+//		PrjParticirVO particir = new PrjParticirVO();
+//        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+//        particir.setProjectId(projectId);
+//        PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
+        
+        HashMap<String, List<Map<String, Object>>> result = new HashMap<String, List<Map<String,Object>>>();
+        result.put("scheList", scheArr);
+        result.put("taskList", taskArr);
+        
+		return result;
+	}
+	
+	//프로젝트 일정 수정
+	@PostMapping("prjScheUpdate")
+	@ResponseBody
+	public String prjScheUpdate(@RequestBody BoardRequestVO brVO) {
+		BoardVO boardVO = new BoardVO();
+		ScheVO scheVO = new ScheVO();
+		boardVO = brVO.getBoardVO();
+		scheVO = brVO.getScheVO();
+		scheVO.setPrjBoardId(boardVO.getPrjBoardId());
+		
+		boardService.updateBoard(boardVO);
+		boardService.updateSche(scheVO);
+		return "";
+	}
+	//프로젝트 일정 삭제
+	@RequestMapping("deleteSche")
+	@ResponseBody
+	public int deleteSche(ScheVO scheVO) {
+		return boardService.deleteSche(scheVO);
+	}
+	
 	//프로젝트 일정 캘린더 상세조회
 	@GetMapping("getScheBoardInfo")
 	@ResponseBody

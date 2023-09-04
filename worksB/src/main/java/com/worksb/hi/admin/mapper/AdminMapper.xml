@@ -26,7 +26,8 @@
 			    		WHERE 
 			    			company_id=#{companyId})m 
 						ON 
-							d.member_id=m.member_id) a ) 
+							d.member_id=m.member_id
+						ORDER BY d.file_regdate DESC) a ) 
 			WHERE rn BETWEEN #{pagingvo.start} AND #{pagingvo.end}
 	</select>
 <!-- 	downloadlist의 갯수 -->
@@ -54,12 +55,13 @@
 	</select>
 	
 	<select id="projectList" resultType="ProjectVO">
-		SELECT *
+		  SELECT *
 			FROM (
 			    SELECT rownum rn, a.*
-			    FROM (
-					SELECT
-						project_id,    
+			    FROM (			    
+                    SELECT
+						p.project_id,
+                        (SELECT COUNT(pp.member_id) FROM prj_particir pp where pp.project_id=p.project_id) mnumber,
 						project_name, 
 						project_access,  
 						manager_accp,   
@@ -69,9 +71,33 @@
 						comment_access, 
 						file_access,  
 						dept_id,       
-						project_cls    
+						project_cls,
+                        particir.member_id,
+                        board.boardcount
 					FROM
-						project
+						project p
+                    LEFT JOIN(
+                        SELECT
+                            project_id,
+                            member_id,
+                            manager
+                        FROM
+                            prj_particir
+                        WHERE
+                            manager='A1'
+                    )particir
+                    ON (particir.project_id=p.project_id)
+                    
+                    LEFT JOIN(
+                        SELECT
+                            project_id,
+                            COUNT(project_id) boardcount
+                        FROM
+                            prj_board
+                        GROUP BY project_id
+                    )board
+                    ON(p.project_id=board.project_id)
+                    
 					WHERE dept_id 
 						IN (SELECT dept_id FROM department WHERE company_id= #{companyId})) a ) 
 			WHERE rn BETWEEN #{pagingvo.start} AND #{pagingvo.end}
@@ -99,5 +125,106 @@
 		SELECT *
 		  FROM member
 		 WHERE company_id = #{companyId}
+
+	<select id="departmentList" resultType="DepartmentVO">
+		SELECT
+		    d.dept_id,
+		    d.dept_name,
+		    d.company_id,
+		    COUNT(p.project_id) AS counting
+		FROM
+		    department d
+		    
+		LEFT JOIN
+		    project p ON d.dept_id=p.dept_id
+		    
+		WHERE
+		    d.company_id=#{companId}
+		GROUP BY
+		    d.dept_id,d.dept_name,d.company_id
+		ORDER BY
+			d.dept_id
+
+	</select>
+	
+	<select id="jobList"  resultType="JobVO">
+		SELECT
+			job_id,
+			job_name
+		FROM
+			job
+		WHERE
+			company_id=#{companId}
+		ORDER BY job_id
+	</select>
+	<insert id="insertDept" parameterType="DepartmentVO">
+		<selectKey keyProperty="deptId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(dept_id),0)+1
+			FROM department
+		</selectKey>
+		INSERT INTO department
+					(
+						dept_id,
+						dept_name,
+						company_id
+					)
+				VALUES(
+						#{deptId},
+						#{deptName},
+						#{companyId}
+				)
+		
+	</insert>
+	<select id="getNewestDep" resultType="DepartmentVO">
+		SELECT dept_id,dept_name,company_id 
+		FROM department
+		WHERE dept_id=(SELECT MAX(dept_id) FROM department)
+	</select>
+	<delete id="deleteDept" parameterType="int">
+		DELETE department where dept_id=#{deptId}
+	</delete>
+	
+	<insert id="insertRole" parameterType="JobVO">
+		<selectKey keyProperty="jobId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(job_id),0)+1
+			FROM job
+		</selectKey>
+		INSERT INTO job
+				(
+					job_id,
+					job_name,
+					company_id
+				)
+			VALUES(
+				#{jobId},
+				#{jobName},
+				#{companyId}
+			)
+	</insert>
+	
+	<delete id="deleteRole" parameterType="int">
+		DELETE JOB where job_id=#{jobId}
+	</delete>
+	
+	<update id="updateDept" parameterType="departmentVO">
+		 UPDATE department SET dept_name=#{deptName} 
+		 WHERE dept_id=#{deptId}
+	</update>
+	
+	<update id="updateRole" parameterType="JOBVO">
+		UPDATE job set job_name=#{jobName}
+		WHERE job_id=#{jobId}
+	</update>
+	<select id="getPrjName" resultType="ProjectVO">
+		SELECT project_name 
+		FROM project 
+		WHERE dept_id=#{deptId}
+		ORDER BY project_id
+	</select>
+	<select id="getPrjId"  resultType="ProjectVO">
+		SELECT project_id
+		FROM project
+		WHERE dept_id=#{deptId}
+		ORDER BY project_id
 	</select>
 </mapper>

@@ -12,11 +12,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 import com.worksb.hi.company.mapper.CompanyMapper;
 import com.worksb.hi.company.service.CompanyVO;
-import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.member.mapper.MemberMapper;
-import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
-import com.worksb.hi.member.service.impl.MemberServiceImpl;
 
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 	

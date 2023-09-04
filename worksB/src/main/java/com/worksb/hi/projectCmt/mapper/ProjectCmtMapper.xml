@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.worksb.hi.projectCmt.mapper.ProjectCmtMapper">
+	<!-- 댓글 전체 조회 -->
+	<select id="projectCmtList" resultType="ProjectCmtVO">
+		SELECT	c.comment_id,
+				m.member_id,
+				c.comment_regdate,
+				c.comment_content,
+				c.comment_id,
+				c.board_type,
+				c.board_id,
+				c.del_upd_auth,
+				m.member_name,
+				m.real_profile_path
+		FROM	prj_comment	c	JOIN member m	ON	c.member_id=m.member_id
+		WHERE	c.board_type = #{boardType}
+			AND	c.board_id = #{boardId}
+		ORDER BY c.comment_regdate desc
+	</select>
+
+	
+	<!-- 댓글 등록 -->
+	<insert id="insertProjectCmt" parameterType="ProjectCmtVO">
+		<selectKey keyProperty="commentId" resultType="int" order="BEFORE">
+			SELECT	NVL(MAX(comment_id), 0) + 1
+			  FROM	prj_comment	
+		</selectKey>
+			INSERT INTO prj_comment(
+									 comment_id,
+									 member_id,
+									 comment_regdate,
+									 comment_content,
+									 board_type,
+									 board_id,
+									 del_upd_auth
+									)
+							VALUES(
+									#{commentId},
+									#{memberId},
+									sysdate,
+									#{commentContent},
+									#{boardType},
+									#{boardId},
+									'A1'
+							)
+	</insert>
+	
+	<!-- 댓글 조회 -->
+	<select id="projectCmtInfo" resultType="ProjectCmtVO">
+		SELECT	c.comment_id,
+				c.comment_content,
+				c.comment_id,
+				m.real_profile_path
+		FROM	prj_comment	c	JOIN member m	ON	c.member_id=m.member_id
+		WHERE	c.comment_id = #{commentId}
+	</select>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateProjectCmt" parameterType="ProjectCmtVO">
+		UPDATE	prj_comment
+			<set>
+				comment_content = #{commentContent}
+			</set>
+		WHERE	comment_id = #{commentId}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteProjectCmt" parameterType="ProjectCmtVO">
+		DELETE	prj_comment
+		WHERE	comment_id = #{commentId}	
+	</delete>
+</mapper>

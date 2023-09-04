@@ -9,6 +9,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div>
+		<p>파일 다운로드 이력</p>
+	</div>
 	<table>
 		<thead>
 			<tr>

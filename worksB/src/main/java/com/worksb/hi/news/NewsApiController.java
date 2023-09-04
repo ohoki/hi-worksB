@@ -45,6 +45,33 @@ public class NewsApiController {
         String news = result.getBody();
         model.addAttribute("news", news);
         
+        URI economicUri = UriComponentsBuilder
+                .fromUriString("https://openapi.naver.com")
+                .path("/v1/search/news.json")
+                .queryParam("query","경제")
+                .queryParam("display", 10)
+                .queryParam("start", 1)
+                .queryParam("sort", "sim")
+                .encode(Charset.forName("UTF-8"))
+                .build()
+                .toUri();
+
+
+        restTemplate = new RestTemplate();
+		
+        // 헤더 추가 위해
+        req = RequestEntity
+                .get(economicUri)
+                .header("X-Naver-Client-Id", "4uDJD6ylZk6VbUxwYvjw")
+                .header("X-Naver-Client-Secret", "5tuE1sO5JD")
+                .build();
+
+        result = restTemplate.exchange(req, String.class);
+        
+        String economic = result.getBody();
+        model.addAttribute("economicNews", economic);
+        
+        
         return "mypage/news";
     }
    

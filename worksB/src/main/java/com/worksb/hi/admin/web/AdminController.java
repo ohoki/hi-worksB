@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,8 @@ import com.worksb.hi.admin.service.AdminService;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.company.service.CompanyService;
 import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.company.service.DepartmentVO;
+import com.worksb.hi.company.service.JobVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectVO;
@@ -116,6 +119,7 @@ public class AdminController {
 			return uploadFileName.replace(File.separator, "/");
 		}
 		
+
 		@RequestMapping("/downloadlist")
 		public String downloaded(Model m,HttpSession session,
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
@@ -139,9 +143,47 @@ public class AdminController {
 			List<ProjectVO> list=adminService.projectList(companyId, pagingvo);
 			m.addAttribute("paging", pagingvo);
 			m.addAttribute("list",list);
-			return "";
+			return "admin/projectList";
 		}
 		
+		
+		@GetMapping("/editRole")
+		public String editRole(Model m,HttpSession session) {
+			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+			m.addAttribute("dlist",adminservice.departmentList(companyId));
+			m.addAttribute("jList",adminservice.jobList(companyId));
+			return "admin/editRole";
+		}
+		
+		@PostMapping("/insertDept")
+		@ResponseBody
+		public int updateDept(HttpSession session,@RequestParam("deptName")String deptName,DepartmentVO vo) {
+			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+			vo.setCompanyId(companyId);
+			vo.setDeptName(deptName);
+			return adminservice.insertDept(vo);
+		}
+		
+		@PostMapping("/deleteDept")
+		@ResponseBody
+		public int deleteDept(HttpSession session,@RequestParam("deptId")int deptId) {
+			return adminservice.deleteDept(deptId);
+		}
+		
+		@PostMapping("/insertRole")
+		@ResponseBody
+		public int updateRole(HttpSession session,@RequestParam("roleName")String roleName,JobVO vo) {
+			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+			vo.setCompanyId(companyId);
+			vo.setJobName(roleName);
+			return adminservice.insertRole(vo);
+		}
+		
+		@PostMapping("/deleteRole")
+		@ResponseBody
+		public int deleteRole(HttpSession session,@RequestParam("roleId")int jobId) {
+			return adminservice.deleteRole(jobId);
+		}
 		
 		// 회사 정보 수정폼
 		@GetMapping("/company/companyInfoForm")
@@ -177,4 +219,39 @@ public class AdminController {
 			model.addAttribute("memberList", memberList  );
 			return "adminPage/memberManagement";
 		}
+
+		@PostMapping("/updateRole")
+		@ResponseBody
+		public int updateRole(@RequestParam("roleId")int jobId,@RequestParam("roleName") String jobName) {
+			JobVO vo=new JobVO();
+			vo.setJobId(jobId);
+			vo.setJobName(jobName);
+			return adminservice.updateRole(vo);
+		}
+		
+		@PostMapping("/updateDept")
+		@ResponseBody
+		public int updateDept(@RequestParam("deptId")int deptId,@RequestParam("deptName") String deptName) {
+			DepartmentVO vo=new DepartmentVO();
+			vo.setDeptId(deptId);
+			vo.setDeptName(deptName);
+			
+			List<String> names=new ArrayList<>();
+			
+			List<ProjectVO> prjName=adminservice.getPrjName(deptId);
+			List<ProjectVO> prjIdx=adminservice.getPrjId(deptId);
+			for(ProjectVO name:prjName) {
+				String deptNameAndPrjName=name.getProjectName();
+				String nameList[]=deptNameAndPrjName.split("]");
+				names.add(nameList[1]);
+			}
+			for(int i=0;i<names.size();i++) {
+				names.set(i, "["+deptName+"]"+names.get(i));
+				System.out.println("수정한이름"+names.get(i));
+			}
+			//adminservice.updateprojectName(names,deptId);
+			//return adminservice.updateDept(vo);
+			return 0;
+		}
+		
 }

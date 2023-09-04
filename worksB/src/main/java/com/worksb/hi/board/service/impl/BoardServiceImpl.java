@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.AllTaskBoardVO;
@@ -147,12 +149,55 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.deleteManagerList(taskVO);
 	}
 	
+	// //게시글 별 일정 참여자 리스트 출력
+	public List<ScheParticirVO> getParticir(ScheParticirVO particir) {
+		return boardMapper.getParticir(particir);
+	};
+	
+	//게시글 별 투표 참여자 리스트 출력
+	public List<VoteVO> getVoteParticir(VoteVO particir) {
+		return boardMapper.getVoteParticir(particir);
+	} 
+	
+	//업무 정보 변경
+    public int updateTaskInfo(AllTaskBoardVO taskVO) {
+    	return boardMapper.updateTaskInfo(taskVO);
+    }
 	
 	
 	
 	
 	
 	
+	
+	
+	@Override
+	public int insertPrjLike(BoardVO boardVO) {
+		return boardMapper.insertPrjLike(boardVO);
+	}
+
+	@Override
+	public int deletePrjLike(BoardVO boardVO) {
+		return boardMapper.deletePrjLike(boardVO);
+	}
+
+	@Override
+	public BoardVO getMemLike(BoardVO boardVO) {
+		return boardMapper.getMemLike(boardVO);
+	}
+
+	@Override
+	public List<BoardVO> getPrjLike(BoardVO boardVO) {
+		return boardMapper.getPrjLike(boardVO);
+	}
+
+	
+	
+	// 게시글 정보
+	@Override
+	public BoardVO getBoardInfo(int prjBoardId) {
+		return boardMapper.getBoardInfo(prjBoardId);
+	}
 	
   // 업무삭제
 	@Override
@@ -179,7 +224,8 @@ public class BoardServiceImpl implements BoardService {
 	public int updateVote(VoteVO voteVO) {
 		return boardMapper.updateVote(voteVO);
 	}
-
+	
+	//일반글 수정
 	@Override
 	public int updateBoard(BoardVO boardVO) {
 		return boardMapper.updateBoard(boardVO);
@@ -248,16 +294,30 @@ public class BoardServiceImpl implements BoardService {
 	public List<ScheVO> getScheCalendar(int projectId) {
 		return boardMapper.getScheCalendar(projectId);
 	}
-
+	//프로젝트 업무 캘린더 조회
 	@Override
 	public List<TaskVO> getTaskCalendar(int projectId) {
 		return boardMapper.getTaskCalendar(projectId);
 	}
-
+	//프로젝트 일정 상세 조회
 	@Override
 	public BoardVO getScheBoardInfo(int prjBoardId) {
 		return boardMapper.getScheBoardInfo(prjBoardId);
 	}
+	//프로젝트 일정 수정
+	@Override
+	public int updateSche(ScheVO scheVO) {
+		return boardMapper.updateSche(scheVO);
+	}
+	//프로젝트 일정 삭제
+	@Override
+	public int deleteSche(ScheVO scheVO) {
+		return boardMapper.deleteSche(scheVO.getPrjBoardId());
+	}
+
+	
+	
+	
 
 	
 

@@ -284,7 +284,9 @@
 	<!-- 업무 담당자 리스트 조회 -->
 	<select id="getManager" parameterType="int" resultType="allTaskBoardVO">
 	SELECT	m.member_name,
-			pp.prj_particir_id
+			pp.prj_particir_id,
+			m.member_id,
+			m.real_profile_path
 	FROM	prj_task t 
 		JOIN	task_manager tm	ON t.prj_board_id = tm.prj_board_id
 		JOIN	prj_particir pp ON tm.prj_particir_id = pp.prj_particir_id 
@@ -375,7 +377,9 @@
 		<set>
 			prj_board_title = #{prjBoardTitle},
 			prj_board_subject = #{prjBoardSubject},
+			<if test="inspYn !=null and !inspYn.equals('')">
 			insp_yn = #{inspYn}
+			</if>
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
@@ -413,15 +417,124 @@
 		WHERE prj_board_id = #{prjBoardId}
 	</delete>
 	 
+	 <!-- 게시글 별 일정 참여자 리스트 출력 -->
+	 <select id="getParticir" resultType="ScheParticirVO">
+		 WITH a AS (SELECT
+			    s.attendance, 
+			    s.prj_board_id, 
+			    p.prj_particir_id, 
+			    p.member_id  
+			    FROM sche_particir s JOIN prj_particir p 
+			    ON s.prj_particir_id = p.prj_particir_id
+			    )
+		 SELECT a.attendance, 
+		        a.prj_board_id, 
+		        a.prj_particir_id, 
+		        a.member_id,
+		        b.member_name,
+		        b.real_profile_path
+		   FROM a JOIN member b
+		        ON a.member_id = b.member_id
+		  WHERE a.prj_board_id = #{prjBoardId}
+		  		AND a.attendance = #{attendance}
+	 </select>
+	 
+	 <!-- 게시글 별 투표 참여자 리스트 출력 -->
+	 <select id="getVoteParticir" resultType="VoteVO">
+		 WITH a AS (SELECT 
+		 		v.prj_particir_id, l.prj_board_id, w.member_id 
+		    	FROM (vote_particir v RIGHT JOIN vote_list l ON v.list_id = l.list_id) 
+		    		LEFT JOIN prj_particir w on v.prj_particir_id = w.prj_particir_id
+		    	GROUP BY v.prj_particir_id,l.prj_board_id, w.member_id  
+		    	)
+	     SELECT a.prj_board_id, 
+	        	a.prj_particir_id,  
+	        	a.member_id,
+	        	b.member_name,
+	        	b.real_profile_path
+	       FROM	a JOIN member b
+         	 ON a.member_id = b.member_id
+          WHERE a.prj_board_id = #{prjBoardId} 
+	 </select>
+	
+	 <!-- 좋아요 -->
+	<select id="getMemLike" resultType="BoardVO">
+		SELECT	board_id,
+				board_type,
+				member_id,
+				like_id
+		FROM	prj_like
+		WHERE	board_id = #{boardId}	
+			AND	member_id = #{memberId}
+	</select>
+
+	<!-- 업무 정보 변경 -->
+	<update id="updateTaskInfo" parameterType="AllTaskBoardVO">
+		UPDATE prj_task 
+			<set>
+				state = #{state}
+			</set>
+		WHERE prj_board_id = #{prjBoardId}
+	</update>
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+
+	
+	<insert id="insertPrjLike" parameterType="BoardVO">
+		<selectKey keyProperty="likeId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(like_id), 0) + 1
+			FROM prj_like
+		</selectKey>
+		INSERT INTO prj_like (
+								like_id,
+								board_id,
+								board_type,
+								member_id
+							)
+						VALUES (
+									#{likeId},
+									#{boardId},
+									#{boardType},
+									#{memberId}		
+							)
+	</insert>
+	
+	<delete id="deletePrjLike" parameterType="BoardVO">
+		DELETE	prj_like
+		WHERE	board_id = #{boardId}	
+			AND	member_id = #{memberId}
+	</delete> 
+	
+	<select id="getPrjLike" resultType="BoardVO">
+		SELECT	board_id,
+				board_type,
+				member_id,
+				like_id
+		FROM	prj_like
+		WHERE	board_id = #{boardId}	
+	</select>
 	
 	
 	
 	
 	
 	
-	
-	
-	
+	<!-- 게시글 정보 -->
+	<select id="getBoardInfo" resultType="BoardVO">
+		SELECT	project_id,
+				prj_board_title,
+				prj_board_subject,
+				insp_yn
+		FROM	prj_board
+		WHERE	prj_board_id = #{prjBoardId}
+	</select>
 	
 	<!-- 업무 삭제 (상위,하위,담당자) -->
 	<insert id="deleteTask" statementType="CALLABLE" parameterType="TaskVO" >
@@ -440,7 +553,7 @@
 				IN (
 						SELECT	list_id
 						FROM	vote_list
-						WHERE	prj_board_id = #{prj_board_id}
+						WHERE	prj_board_id = #{prjBoardId}
 					)
 	</select>
 	
@@ -589,6 +702,33 @@
 	
 
 	<!-- 정현 -->
+	<!-- 프로젝트 일정 수정 -->
+	<update id="updateSche" parameterType="ScheVO">
+		UPDATE prj_sche
+		<set>
+			<if test="startDate !=null">
+				start_date = #{startDate}
+			</if>
+			<if test="endDate !=null">
+				, end_date = #{endDate}
+			</if>
+			<if test="scheAddr !=null and !scheAddr.equals('')">
+				, sche_addr = #{scheAddr}
+			</if>
+			<if test="scheAddrDetail !=null and !scheAddrDetail.equals('')">
+				, sche_addr_detail = #{scheAddrDetail}
+			</if>
+			<if test="alarmDateCode !=null and !alarmDateCode.equals('')">
+				, alarm_date_code = #{alarmDateCode}
+			</if>		
+		</set>
+		WHERE prj_board_id = #{prjBoardId}
+	</update>
+	<!-- 프로젝트 일정 삭제 -->
+	<delete id="deleteSche">
+		DELETE prj_sche
+		WHERE prj_board_id = #{prjBoardId}
+	</delete>
 	<!-- 프로젝트 일정 캘린더 조회 -->
 	<select id="getScheCalendar" resultType="ScheVO">
 		SELECT b.prj_board_id

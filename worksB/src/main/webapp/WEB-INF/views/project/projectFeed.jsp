@@ -90,7 +90,9 @@
 		}
 		
 		.pin-board-icon {
-			margin: 0 10px;
+		    padding: 10px;
+		    padding-left: 20px;
+		    cursor: pointer;
 		}
 		
 		.board-container{
@@ -412,6 +414,10 @@
 			line-height: 10px;
 		}
 		
+		div[data-state] button.active{
+			background-color: var(--color-dark-red);
+		}
+		
 		div[data-processivity] {
 			display: flex;
 			align-items: center;
@@ -453,6 +459,12 @@
 			margin: 5px 0;
 			border-radius: 5px;
 			text-align: center;
+			border: 1px solid transparent;
+			cursor: pointer;
+		}
+		
+		.sub-task-item:hover {
+			border: 1px solid var(--color-light-blue);
 		}
 		
 		.sub-state {
@@ -639,7 +651,7 @@
 			margin-right: 10px;
 		}
 		
-		.add-manager-btn {
+		.add-manager-btn, .add-manager-list {
 			text-decoration: underline;
 			color: var(--color-dark-red);
 			cursor: pointer;
@@ -840,8 +852,8 @@
 		    display: flex;
 			align-items: center;
 			justify-content: flex-start;
-			padding: 10px 0;
 			background-color: rgba(240, 240, 240, 0.1);
+			padding: 5px 0;
 			margin: 5px 0;
 			border-radius: 5px;
 			border: 1px solid var(--color-dark-beigie);
@@ -857,9 +869,154 @@
 		.deleteManager, .deleteSubtask {
 			cursor: pointer;	
 		}
+
+		#taskManager-modal, #scheParticr-modal, #voteParticr-modal, #updateSubTask-modal, #insertSubTask-modal {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.1);
+			font-size: 12px;
+			display: none;
+			left: 0;
+			top: 0;
+		}
+		
+		#updateSubTask-modal, #insertSubTask-modal {
+			z-index: 2000;
+		}
+		
+		.taskManager-modal-content, .scheParticr-modal-content, .voteParticr-modal-content {
+			position: absolute;
+			width: 15%;
+			height: 30%;
+			background-color: white;
+			font-size: 12px;
+			padding: 20px 15px;
+			z-index: 10;
+			overflow: auto;
+			overflow-x: hidden;
+			border-radius: 5px;
+		}
+		
+		.updateSubTask-modal-content, .insertSubTask-modal-content {
+			position: absolute;
+			background-color: white;
+			width: 40%;
+			height: 40%;
+			top:40%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 10px;
+			text-align: center;
+			padding: 30px 0 15px 0;
+			color: var(--color-dark-grey);
+			border: 1px solid var(--color-dark-beigie);
+		}
+		
+		.taskManager-modal-title, .scheParticr-modal-title, voteParticr-modal-title {
+			font-size: 15px;
+			justify-content: space-between;
+			font-weight: var(--weight-bold);
+			padding: 5px 10px;
+		}
+		
+		.noManager {
+			text-align: center;
+			margin: 10px auto;
+		}
+		
+		.board-comment {
+			padding: 5px 40px;
+			border-top: 1px solid var(--color-dark-beigie);	
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			color: var(--color-dark-grey);
+			
+		}
+		
+		.board-comment img {
+			margin: 10px 20px 10px 0;
+		}
+			
+		#updateSubTask-modal button[type=button],
+		#insertSubTask-modal button[type=button]{
+			width: 100px;
+			height: 40px;
+			background-color: var(--color-dark-red);
+			border-radius: 5px;
+			color: var(--color-white);
+			font-weight: var(--weight-bold);
+			margin-left: 10px;
+			transition: all 0.5s;
+		}
+		
+		#updateSubTask-modal button[type=button]:hover,
+		#insertSubTask-modal button[type=button]:hover{
+			background-color: var(--color-white);
+			color: var(--color-dark-red);
+			border: 1px solid var(--color-dark-red);
+		}
+		
+		#updateSubTask-modal button[type=reset],
+		#insertSubTask-modal button[type=reset] {
+			width: 100px;
+			height: 40px;
+			border-radius: 5px;
+			font-weight: var(--weight-bold);
+			margin-left: 10px;
+			background-color: var(--color-white);
+			color: var(--color-dark-red);
+			border: 1px solid var(--color-dark-red);
+		}
+ 		
+		
+		#updateSubTask-modal input:disabled,
+		#insertSubTask-modal input:disabled {
+			background-color: #fff;
+		}
+		
+		#updateSubTask-modal input[name=prjBoardTitle],
+		#insertSubTask-modal input[name=prjBoardTitle] {
+			width: 95%;
+		}
+		
+		#updateSubTask-modal .board-state,
+		#insertSubTask-modal .board-state{
+			padding: 10px 30px;
+		}
+		
+		#updateSubTask-modal .task-select,
+		#insertSubTask-modal .task-select {
+			width: 100px;
+			height: 30px;
+			border: 1px solid var(--color-dark-beigie);
+			background-color: white;
+			color: var(--color-dark-grey);
+			font-size: var(--font-micro);
+			margin-left: 20px;
+		}
+		
+		#updateSubTask-modal .select-state,
+		#insertSubTask-modal .select-state {
+			text-align: left;
+			margin-left: 30px;
+		}
+		
+		#updateSubTask-modal .board-taskManager,
+		#insertSubTask-modal .board-taskManager {
+			padding: 10px 30px;
+			text-align: left;
+			margin-bottom: 20px;
+		}
 		
 		.m-bt {
 			margin-bottom: 10px;
+		}
+		
+		#updateSubTask-modal span, #updateSubTask-modal label,
+		#insertSubTask-modal span, #insertSubTask-modal label{
+			font-size: var(--font-micro);
 		}
 	</style>
 </head>
@@ -873,7 +1030,7 @@
 	<!--부드러운 스크롤 효과-->
 	<script>	
 		$(document).ready(function(){
-		    $('a[href^="#"]').on('click',function (e) {
+		    $(document).on('click', 'a[href^="#"]', function (e) {
 		        e.preventDefault();
 
 		        let target = this.hash;
@@ -893,12 +1050,12 @@
 			<!-- 상단 고정 게시글 -->
 			<c:if test="${pinBoardInfo.size() ne 0 }">
 				<div class="pin-board">
-					<div class="pin-board-title">상단고정 ${pinBoardInfo.size() }</div>
+					<div class="pin-board-title">상단고정</div>
 					<ul>
 						<c:forEach items="${pinBoardInfo }" var="pinBoard">
 							<li>
+								<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
 								<a href="#${pinBoard.boardType }${pinBoard.prjBoardId}" style="width: 100%">
-									<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
 									<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/${pinBoard.boardIconName}" alt="게시글 아이콘">
 									<!-- <img alt="게시글 아이콘" src=""> -->
 									<span>${pinBoard.prjBoardTitle }</span>
@@ -939,7 +1096,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -949,34 +1106,13 @@
 								
 							</div>
 							<div>
-								<span class="board-footer-info">댓글 7</span>
-								<span class="board-footer-info">좋아요 14</span>
+								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span></span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
-								댓글 더보기
-							</div>
-							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
-									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
-										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
-								</div>
-							<!-- 여기까지 -->	
-						</c:if>
+						<!-- 댓글창 -->
+						<div name="board-comment-box">
+						</div>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -984,7 +1120,7 @@
 							<c:if test="${memberInfo.realProfilePath ne null }">
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
-								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
@@ -1024,7 +1160,7 @@
 							<div>
 								<span>[일정]</span> ${board.prjBoardTitle }
 							</div>
-							<div>
+							<div class="sche-particir-list">
 								<span class="sche-particir">참석 <span class="sche-particir-count"></span></span>
 								<span class="sche-nonParticir">불참 <span class="sche-nonParticir-count"></span></span>
 							</div>
@@ -1056,7 +1192,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
 								</c:if>
@@ -1065,34 +1201,13 @@
 								</c:if>
 							</div>
 							<div>
-								<span class="board-footer-info">댓글 7</span>
-								<span class="board-footer-info">좋아요 14</span>
+								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
-								댓글 더보기
-							</div>
-							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
-									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
-										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
-								</div>
-							<!-- 여기까지 -->
-						</c:if>
+						<!-- 댓글창 -->
+						<div name="board-comment-box">
+						</div>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -1100,7 +1215,7 @@
 							<c:if test="${memberInfo.realProfilePath ne null }">
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
-								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
@@ -1170,7 +1285,7 @@
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -1179,34 +1294,13 @@
 								</c:if>
 							</div>
 							<div>
-								<span class="board-footer-info">댓글 7</span>
-								<span class="board-footer-info">좋아요 14</span>
+								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
-								댓글 더보기
-							</div>
-							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
-									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
-										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
-								</div>
-							<!-- 여기까지 -->	
-						</c:if>
+						<!-- 댓글창 -->
+						<div name="board-comment-box">
+						</div>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -1214,7 +1308,7 @@
 							<c:if test="${memberInfo.realProfilePath ne null }">
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
-								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
@@ -1254,7 +1348,7 @@
 							<div>
 								<span>[업무]</span> ${board.prjBoardTitle }
 							</div>
-							<div data-hightaskid></div>
+							<div data-hightaskid=""></div>
 						</div>
 						<div class="sche-date d-flex">
 							<div>
@@ -1289,13 +1383,16 @@
 							</div>
 						</div>
 						<div class="sub-task-lists">
-							<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+							<div class="d-flex">
+								<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+								<div class="add-manager-list" data-bs-toggle="modal" data-bs-target="#insertSubTask-modal">하위업무 추가</div>
+							</div>
 							<div class="sub-task-list">
 							</div>
 						</div>
 						<div class="board-footer">
 							<div >
-								<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg"> 좋아요</span>
+								<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 								<c:if test="${board.bookmarkByMember eq 1 }">
 									<span class="board-footer-icon" data-bookmark="yes"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>								
 								</c:if>
@@ -1304,34 +1401,13 @@
 								</c:if>
 							</div>
 							<div>
-								<span class="board-footer-info">댓글 7</span>
-								<span class="board-footer-info">좋아요 14</span>
+								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span>
 							</div>
 						</div>
-						<c:if test="ㄴㅇㄹ">
-							<div>
-								댓글 더보기
-							</div>
-							<!-- for each로 최신 댓글 2개만 -->
-								<div class="board-comment">
-									<div>
-										<img alt="#" src="#">
-										<div>
-											<div>
-												회원정보
-											</div>
-											<div>
-												댓글내용
-											</div>
-										</div>
-									</div>
-									<div>
-										<a href="#">수정</a>
-										<a href="#">삭제</a>
-									</div>
-								</div>
-							<!-- 여기까지 -->	
-						</c:if>
+						<!-- 댓글창 -->
+						<div name="board-comment-box">
+						</div>
 						<div class="comment-input">
 							<c:if test="${memberInfo.realProfilePath eq null }">
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -1339,7 +1415,7 @@
 							<c:if test="${memberInfo.realProfilePath ne null }">
 								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
 							</c:if>
-								<input type="text" placeholder="댓글을 입력해주세요."><button type="button">등록</button>
+								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
 						<!-- board 버튼 클릭 시 모달 -->
 						<div class="d-none" data-boardmodal>
@@ -1370,8 +1446,8 @@
 						<c:if test="${bookmarkList ne null}">
 							<c:forEach items="${bookmarkList }" var="bookmark">
 								<li>
+									<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
 									<a href="#${bookmark.boardType }${bookmark.prjBoardId}" style="width: 100%">
-										<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
 										<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/${bookmark.boardIconName}" alt="게시글 아이콘">
 										<!-- <img alt="게시글 아이콘" src=""> -->
 										<span>${bookmark.prjBoardTitle }</span>									
@@ -1384,6 +1460,141 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- 업무 담당자 모달 -->
+	<div id="taskManager-modal">
+		<div class="taskManager-modal-content">
+			<div class="d-flex taskManager-modal-title">
+				<span>담당자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="managers"></div>
+		</div>			
+	</div>
+	
+	<!-- 일정 참여자 모달 -->
+	<div id="scheParticr-modal">
+		<div class="scheParticr-modal-content">
+			<div class="d-flex scheParticr-modal-title">
+				<span></span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="particirs"></div>
+		</div>			
+	</div>
+	
+	<!-- 투표 참여자 모달 -->
+	<div id="voteParticr-modal">
+		<div class="voteParticr-modal-content">
+			<div class="d-flex voteParticr-modal-title">
+				<span>투표 참여자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="voteParticirs"></div>
+		</div>			
+	</div>
+	
+	<!-- 하위 업무 정보 모달 -->
+	<div id="updateSubTask-modal">
+		<form>
+			<div class="updateSubTask-modal-content">
+				<!-- 모달페이지 띄우기 위함 -->
+		    	<input type="hidden" class="modal-dialog d-none">
+				<input type="hidden" class="modal-content d-none">
+				<input type="hidden" name="boardId" value="">
+				<input type="hidden" name="highPrjBoardId" value="">
+				<input type="hidden" name="highTaskId" value="">
+				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+				<div class="board-state">
+					<input type="radio" class="btn-check" name="state" value="G1" id="option11" autocomplete="off" checked>
+					<label for="option11">요청</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G2" id="option12" autocomplete="off">
+					<label for="option12">진행</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G3" id="option13" autocomplete="off">
+					<label for="option13">피드백</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G4" id="option14" autocomplete="off">
+					<label for="option14">완료</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G5" id="option15" autocomplete="off">
+					<label for="option15">보류</label>
+				</div>
+	     		<div class="d-flex m-bt" style="padding: 10px 30px; justify-content: flex-start;">
+					<div class="select-priority">
+						<span>우선 순위 : </span>
+			          	<select name="priority">
+			                <option value="">=======</option>
+			                <option value="F3">낮음</option>
+			                <option value="F2">보통</option>
+			                <option value="F1">긴급</option>
+			          	</select>
+		      		</div>
+			      	<div style="margin-left:100px;">
+						<label for="endDate">마감일 : </label>
+						<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
+				 	</div>
+				</div>
+	            <div class="board-taskManager">
+				</div>
+				<button type="reset">삭제하기</button>
+				<button type="button">수정하기</button>
+			</div>
+		</form>
+	</div>
+	
+	<!-- 하위 업무 추가 모달 -->
+	<div id="insertSubTask-modal">
+		<!-- 모달페이지 띄우기 위함 -->
+		<form>
+			<input type="hidden" class="modal-dialog d-none">
+			<input type="hidden" class="modal-content d-none">
+			<input type="hidden" name="highPrjBoardId" value="">
+			<input type="hidden" name="highTaskId" value="">
+			<div class="insertSubTask-modal-content">
+				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+				<div class="board-state">
+					<input type="radio" class="btn-check" name="state" value="G1" id="option16" autocomplete="off" checked>
+					<label for="option16">요청</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G2" id="option17" autocomplete="off">
+					<label for="option17">진행</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G3" id="option18" autocomplete="off">
+					<label for="option18">피드백</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G4" id="option19" autocomplete="off">
+					<label for="option19">완료</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G5" id="option20" autocomplete="off">
+					<label for="option20">보류</label>
+				</div>
+	     		<div class="d-flex m-bt" style="padding: 10px 30px; justify-content: flex-start;">
+					<div class="select-priority">
+						<span>우선 순위 : </span>
+			          	<select name="priority">
+			                <option value="">=======</option>
+			                <option value="F3">낮음</option>
+			                <option value="F2">보통</option>
+			                <option value="F1">긴급</option>
+			          	</select>
+		      		</div>
+			      	<div style="margin-left:100px;">
+						<label for="endDate">마감일 : </label>
+						<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
+				 	</div>
+				</div>
+	            <div class="board-taskManager">
+	            	<span class="add-manager-btn">담당자 추가</span>
+				</div>
+				<button type="reset">취소</button>
+				<button type="button">등록하기</button>
+			</div>
+		</form>
+	</div>
+
+
 
 	<!-- 모달 페이지 -->
 	<script >
@@ -1399,10 +1610,422 @@
 			modal.addClass('d-b');
 		});
 		
+		//하위 업무 정보 모달 페이지 출력
+		$(document).on('click', '.sub-task-item', function(e) {
+			let prjBoardId = $(e.currentTarget).data('id');
+			let highTaskId = $(e.currentTarget).closest('.board-container').find('div[data-hightaskid]').data('hightaskid');
+			let highPrjBoardId = $(e.currentTarget).closest('.board-container').data('id');
+			let taskModal = $('#updateSubTask-modal');
+			
+			$('.modal-backdrop').addClass('show');
+			$('.modal-backdrop').css('display', 'block');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getTaskInfo',
+				type : 'GET',
+				data : {'prjBoardId' : prjBoardId},
+				success : function(taskData) {
+					
+					taskModal.find('button[type="button"]').attr('name', 'updateForm');
+					taskModal.find('button[type="button"]').text('수정하기');
+					taskModal.find('input').prop('disabled', true);
+					taskModal.find('select').prop('disabled', true);
+					taskModal.find('button[type="radio"]').prop('disabled', true);
+					taskModal.find('input[name="boardId"]').val(prjBoardId);
+					taskModal.find('input[name="highTaskId"]').val(highTaskId);
+					taskModal.find('input[name="highPrjBoardId"]').val(highPrjBoardId);
+					
+        			// 하위 업무 추가하기
+        			let subTask = taskData.highTask[0];
+        			let managers = taskData.highManager;
+        			let boardTitle = taskModal.find('input[name="prjBoardTitle"]');
+        			let boardState = taskModal.find('.board-state');
+        			let boardPriority = taskModal.find('.select-priority');
+        			let inputDate = taskModal.find('input[name=endDate]');
+        			let taskManagerBox = taskModal.find('.board-taskManager');
+        			
+        			boardTitle.val(subTask.prjBoardTitle);
+        			boardState.find('input[value=' + subTask.state + ']').prop('checked', true);
+        			boardPriority.find('option[value=' + subTask.priority + ']').prop('selected', true);
+        			inputDate.val(subTask.endDate != null ? subTask.endDate : '-');
+        			
+        			taskManagerBox.empty();
+        			
+       				if(managers.length != 0) {
+       					for (let i = 0; i < managers.length; i++) {
+       						taskManagerBox.prepend('<span name='+ managers[i].prjParticirId +'>' + managers[i].memberName + '</span>');
+		            	}	
+       				} else {
+       					taskManagerBox.prepend('<span name=""> 없음 </span>');
+       				}
+       				taskManagerBox.prepend('<span>담당자 : </span>');
+			    }, error : function(reject) {
+					console.log(reject);
+				}
+			});	
+		});
+		
+		//하위 업무 수정 폼 전환
+		$(document).on('click', '#updateSubTask-modal button[name="updateForm"]', function(e) {
+			e.stopPropagation();
+			let taskModal = $('#updateSubTask-modal');
+			let boardId = taskModal.find('input[name="boardId"]').val();
+			let highTaskId = taskModal.find('input[name="highTaskId"]').val();
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getTaskInfo',
+				type : 'GET',
+				data : {'prjBoardId' : boardId},
+				success : function(taskData) {
+					taskModal.find('input[name="prjBoardTitle"]').focus();
+					taskModal.find('input').prop('disabled', false);
+					taskModal.find('select').prop('disabled', false);
+					taskModal.find('button[type="radio"]').prop('disabled', false);
+					taskModal.find('button[type="button"]').attr('name', 'updateBtn');
+					taskModal.find('button[type="button"]').text('수정완료');
+					
+        			// 하위 업무 추가하기
+        			let subTask = taskData.highTask[0];
+        			let managers = taskData.highManager;
+        			let taskManagerBox = taskModal.find('.board-taskManager');
+        			
+        			taskManagerBox.empty();
+        			
+  					for (let i = 0; i < managers.length; i++) {
+  						taskManagerBox.prepend('<span name='+ managers[i].prjParticirId +'>' + managers[i].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:5px;"></span>');
+	            	}	
+       				
+  					// 셀렉트 박스 생성		            	
+        			let subSelectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
+        			$.ajax({
+        		    	url : '${pageContext.request.contextPath}/particirList',
+        		        type: 'GET',
+        		        data: {'projectId': '${projectInfo.projectId}'},
+        		        success: function(particir){
+        		        	for(let i=0; i<particir.length; i++) {
+        						let option = $('<option>');
+        						
+        						option.val(particir[i].prjParticirId);
+        						option.text(particir[i].memberName);
+        						
+        						for(let k=0; k<managers.length; k++) {
+        							if(particir[i].prjParticirId == managers[k].prjParticirId) {
+        								option.prop('disabled', true);
+        							}	        						}
+        						subSelectBox.append(option);
+        					}
+        		        },
+        		        error: function(reject){
+        		            console.log(reject);
+        		        }
+        		    });	
+        			
+       				taskManagerBox.append(subSelectBox);
+       				taskManagerBox.prepend('<span>담당자 : </span>');
+			    }, error : function(reject) {
+					console.log(reject);
+				}
+			})
+		});
+			
+		
+			
+			
+			
+			
+			
+			
+		
+		
+		
+		//업무 담당자
+		$(document).on('click', '.task-manager span', function(e) {
+			let boardId = $(e.currentTarget).closest('.board-container').data('id');
+			let x = e.clientX + 30;
+			let y = e.clientY;
+			
+			$('.taskManager-modal-content').css('left', x + 'px');
+			$('.taskManager-modal-content').css('top', y + 'px');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getManager',
+				type : 'GET',
+				data : {'prjBoardId' : boardId},
+				success : function(managers) {
+					let managerDiv = $('#managers');
+					managerDiv.empty();
+					
+					if(managers.length != 0) {
+						//멤버 리스트 태그 만들기
+						for(let i=0; i<managers.length; i++) {
+							//div태그
+							let employeeDiv = document.createElement('div');
+							employeeDiv.classList.add('flex');
+							employeeDiv.classList.add('employee');
+							//이미지 태그
+							let employeeProfile = document.createElement('img');
+							employeeProfile.setAttribute('alt', '회원사진');
+							employeeProfile.classList.add('employee-img');
+							if(managers[i].realProfilePath != null) {
+								employeeProfile.src = "${pageContext.request.contextPath}/images/"+managers[i].realProfilePath;
+							}else {
+								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+							}
+							//스팬 태그
+							let span = document.createElement('span');
+							span.innerText = managers[i].memberName;
+							//히든 인풋 태그 (멤버id값)
+							let input = document.createElement('input');
+							input.setAttribute('type', 'hidden');
+							input.value = managers[i].memberId;
+							//태그 삽입
+							employeeDiv.append(employeeProfile);
+							employeeDiv.append(span);
+							employeeDiv.append(input);
+							
+							managerDiv.append(employeeDiv);
+						}
+					} else {
+						let noManagerDiv = document.createElement('div');
+						noManagerDiv.classList.add('noManager');
+						noManagerDiv.innerText = '담당자가 존재하지 않습니다.';
+						
+						managerDiv.append(noManagerDiv);
+					}
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+			$('#taskManager-modal').addClass('d-b');
+		});
+		
+		//일정 참여자
+		$('.sche-particir-list span').on('click', function(e) {
+			let boardId = $(e.currentTarget).closest('.board-container').data('id');
+			let scheSpan = $(e.currentTarget);
+			let x = e.clientX + 30;
+			let y = e.clientY;
+			
+			$('.scheParticr-modal-content').css('left', x + 'px');
+			$('.scheParticr-modal-content').css('top', y + 'px');
+			
+			if(scheSpan.hasClass('sche-particir')) {
+				$('.scheParticr-modal-title').text('참석자');
+				getScheParticirList(boardId, 'A1');
+			}else {
+				$('.scheParticr-modal-title').text('불참자');
+				getScheParticirList(boardId, 'A2');
+			}
+			$('#scheParticr-modal').addClass('d-b');
+		});
+		
+		function getScheParticirList(prjBoardId, commonCode) {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getParticir',
+				type : 'GET',
+				data : {'prjBoardId' : prjBoardId, 'attendance' : commonCode},
+				success : function(particirs) {
+					let particirDiv = $('#particirs');
+					particirDiv.empty();
+					
+					if(particirs.length != 0) {
+						//멤버 리스트 태그 만들기
+						for(let i=0; i<particirs.length; i++) {
+							//div태그
+							let employeeDiv = document.createElement('div');
+							employeeDiv.classList.add('flex');
+							employeeDiv.classList.add('employee');
+							//이미지 태그
+							let employeeProfile = document.createElement('img');
+							employeeProfile.setAttribute('alt', '회원사진');
+							employeeProfile.classList.add('employee-img');
+							if(particirs[i].realProfilePath != null) {
+								employeeProfile.src = "${pageContext.request.contextPath}/images/"+particirs[i].realProfilePath;
+							}else {
+								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+							}
+							//스팬 태그
+							let span = document.createElement('span');
+							span.innerText = particirs[i].memberName;
+							//히든 인풋 태그 (멤버id값)
+							let input = document.createElement('input');
+							input.setAttribute('type', 'hidden');
+							input.value = particirs[i].memberId;
+							//태그 삽입
+							employeeDiv.append(employeeProfile);
+							employeeDiv.append(span);
+							employeeDiv.append(input);
+							
+							particirDiv.append(employeeDiv);
+						}
+					} else {
+						let noParticirDiv = document.createElement('div');
+						noParticirDiv.classList.add('noManager');
+						noParticirDiv.innerText = '인원이 존재하지 않습니다.';
+						
+						particirDiv.append(noParticirDiv);
+					}
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});
+		}
+		
+		//투표 참여자
+		$('.vote-particir').on('click', function(e) {
+			let boardId = $(e.currentTarget).closest('.board-container').data('id');
+			let anonyVoteText = $(e.currentTarget).closest('.board-container').find('.anonyVote').text();
+			let x = e.clientX + 30;
+			let y = e.clientY;
+			let voteParticirDiv = $('#voteParticirs');
+			
+			$('.voteParticr-modal-content').css('left', x + 'px');
+			$('.voteParticr-modal-content').css('top', y + 'px');
+			
+			voteParticirDiv.empty();
+			
+			if(anonyVoteText != '') {
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getVoteParticir',
+					type : 'GET',
+					data : {'prjBoardId' : boardId},
+					success : function(voteParticir) {
+						
+						if(voteParticir.length != 0) {
+							//멤버 리스트 태그 만들기
+							for(let i=0; i<voteParticir.length; i++) {
+								//div태그
+								let employeeDiv = document.createElement('div');
+								employeeDiv.classList.add('flex');
+								employeeDiv.classList.add('employee');
+								//이미지 태그
+								let employeeProfile = document.createElement('img');
+								employeeProfile.setAttribute('alt', '회원사진');
+								employeeProfile.classList.add('employee-img');
+								if(voteParticir[i].realProfilePath != null) {
+									employeeProfile.src = "${pageContext.request.contextPath}/images/"+voteParticir[i].realProfilePath;
+								}else {
+									employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+								}
+								//스팬 태그
+								let span = document.createElement('span');
+								span.innerText = voteParticir[i].memberName;
+								//히든 인풋 태그 (멤버id값)
+								let input = document.createElement('input');
+								input.setAttribute('type', 'hidden');
+								input.value = voteParticir[i].memberId;
+								//태그 삽입
+								employeeDiv.append(employeeProfile);
+								employeeDiv.append(span);
+								employeeDiv.append(input);
+								
+								voteParticirDiv.append(employeeDiv);
+							}
+						} else {
+							let noParticirDiv = document.createElement('div');
+							noParticirDiv.classList.add('noManager');
+							noParticirDiv.innerText = '참여자가 존재하지 않습니다.';
+							
+							voteParticirDiv.append(noParticirDiv);
+						}
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				});
+			} else {
+				let noPublic = document.createElement('div');
+				noPublic.classList.add('noManager');
+				noPublic.innerText = '익명투표입니다.';
+				
+				voteParticirDiv.append(noPublic);
+			}
+			
+			$('#voteParticr-modal').addClass('d-b');
+		});
+		
 		//여백 누르면 모달페이지 종료
 		$('div[data-boardmodal]').on('click', function(e) {
 			$(e.currentTarget).removeClass('d-b');
 		});
+		
+		$('#taskManager-modal').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		$('#scheParticr-modal').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		$('#voteParticr-modal').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		$('#updateSubTask-modal').on('click', function(e) {
+			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		function updatePinBoard(boardId, pinYn) {
+			$('div[data-boardmodal]').removeClass('d-b');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/updatePin',
+				type : 'POST',
+				data : {'projectId': '${projectInfo.projectId}', 'prjBoardId': boardId, 'pinYn' : pinYn},
+				success : function() {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/getPinBoard',
+						type : 'POST',
+						data : {'projectId': '${projectInfo.projectId}'},
+						success : function(pinProjects) {
+							let pinUl = $('.pin-board ul');
+							pinUl.empty();
+							
+							if(pinProjects.length != 0) {
+								for(let i=0; i<pinProjects.length; i++) {
+									let pinProject = pinProjects[i];
+									
+									let pinList = `
+										<li>
+											<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
+											<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+												<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+												<span>\${pinProject.prjBoardTitle }</span>
+											</a>	
+										</li>`;
+										
+										pinUl.append(pinList);	
+								}
+							} else {
+								let noPin = `<span style="font-size: var(--font-micro);">상단고정 된 게시글이 없습니다.</span>`;
+								
+								pinUl.append(noPin);
+							}
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					})
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});				
+		}
+		
+		$(document).on('click', '.pin-board .pin-board-icon', function(e) {
+			let prjBoardId = $(e.currentTarget).next().attr('href').substring(3);
+			let realBoardId = $(e.currentTarget).next().attr('href');
+			let realBoardModalText = $(realBoardId).find('p[data-type="pinN"]');
+			
+			if(confirm('상단게시글 고정을 해제 하시겠습니까?')) {
+				updatePinBoard(prjBoardId, 'A2');
+				realBoardModalText.text('상단고정');
+				realBoardModalText.data('type', 'pinY');
+			}
+		});
+		
+		
 		
 		$('.board-modal-content p').on('click', function(e) {
 			e.stopPropagation();
@@ -1419,12 +2042,16 @@
 			let vote = boardUpdateModal.find('[name=vote]');
 			
 			if(type == 'pinY') {
-				if(confirm('상단게시글에 고정하시겠습니까?')) {
-					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A1';						
+				if(confirm('이 게시글을 상단고정 하시겠습니까?')) {
+					updatePinBoard(boardId, 'A1');
+					$(e.currentTarget).text('상단고정 해제');								
+					$(e.currentTarget).data('type', 'pinN');
 				}
 			}else if(type == 'pinN') {
 				if(confirm('상단게시글 고정을 해제 하시겠습니까?')) {
-					location.href='${pageContext.request.contextPath}/updatePin?projectId=' + prjId + '&prjBoardId=' + boardId + '&pinYn=A2';	
+					updatePinBoard(boardId, 'A2');
+					$(e.currentTarget).text('상단고정');								
+					$(e.currentTarget).data('type', 'pinY');
 				}
 			}else if(type == 'update') {
 				visibleDiv.removeClass('d-b');
@@ -1433,7 +2060,24 @@
 				} else if(boardType == 'C6') {
 					$(sche).addClass('d-b');
 				} else if(boardType == 'C7') {
-					$(vote).addClass('d-b');
+					$.ajax({
+						url: '${pageContext.request.contextPath}/countVoteParticir',
+						type: 'GET',
+						data: {'prjBoardId' : boardId},
+						success: function(data){
+							if(data > 0){
+								alert("진행 중인 투표는 수정할 수 없습니다.");
+								$('#boardUpdateModal').css('display', 'none');
+								$('.modal-backdrop').css('display', 'none');
+							}else{
+								visibleDiv.removeClass('d-b');
+								$(vote).addClass('d-b');
+							}
+						},
+						error: function(error){
+							console.log(error);
+						}
+					});
 				} else if(boardType == 'C8') {
 					$(task).addClass('d-b');
 				}
@@ -1633,6 +2277,7 @@
 
 				        // 업무 번호
 				        highTaskId.text('업무 번호 ' + taskData.highTask[0].taskId);
+				        highTaskId.data('hightaskid', taskData.highTask[0].taskId);
 				        // 기간
 				        if(taskData.highTask[0].startDate != null) {
 				        	startDate.text(taskData.highTask[0].startDate);
@@ -1641,7 +2286,7 @@
 				        	startDate.parent().remove();
 				        }
 		                // 진행상태 버튼 활성화
-		                state.children('button[value=' + highTask.state + ']' ).css('background-color', 'var(--color-dark-red)');
+		                state.children('button[value=' + highTask.state + ']' ).addClass('active');
 		                //진척도
 		                processivityValueDiv.css('width', highTask.processivity + "%");
 		                processivityValue.text(highTask.processivity + "%");		                
@@ -1673,8 +2318,9 @@
 				     	// 정보 입력
 				        for (let j = 0; j < subTasks.length; j++) {
 				        	let subTask = subTasks[j];
-							let li = $('<li class="sub-task-item">');
-				        	let subState = $('<span class="sub-state">');
+							let li = $('<li class="sub-task-item" data-id=' + subTask.prjBoardId + ' data-bs-target="#updateSubTask-modal" data-bs-toggle="modal">');
+				        	let infoDiv = $('<div>');
+							let subState = $('<span class="sub-state">');
 				        	let subTitle = $('<span class="sub-title">');
 						
 				        	subState.text(subTask.stateName);
@@ -1690,9 +2336,330 @@
 					}
 				});
 			}
+			// 댓글 불러오기
+			getCommentList(boardList[i].dataset.id, boardList[i].dataset.type);
+			
+			// 좋아요 여부 / 좋아요 전체 수
+			getPrjLike('${memberInfo.memberId}', boardList[i].dataset.id);
+			
+			
 		}
+		
 	});
+	
+	
+	// 댓글 리스트
+	function getCommentList(boardId, boardType){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/projectCmtList',
+			type : 'GET',
+			data : {'boardId' : boardId, 'boardType': boardType},
+			success : function(comments){
+				let boardCommentBox = $('div[data-id=' + boardId + ']').find('div[name="board-comment-box"]');
+				
+				boardCommentBox.empty();
+				
+				if(comments.length != 0) {
+					if(comments.length > 2) {
+						for(let i =0; i<2; i++) {
+							let boardComment =`
+								<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+									<div class="d-flex">
+										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+										<div>
+											<div style="margin: 5px 0;">
+												<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+												<span>\${comments[i].commentRegdate }</span>
+											</div>
+											<div style="margin: 5px 0;">
+												\${comments[i].commentContent }
+											</div>
+										</div>								
+									</div>
+									<div>
+										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+										<span name="deleteComment" class="cursor">삭제</span>
+									</div>
+								</div>`;
+								
+							boardCommentBox.prepend(boardComment);
+							
+						}
+							let moreComment=`
+								<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
+									댓글 더보기
+								</div>`;
+							boardCommentBox.prepend(moreComment);
+					} else {
+						boardCommentBox.empty();
+						
+						for(let i =0; i<comments.length; i++) {
+							let boardComment =`
+								<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+									<div class="d-flex">
+										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+										<div>
+											<div style="margin: 5px 0;">
+												<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+												<span>\${comments[i].commentRegdate }</span>
+											</div>
+											<div style="margin: 5px 0;">
+												\${comments[i].commentContent }
+											</div>
+										</div>								
+									</div>
+									<div>
+										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+										<span name="deleteComment" class="cursor">삭제</span>
+									</div>
+								</div>`;
+								
+							boardCommentBox.prepend(boardComment);
+						}
+					}
+				}
+				// 댓글 수
+				$('div[data-id=' + boardId + ']').find('span[name="commentCount"]').text(comments.length);
+				
+			}, error : function(reject) {
+				console.log(reject);
+			}
+		});
+	}
+	
+	// 댓글 더보기
+	$(document).on('click', 'div[name="moreComment"]', function(e){
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let prjBoardId = boardContainer.data('id');
+		let boardType = boardContainer.data('type');
+		let boardCommentBox = boardContainer.find('div[name="board-comment-box"]');
+		$.ajax({
+			url : '${pageContext.request.contextPath}/projectCmtList',
+			type : 'GET',
+			data : {'boardId' : prjBoardId, 'boardType': boardType},
+			success : function(comments){
+				boardCommentBox.empty();
+				for(let i =0; i<comments.length; i++) {
+					let boardComment =`
+						<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+							<div class="d-flex">
+								<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+								<div>
+									<div style="margin: 5px 0;">
+										<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+										<span>\${comments[i].commentRegdate }</span>
+									</div>
+									<div style="margin: 5px 0;">
+										\${comments[i].commentContent }
+									</div>
+								</div>								
+							</div>
+							<div>
+								<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+								<span name="deleteComment" class="cursor">삭제</span>
+							</div>
+						</div>`;
+						
+					boardCommentBox.prepend(boardComment);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+		
+	})
+	
+	// 댓글 삭제
+	$(document).on('click', 'span[name="deleteComment"]', function(e){
+		let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let prjBoardId = boardContainer.data('id');
+		let boardType = boardContainer.data('type');
+		
+		let boardComment = $(e.currentTarget).closest('.board-comment');
+		let commentId = boardComment.data('cmtid');
+		if(confirm('삭제하시겠습니까?')){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/deleteProjectCmt',
+				type : 'POST',
+				data : {'commentId' : commentId},
+				success : function() {
+					alert("삭제되었습니다.");
+					boardCommentBox.empty();
+					getCommentList(prjBoardId, boardType);
+				},
+				error : function(reject) {
+					alert("삭제에 실패했습니다.");
+					console.log(reject);
+				}
+			});
+		}
+	})
+	
+	
+	
+	// 댓글 수정 폼
+	$(document).on('click', 'span[name="updateComment"]', function(e){
+		let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
+		let boardComment = $(e.currentTarget).closest('.board-comment');
+		let commentId = boardComment.data('cmtid');
+		$.ajax({
+			url : '${pageContext.request.contextPath}/commentInfo',
+			type : 'GET', 
+			data : {'commentId' : commentId},
+			success : function(comments){
+				let commentUpdate = `
+						<div class="d-flex">
+							<img src="${pageContext.request.contextPath}/images/\${comments.realProfilePath }" alt="회원 프로필 사진" class="profile">
+							<div>
+								<input type="text" name="commentContent" value="\${comments.commentContent}">
+							</div>								
+						</div>
+						<div>
+							<span name="saveUpdate" class="cursor" style="margin-right: 10px;">확인</span>
+						</div>`;
+					
+				boardComment.empty().append(commentUpdate);
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		});
+	})
+	
+	// 댓글 수정하기
+	$(document).on('click', 'span[name="saveUpdate"]', function(e){
+		let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let prjBoardId = boardContainer.data('id');
+		let boardType = boardContainer.data('type');
+		let boardComment = $(this).closest('.board-comment')
+		let commentId = boardComment.data('cmtid');
+		let commentContent = boardComment.find('input[name="commentContent"]').val();
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/updateProjectCmt',
+			type : 'POST',
+			data : { 'commentId' : commentId, 'commentContent' : commentContent},
+			success : function(comments){
+				boardCommentBox.empty();
+				getCommentList(prjBoardId, boardType);
+				
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	})
+	
+	// 좋아요 등록/해제
+	$('span[name="prjLike"]').on('click', function(e){
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let boardId = boardContainer.data('id');
+		let boardType = boardContainer.data('type');
+		let memberId = '${memberInfo.memberId}';
+		$.ajax({
+			url : '${pageContext.request.contextPath}/likeBoard',
+			type : 'GET',
+			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
+			success : function(like){
+				// 게시글 좋아요 수
+				getPrjLike(memberId, boardId);
+				
+				let likeSpan = $('div[data-id=' + boardId + ']').find('span[name="prjLike"] span');
+				likeSpan.empty();
+				// 좋아요 상태 표시
+				if(like.checkLike == 'like'){
+					likeSpan.append("좋아요 해제");
+				}else{
+					likeSpan.append("좋아요");
+				}
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	})
+	
+	
+	// 좋아요 정보
+	function getPrjLike(memberId, boardId){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/gePrjLike',
+			type : 'GET',
+			data : {'memberId': memberId, 'boardId' : boardId},
+			success : function(likeInfo){
+				// 게시글 좋아요 수
+				$('div[data-id=' + boardId + ']').find('span[name="likeCount"]').text(likeInfo.boardLike.length);
+				
+				// 좋아요 여부
+				let likeSpan = $('div[data-id=' + boardId + ']').find('span[name="prjLike"] span');
+				likeSpan.empty();
+				
+				if(likeInfo.memberLike != null) {
+					likeSpan.append("좋아요 해제");
+				} else {
+					likeSpan.append("좋아요");
+				}
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	};
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 	//북마크
 	$('span[data-bookmark]').on('click', function(e) {
 		let boardContainer = $(e.currentTarget).closest('.board-container');
@@ -1709,8 +2676,43 @@
 					url : '${pageContext.request.contextPath}/insertBookmark',
 					type : 'POST',
 					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-					success : function(projectId) {
-						location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+					success : function() {
+						$.ajax({
+							url : '${pageContext.request.contextPath}/getBookmarkByMe',
+							type : 'POST',
+							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+							success : function(pinProjects) {
+								let bookmarkUl = $('.bookmark-board-contets ul');
+								
+								bookmarkUl.empty();
+								
+								if(pinProjects.length != 0) {
+									for(let i=0; i<pinProjects.length; i++) {
+										let pinProject = pinProjects[i];
+										
+										let bookmarkList = `
+											<li>
+												<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+												<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+													<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+													<span>\${pinProject.prjBoardTitle}</span>									
+												</a>
+											</li>`;
+											
+										bookmarkUl.append(bookmarkList);	
+									}
+								} else {
+									let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+									
+									bookmarkUl.append(noBookmark);
+								}
+								$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+								$(e.currentTarget).data('bookmark', 'yes');
+							},
+							error : function(reject) {
+								console.log(reject);
+							}
+						})
 					},
 					error : function(reject) {
 						console.log(reject);
@@ -1723,14 +2725,50 @@
 					url : '${pageContext.request.contextPath}/deleteBookmark',
 					type : 'POST',
 					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-					success : function(projectId) {
-						location.href ='${pageContext.request.contextPath}/projectFeed?projectId=' + projectId;
+					success : function() {
+						$.ajax({
+							url : '${pageContext.request.contextPath}/getBookmarkByMe',
+							type : 'POST',
+							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+							success : function(pinProjects) {
+								let bookmarkUl = $('.bookmark-board-contets ul');
+								bookmarkUl.empty();
+								
+								if(pinProjects.length != 0) {
+									for(let i=0; i<pinProjects.length; i++) {
+										let pinProject = pinProjects[i];
+										
+										let bookmarkList = `
+											<li>
+												<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+												<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+													<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+													<span>\${pinProject.prjBoardTitle}</span>									
+												</a>
+											</li>`;
+											
+										bookmarkUl.append(bookmarkList);	
+									}
+								} else {
+									let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+									
+									bookmarkUl.append(noBookmark);
+								}
+								
+								$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg').data('data-bookmark', 'no');
+								$(e.currentTarget).data('bookmark', 'no');
+							},
+							error : function(reject) {
+								console.log(reject);
+							}
+						})
 					},
 					error : function(reject) {
 						console.log(reject);
 					}
-				});	
+				})
 			}
+			
 		}
 	});
 
@@ -1887,6 +2925,93 @@
 					console.log(reject);
 				}
 			});
+		}
+	});
+	
+	//업무 게시글 진행상태 변경
+	$('div[data-state] button').on('click', function(e) {
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let targetBtn = $(e.currentTarget);
+		let prjBoardId = boardContainer.data('id');
+		let state = targetBtn.val();
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'state' : state},
+			success : function(result) {
+				//업무
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : prjBoardId},
+					success : function(taskData) {
+		                let state = boardContainer.find('div[data-state]');
+		                let activeBtn = state.find('.active');
+		                // 진행상태 버튼 활성화
+		                activeBtn.removeClass('active');
+		                state.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+				    }, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	
+	//북마크
+	$(document).on('click', '.bookmark-board-contets .pin-board-icon', function(e) {
+		let prjBoardId = $(e.currentTarget).next().attr('href').substring(3);
+		let boardType = $(e.currentTarget).next().attr('href').substring(1,3);
+
+		if(confirm('북마크를 해제 하시겠습니까?')) {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/deleteBookmark',
+				type : 'POST',
+				data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}', 'prjBoardId': prjBoardId, 'boardType':boardType},
+				success : function(pinProjects) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/getBookmarkByMe',
+						type : 'POST',
+						data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+						success : function(pinProjects) {
+							let bookmarkUl = $('.bookmark-board-contets ul');
+							console.log(pinProjects);
+							bookmarkUl.empty();
+							
+							if(pinProjects.length != 0) {
+								for(let i=0; i<pinProjects.length; i++) {
+									let pinProject = pinProjects[i];
+									
+									let bookmarkList = `
+										<li>
+											<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+											<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+												<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+												<span>\${pinProject.prjBoardTitle}</span>									
+											</a>
+										</li>`;
+										
+									bookmarkUl.append(bookmarkList);	
+								}
+							} else {
+								let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+								
+								bookmarkUl.append(noBookmark);
+							}
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					})
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
 		}
 	});
 	</script>
@@ -2114,224 +3239,222 @@
 	
 	<!-- 게시글 수정 HTML -->
 	<div class="modal modalBoard" tabindex="-1" id="boardUpdateModal">
-	<div class="insert-board-modal">
-		<!-- 공통 양식 -->
-	    <div class="insert-board-modal-header">
-	    	<!-- 모달페이지 띄우기 위함 -->
-	    	<input type="hidden" class="modal-dialog d-none">
-			<input type="hidden" class="modal-content d-none">
-	    	<div class="insert-board-modal-title">
-	    		<div>게시물 작성</div>		
-	    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	    	</div>
-	    	<ul class="insert-board-list">
-	    		<li class="insert-list-item">글</li>
-	    		<li class="insert-list-item">업무</li>
-	    		<li class="insert-list-item">일정</li>
-	    		<li class="insert-list-item">투표</li>
-	    	</ul>
-	    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
-			<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
-			<input type="hidden" value="" name="prjBoardId" id="prjBoardId">
-		</div>
-		<!-- 일반 게시글 작성 폼 -->
-		<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none d-b" name="board">
-			<div class="insert-board-area">
-				<div class="board-form" >
-					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor5"></textarea>
-				</div>
-	        </div>
-	        <div class="modal-footer">
-				<select name="inspYn" class="modal-footer-select">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-				<input type="hidden" name="boardType" value="C5">
-         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-              	<button type="reset" class="modal-footer-btn">임시저장</button>
-              	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-              	<div><a href="#">임시저장 게시글 보기</a></div>
+		<div class="insert-board-modal">
+			<!-- 공통 양식 -->
+		    <div class="insert-board-modal-header">
+		    	<!-- 모달페이지 띄우기 위함 -->
+		    	<input type="hidden" class="modal-dialog d-none">
+				<input type="hidden" class="modal-content d-none">
+		    	<div class="insert-board-modal-title">
+		    		<div>게시물 작성</div>		
+		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		    	</div>
+		    	<ul class="insert-board-list">
+		    		<li class="insert-list-item">글</li>
+		    		<li class="insert-list-item">업무</li>
+		    		<li class="insert-list-item">일정</li>
+		    		<li class="insert-list-item">투표</li>
+		    	</ul>
+		    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
+				<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
+				<input type="hidden" value="" name="prjBoardId" id="prjBoardId">
 			</div>
-		</form>
-		
-		<!-- 상위 업무 작성 폼!!! -->
-		<form class="dis-none" name="task">
-			<div class="insert-board-area">
-				<div class="board-form" >
-					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					<div class="board-state">
-						<input type="radio" class="btn-check" name="state" value="G1" id="option6" autocomplete="off" checked>
-						<label for="option6">요청</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G2" id="option7" autocomplete="off">
-						<label for="option7">진행</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G3" id="option8" autocomplete="off">
-						<label for="option8">피드백</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G4" id="option9" autocomplete="off">
-						<label for="option9">완료</label>
-						
-						<input type="radio" class="btn-check" name="state" value="G5" id="option10" autocomplete="off">
-						<label for="option10">보류</label>
+			<!-- 일반 게시글 작성 폼 -->
+			<form action="${pageContext.request.contextPath }/updateBoard" method="post" class="dis-none d-b" name="board">
+				<div class="insert-board-area">
+					<div class="board-form" >
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor5"></textarea>
 					</div>
-					<div>
-						<label for="startDate">시작일 : </label>
-						<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
+		        </div>
+		        <div class="modal-footer">
+					<select name="inspYn" class="modal-footer-select">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+					<input type="hidden" name="boardType" value="C5">
+	         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	              	<button type="reset" class="modal-footer-btn">임시저장</button>
+	              	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
+	              	<div><a href="#">임시저장 게시글 보기</a></div>
+				</div>
+			</form>
+			
+			<!-- 상위 업무 작성 폼!!! -->
+			<form class="dis-none" name="task">
+				<div class="insert-board-area">
+					<div class="board-form" >
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<div class="board-state">
+							<input type="radio" class="btn-check" name="state" value="G1" id="option6" autocomplete="off" checked>
+							<label for="option6">요청</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G2" id="option7" autocomplete="off">
+							<label for="option7">진행</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G3" id="option8" autocomplete="off">
+							<label for="option8">피드백</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G4" id="option9" autocomplete="off">
+							<label for="option9">완료</label>
+							
+							<input type="radio" class="btn-check" name="state" value="G5" id="option10" autocomplete="off">
+							<label for="option10">보류</label>
+						</div>
+						<div>
+							<label for="startDate">시작일 : </label>
+							<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
+							
+							<label for="endDate">마감일 : </label>
+							<input type="text" name="endDate" class="date-input endDate" autocomplete="off">
+						</div>
 						
-						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" autocomplete="off">
+						<!-- 진척도 -->
+						<div class="js-progress create-content-cell">
+							<!-- 우선 순위 -->
+							<div class="select-priority">
+								<div>우선 순위 : </div>
+								<select name="priority">
+									<option value="">=======</option>
+									<option value="F3">낮음</option>
+									<option value="F2">보통</option>
+									<option value="F1">긴급</option>
+								</select>
+							</div>
+							<!-- 진행율 -->
+							<div class="board-progress">
+								<div>진행율 : </div>
+								<div class="progress-bar">
+						       		<div class="progress-bar-size"></div>
+								</div>
+								<div class="progress-value">0%</div>
+								<input type="hidden" name="processivity" value="0">
+							</div>
+						</div>
+						
+						<!-- 업무 담당자 -->
+						<div class="board-taskManager" style="margin-bottom: 20px;">
+							
+						</div>
+						<!-- 업무 담당자 끝 -->
+						
+						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor6"></textarea>
 					</div>
 					
-					<!-- 진척도 -->
-					<div class="js-progress create-content-cell">
-						<!-- 우선 순위 -->
-						<div class="select-priority">
-							<div>우선 순위 : </div>
-							<select name="priority">
-								<option value="">=======</option>
-								<option value="F3">낮음</option>
-								<option value="F2">보통</option>
-								<option value="F1">긴급</option>
+					<!-- 하위업무 등록 -->
+					<div class="board-sub-task">
+						<div class="board-sub-task-title">하위 업무 수정은 피드에서 가능합니다.</div>
+					</div>
+		        </div>
+		        
+		        <div class="modal-footer">
+					<select name="inspYn" class="modal-footer-select">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+					<input type="hidden" name="boardType" value="C5">
+		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+		             	<button type="reset" class="modal-footer-btn">임시저장</button>
+		             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
+		             	<div><a href="#">임시저장 게시글 보기</a></div>
+				</div>
+			</form>
+		
+			<!-- 일정 작성 폼!!! -->
+			<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none" id="sche" name="sche">
+				<div class="insert-board-area">
+					<div class="board-form" >
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<div class="m-bt">
+							<label for="startDate">시작일 : </label>
+							<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
+							
+							<label for="endDate">마감일 : </label>
+							<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
+						</div>
+						<div class="d-flex m-bt" style="justify-content: flex-start;">
+							<div>
+								<label>장소 : </label>
+								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddr" name="scheAddr">
+								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
+							</div>
+							<select name="alarmDateCode">
+								<option value="" selected>알림 설정</option>
+								<option value="L1">10분 전 미리 알림</option>
+								<option value="L2">1시간 전 미리 알림</option>
+								<option value="L3">1일 전 미리 알림</option>
+								<option value="L4">7일 전 미리 알림</option>
 							</select>
 						</div>
-						<!-- 진행율 -->
-						<div class="board-progress">
-							<div>진행율 : </div>
-							<div class="progress-bar">
-					       		<div class="progress-bar-size"></div>
+						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor7"></textarea>
+					</div>
+		        </div>
+		        
+		        <div class="modal-footer">
+					<select name="inspYn" class="modal-footer-select">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+						<input type="hidden" name="boardType" value="C6">
+		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+		             	<button type="reset" class="modal-footer-btn">임시저장</button>
+		             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
+		             	<div><a href="#">임시저장 게시글 보기</a></div>
+				</div>
+			</form>
+		        
+			<!-- 투표 작성 폼!!! -->
+			<form action="${pageContext.request.contextPath }/updateVote" method="post" class="dis-none" id="vote" name="vote">
+				<div class="insert-board-area">
+					<div class="board-form" >
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						
+						<div class="d-flex m-bt" style="justify-content: flex-start;">
+							<div class="form-check form-switch">
+								<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+								<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
 							</div>
-							<div class="progress-value">0%</div>
-							<input type="hidden" name="processivity" value="0">
+							<div class="form-check form-switch">
+								<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+								<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
+							</div>
+							<div class="form-check form-switch">
+								<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+								<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
+							</div>
 						</div>
+						
+						
+						<div class="m-bt">
+							<label for="endDate">마감일 : </label>
+							<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off">
+						</div>
+						
+						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor8"></textarea>
 					</div>
 					
-					<!-- 업무 담당자 -->
-					<div class="board-taskManager" style="margin-bottom: 20px;">
-						
+					<!-- 하위업무 등록 -->
+					<div class="board-sub-task">
+						<div class="board-sub-task-title">투표 항목</div>
+						<div class="board-vote-list"></div>
+						<span class="add-vote-list-btn">투표 항목 추가</span>
 					</div>
-					<!-- 업무 담당자 끝 -->
-					
-					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor6"></textarea>
-				</div>
-				
-				<!-- 하위업무 등록 -->
-				<div class="board-sub-task">
-					<div class="board-sub-task-title">하위 업무</div>
-					<div class="sub-task-manager"></div>
-					<span class="add-sub-task-btn">하위 업무 추가</span>
-				</div>
-	        </div>
-	        
-	        <div class="modal-footer">
-				<select name="inspYn" class="modal-footer-select">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-				<input type="hidden" name="boardType" value="C5">
-	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	             	<button type="reset" class="modal-footer-btn">임시저장</button>
-	             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
-	             	<div><a href="#">임시저장 게시글 보기</a></div>
-			</div>
-		</form>
-	
-		<!-- 일정 작성 폼!!! -->
-		<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none" id="sche" name="sche">
-			<div class="insert-board-area">
-				<div class="board-form" >
-					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					<div class="m-bt">
-						<label for="startDate">시작일 : </label>
-						<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
-						
-						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
-					</div>
-					<div class="d-flex m-bt" style="justify-content: flex-start;">
-						<div>
-							<label>장소 : </label>
-							<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddr" name="scheAddr">
-							<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
-						</div>
-						<select name="alarmDateCode">
-							<option value="" selected>알림 설정</option>
-							<option value="L1">10분 전 미리 알림</option>
-							<option value="L2">1시간 전 미리 알림</option>
-							<option value="L3">1일 전 미리 알림</option>
-							<option value="L4">7일 전 미리 알림</option>
-						</select>
-					</div>
-					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor7"></textarea>
-				</div>
-	        </div>
-	        
-	        <div class="modal-footer">
-				<select name="inspYn" class="modal-footer-select">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-					<input type="hidden" name="boardType" value="C6">
+		        </div>
+		        
+		        <div class="modal-footer">
+					<select name="inspYn" class="modal-footer-select">
+						<option value="E2">전체 공개</option>
+						<option value="E1">프로젝트 관리자만</option>
+					</select>
+					<input type="hidden" name="boardType" value="C7">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	             	<button type="reset" class="modal-footer-btn">임시저장</button>
 	             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
 	             	<div><a href="#">임시저장 게시글 보기</a></div>
-			</div>
-		</form>
-	        
-		<!-- 투표 작성 폼!!! -->
-		<form action="${pageContext.request.contextPath }/boardUpdate" method="post" class="dis-none" id="vote" name="vote">
-			<div class="insert-board-area">
-				<div class="board-form" >
-					<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-					
-					<div class="d-flex m-bt" style="justify-content: flex-start;">
-						<div class="form-check form-switch">
-							<input name="anonyVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-							<label class="form-check-label" for="flexSwitchCheckDefault">익명 투표</label>
-						</div>
-						<div class="form-check form-switch">
-							<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-							<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
-						</div>
-						<div class="form-check form-switch">
-							<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-							<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
-						</div>
-					</div>
-					
-					
-					<div class="m-bt">
-						<label for="endDate">마감일 : </label>
-						<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off">
-					</div>
-					
-					<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor8"></textarea>
 				</div>
-				
-				<!-- 하위업무 등록 -->
-				<div class="board-sub-task">
-					<div class="board-sub-task-title">투표 항목</div>
-					<div class="board-vote-list"></div>
-					<span class="add-vote-list-btn">투표 항목 추가</span>
-				</div>
-	        </div>
-	        
-	        <div class="modal-footer">
-				<select name="inspYn" class="modal-footer-select">
-					<option value="E2">전체 공개</option>
-					<option value="E1">프로젝트 관리자만</option>
-				</select>
-				<input type="hidden" name="boardType" value="C7">
-	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	             	<button type="reset" class="modal-footer-btn">임시저장</button>
-	             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-	             	<div><a href="#">임시저장 게시글 보기</a></div>
-			</div>
-		</form>
-    </div>
-</div>
+			</form>
+	    </div>
+	</div>
 	
 	<!-- 게시글 수정 SCRIPT -->
 	<script>
@@ -2350,9 +3473,22 @@
 			
 			prjBoardIdInput.val(prjBoardId);
 			
-			if(boardType == 'C5') {
-				
-			}else if(boardType == 'C6') {
+			if(boardType == 'C5') { // 일반 게시글 수정 양식
+				$.ajax({
+					url: '${pageContext.request.contextPath}/getBoardInfo',
+					type: 'GET',
+					data: {'prjBoardId' : prjBoardId},
+					success: function(boardData){
+						$(board).find('[name=prjBoardTitle]').val(boardData.prjBoardTitle);
+						editor5.setData(boardData.prjBoardSubject);
+						$("select[name='inspYn']").val(boardData.inspYn);
+						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
+					},
+					error: function(reject){
+						console.log(reject);
+					}
+				});
+			}else if(boardType == 'C6') { // 일정 게시글 수정 양식
 				
 			}else if(boardType == 'C7') { //투표 게시글 수정 양식
 				$.ajax({
@@ -2360,7 +3496,29 @@
 					type: 'GET',
 					data: {'prjBoardId' : prjBoardId},
 					success: function(voteData){
-						console.log(voteData)
+						let boardInfo = voteData.boardInfo;
+						let voteInfo = voteData.voteInfo[0];
+						
+						$(vote).find('[name=prjBoardTitle]').val(boardInfo.prjBoardTitle);
+						
+						editor8.setData(boardInfo.prjBoardSubject);
+						
+						$("input[name='anonyVote']").prop('checked', voteInfo.anonyVote == "A1" ? true : false);
+						$("input[name='compnoVote']").prop('checked', voteInfo.compnoVote == "A1" ? true : false);
+						$("input[name='resultYn']").prop('checked', voteInfo.resultYn == "A1" ? true : false);
+						
+						$(vote).find('[name=endDate]').val(voteInfo.endDate);
+						
+						$("select[name='inspYn']").val(voteInfo.inspYn);
+						
+						// 투표 항목
+						let voteList = $(vote).find('.board-vote-list');
+						voteList.empty();
+						for(let i=0; i<voteData.voteList.length; i++){
+							voteList.append('<div><input type="text" name="listContent" value="' + voteData.voteList[i].listContent + '"><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>');
+						}
+						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
+						
 						
 					},
 					error: function(reject){
@@ -2369,7 +3527,7 @@
 						
 				});
 				
-			}else if(boardType == 'C8') { //업무 게시글 수정 양식
+			}else if(boardType == 'C8') { //상위 업무 게시글 수정 양식
 				$.ajax({
 					url : '${pageContext.request.contextPath}/getTaskInfo',
 					type : 'GET',
@@ -2439,109 +3597,6 @@
 	        			
 		            	//상위 업무 게시글 내용
 	        			editor6.setData(highTask.prjBoardSubject);
-		            	
-	        			// 하위 업무 추가하기
-	        			let subManagerList = $(task).find('.sub-task-manager');
-	        			subManagerList.empty();
-	        			
-	        			for(let i=0; i<taskData.subTask.length; i++) {
-	        				let endDate = taskData.subTask[i].endDate != null ? taskData.subTask[i].endDate : '';  
-	        				let state = taskData.subTask[i].state != null ? taskData.subTask[i].state : '';
-	        				
-	        				let subtaskForm = `
-	        		            <div class="d-flex task-add" style="align-items: center; margin-bottom:20px; padding: 0 15px;">
-	        		            	<div>
-	        		            		<div>
-			        		        		<div class="d-flex m-bt">
-			        		        			<div>
-			        		        				<span>업무 제목 : </span>
-			        		        				<input type="text" name="prjBoardTitle" placeholder="제목을 입력하세요." style="margin-left: 20px;">
-			        		        			</div>
-			        			                <div class="select-state" style="margin-left:60px;">
-			        			                	<span>진행 상태 : </span>
-			        			                	<select name="state" class="task-select" style="margin-left: 20px;">
-				    							        <option value="G1">요청</option>
-				    							        <option value="G2">진행</option>
-				    							        <option value="G3">피드백</option>
-				    							        <option value="G4">완료</option>
-				    							        <option value="G5">보류</option>
-				    							    </select>
-			        							</div>
-			        		        		</div>
-			        		                <div class="d-flex m-bt">
-			        			        		<div class="select-priority">
-			        			        			<span>우선 순위 : </span>
-			        			                    <select name="priority">
-			        			                        <option value="">=======</option>
-			        			                        <option value="F3">낮음</option>
-			        			                        <option value="F2">보통</option>
-			        			                        <option value="F1">긴급</option>
-			        			                    </select>
-			        			                </div>
-			        			                <div style="margin-left:100px;">
-			        			                    <label for="endDate">마감일 : </label>
-			        			                    <input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
-			        			                </div>
-			        		                </div>
-			        		            </div>
-			        		            <div class="board-taskManager">
-		        							<span class="add-manager-btn">담당자 추가</span>
-	        							</div>
-	        		               	</div>
-	        		               	<img class="deleteSubtask" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:20px;">
-	        		            </div>`;
-	        		            
-							subManagerList.append(subtaskForm);
-	        			}
-		            	
-	        			for(let i=0; i<taskData.subTask.length; i++) {
-	        				let subtaskForm = subManagerList.find('.task-add').eq(i);
-	        				let subTaskManagerBox = subtaskForm.find('.board-taskManager');
-	        				let subManagers = taskData.subManager[taskData.subTask[i].prjBoardId];
-	        				
-	        				subtaskForm.attr('name', taskData.subTask[i].prjBoardId);
-	        				subtaskForm.find('input[name=prjBoardTitle]').val(taskData.subTask[i].prjBoardTitle);
-	        				subtaskForm.find('input[name=endDate]').val(taskData.subTask[i].endDate != null ? taskData.subTask[i].endDate : '');
-	        				subtaskForm.find('.select-state').find('option[value=' + taskData.subTask[i].state + ']').prop('selected', true);
-	        				subtaskForm.find('.select-priority').find('option[value=' + taskData.subTask[i].priority + ']').prop('selected', true);
-	        				
-	        				subTaskManagerBox.empty();
-	        				if(subManagers.length != 0) {
-	        					for (let j = 0; j < subManagers.length; j++) {
-				            		subTaskManagerBox.prepend('<span name='+ subManagers[j].prjParticirId +'>' + subManagers[j].memberName + '<img class="deleteManager" alt="" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg" class="cursor" style="margin-left:5px;"></span>');
-				            	}	
-	        				}
-	        				// 셀렉트 박스 생성		            	
-		        			let subSelectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
-		        			$.ajax({
-		        		    	url : '${pageContext.request.contextPath}/particirList',
-		        		        type: 'GET',
-		        		        data: {'projectId': "${projectInfo.projectId}"},
-		        		        success: function(particir){
-		        		        	for(let j=0; j<particir.length; j++) {
-		        						let option = $('<option>');
-		        						
-		        						option.val(particir[j].prjParticirId);
-		        						option.text(particir[j].memberName);
-		        						
-		        						for(let k=0; k<subManagers.length; k++) {
-		        							if(particir[j].prjParticirId == subManagers[k].prjParticirId) {
-		        								option.prop('disabled', true);
-		        							}	        						}
-		        						
-		        						subSelectBox.append(option);
-		        					}
-		        		        },
-		        		        error: function(reject){
-		        		            console.log(reject);
-		        		        }
-		        		    });	
-		        			
-		        			subTaskManagerBox.append(subSelectBox);
-		        			subTaskManagerBox.prepend('<span>담당자 : </span>');
-	        			}
-	        				
-	        			
 	        			
 				    }, error : function(reject) {
 						console.log(reject);
@@ -2552,16 +3607,15 @@
 		
 		//담당자 선택 삭제
 		$(document).on('click', '.deleteManager', function(e) {
+			e.stopPropagation();
 			let managerSpan = $(e.currentTarget).parent();
 			let prjParticirId = managerSpan.attr('name');
-			
 			managerSpan.parent().find('option[value=' + prjParticirId +']').prop('disabled', false);
 			managerSpan.remove();
 			
 		});
 		
-		//업무 수정
-		// 업무 등록하기
+		//상위 업무 수정
 		$('#boardUpdateModal button[name="btnAddTask"]').on('click', function(){
 			let data={}
 			let prjBoardId = $('#prjBoardId').val();
@@ -2588,43 +3642,11 @@
 		        prjManager.push({prjBoardId, prjParticirId});
 		    });
 			
-			//삭제할 하위업무
-			let deleteSubtask = [];
-			$('#boardUpdateModal .sub-task-manager input[type="hidden"]').each(function(index, item) {
-				prjBoardId = Number($(item).val());
-				console.log($(item));
-				console.log(prjBoardId);
-				deleteSubtask.push({prjBoardId});
-			});
-			
-			// 하위 업무
-			let subTask = [];
-			let subManager = [];
-			$('#boardUpdateModal .task-add').each(function(index,item){
-				prjBoardId = $(item).attr('name');
-				let prjBoardTitle = $(item).find('[name=prjBoardTitle]').val();
-				// 하위 업무 리스트
-				if (prjBoardTitle !== "") {
-	                state = $(item).find('[name=state]').val();
-	                let endDate = $(item).find('[name=endDate]').val();
-	                let priority = $(item).find('[name=priority]').val();
-	                let managerList = $(item).find('.board-taskManager').find('span:not(:eq(0))');
-	                
-	                subTask.push({ prjBoardId, prjBoardTitle, state, endDate, priority });
-	            	
-	            	// 하위 업무 담당자
-					$(managerList).each(function(idx, manager) {
-						let prjParticirId = $(manager).attr('name');
-						subManager.push({prjBoardId, prjParticirId});
-					});               
-	            }
-			});
-			
-			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager, deleteSubtask}));
+			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			$.ajax({
 				url:'${pageContext.request.contextPath}/updateTask',
 				type:'POST',
-				data:JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager, deleteSubtask}),
+				data:JSON.stringify({boardVO, taskVO, prjManager}),
 				contentType:'application/json',
 				success:function(data){
 					alert('정상적으로 수정되었습니다.');
@@ -2634,16 +3656,190 @@
 				}
 			});
 		});
-		// 업무 수정 종료
+		//상위 업무 수정 종료
 		
-		$(document).on('click', '.deleteSubtask' , function(e) {
-			let subtask = $(e.currentTarget).closest('.task-add');
-			let prjBoardId = subtask.attr('name');
-			let subtaskBox = $(e.currentTarget).closest('.sub-task-manager');
+		//하위 업무 수정
+		$(document).on('click', '#updateSubTask-modal button[name="updateBtn"]', function(e) {
+			let taskModal = $('#updateSubTask-modal');
+			let prjBoardId = taskModal.find('input[name="boardId"]').val();
+			let highPrjBoardId = taskModal.find('input[name="highPrjBoardId"]').val();
+			let highTaskId = taskModal.find('input[name="highTaskId"]').val();
+			let prjBoardTitle = taskModal.find('[name=prjBoardTitle]').val();
+			let state = taskModal.find('[name=state]:checked').val();
+			let endDate = taskModal.find('[name=endDate]').val();
+			let priority = taskModal.find('[name=priority]').val();
+			let boardType = 'C8';
+			let memberId = $('#memberId').val();
+			let projectId = $('#projectId').val();
 			
-			subtaskBox.append('<input type="hidden" value=' + prjBoardId + '>');
-			subtask.remove();
+			
+			let boardVO = {prjBoardId, prjBoardTitle, projectId, boardType, memberId};
+			let taskVO = {state, endDate, priority, highTaskId};
+			
+			//업무 담당자 리스트
+			let prjManager =[];
+			taskModal.find('.board-taskManager').find('span:not(:eq(0))').each(function(index, item){
+		        let prjParticirId = $(item).attr('name');
+		        prjManager.push({prjBoardId, prjParticirId});
+		    });
+			
+			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
+			// 수정
+			$.ajax({
+				url:'${pageContext.request.contextPath}/updateTask',
+				type:'POST',
+				data:JSON.stringify({boardVO, taskVO, prjManager}),
+				contentType:'application/json',
+				success:function(data){
+					alert('정상적으로 수정되었습니다.');
+					$('#updateSubTask-modal').removeClass('show');
+					$('#updateSubTask-modal').css('display', 'none');
+					$('.modal-backdrop').removeClass('show');
+					$('.modal-backdrop').css('display', 'none');
+					
+					getSubtaskList(highPrjBoardId);
+					
+				},error: function(reject) {
+					console.log(reject);
+				}
+			});
 		});
+		
+		//하위 업무 삭제
+		$(document).on('click', '#updateSubTask-modal button[type="reset"]', function(e) {
+			let taskModal = $('#updateSubTask-modal');
+			let highPrjBoardId = taskModal.find('input[name="highPrjBoardId"]').val();
+			let prjBoardId = taskModal.find('input[name="boardId"]').val();
+			
+			if(confirm('선택하신 업무를 삭제하시겠습니까?')){
+				$.ajax({
+					url: '${pageContext.request.contextPath}/deleteTask',
+					type: 'POST',
+					data: {'prjBoardId' : prjBoardId},
+					success: function(response){
+						$('#updateSubTask-modal').removeClass('show');
+						$('#updateSubTask-modal').css('display', 'none');
+						$('.modal-backdrop').removeClass('show');
+						$('.modal-backdrop').css('display', 'none');
+						
+						getSubtaskList(highPrjBoardId);
+					},
+					error: function(error){
+						alert("삭제에 실패했습니다.");
+						console.log(error);
+					}
+				});
+			}
+		});
+		
+		//하위 업무 추가
+		$(document).on('click', '.add-manager-list', function(e) {
+			let highTaskId = $(e.currentTarget).closest('.board-container').find('div[data-hightaskid]').data('hightaskid');
+			let highPrjBoardId = $(e.currentTarget).closest('.board-container').data('id');
+			let taskModal = $('#insertSubTask-modal');
+			
+			$('.modal-backdrop').addClass('show');
+			$('.modal-backdrop').css('display', 'block');
+			taskModal.find('.board-taskManager').empty();
+			taskModal.find('.board-taskManager').append('<span class="add-manager-btn">담당자 추가</span>');
+			
+			//초기화
+			taskModal.find('input[type="text"]').val('');
+			taskModal.find('input[type="radio"]').eq(0).prop('checked', true);
+			taskModal.find('select').val('');
+						
+			
+			taskModal.find('input[name="highTaskId"]').val(highTaskId);
+			taskModal.find('input[name="highPrjBoardId"]').val(highPrjBoardId);
+		});
+		
+		$(document).on('click', '#insertSubTask-modal button[type="button"]', function(e) {
+			let taskModal = $('#insertSubTask-modal');
+			let highTaskId = taskModal.find('input[name="highTaskId"]').val();
+			let highPrjBoardId = taskModal.find('input[name="highPrjBoardId"]').val();
+			let prjBoardTitle = taskModal.find('[name=prjBoardTitle]').val();
+			let state = taskModal.find('[name=state]:checked').val();
+			let endDate = taskModal.find('[name=endDate]').val();
+			let priority = taskModal.find('[name=priority]').val();
+			let boardType = 'C8';
+			let memberId = $('#memberId').val();
+			let projectId = $('#projectId').val();
+			
+			let boardVO = {prjBoardTitle, projectId, boardType, memberId}
+			let taskVO = {state, endDate, priority, highTaskId}
+			
+			//업무 담당자 리스트
+			let prjManager =[];
+			$('#insertSubTask-modal .board-taskManager').find('span:not(:eq(0))').each(function(index, item){
+				console.log($(item));
+		        let prjParticirId = $(item).attr('name');
+		        prjManager.push({prjParticirId});
+		    });
+			
+			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
+			$.ajax({
+				url:'${pageContext.request.contextPath}/taskInsert',
+				type:'POST',
+				data:JSON.stringify({boardVO, taskVO, prjManager}),
+				contentType:'application/json',
+				success:function(data){
+					$('#insertSubTask-modal').removeClass('show');
+					$('#insertSubTask-modal').css('display', 'none');
+					$('.modal-backdrop').removeClass('show');
+					$('.modal-backdrop').css('display', 'none');
+					
+					getSubtaskList(highPrjBoardId);
+				},error: function(reject) {
+					console.log(reject);
+				}
+			});		
+		});
+		
+		// 하위 업무 리스트 출력
+		function getSubtaskList(highPrjBoardId) {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getTaskInfo',
+				type : 'GET',
+				data : {'prjBoardId' : highPrjBoardId},
+				success : function(taskData) {
+					// 업무 정보
+					let highTaskBoardDiv = $('#C8' + highPrjBoardId);
+	                let taskManagers = highTaskBoardDiv.find('.task-manager');
+					let subTasks = taskData.subTask;
+
+			     	// 하위 업무 리스트
+			     	if(subTasks.length == 0) {
+			     		highTaskBoardDiv.find('.sub-task-list').empty();
+			     		return;
+			     	}
+			     	
+			     	let countSpan = highTaskBoardDiv.find('span[data-subtaskcount]');
+			     	let subTaskList = highTaskBoardDiv.find(".sub-task-list");
+					// 하위 업무 갯수 
+			     	countSpan.text(subTasks.length);
+			     	subTaskList.empty();
+			     	// 정보 입력
+			        for (let j = 0; j < subTasks.length; j++) {
+			        	let subTask = subTasks[j];
+						let li = $('<li class="sub-task-item" data-id=' + subTask.prjBoardId + ' data-bs-target="#updateSubTask-modal" data-bs-toggle="modal">');
+			        	let infoDiv = $('<div>');
+						let subState = $('<span class="sub-state">');
+			        	let subTitle = $('<span class="sub-title">');
+					
+			        	subState.text(subTask.stateName);
+			        	subTitle.text(subTask.prjBoardTitle);
+			        	
+						li.append(subState);
+						li.append(subTitle);
+						
+						subTaskList.append(li);
+			        }
+			    }, error : function(reject) {
+					console.log(reject);
+				}
+			});
+		}
+		
 	</script>
 	<!-- 게시글 수정 종료 -->
 	
@@ -2733,7 +3929,7 @@
 		            'MathType'
 		        ]
 		   	}).then(newEditor => {
-		   	 	window['editor'+i] = newEditor;
+		   	 	window['editor7'] = newEditor;
 		    })
 		    .catch( error => {
 		        console.error( error );
@@ -3048,13 +4244,47 @@
 		
 		
 		// 투표 항목 추가하기           
-        $('#boardInsertModal .add-vote-list-btn').on('click', function () {                                        
-            $('#boardInsertModal .board-vote-list').append (                        
+        $('.add-vote-list-btn').on('click', function () {                                        
+            $('.board-vote-list').append (                        
                 '<input type="text" name="listContent" placeholder="내용을 입력해주세요.">'                    
             ); // end append                            
-        });                                           
+        });        
+		// 투표 항목 삭제
+		$('.board-vote-list').on('click', '.deleteListContent', function() {
+			$(this).parent().remove();
+		})
+		
+		// 댓글 등록
+		$('.cmtBtn').on('click', function(e){
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let boardComment = $(e.currentTarget).closest('.board-comment');
+			let boardId = boardContainer.data('id');
+			let boardType = boardContainer.data('type');
+			let prjId = '${projectInfo.projectId}';
+			let memberId = '${memberInfo.memberId}';
+			let cmtContent = boardContainer.find('.cmtContent');
+			
+			let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/insertProjectCmt',
+				type : 'POST',
+				data : {'memberId': memberId, 'boardId': boardId, 'boardType':boardType, 'commentContent': cmtContent.val()},
+				success : function(success) {
+					cmtContent.val('');
+					boardCommentBox.empty();
+					getCommentList(boardId, boardType);
+					
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
+		})
+		
+
+		
 	</script>
-	
-<!-- 게시글 작성 종료 -->
+	<!-- 게시글 작성 종료 -->
 </body>
 </html>

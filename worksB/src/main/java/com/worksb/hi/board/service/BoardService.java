@@ -40,6 +40,7 @@ public interface BoardService {
 	
 	// 업무 수정
 	public int updateTask(TaskVO taskVO);
+	// 일반글 수정
 	public int updateBoard(BoardVO boardVO);
 	public int updateTaskManager(TaskVO taskVO);
   
@@ -51,6 +52,18 @@ public interface BoardService {
 	
 	
 	
+	// 게시글 정보
+	public BoardVO getBoardInfo(int prjBoardId);
+	
+	// 좋아요 등록
+	public int insertPrjLike(BoardVO boardVO);
+	// 좋아요 취소
+	public int deletePrjLike(BoardVO boardVO);
+	// 좋아요 확인
+	public BoardVO getMemLike(BoardVO boardVO);
+	// 좋아요 확인 - 게시글
+	public List<BoardVO> getPrjLike(BoardVO boardVO);
+
 	
 	
   // 업무글 삭제
@@ -90,12 +103,28 @@ public interface BoardService {
 	//내가 선택한 투표 리스트
 	public List<VoteVO> getVoteListByMember(VoteVO voteVO);
 
+	//게시글 별 일정 참여자 리스트 출력
+	public List<ScheParticirVO> getParticir(ScheParticirVO particir);
+	
+	//게시글 별 투표 참여자 리스트 출력
+	public List<VoteVO> getVoteParticir(VoteVO particir);
+	
+	//업무 정보 변경
+    public int updateTaskInfo(AllTaskBoardVO taskVO);
+	
+	
+	
+	
 	
 	
 	
 	
 	
 	//정현
+	//일정 수정
+	public int updateSche(ScheVO scheVO);
+	//일정 삭제
+	public int deleteSche(ScheVO scheVO);
 	//프로젝트 일정 캘린더 조회
 	public List<ScheVO> getScheCalendar(int projectId);
 	//프로젝트 업무 캘린더 조회

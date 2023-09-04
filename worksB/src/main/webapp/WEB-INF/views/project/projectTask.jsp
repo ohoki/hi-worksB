@@ -155,6 +155,7 @@ tr:hover{
 		background-color: var(--color-dark-red);
 		border: 3px solid var(--color-dark-red);
 	}
+	
 
 </style>
 </head>
@@ -250,7 +251,7 @@ tr:hover{
 						</div>
 					</div>
 					<div class="sub-task-lists">
-						<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+						<div class="sub-task-lists-title"><span data-subtaskcount></span></div>
 						<div class="sub-task-list">
 						</div>
 					</div>
@@ -576,12 +577,15 @@ tr:hover{
 					}
 				
 				// 하위 업무 리스트
+	     		taskInfo.find('span[data-subtaskcount]').empty();
 	     		taskInfo.find('.sub-task-list').empty();
 		     	
 		     	let countSpan = taskInfo.find('span[data-subtaskcount]');
 		     	let subTaskList = taskInfo.find(".sub-task-list");
 				// 하위 업무 갯수 
-		     	countSpan.text(subTasks.length);
+				if(subTasks.length != 0){
+		     		countSpan.text("하위업무 " + subTasks.length);
+				}
 		     	// 정보 입력
 		        for (let j = 0; j < subTasks.length; j++) {
 		        	let subTask = subTasks[j];
