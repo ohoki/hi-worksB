@@ -273,7 +273,7 @@ public class BoardController {
 	}
 
 
-	//상위 업무 수정
+	//상위,하위 업무 수정
 	@PostMapping("/updateTask")
 	@ResponseBody
 	public int updateTask(@RequestBody BoardRequestVO brVO) {
@@ -284,19 +284,21 @@ public class BoardController {
     	TaskVO taskVO = brVO.getTaskVO();
     	taskVO.setPrjBoardId(boardVO.getPrjBoardId());
     	boardService.updateTask(taskVO);
-    	
     	// 상위 업무 담당자 수정 (삭제 후 등록)
     	List<TaskVO> managerList = brVO.getPrjManager();
-    	//해당 업무의 담당자 전체 삭제
-    	boardService.deleteManagerList(managerList.get(0));
-    	//수정된 업무의 담당자 등록
-    	if(managerList != null) {
-    		for(int i=0; i < managerList.size(); i++) {
-    			TaskVO taskManager = managerList.get(i);
-    			
-    			boardService.insertTaskManager(taskManager);
-    		}
+    	if(managerList.size() != 0) {
+    		//해당 업무의 담당자 전체 삭제
+        	boardService.deleteManagerList(managerList.get(0));
+        	//수정된 업무의 담당자 등록
+        	if(managerList != null) {
+        		for(int i=0; i < managerList.size(); i++) {
+        			TaskVO taskManager = managerList.get(i);
+        			
+        			boardService.insertTaskManager(taskManager);
+        		}
+        	}
     	}
+    	
     	return boardVO.getProjectId(); 
 	}
 

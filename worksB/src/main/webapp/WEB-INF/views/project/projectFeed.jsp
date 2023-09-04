@@ -651,7 +651,7 @@
 			margin-right: 10px;
 		}
 		
-		.add-manager-btn {
+		.add-manager-btn, .add-manager-list {
 			text-decoration: underline;
 			color: var(--color-dark-red);
 			cursor: pointer;
@@ -870,7 +870,7 @@
 			cursor: pointer;	
 		}
 
-		#taskManager-modal, #scheParticr-modal, #voteParticr-modal, #updateSubTask-modal {
+		#taskManager-modal, #scheParticr-modal, #voteParticr-modal, #updateSubTask-modal, #insertSubTask-modal {
 			position: absolute;
 			width: 100%;
 			height: 100%;
@@ -881,7 +881,7 @@
 			top: 0;
 		}
 		
-		#updateSubTask-modal {
+		#updateSubTask-modal, #insertSubTask-modal {
 			z-index: 2000;
 		}
 		
@@ -898,11 +898,11 @@
 			border-radius: 5px;
 		}
 		
-		.updateSubTask-modal-content {
+		.updateSubTask-modal-content, .insertSubTask-modal-content {
 			position: absolute;
 			background-color: white;
 			width: 40%;
-			height: 30%;
+			height: 40%;
 			top:40%;
 			left: 50%;
 			transform: translate(-50%, -50%);
@@ -939,7 +939,8 @@
 			margin: 10px 20px 10px 0;
 		}
 			
-		#updateSubTask-modal button[type=button] {
+		#updateSubTask-modal button[type=button],
+		#insertSubTask-modal button[type=button]{
 			width: 100px;
 			height: 40px;
 			background-color: var(--color-dark-red);
@@ -950,14 +951,72 @@
 			transition: all 0.5s;
 		}
 		
-		#updateSubTask-modal button[type=button]:hover {
+		#updateSubTask-modal button[type=button]:hover,
+		#insertSubTask-modal button[type=button]:hover{
 			background-color: var(--color-white);
 			color: var(--color-dark-red);
 			border: 1px solid var(--color-dark-red);
 		}
-			
+		
+		#updateSubTask-modal button[type=reset],
+		#insertSubTask-modal button[type=reset] {
+			width: 100px;
+			height: 40px;
+			border-radius: 5px;
+			font-weight: var(--weight-bold);
+			margin-left: 10px;
+			background-color: var(--color-white);
+			color: var(--color-dark-red);
+			border: 1px solid var(--color-dark-red);
+		}
+ 		
+		
+		#updateSubTask-modal input:disabled,
+		#insertSubTask-modal input:disabled {
+			background-color: #fff;
+		}
+		
+		#updateSubTask-modal input[name=prjBoardTitle],
+		#insertSubTask-modal input[name=prjBoardTitle] {
+			width: 95%;
+		}
+		
+		#updateSubTask-modal .board-state,
+		#insertSubTask-modal .board-state{
+			padding: 10px 30px;
+		}
+		
+		#updateSubTask-modal .task-select,
+		#insertSubTask-modal .task-select {
+			width: 100px;
+			height: 30px;
+			border: 1px solid var(--color-dark-beigie);
+			background-color: white;
+			color: var(--color-dark-grey);
+			font-size: var(--font-micro);
+			margin-left: 20px;
+		}
+		
+		#updateSubTask-modal .select-state,
+		#insertSubTask-modal .select-state {
+			text-align: left;
+			margin-left: 30px;
+		}
+		
+		#updateSubTask-modal .board-taskManager,
+		#insertSubTask-modal .board-taskManager {
+			padding: 10px 30px;
+			text-align: left;
+			margin-bottom: 20px;
+		}
+		
 		.m-bt {
 			margin-bottom: 10px;
+		}
+		
+		#updateSubTask-modal span, #updateSubTask-modal label,
+		#insertSubTask-modal span, #insertSubTask-modal label{
+			font-size: var(--font-micro);
 		}
 	</style>
 </head>
@@ -1355,7 +1414,7 @@
 							<div>
 								<span>[업무]</span> ${board.prjBoardTitle }
 							</div>
-							<div data-hightaskid></div>
+							<div data-hightaskid=""></div>
 						</div>
 						<div class="sche-date d-flex">
 							<div>
@@ -1392,7 +1451,7 @@
 						<div class="sub-task-lists">
 							<div class="d-flex">
 								<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
-								<div class="add-manager-btn">하위업무 추가</div>
+								<div class="add-manager-list" data-bs-toggle="modal" data-bs-target="#insertSubTask-modal">하위업무 추가</div>
 							</div>
 							<div class="sub-task-list">
 							</div>
@@ -1524,60 +1583,106 @@
 	
 	<!-- 하위 업무 정보 모달 -->
 	<div id="updateSubTask-modal">
-		<div class="updateSubTask-modal-content">
-			<!-- 모달페이지 띄우기 위함 -->
-	    	<input type="hidden" class="modal-dialog d-none">
-			<input type="hidden" class="modal-content d-none">
-			<input type="hidden" name="boardId" value="">
-			<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
-			<div class="board-state">
-				<input type="radio" class="btn-check" name="state" value="G1" id="option11" autocomplete="off" checked>
-				<label for="option11">요청</label>
-				
-				<input type="radio" class="btn-check" name="state" value="G2" id="option12" autocomplete="off">
-				<label for="option12">진행</label>
-				
-				<input type="radio" class="btn-check" name="state" value="G3" id="option13" autocomplete="off">
-				<label for="option13">피드백</label>
-				
-				<input type="radio" class="btn-check" name="state" value="G4" id="option14" autocomplete="off">
-				<label for="option14">완료</label>
-				
-				<input type="radio" class="btn-check" name="state" value="G5" id="option15" autocomplete="off">
-				<label for="option15">보류</label>
+		<form>
+			<div class="updateSubTask-modal-content">
+				<!-- 모달페이지 띄우기 위함 -->
+		    	<input type="hidden" class="modal-dialog d-none">
+				<input type="hidden" class="modal-content d-none">
+				<input type="hidden" name="boardId" value="">
+				<input type="hidden" name="highPrjBoardId" value="">
+				<input type="hidden" name="highTaskId" value="">
+				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+				<div class="board-state">
+					<input type="radio" class="btn-check" name="state" value="G1" id="option11" autocomplete="off" checked>
+					<label for="option11">요청</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G2" id="option12" autocomplete="off">
+					<label for="option12">진행</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G3" id="option13" autocomplete="off">
+					<label for="option13">피드백</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G4" id="option14" autocomplete="off">
+					<label for="option14">완료</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G5" id="option15" autocomplete="off">
+					<label for="option15">보류</label>
+				</div>
+	     		<div class="d-flex m-bt" style="padding: 10px 30px; justify-content: flex-start;">
+					<div class="select-priority">
+						<span>우선 순위 : </span>
+			          	<select name="priority">
+			                <option value="">=======</option>
+			                <option value="F3">낮음</option>
+			                <option value="F2">보통</option>
+			                <option value="F1">긴급</option>
+			          	</select>
+		      		</div>
+			      	<div style="margin-left:100px;">
+						<label for="endDate">마감일 : </label>
+						<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
+				 	</div>
+				</div>
+	            <div class="board-taskManager">
+				</div>
+				<button type="reset">삭제하기</button>
+				<button type="button">수정하기</button>
 			</div>
-     		<div class="d-flex m-bt">
-				<div class="select-priority">
-					<span>우선 순위 : </span>
-		          	<select name="priority">
-		                <option value="">=======</option>
-		                <option value="F3">낮음</option>
-		                <option value="F2">보통</option>
-		                <option value="F1">긴급</option>
-		          	</select>
-	      		</div>
-		      	<div style="margin-left:100px;">
-					<label for="endDate">마감일 : </label>
-					<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
-			 	</div>
-			</div>
-			<div class="select-state" style="margin-left:60px;">
-               	<span>진행 상태 : </span>
-               	<select name="state" class="task-select" style="margin-left: 20px;">
-			        <option value="G1">요청</option>
-			        <option value="G2">진행</option>
-			        <option value="G3">피드백</option>
-			        <option value="G4">완료</option>
-			        <option value="G5">보류</option>
-			    </select>
-			</div>
-            <div class="board-taskManager">
-			</div>
-			<button type="reset">삭제하기</button>
-			<button type="button">수정하기</button>
-		</div>
+		</form>
 	</div>
 	
+	<!-- 하위 업무 추가 모달 -->
+	<div id="insertSubTask-modal">
+		<!-- 모달페이지 띄우기 위함 -->
+		<form>
+			<input type="hidden" class="modal-dialog d-none">
+			<input type="hidden" class="modal-content d-none">
+			<input type="hidden" name="highPrjBoardId" value="">
+			<input type="hidden" name="highTaskId" value="">
+			<div class="insertSubTask-modal-content">
+				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+				<div class="board-state">
+					<input type="radio" class="btn-check" name="state" value="G1" id="option16" autocomplete="off" checked>
+					<label for="option16">요청</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G2" id="option17" autocomplete="off">
+					<label for="option17">진행</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G3" id="option18" autocomplete="off">
+					<label for="option18">피드백</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G4" id="option19" autocomplete="off">
+					<label for="option19">완료</label>
+					
+					<input type="radio" class="btn-check" name="state" value="G5" id="option20" autocomplete="off">
+					<label for="option20">보류</label>
+				</div>
+	     		<div class="d-flex m-bt" style="padding: 10px 30px; justify-content: flex-start;">
+					<div class="select-priority">
+						<span>우선 순위 : </span>
+			          	<select name="priority">
+			                <option value="">=======</option>
+			                <option value="F3">낮음</option>
+			                <option value="F2">보통</option>
+			                <option value="F1">긴급</option>
+			          	</select>
+		      		</div>
+			      	<div style="margin-left:100px;">
+						<label for="endDate">마감일 : </label>
+						<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" style="margin:0 0 0 20px;">
+				 	</div>
+				</div>
+	            <div class="board-taskManager">
+	            	<span class="add-manager-btn">담당자 추가</span>
+				</div>
+				<button type="reset">취소</button>
+				<button type="button">등록하기</button>
+			</div>
+		</form>
+	</div>
+
+
+
 	<!-- 모달 페이지 -->
 	<script >
 		//모달페이지 출력
@@ -1595,7 +1700,12 @@
 		//하위 업무 정보 모달 페이지 출력
 		$(document).on('click', '.sub-task-item', function(e) {
 			let prjBoardId = $(e.currentTarget).data('id');
+			let highTaskId = $(e.currentTarget).closest('.board-container').find('div[data-hightaskid]').data('hightaskid');
+			let highPrjBoardId = $(e.currentTarget).closest('.board-container').data('id');
 			let taskModal = $('#updateSubTask-modal');
+			
+			$('.modal-backdrop').addClass('show');
+			$('.modal-backdrop').css('display', 'block');
 			
 			$.ajax({
 				url : '${pageContext.request.contextPath}/getTaskInfo',
@@ -1603,10 +1713,14 @@
 				data : {'prjBoardId' : prjBoardId},
 				success : function(taskData) {
 					
+					taskModal.find('button[type="button"]').attr('name', 'updateForm');
+					taskModal.find('button[type="button"]').text('수정하기');
 					taskModal.find('input').prop('disabled', true);
 					taskModal.find('select').prop('disabled', true);
 					taskModal.find('button[type="radio"]').prop('disabled', true);
 					taskModal.find('input[name="boardId"]').val(prjBoardId);
+					taskModal.find('input[name="highTaskId"]').val(highTaskId);
+					taskModal.find('input[name="highPrjBoardId"]').val(highPrjBoardId);
 					
         			// 하위 업무 추가하기
         			let subTask = taskData.highTask[0];
@@ -1639,21 +1753,23 @@
 		});
 		
 		//하위 업무 수정 폼 전환
-		$('#updateSubTask-modal button[type="button"]').on('click', function(e) {
+		$(document).on('click', '#updateSubTask-modal button[name="updateForm"]', function(e) {
 			e.stopPropagation();
 			let taskModal = $('#updateSubTask-modal');
 			let boardId = taskModal.find('input[name="boardId"]').val();
+			let highTaskId = taskModal.find('input[name="highTaskId"]').val();
 			
 			$.ajax({
 				url : '${pageContext.request.contextPath}/getTaskInfo',
 				type : 'GET',
 				data : {'prjBoardId' : boardId},
 				success : function(taskData) {
-					console.log(taskData);
-					
+					taskModal.find('input[name="prjBoardTitle"]').focus();
 					taskModal.find('input').prop('disabled', false);
 					taskModal.find('select').prop('disabled', false);
 					taskModal.find('button[type="radio"]').prop('disabled', false);
+					taskModal.find('button[type="button"]').attr('name', 'updateBtn');
+					taskModal.find('button[type="button"]').text('수정완료');
 					
         			// 하위 업무 추가하기
         			let subTask = taskData.highTask[0];
@@ -1699,7 +1815,7 @@
 			})
 		});
 			
-			
+		
 			
 			
 			
@@ -2248,6 +2364,7 @@
 
 				        // 업무 번호
 				        highTaskId.text('업무 번호 ' + taskData.highTask[0].taskId);
+				        highTaskId.data('hightaskid', taskData.highTask[0].taskId);
 				        // 기간
 				        if(taskData.highTask[0].startDate != null) {
 				        	startDate.text(taskData.highTask[0].startDate);
@@ -2436,7 +2553,6 @@
 							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
 							success : function(pinProjects) {
 								let bookmarkUl = $('.bookmark-board-contets ul');
-								console.log(pinProjects);
 								bookmarkUl.empty();
 								
 								if(pinProjects.length != 0) {
@@ -3315,7 +3431,6 @@
 			e.stopPropagation();
 			let managerSpan = $(e.currentTarget).parent();
 			let prjParticirId = managerSpan.attr('name');
-			console.log('gg');
 			managerSpan.parent().find('option[value=' + prjParticirId +']').prop('disabled', false);
 			managerSpan.remove();
 			
@@ -3364,16 +3479,187 @@
 		});
 		//상위 업무 수정 종료
 		
-		$(document).on('click', '.deleteSubtask' , function(e) {
-			let subtask = $(e.currentTarget).closest('.task-add');
-			let prjBoardId = subtask.attr('name');
-			let subtaskBox = $(e.currentTarget).closest('.sub-task-manager');
+		//하위 업무 수정
+		$(document).on('click', '#updateSubTask-modal button[name="updateBtn"]', function(e) {
+			let taskModal = $('#updateSubTask-modal');
+			let prjBoardId = taskModal.find('input[name="boardId"]').val();
+			let highPrjBoardId = taskModal.find('input[name="highPrjBoardId"]').val();
+			let highTaskId = taskModal.find('input[name="highTaskId"]').val();
+			let prjBoardTitle = taskModal.find('[name=prjBoardTitle]').val();
+			let state = taskModal.find('[name=state]:checked').val();
+			let endDate = taskModal.find('[name=endDate]').val();
+			let priority = taskModal.find('[name=priority]').val();
+			let boardType = 'C8';
+			let memberId = $('#memberId').val();
+			let projectId = $('#projectId').val();
 			
-			subtaskBox.append('<input type="hidden" value=' + prjBoardId + '>');
-			subtask.remove();
+			
+			let boardVO = {prjBoardId, prjBoardTitle, projectId, boardType, memberId};
+			let taskVO = {state, endDate, priority, highTaskId};
+			
+			//업무 담당자 리스트
+			let prjManager =[];
+			taskModal.find('.board-taskManager').find('span:not(:eq(0))').each(function(index, item){
+		        let prjParticirId = $(item).attr('name');
+		        prjManager.push({prjBoardId, prjParticirId});
+		    });
+			
+			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
+			// 수정
+			$.ajax({
+				url:'${pageContext.request.contextPath}/updateTask',
+				type:'POST',
+				data:JSON.stringify({boardVO, taskVO, prjManager}),
+				contentType:'application/json',
+				success:function(data){
+					alert('정상적으로 수정되었습니다.');
+					$('#updateSubTask-modal').removeClass('show');
+					$('#updateSubTask-modal').css('display', 'none');
+					$('.modal-backdrop').removeClass('show');
+					$('.modal-backdrop').css('display', 'none');
+					
+					getSubtaskList(highPrjBoardId);
+					
+				},error: function(reject) {
+					console.log(reject);
+				}
+			});
 		});
 		
-		//하위 업무 수정
+		//하위 업무 삭제
+		$(document).on('click', '#updateSubTask-modal button[type="reset"]', function(e) {
+			let taskModal = $('#updateSubTask-modal');
+			let highPrjBoardId = taskModal.find('input[name="highPrjBoardId"]').val();
+			let prjBoardId = taskModal.find('input[name="boardId"]').val();
+			
+			if(confirm('선택하신 업무를 삭제하시겠습니까?')){
+				$.ajax({
+					url: '${pageContext.request.contextPath}/deleteTask',
+					type: 'POST',
+					data: {'prjBoardId' : prjBoardId},
+					success: function(response){
+						$('#updateSubTask-modal').removeClass('show');
+						$('#updateSubTask-modal').css('display', 'none');
+						$('.modal-backdrop').removeClass('show');
+						$('.modal-backdrop').css('display', 'none');
+						
+						getSubtaskList(highPrjBoardId);
+					},
+					error: function(error){
+						alert("삭제에 실패했습니다.");
+						console.log(error);
+					}
+				});
+			}
+		});
+		
+		//하위 업무 추가
+		$(document).on('click', '.add-manager-list', function(e) {
+			let highTaskId = $(e.currentTarget).closest('.board-container').find('div[data-hightaskid]').data('hightaskid');
+			let highPrjBoardId = $(e.currentTarget).closest('.board-container').data('id');
+			let taskModal = $('#insertSubTask-modal');
+			
+			$('.modal-backdrop').addClass('show');
+			$('.modal-backdrop').css('display', 'block');
+			taskModal.find('.board-taskManager').empty();
+			taskModal.find('.board-taskManager').append('<span class="add-manager-btn">담당자 추가</span>');
+			
+			//초기화
+			taskModal.find('input[type="text"]').val('');
+			taskModal.find('input[type="radio"]').eq(0).prop('checked', true);
+			taskModal.find('select').val('');
+						
+			
+			taskModal.find('input[name="highTaskId"]').val(highTaskId);
+			taskModal.find('input[name="highPrjBoardId"]').val(highPrjBoardId);
+		});
+		
+		$(document).on('click', '#insertSubTask-modal button[type="button"]', function(e) {
+			let taskModal = $('#insertSubTask-modal');
+			let highTaskId = taskModal.find('input[name="highTaskId"]').val();
+			let highPrjBoardId = taskModal.find('input[name="highPrjBoardId"]').val();
+			let prjBoardTitle = taskModal.find('[name=prjBoardTitle]').val();
+			let state = taskModal.find('[name=state]:checked').val();
+			let endDate = taskModal.find('[name=endDate]').val();
+			let priority = taskModal.find('[name=priority]').val();
+			let boardType = 'C8';
+			let memberId = $('#memberId').val();
+			let projectId = $('#projectId').val();
+			
+			let boardVO = {prjBoardTitle, projectId, boardType, memberId}
+			let taskVO = {state, endDate, priority, highTaskId}
+			
+			//업무 담당자 리스트
+			let prjManager =[];
+			$('#insertSubTask-modal .board-taskManager').find('span:not(:eq(0))').each(function(index, item){
+				console.log($(item));
+		        let prjParticirId = $(item).attr('name');
+		        prjManager.push({prjParticirId});
+		    });
+			
+			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
+			$.ajax({
+				url:'${pageContext.request.contextPath}/taskInsert',
+				type:'POST',
+				data:JSON.stringify({boardVO, taskVO, prjManager}),
+				contentType:'application/json',
+				success:function(data){
+					$('#insertSubTask-modal').removeClass('show');
+					$('#insertSubTask-modal').css('display', 'none');
+					$('.modal-backdrop').removeClass('show');
+					$('.modal-backdrop').css('display', 'none');
+					
+					getSubtaskList(highPrjBoardId);
+				},error: function(reject) {
+					console.log(reject);
+				}
+			});		
+		});
+		
+		// 하위 업무 리스트 출력
+		function getSubtaskList(highPrjBoardId) {
+			$.ajax({
+				url : '${pageContext.request.contextPath}/getTaskInfo',
+				type : 'GET',
+				data : {'prjBoardId' : highPrjBoardId},
+				success : function(taskData) {
+					// 업무 정보
+					let highTaskBoardDiv = $('#C8' + highPrjBoardId);
+	                let taskManagers = highTaskBoardDiv.find('.task-manager');
+					let subTasks = taskData.subTask;
+
+			     	// 하위 업무 리스트
+			     	if(subTasks.length == 0) {
+			     		highTaskBoardDiv.find('.sub-task-list').empty();
+			     		return;
+			     	}
+			     	
+			     	let countSpan = highTaskBoardDiv.find('span[data-subtaskcount]');
+			     	let subTaskList = highTaskBoardDiv.find(".sub-task-list");
+					// 하위 업무 갯수 
+			     	countSpan.text(subTasks.length);
+			     	subTaskList.empty();
+			     	// 정보 입력
+			        for (let j = 0; j < subTasks.length; j++) {
+			        	let subTask = subTasks[j];
+						let li = $('<li class="sub-task-item" data-id=' + subTask.prjBoardId + ' data-bs-target="#updateSubTask-modal" data-bs-toggle="modal">');
+			        	let infoDiv = $('<div>');
+						let subState = $('<span class="sub-state">');
+			        	let subTitle = $('<span class="sub-title">');
+					
+			        	subState.text(subTask.stateName);
+			        	subTitle.text(subTask.prjBoardTitle);
+			        	
+						li.append(subState);
+						li.append(subTitle);
+						
+						subTaskList.append(li);
+			        }
+			    }, error : function(reject) {
+					console.log(reject);
+				}
+			});
+		}
 		
 	</script>
 	<!-- 게시글 수정 종료 -->
