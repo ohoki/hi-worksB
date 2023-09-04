@@ -162,12 +162,6 @@
 	border-radius: 5px;
 }
 
-.d-flex {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
 .modal-visible {
 	display: block !important;
 }
@@ -245,7 +239,7 @@
 	<!-- 프로젝트 참여자 모달 -->
 	<div id="prjParticir-modal">
 		<div class="prjParticir-modal-content">
-			<div class="d-flex prjParticir-modal-title">
+			<div class="prjParticir-modal-title">
 				<span>프로젝트 참여자</span>
 				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
 			</div>
@@ -370,7 +364,7 @@
 				}
 			},
 			error : function(reject){
-				console.log(list);
+				console.log(reject);
 			}
 		})
 		$('#prjParticir-modal').addClass('modal-visible');

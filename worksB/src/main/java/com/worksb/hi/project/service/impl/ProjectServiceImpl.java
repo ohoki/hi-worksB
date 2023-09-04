@@ -108,15 +108,15 @@ public class ProjectServiceImpl implements ProjectService {
 	public PrjParticirVO getParticirByProject(PrjParticirVO particirVO) {
 		return projectMapper.getParticirByProject(particirVO);
 	}
-	//프로젝트 참여 승인 조회
+	//프로젝트 승인 대기 조회
 	@Override
-	public List<PrjParticirVO> getCheckAccp(PrjParticirVO participant) {
-		return projectMapper.getCheckAccp(participant);
+	public List<PrjParticirVO> getCheckParticir(PrjParticirVO prjParticirVO) {
+		return projectMapper.getCheckParticir(prjParticirVO);
 	}
 	//프로젝트 참여 승인하기update
 	@Override
-	public int updateParticir(PrjParticirVO participant) {
-		return projectMapper.updateParticir(participant);
+	public int updateAccpParticir(PrjParticirVO prjParticirVO) {
+		return projectMapper.updateAccpParticir(prjParticirVO);
 	}
 	
 

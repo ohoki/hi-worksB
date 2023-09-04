@@ -97,6 +97,64 @@
 	margin-right: 10px;
 	cursor: pointer;
 }
+
+#particirAccp-modal{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.1);
+	font-size: 12px;
+	display: none;
+	left: 0;
+	top: 0;
+}
+
+.particirAccp-modal-title{
+	font-size: 15px;
+	justify-content: space-between;
+	font-weight: var(--weight-bold);
+	padding: 5px 10px;
+}
+
+.particirAccp-modal-content{
+	position: absolute;
+	width: 40%;
+	height: 30%;
+	background-color: white;
+	font-size: 12px;
+	padding: 20px 15px;
+	z-index: 10;
+	overflow: auto;
+	overflow-x: hidden;
+	border-radius: 5px;
+}
+
+.modal-visible {
+	display: block !important;
+}
+
+.particir-check-btn {
+	margin-left: 800px;
+	background-color: var(--color-dark-beigie);
+    color: var(--color-light-grey);	
+	font-weight: var(--weight-bold);
+	width: 130px;
+	height: 30px;
+	border-radius: 5px;
+}
+.particir-check-btn:hover {
+	background-color: var(--color-dark-red);
+	color: white;
+}
+
+.accpBtn{
+	background-color: var(--color-dark-beigie);
+    color: var(--color-light-grey);	
+	font-weight: var(--weight-bold);
+	width: 50px;
+	height: 30px;
+	border-radius: 5px;
+}
 </style>
 </head>
 <body>
@@ -120,7 +178,7 @@
 			<li><a href="${pageContext.request.contextPath}/projectCalendar?projectId=${projectInfo.projectId}">캘린더</a></li>
 			<li onclick="location.href='${pageContext.request.contextPath }/filetab?projectId=${projectInfo.projectId}&fileAccess=${projectInfo.fileAccess }'">파일</li>
 			<c:if test="${particirInfo.manager eq 'A1'}">
-			<li><span>참여승인</span>
+				<button type="button" id="accpList" class="particir-check-btn" data-id="${projectInfo.projectId}">참여신청자</button>
 			</c:if>
 		</ul>
 	</div>
@@ -204,6 +262,17 @@
 	</div>
 </div>
 
+<!-- 프로젝트 참여 승인 -->
+<div id="particirAccp-modal">
+	<div class="particirAccp-modal-content">
+		<div class="particirAccp-modal-title">
+			<span>프로젝트 참여 신청자</span>
+			<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+		</div>
+		<div id="particirAccp"></div>
+	</div>			
+</div>
+
 <script>
 	$(document).ready(function() {
 		$('#menuList li').click(function() {
@@ -255,5 +324,101 @@
     	
     	return result;
 };
+
+	
+	//모달 닫기
+	$('#particirAccp-modal').on('click', function() {
+		$('.modal-visible').removeClass('modal-visible');
+	});
+
+	// 프로젝트 참여 승인
+	$('#accpList').on('click', function(e){
+		let x = e.clientX - 800;
+		let y = e.clientY;
+		
+		$('.particirAccp-modal-content').css('left', x + 'px');
+		$('.particirAccp-modal-content').css('top', y + 'px');
+		
+		let projectId = $(this).data('id');
+		$.ajax({
+			url : '${pageContext.request.contextPath }/getCheckParticir',
+			type : 'GET',
+			data : {'projectId' : projectId },
+			success : function(particir){
+				let particirDiv = $('#particirAccp');
+				particirDiv.empty();
+				
+				for(let i=0; i<particir.length; i++) {
+					//div태그
+					let employeeDiv = document.createElement('div');
+					employeeDiv.classList.add('flex');
+					employeeDiv.classList.add('employee');
+					//이미지 태그
+					let employeeProfile = document.createElement('img');
+					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.classList.add('employee-img');
+					if(particir[i].realProfilePath != null) {
+						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
+					}else {
+						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					}
+					//스팬 태그
+					let span = document.createElement('span');
+					span.innerText = particir[i].memberName;
+					//히든 인풋 태그 (멤버id값)
+					let input = document.createElement('input');
+					input.setAttribute('type', 'hidden');
+					input.value = particir[i].memberId;
+					//버튼 태그
+					let button = document.createElement('button');
+					button.classList.add('accpBtn')
+					button.innerText = '승인하기';
+					// 프로젝트 참여자 신청 승인하기
+					button.addEventListener('click', function() {
+						e.stopPropagation();
+						updateAccpParticir(projectId, particir[i].memberId);
+
+						$(this).parent().remove();
+					});
+					
+					//태그 삽입
+					employeeDiv.append(employeeProfile);
+					employeeDiv.append(span);
+					employeeDiv.append(input);
+					
+					employeeDiv.append(button);
+					
+					particirDiv.append(employeeDiv);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+		$('#particirAccp-modal').addClass('modal-visible');
+	})
+	
+	// 프로젝트 참여자 신청 승인하기
+	function updateAccpParticir(projectId, memberId){
+		let check = confirm("승인하시겠습니까?");
+		if(check){
+			$.ajax({
+				url: '${pageContext.request.contextPath}/updateAccpParticir',
+				type: 'POST',
+				data: {'projectId' : projectId, 'memberId' : memberId},
+				success: function(response){
+					alert('승인되었습니다.');
+				},
+				error: function(error){
+					alert("삭제에 실패했습니다.");
+					console.log(error);
+				}
+				
+			})
+			
+		}
+		
+	}
+	
 </script>
 </html>

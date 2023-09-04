@@ -194,8 +194,8 @@
 		WHERE member_id = #{memberId} AND project_id = #{projectId}
 	</select>
 	
-	<!--  -->
-	<select id="getCheckAccp" resultType="PrjParticirVO">
+	<!-- 프로젝트 승인 대기 조회 -->
+	<select id="getCheckParticir" resultType="PrjParticirVO">
 		SELECT	p.member_id,
 				m.member_name,
 				m.real_profile_path
@@ -203,9 +203,16 @@
 		JOIN	member m
 		ON		p.member_id = m.member_id
 		WHERE	project_id = #{projectId}
-			AND p.particir_accp = 'A2';
+			AND p.particir_accp = 'A2'
 	</select>
 	
+	<!-- 프로젝트 참여 승인하기 -->
+	<update id="updateAccpParticir" parameterType="PrjParticirVO">
+		UPDATE	prj_particir
+		SET		particir_accp = 'A1'
+		WHERE	member_id = #{memberId}
+			AND	project_id = #{projectId}
+	</update>
 	
 	
 	
