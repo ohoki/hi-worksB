@@ -121,11 +121,66 @@
 	</update>
 	
 	<!-- 회사 구성원 조회 -->
-	<select id="CompanyMemberList" resultType="MemberVO">
-		SELECT *
-		  FROM member
-		 WHERE company_id = #{companyId}
+	<select id="companyMemberList" resultType="MemberVO">
+		select m.member_id, 
+			   m.member_name, 
+			   m.member_phone, 
+			   m.member_grade, 
+			   m.con_ip, 
+			   m.job_id, 
+			   m.dept_id, 
+			   m.emp_status, 
+			   m.con_status, 
+			   c.company_id, 
+			   d.dept_name, 
+			   j.job_name
+		  from member m left join company c
+                        on(m.company_id = c.company_id)
+                      join department d
+                        on(m.dept_id = d.dept_id)
+                      join job j
+                        on(m.job_id = j.job_id)
+		where m.company_id = #{companyId}
 	</select>
+	
+	<!-- 구성원 단건 조회 -->
+	<select id="CompanyMemberInfo" resultType="MemberVO">
+		select m.member_id, 
+			   m.member_name, 
+			   m.member_phone, 
+			   m.member_grade, 
+			   m.con_ip, 
+			   m.job_id, 
+			   m.dept_id, 
+			   m.emp_status, 
+			   m.con_status, 
+			   c.company_id, 
+			   d.dept_name, 
+			   j.job_name
+		  from member m left join company c
+                        on(m.company_id = c.company_id)
+                      join department d
+                        on(m.dept_id = d.dept_id)
+                      join job j
+                        on(m.job_id = j.job_id)
+		 where member_id = #{memberId}
+	</select>
+	
+	<!-- 구성원 정보 수정 -->
+	<update id="updateMember">
+		UPDATE member
+			<set>
+				member_name = #{memberName}
+				, member_phone = #{memberPhone}
+				, member_grade = #{memberGrade}
+				, job_id = #{jobId}
+				, dept_id = #{dept_id}
+			</set>
+		 WHERE member_id = #{memberId}
+	</update>
+	
+	<!--  -->
+	
 	
 	<select id="departmentList" resultType="DepartmentVO">
 		SELECT

@@ -211,11 +211,22 @@ public class AdminController {
 		public String CompanyMemberList(Model model, HttpSession session, MemberVO memberVO) {
 			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
 			Integer companyId = company.getCompanyId();
+			// list넘기기
+			List<MemberVO> memberList = adminService.companyMemberList(companyId);
+			model.addAttribute("memberList", memberList );
 			
-			List<MemberVO> memberList = adminService.CompanyMemberList(companyId);
+			// info 넘기기
+			//MemberVO memberInfo = adminService.companyMemberInfo(memberId);
+			//model.addAttribute("memberInfo", memberInfo);
 			
-			model.addAttribute("memberList", memberList  );
 			return "adminPage/memberManagement";
+		}
+		
+		// 구성원 정보 단건조회
+		@RequestMapping("/memberManagements")
+		@ResponseBody
+		public String CompanyMemberInfo(MemberVO memberVO) {
+			return adminService.companyMemberInfo(memberVO);
 		}
 
 		@PostMapping("/updateRole")

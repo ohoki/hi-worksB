@@ -47,9 +47,15 @@ public class AdminServiceImpl implements AdminService {
 
 	// 회사 구성원 리스트
 	@Override
-	public List<MemberVO> CompanyMemberList(int companyId) {
-		return adminmapper.CompanyMemberList(companyId);
+	public List<MemberVO> companyMemberList(int companyId) {
+		return adminmapper.companyMemberList(companyId);
 	}
+	
+	@Override
+	public String companyMemberInfo(MemberVO memberVO) {
+		return adminmapper.companyMemberInfo(memberVO);
+	}
+	
 	@Override
 	public List<DepartmentVO> departmentList(int companyId) {
 		return adminmapper.departmentList(companyId);
@@ -122,4 +128,6 @@ public class AdminServiceImpl implements AdminService {
 	public List<ProjectVO> getPrjId(int deptId) {
 		return adminmapper.getPrjId(deptId);
 	}
+
+	
 }
