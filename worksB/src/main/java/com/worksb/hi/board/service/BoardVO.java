@@ -25,8 +25,8 @@ COORDINATE                 VARCHAR2(60)
 	private int prjBoardId;
 	private String prjBoardTitle;
 	private String prjBoardSubject;
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date prjBoardRegdate;
 	private String memberId;
 	private String inspYn;

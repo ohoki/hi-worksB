@@ -13,7 +13,6 @@
 	
 	<link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
 	<script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
-	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<style type="text/css">
 		html{
 		  scroll-behavior: smooth;
@@ -507,6 +506,15 @@
 			color: var(--color-dark-grey);
 		}
 		
+		.update-board-modal-title {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-weight: var(--weight-bold);
+			color: var(--color-dark-grey);
+			padding: 0 30px;
+		}
+		
 		.insert-board-list {
 			display: flex;
 			align-items: center;
@@ -866,7 +874,7 @@
 			border: 1px solid var(--color-light-blue);
 		}
 		
-		.deleteManager, .deleteSubtask {
+		.deleteManager {
 			cursor: pointer;	
 		}
 
@@ -939,8 +947,8 @@
 			margin: 10px 20px 10px 0;
 		}
 			
-		#updateSubTask-modal button[type=button],
-		#insertSubTask-modal button[type=button]{
+		#updateSubTask-modal .updateSubTask-modal-btn,
+		#insertSubTask-modal .updateSubTask-modal-btn{
 			width: 100px;
 			height: 40px;
 			background-color: var(--color-dark-red);
@@ -951,8 +959,8 @@
 			transition: all 0.5s;
 		}
 		
-		#updateSubTask-modal button[type=button]:hover,
-		#insertSubTask-modal button[type=button]:hover{
+		#updateSubTask-modal .updateSubTask-modal-btn:hover,
+		#insertSubTask-modal .updateSubTask-modal-btn:hover{
 			background-color: var(--color-white);
 			color: var(--color-dark-red);
 			border: 1px solid var(--color-dark-red);
@@ -1504,6 +1512,10 @@
 				<input type="hidden" name="boardId" value="">
 				<input type="hidden" name="highPrjBoardId" value="">
 				<input type="hidden" name="highTaskId" value="">
+				<div class="update-board-modal-title">
+		    		<div>게시물 수정</div>		
+		    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		    	</div>
 				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
 				<div class="board-state">
 					<input type="radio" class="btn-check" name="state" value="G1" id="option11" autocomplete="off" checked>
@@ -1539,7 +1551,7 @@
 	            <div class="board-taskManager">
 				</div>
 				<button type="reset">삭제하기</button>
-				<button type="button">수정하기</button>
+				<button type="button" class="updateSubTask-modal-btn">수정하기</button>
 			</div>
 		</form>
 	</div>
@@ -1552,6 +1564,10 @@
 			<input type="hidden" class="modal-content d-none">
 			<input type="hidden" name="highPrjBoardId" value="">
 			<input type="hidden" name="highTaskId" value="">
+			<div class="update-board-modal-title">
+	    		<div>게시물 수정</div>		
+	    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	    	</div>
 			<div class="insertSubTask-modal-content">
 				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
 				<div class="board-state">
@@ -1589,7 +1605,7 @@
 	            	<span class="add-manager-btn">담당자 추가</span>
 				</div>
 				<button type="reset">취소</button>
-				<button type="button">등록하기</button>
+				<button type="button" class="updateSubTask-modal-btn">등록하기</button>
 			</div>
 		</form>
 	</div>
@@ -1626,8 +1642,8 @@
 				data : {'prjBoardId' : prjBoardId},
 				success : function(taskData) {
 					
-					taskModal.find('button[type="button"]').attr('name', 'updateForm');
-					taskModal.find('button[type="button"]').text('수정하기');
+					taskModal.find('button.updateSubTask-modal-btn').attr('name', 'updateForm');
+					taskModal.find('button.updateSubTask-modal-btn').text('수정하기');
 					taskModal.find('input').prop('disabled', true);
 					taskModal.find('select').prop('disabled', true);
 					taskModal.find('button[type="radio"]').prop('disabled', true);
@@ -1681,8 +1697,8 @@
 					taskModal.find('input').prop('disabled', false);
 					taskModal.find('select').prop('disabled', false);
 					taskModal.find('button[type="radio"]').prop('disabled', false);
-					taskModal.find('button[type="button"]').attr('name', 'updateBtn');
-					taskModal.find('button[type="button"]').text('수정완료');
+					taskModal.find('button.updateSubTask-modal-btn').attr('name', 'updateBtn');
+					taskModal.find('button.updateSubTask-modal-btn').text('수정완료');
 					
         			// 하위 업무 추가하기
         			let subTask = taskData.highTask[0];
@@ -3246,7 +3262,7 @@
 		    	<input type="hidden" class="modal-dialog d-none">
 				<input type="hidden" class="modal-content d-none">
 		    	<div class="insert-board-modal-title">
-		    		<div>게시물 작성</div>		
+		    		<div>게시물 수정</div>		
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 		    	<ul class="insert-board-list">
@@ -3352,11 +3368,10 @@
 						<option value="E2">전체 공개</option>
 						<option value="E1">프로젝트 관리자만</option>
 					</select>
-					<input type="hidden" name="boardType" value="C5">
+					<input type="hidden" name="boardType" value="C8">
 		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		             	<button type="reset" class="modal-footer-btn">임시저장</button>
+		             	<button type="reset" class="modal-footer-btn">취소</button>
 		             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
-		             	<div><a href="#">임시저장 게시글 보기</a></div>
 				</div>
 			</form>
 		
@@ -3767,7 +3782,7 @@
 			taskModal.find('input[name="highPrjBoardId"]').val(highPrjBoardId);
 		});
 		
-		$(document).on('click', '#insertSubTask-modal button[type="button"]', function(e) {
+		$(document).on('click', '#insertSubTask-modal button.updateSubTask-modal-btn', function(e) {
 			let taskModal = $('#insertSubTask-modal');
 			let highTaskId = taskModal.find('input[name="highTaskId"]').val();
 			let highPrjBoardId = taskModal.find('input[name="highPrjBoardId"]').val();
