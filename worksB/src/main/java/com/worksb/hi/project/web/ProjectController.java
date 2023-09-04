@@ -224,6 +224,20 @@ public class ProjectController {
 	public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
 		return projectService.getParticirList(projectId);
 	}
+
+	//프로젝트 승인 대기 조회
+	@GetMapping("/getCheckParticir")
+	@ResponseBody
+	public List<PrjParticirVO> getCheckParticir(PrjParticirVO prjParticirVO){
+		return projectService.getCheckParticir(prjParticirVO);
+	}
+	
+	//프로젝트 참여 승인하기
+	@PostMapping("/updateAccpParticir")
+	@ResponseBody
+	public int updateAccpParticir(PrjParticirVO prjParticirVO) {
+		return projectService.updateAccpParticir(prjParticirVO);
+	}
 	
 	
 	
