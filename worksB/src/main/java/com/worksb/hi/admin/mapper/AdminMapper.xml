@@ -125,7 +125,7 @@
 		SELECT *
 		  FROM member
 		 WHERE company_id = #{companyId}
-
+	</select>
 	<select id="departmentList" resultType="DepartmentVO">
 		SELECT
 		    d.dept_id,
