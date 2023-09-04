@@ -65,6 +65,10 @@ input:-webkit-autofill:active {
 	margin: 0;
 }
 
+#memberPw::placeholder {
+	color : var(--color-dark-red);
+}
+
 .check-id {
 	width: 21% !important;	
 	margin:0;

@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.worksb.hi.common.MailHandler;
+import com.worksb.hi.common.TempCertificationNumber;
 import com.worksb.hi.common.TempKey;
 import com.worksb.hi.member.mapper.MemberMapper;
 import com.worksb.hi.member.service.MemberService;
@@ -81,6 +82,42 @@ public class MemberServiceImpl implements MemberService {
 	public int updateMailAuth(MemberVO memberVO) {
 		return memberMapper.updateMailAuth(memberVO);
 	}
+	
+	//비밀번호 찾기 인증번호 메일 전송
+	public int makeCertificationNumber(MemberVO memberVO) {
+		int result = 0;
+		
+		//인증번호 생성
+		String certificationNumber = new TempCertificationNumber().excuteGenerate();
+		memberVO.setMailKey(certificationNumber);
+		
+		result = memberMapper.updateMailKey(memberVO);
+		
+		if(result == 1) { //정상등록되면 이메일 인증 메일 요청
+			try {
+				MailHandler sendMail = new MailHandler(mailSender);
+				sendMail.setSubject("hi-worksB 비밀번호 찾기 인증번호 입니다.");
+				sendMail.setText(
+						"<h1>hi-worksB 비밀번호 찾기 인증번호</h1>" +
+				        "<br><br>hi-worksB를 이용해주셔서 감사합니다!!" +
+				        "<br><br>인증번호는 [" + certificationNumber + "] 입니다.", true);
+				sendMail.setFrom("cyh6237@gmail.com", "hi-worksB");
+				sendMail.setTo(memberVO.getMemberId());
+				sendMail.send();
+			} catch (Exception e) {
+				result = 0;
+			}
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//회원 수정
 	public int updateMember(MemberVO memberVO) {

@@ -98,6 +98,12 @@ public interface BoardService {
 	//게시글 별 투표 참여자 리스트 출력
 	public List<VoteVO> getVoteParticir(VoteVO particir);
 	
+	//업무 정보 변경
+    public int updateTaskInfo(AllTaskBoardVO taskVO);
+	
+	
+	
+	
 	
 	
 	

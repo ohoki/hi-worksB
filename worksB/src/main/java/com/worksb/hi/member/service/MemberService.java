@@ -12,10 +12,13 @@ public interface MemberService {
 	public int insertMemberInfo(MemberVO memberVO) throws Exception;
 	
 	//인증번호 생성
-		public int updateMailKey(MemberVO memberVO);
+	public int updateMailKey(MemberVO memberVO);
 		
 	//인증 확인
 	public int updateMailAuth(MemberVO memberVO);
+	
+	//비밀번호 찾기 시 인증번호 생성
+	public int makeCertificationNumber(MemberVO memberVO);
 	
 	//회원 수정
 	public int updateMember(MemberVO memberVO);

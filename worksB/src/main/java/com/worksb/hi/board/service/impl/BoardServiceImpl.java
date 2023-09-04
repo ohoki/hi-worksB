@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.AllTaskBoardVO;
@@ -156,6 +158,14 @@ public class BoardServiceImpl implements BoardService {
 	public List<VoteVO> getVoteParticir(VoteVO particir) {
 		return boardMapper.getVoteParticir(particir);
 	} 
+	
+	//업무 정보 변경
+    public int updateTaskInfo(AllTaskBoardVO taskVO) {
+    	return boardMapper.updateTaskInfo(taskVO);
+    }
+	
+	
+	
 	
 	
 	

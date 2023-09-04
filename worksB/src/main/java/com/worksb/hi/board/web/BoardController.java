@@ -32,6 +32,8 @@ import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 // 이진 0818 게시판관리 - 게시글,업무,일정,투표 등록
 
 @Controller
@@ -271,7 +273,7 @@ public class BoardController {
 	}
 
 
-	// 업무 수정
+	//상위,하위 업무 수정
 	@PostMapping("/updateTask")
 	@ResponseBody
 	public int updateTask(@RequestBody BoardRequestVO brVO) {
@@ -282,73 +284,21 @@ public class BoardController {
     	TaskVO taskVO = brVO.getTaskVO();
     	taskVO.setPrjBoardId(boardVO.getPrjBoardId());
     	boardService.updateTask(taskVO);
-    	
     	// 상위 업무 담당자 수정 (삭제 후 등록)
     	List<TaskVO> managerList = brVO.getPrjManager();
-    	//해당 업무의 담당자 전체 삭제
-    	boardService.deleteManagerList(managerList.get(0));
-    	//수정된 업무의 담당자 등록
-    	if(managerList != null) {
-    		for(int i=0; i < managerList.size(); i++) {
-    			TaskVO taskManager = managerList.get(i);
-    			
-    			boardService.insertTaskManager(taskManager);
-    		}
+    	if(managerList.size() != 0) {
+    		//해당 업무의 담당자 전체 삭제
+        	boardService.deleteManagerList(managerList.get(0));
+        	//수정된 업무의 담당자 등록
+        	if(managerList != null) {
+        		for(int i=0; i < managerList.size(); i++) {
+        			TaskVO taskManager = managerList.get(i);
+        			
+        			boardService.insertTaskManager(taskManager);
+        		}
+        	}
     	}
     	
-    	// 하위 업무 수정
-    	List<TaskVO> taskList = brVO.getSubTask();
-    	List<TaskVO> subManagerList = brVO.getSubManager();
-    	if(taskList != null){
-    		TaskVO subtaskVO ;
-	    	for(int i=0; i < taskList.size(); i++) {
-	    		BoardVO subBoardVO = new BoardVO();
-	    		subtaskVO = taskList.get(i);
-	    		
-	    		
-	    		//수정 중 --> 프로시저 사용..?!
-	    		if(subtaskVO.getPrjBoardId() == null) {
-	    			// 하위 업무 - 게시글 테이블 저장
-		    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
-		    		subBoardVO.setMemberId(boardVO.getMemberId());
-		    		subBoardVO.setProjectId(boardVO.getProjectId());
-		    		subBoardVO.setBoardType(boardVO.getBoardType());
-		    		subBoardVO.setInspYn("E2");
-		    		boardService.insertBoard(subBoardVO);
-		    		
-		    		// 하위 업무 - 업무 테이블 저장
-		    		subtaskVO.setPrjBoardId(subBoardVO.getPrjBoardId());
-		    		subtaskVO.setHighTaskId(taskVO.getTaskId());
-		    		boardService.insertTask(subtaskVO);
-	    		} else {
-	    			// 하위 업무 - 게시글 테이블 수정
-		    		subBoardVO.setPrjBoardTitle(subtaskVO.getPrjBoardTitle());
-		    		subBoardVO.setProjectId(subtaskVO.getProjectId());
-		    		subBoardVO.setInspYn("E2");
-		    		boardService.updateBoard(subBoardVO);
-		    		
-		    		// 하위 업무 - 업무 테이블 수정
-		    		boardService.updateTask(subtaskVO);
-		    		
-		    		//해당 하위 업무의 담당자 전체 삭제
-		    		boardService.deleteManagerList(subManagerList.get(i));
-	    		}
-	    	}
-    	}
-    	//하위 업무 삭제
-    	List<TaskVO> deleteSubtask = brVO.getDeleteSubtask();
-    	if(deleteSubtask != null) {
-    		for(int i=0; i<deleteSubtask.size(); i++) {
-    			boardService.deleteTask(deleteSubtask.get(i));
-    		}
-    	}
-    	
-    	//하위 업무 담당자 수정 (새 등록)
-    	if(subManagerList != null) {
-    		for(int i=0; i<subManagerList.size(); i++) {
-    			boardService.insertTaskManager(subManagerList.get(i));
-    		}
-    	}
     	return boardVO.getProjectId(); 
 	}
 
@@ -414,7 +364,7 @@ public class BoardController {
 	
 	
 	//상단 고정 여부 수정
-	@GetMapping("/updatePin")
+	@PostMapping("/updatePin")
 	public String updatePin(BoardVO boardVO) {
 		boardService.updatePin(boardVO);
 		
@@ -480,7 +430,26 @@ public class BoardController {
 		return boardService.getVoteParticir(particir);
 	} 
 	
+    //업무 정보 변경
+    @PostMapping("/updateTaskInfo")
+    @ResponseBody
+    public int updateTaskInfo(AllTaskBoardVO taskVO) {
+    	return boardService.updateTaskInfo(taskVO);
+    }
 	
+    //북마크 정보 가져오기
+    @PostMapping("/getBookmarkByMe")
+    @ResponseBody
+    public List<BoardVO> getBookmarkByMe(ProjectVO projectInfo) {
+    	return boardService.getBookmarkList(projectInfo);
+    }
+    
+    //상단 고정 정보 가져오기
+    @PostMapping("/getPinBoard")
+    @ResponseBody
+    public List<BoardVO> getPinBoard(ProjectVO projectInfo) {
+    	return projectService.getPinBoardList(projectInfo);
+    }
 	
 	
 	
