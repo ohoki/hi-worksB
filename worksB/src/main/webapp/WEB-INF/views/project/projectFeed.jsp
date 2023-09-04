@@ -3489,6 +3489,20 @@
 					}
 				});
 			}else if(boardType == 'C6') { // 일정 게시글 수정 양식
+
+				/*
+				$.ajax({
+					url: '${pageContext.request.contextPath}/getScheInfo',
+					type: 'GET',
+					data: {'prjBoardId' : prjBoardId},
+					success: function(scheData){
+						
+					},
+					error: function(reject){
+						console.log(reject);
+					}
+				});
+				*/
 				
 			}else if(boardType == 'C7') { //투표 게시글 수정 양식
 				$.ajax({
@@ -3929,7 +3943,7 @@
 		            'MathType'
 		        ]
 		   	}).then(newEditor => {
-		   	 	window['editor7'] = newEditor;
+		   	 	window['editor'+i] = newEditor;
 		    })
 		    .catch( error => {
 		        console.error( error );

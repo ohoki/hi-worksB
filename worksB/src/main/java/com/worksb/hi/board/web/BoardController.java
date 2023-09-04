@@ -192,6 +192,14 @@ public class BoardController {
 		return boardService.getScheInfo(scheVO); 
 	}
 	
+	// 일정 수정용 조회
+	/*
+	@GetMapping("getScheBoard")
+	@@ResponseBody
+	public Map<String, Object> getScheBoard(ScheVO scheVO){
+		Map<String, Object> resultMap = new HashMap<>();
+	}
+	*/
 	// 투표 조회
 	@GetMapping("getVoteInfo")
 	@ResponseBody
