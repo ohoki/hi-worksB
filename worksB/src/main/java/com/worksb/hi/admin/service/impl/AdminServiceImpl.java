@@ -9,6 +9,7 @@ import com.worksb.hi.admin.mapper.AdminMapper;
 import com.worksb.hi.admin.service.AdminService;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.FileDataVO;
 import com.worksb.hi.project.service.ProjectVO;
 @Service
@@ -41,4 +42,10 @@ public class AdminServiceImpl implements AdminService {
 		public int updateCompany(CompanyVO companyVO) {
 		return adminmapper.updateCompany(companyVO);
 		}
+
+	// 회사 구성원 리스트
+	@Override
+	public List<MemberVO> CompanyMemberList(int companyId) {
+		return adminmapper.CompanyMemberList(companyId);
+	}
 }

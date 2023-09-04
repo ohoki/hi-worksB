@@ -165,4 +165,16 @@ public class AdminController {
 			session.setAttribute("companyInfo", updatedCompany);
 			return true;
 		}
+		
+		// 회사 구성원 리스트
+		@RequestMapping("/memberManagement")
+		public String CompanyMemberList(Model model, HttpSession session, MemberVO memberVO) {
+			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
+			Integer companyId = company.getCompanyId();
+			
+			List<MemberVO> memberList = adminService.CompanyMemberList(companyId);
+			
+			model.addAttribute("memberList", memberList  );
+			return "adminPage/memberManagement";
+		}
 }

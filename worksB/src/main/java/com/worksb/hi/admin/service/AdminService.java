@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.FileDataVO;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -20,4 +21,6 @@ public interface AdminService {
 	
 	// 회사 정보 수정
 	public int updateCompany(CompanyVO companyVO);
+	
+	public List<MemberVO> CompanyMemberList(int companyId);
 }
