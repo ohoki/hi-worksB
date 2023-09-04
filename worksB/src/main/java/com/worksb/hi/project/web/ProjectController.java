@@ -202,7 +202,6 @@ public class ProjectController {
         		for(int j=0; j<bookmarkListByMember.size(); j++) {
         			if( boards.get(i).getPrjBoardId() == bookmarkListByMember.get(j).getPrjBoardId()) {
         				boards.get(i).setBookmarkByMember(1);
-        				System.out.println("==========================================================boardId => " + boards.get(i).getPrjBoardId());
         				break;
         			} else {
         				boards.get(i).setBookmarkByMember(0);
@@ -313,7 +312,7 @@ public class ProjectController {
 		vo.setManager("A2");
 		vo.setParticirAccp(particirAccp);
 		vo.setProjectMarkup("A2");
-		projectService.insertParticipant(vo);
+		int result1=projectService.insertParticipant(vo);
 		
 		return "success";
 	}
@@ -656,10 +655,10 @@ public class ProjectController {
 			return projectService.updateFile(data);
 		}
 		
-		@GetMapping("/chat")
-		public String chatting() {
-			return "prj/chatting";
-		}
+//		@GetMapping("/chat")
+//		public String chatting() {
+//			return "prj/chatting";
+//		}
 	
 		
 		

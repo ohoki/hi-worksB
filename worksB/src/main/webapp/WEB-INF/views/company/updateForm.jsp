@@ -228,7 +228,7 @@
 		let objData = serializeObject();
 
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/updateMember',
+			url : '${pageContext.request.contextPath}/updateMember',
 			method : 'POST',
 			data : objData,
 			success : function(data) {

@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,6 +182,33 @@ public class memberController {
 		return "member/emailAuthSuccess";
 	}// emailConfirm
 
+//================= 비밀번호 찾기 ===================================
+	@PostMapping(value= "/makeCertificationNumber" , produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String makeCertificationNumber(MemberVO memberVO, HttpServletResponse response) {
+		String message = null;
+		
+		int result = memberService.makeCertificationNumber(memberVO);
+		
+		if(result > 0) {
+			message = "입력하신 이메일로 인증번호가 발송되었습니다.";
+		} else {
+			message = "인증번호 발송에 실패했습니다.";
+		}
+		
+		response.setCharacterEncoding("UTF-8");
+		
+		return message;
+	};
+	
+	@PostMapping("/confirmCertificationNumber")
+	@ResponseBody
+	public int confirmCertificationNumber(MemberVO memberVO) {
+		return memberService.updateMailAuth(memberVO);
+	}
+	
+	
+	
 //================== 회원 정보 수정 =================================
 	@GetMapping("member/updateForm")
 	public String updateForm(HttpSession session, Model model) {
@@ -195,7 +223,7 @@ public class memberController {
 		return "company/updateForm";
 	}//updateForm
 	
-	@RequestMapping("member/updateMember")
+	@RequestMapping("/updateMember")
 	@ResponseBody
 	public boolean updateMember(MemberVO memberVO, HttpSession session) {
 		//비밀번호가 수정됐다면 암호화

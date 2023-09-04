@@ -31,7 +31,7 @@
 			</list>
 		</property>
 	</bean>
-
+	
 	<!-- datasource connection pool -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="${driver}" />
