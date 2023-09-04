@@ -141,7 +141,7 @@
 						<span>구성원</span>
 						<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
 					</div>
-					<input type="text" class="employees_search-input" placeholder="검색">
+					<input type="text" class="employees_search-input" placeholder="검색" >
 					<div id="employees">	
 					</div>
 				</div>			
@@ -321,37 +321,71 @@
 	$(document).on("click",".employee",function(e){
 		e.stopPropagation();
 		let memberId = $(e.currentTarget).children('input').val();
-		
+		$('#employees-modal').addClass('modal-visible');
+		//구성원 리스트 출력
+		let employeesDiv = $('#employees');
+		employeesDiv.empty();
 		$.ajax({
 			url : '${pageContext.request.contextPath}/member/getMember',
 			type : 'GET',
 			data : {'memberId' : memberId},
-			success : function(member) {
-				//이미지
-				let img = $('#e-img');
-				if(member.realProfilePath != null) {
-					img.attr('src', '${pageContext.request.contextPath}/images/' + member.realProfilePath);
-				}else {
-					img.attr('src', '${pageContext.request.contextPath }/resources/img/user.png');
-				}
-				//정보
-				$('.employee-modal__name').text(member.memberName);
-				$('#e-id').text(member.memberId);
-				$('#e-phone').text(member.memberPhone);
-				
-				//부서
-				let dept = $('#e-dept');
-				if(member.deptId != null) {
-					dept.text(member.deptName);
-				}else {
-					dept.text('-');
+			success : function(members) {
+				let employeesDiv = $('#employees');
+				//멤버 리스트 태그 만들기
+				for(let i=0; i<members.length; i++) {
+					//div태그
+					let employeeDiv = document.createElement('div');
+					employeeDiv.classList.add('flex');
+					employeeDiv.classList.add('employee');
+					//이미지 태그
+					let employeeProfile = document.createElement('img');
+					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.classList.add('employee-img');
+					if(members[i].realProfilePath != null) {
+						employeeProfile.src = "${pageContext.request.contextPath}/images/"+members[i].realProfilePath;
+					}else {
+						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					}
+					//스팬 태그
+					let span = document.createElement('span');
+					span.innerText = members[i].memberName;
+					
+					let imgSpan = document.createElement('span');
+						imgSpan.style.position = 'relative';	
+					
+					let stateDiv = document.createElement('div');
+					
+					if(members[i].empStatus == 'S1') {
+						stateDiv.classList.add('state');
+						stateDiv.classList.add('status-green');
+					} else if (members[i].empStatus == 'S2') {
+						stateDiv.classList.add('state');
+						stateDiv.classList.add('status-yellow');
+					} else if (members[i].empStatus == 'S3') {
+						stateDiv.classList.add('state');
+						stateDiv.classList.add('status-red');
+					}
+					
+					//히든 인풋 태그 (멤버id값)
+					let input = document.createElement('input');
+					input.setAttribute('type', 'hidden');
+					input.value = members[i].memberId;
+					
+					//태그 삽입
+					imgSpan.append(employeeProfile);
+					imgSpan.append(stateDiv);
+					employeeDiv.append(imgSpan);
+					employeeDiv.append(span);
+					employeeDiv.append(input);
+					
+					employeesDiv.append(employeeDiv);
 				}
 			},
 			error : function(reject) {
 				
 			}
 		});
-		$('#employee-modal').addClass('modal-visible');
+// 		$('#employee-modal').addClass('modal-visible');
 	});
 	
 	
@@ -370,5 +404,72 @@
 
 
 	}
+	//구성원검색
+	$('.employees_search-input').on('click', function(e) {
+		e.stopPropagation();
+		let search=$('.employees_search-input').val();
+		$.ajax({
+			url:'${pageContext.request.contextPath}/searchMember',
+			type:'GET',
+			data:{'name':search},
+			success : function(members) {
+				let employeesDiv = $('#employees');
+				employeesDiv.empty();
+				//멤버 리스트 태그 만들기
+				for(let i=0; i<members.length; i++) {
+					//div태그
+					let employeeDiv = document.createElement('div');
+					employeeDiv.classList.add('flex');
+					employeeDiv.classList.add('employee');
+					//이미지 태그
+					let employeeProfile = document.createElement('img');
+					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.classList.add('employee-img');
+					if(members[i].realProfilePath != null) {
+						employeeProfile.src = "${pageContext.request.contextPath}/images/"+members[i].realProfilePath;
+					}else {
+						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					}
+					//스팬 태그
+					let span = document.createElement('span');
+					span.innerText = members[i].memberName;
+					
+					let imgSpan = document.createElement('span');
+						imgSpan.style.position = 'relative';	
+					
+					let stateDiv = document.createElement('div');
+					
+					if(members[i].empStatus == 'S1') {
+						stateDiv.classList.add('state');
+						stateDiv.classList.add('status-green');
+					} else if (members[i].empStatus == 'S2') {
+						stateDiv.classList.add('state');
+						stateDiv.classList.add('status-yellow');
+					} else if (members[i].empStatus == 'S3') {
+						stateDiv.classList.add('state');
+						stateDiv.classList.add('status-red');
+					}
+					
+					//히든 인풋 태그 (멤버id값)
+					let input = document.createElement('input');
+					input.setAttribute('type', 'hidden');
+					input.value = members[i].memberId;
+					
+					//태그 삽입
+					imgSpan.append(employeeProfile);
+					imgSpan.append(stateDiv);
+					employeeDiv.append(imgSpan);
+					employeeDiv.append(span);
+					employeeDiv.append(input);
+					
+					employeesDiv.append(employeeDiv);
+				}
+			},
+			error : function(reject) {
+				console.log(reject)
+			}
+		});
+ 		
+	});
 </script>
 </html>

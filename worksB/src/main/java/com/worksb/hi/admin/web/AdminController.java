@@ -6,7 +6,9 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -236,19 +238,37 @@ public class AdminController {
 			
 			List<String> names=new ArrayList<>();
 			
+			//과거 프로젝트이름추출
 			List<ProjectVO> prjName=adminService.getPrjName(deptId);
-			List<ProjectVO> prjIdx=adminService.getPrjId(deptId);
+			//바꿔야할 프로젝트아이디추출
+			int prjId[]=adminService.getPrjId(deptId);
+			
+			//프로젝트이름바꾸기
 			for(ProjectVO name:prjName) {
 				String deptNameAndPrjName=name.getProjectName();
 				String nameList[]=deptNameAndPrjName.split("]");
 				names.add(nameList[1]);
+
 			}
 			for(int i=0;i<names.size();i++) {
 				names.set(i, "["+deptName+"]"+names.get(i));
 				System.out.println("수정한이름"+names.get(i));
 			}
-			//adminservice.updateprojectName(names,deptId);
-			//return adminservice.updateDept(vo);
+			
+			
+			Map<String,String>pjIdAndName=new HashMap<>();
+			for(int i=0;i<prjName.size();i++) {
+				pjIdAndName.put(Integer.toString(prjId[i]), names.get(i));
+			}
+			
+			for(int i=0;i<prjId.length;i++) {
+				System.out.println(pjIdAndName.get(prjId[i]));
+			}
+			adminService.updateProjectName(pjIdAndName);
+			int result2=adminService.updateDept(vo);
+			if(result2>0) {
+				return 1;
+			}
 			return 0;
 		}
 }
