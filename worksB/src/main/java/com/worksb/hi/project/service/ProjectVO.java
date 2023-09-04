@@ -41,5 +41,9 @@ PROJECT_CLS             VARCHAR2(5)
 	private Integer companyId;
 	private int managerParticirId;
 	private String managerName;
+	//관리자페이지
+	private int mnumber;//참여자수
+	private int boardcount;//게시글수
+	
 	
 }
