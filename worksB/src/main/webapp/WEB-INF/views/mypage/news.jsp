@@ -8,28 +8,66 @@
 <title>Insert title here</title>
 </head>
 <body>
+속보
 	<div id="newsMain">
 
+	</div>
+	<br>
+	경제
+	<div id="economyNews">
 	</div>
 </body>
 <script>
 	var news = ${news}
 	console.log(news);
-	function newsLoad(){
-		var mainContainer = document.getElementById('news-Main')		
+    var economic = ${economicNews}
+    console.log(economic)
+	function newsLoad(newsItem){
+		let mainContainer = $('#newsMain')		
         for(let i=1;i<6;i++){
-            let divTag = document.createElement('div')
-            mainContainer.appendChild(divTag).setAttribute('id','news-Main__news-div'+i)
-            for(let j=0;j<2;j++){
-                let divTag = document.createElement('div')
-                let newDiv = document.getElementById('news-Main__news-div'+i)
-                let title = document.createElement('h3')
-                newDiv.appendChild(divTag)
-                //for(let k=0;k<)
-            }
+        	let title = newsItem.items[i].title
+        	let link = newsItem.items[i].link
+        	let sub = newsItem.items[i].description
+        	
+        	//뉴스 구획
+        	let divTag = $('<div></div>')
+        	divTag.attr('id','news-'+i)
+        	let aTag = $('<a></a>')
+        	aTag.attr('href',link)
+        	
+        	//뉴스 제목
+        	let divTitle = $('<div></div>')
+        	divTitle.attr('class','newsTitle').append(title)
+        	divTag.append(divTitle)
+        	aTag.append(divTag)
+            mainContainer.append(aTag)
+            
         }
-
 	}
-    newsLoad();
+	function economyNewsLoad(newsItem){
+		let mainContainer = $('#economyNews')		
+        for(let i=1;i<6;i++){
+        	let title = newsItem.items[i].title
+        	let link = newsItem.items[i].link
+        	let sub = newsItem.items[i].description
+        	
+        	//뉴스 구획
+        	let divTag = $('<div></div>')
+        	divTag.attr('id','news-'+i)
+        	let aTag = $('<a></a>')
+        	aTag.attr('href',link)
+        	
+        	//뉴스 제목
+        	let divTitle = $('<div></div>')
+        	divTitle.attr('class','newsTitle').append(title)
+        	divTag.append(divTitle)
+        	aTag.append(divTag)
+            mainContainer.append(aTag)
+            
+        }
+	}
+    
+    newsLoad(news);
+    economyNewsLoad(economic);
 </script>
 </html>

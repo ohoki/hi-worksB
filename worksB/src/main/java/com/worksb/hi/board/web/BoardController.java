@@ -1,5 +1,6 @@
 package com.worksb.hi.board.web;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.AllTaskBoardVO;
 import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
@@ -30,6 +32,7 @@ import com.worksb.hi.board.service.VoteVO;
 import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -495,6 +498,83 @@ public class BoardController {
 	
 
 	//정현
+	//프로젝트 일정,업무 캘린더 전체 조회
+	@GetMapping("projectCalendarRender")
+	@ResponseBody
+	public Map<String, List<Map<String, Object>>> prjCalendar(@RequestParam int projectId, HttpSession session) {
+        ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+        
+        //해당 프로젝트의 모든 일정 캘린더화
+        List<ScheVO> scheList =  boardService.getScheCalendar(projectInfo.getProjectId());
+        //해당 프로젝트의 상위 업무 캘린더화
+        List<TaskVO> taskList = boardService.getTaskCalendar(projectInfo.getProjectId());
+        
+		//json객체 리스트화
+		JSONObject jsonObj = new JSONObject();
+		JSONArray scheArr = new JSONArray();
+		JSONArray taskArr = new JSONArray();
+		HashMap<String, Object> hash = new HashMap<String, Object>();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+		for(int i=0;i<scheList.size();i++) {
+			hash.put("id", scheList.get(i).getPrjBoardId());//단건조회용 sche_id 입력
+			hash.put("title", scheList.get(i).getPrjBoardTitle()); //제목
+			//원하는 데이터 포맷 지정
+			String strStartDate = simpleDateFormat.format(scheList.get(i).getStartDate()); 
+			hash.put("start", strStartDate); //시작일자
+			String strEndDate = simpleDateFormat.format(scheList.get(i).getEndDate()); 
+			hash.put("end", strEndDate); //종료일자
+			
+			jsonObj = new JSONObject(hash);
+			scheArr.add(jsonObj);
+		}
+		for(int i=0;i<taskList.size();i++) {
+			hash.put("id", "t"+taskList.get(i).getPrjBoardId());//단건조회용 sche_id 입력
+			hash.put("title", taskList.get(i).getPrjBoardTitle()); //제목
+			//원하는 데이터 포맷 지정
+			String strStartDate = simpleDateFormat.format(taskList.get(i).getStartDate()); 
+			hash.put("start", strStartDate); //시작일자
+			String strEndDate = simpleDateFormat.format(taskList.get(i).getEndDate()); 
+			hash.put("end", strEndDate); //종료일자
+			hash.put("allDay", "true");
+			hash.put("color", "#2a9d8f");
+			
+			jsonObj = new JSONObject(hash);
+			taskArr.add(jsonObj);
+		}
+//		//참여자 정보
+//		PrjParticirVO particir = new PrjParticirVO();
+//        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+//        particir.setProjectId(projectId);
+//        PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
+        
+        HashMap<String, List<Map<String, Object>>> result = new HashMap<String, List<Map<String,Object>>>();
+        result.put("scheList", scheArr);
+        result.put("taskList", taskArr);
+        
+		return result;
+	}
+	
+	//프로젝트 일정 수정
+	@PostMapping("prjScheUpdate")
+	@ResponseBody
+	public String prjScheUpdate(@RequestBody BoardRequestVO brVO) {
+		BoardVO boardVO = new BoardVO();
+		ScheVO scheVO = new ScheVO();
+		boardVO = brVO.getBoardVO();
+		scheVO = brVO.getScheVO();
+		scheVO.setPrjBoardId(boardVO.getPrjBoardId());
+		
+		boardService.updateBoard(boardVO);
+		boardService.updateSche(scheVO);
+		return "";
+	}
+	//프로젝트 일정 삭제
+	@RequestMapping("deleteSche")
+	@ResponseBody
+	public int deleteSche(ScheVO scheVO) {
+		return boardService.deleteSche(scheVO);
+	}
+	
 	//프로젝트 일정 캘린더 상세조회
 	@GetMapping("getScheBoardInfo")
 	@ResponseBody
