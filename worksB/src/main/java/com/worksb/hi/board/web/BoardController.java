@@ -554,6 +554,23 @@ public class BoardController {
 		return result;
 	}
 	
+	//프로젝트 일정 입력
+	@PostMapping("calInsertSche")
+	@ResponseBody
+	public String insertSche(@RequestBody BoardRequestVO brVO) {
+		System.out.println(brVO);
+		BoardVO boardVO = new BoardVO();
+		ScheVO scheVO = new ScheVO();
+		boardVO = brVO.getBoardVO();
+		scheVO = brVO.getScheVO();
+		
+		boardService.insertBoard(boardVO);
+		int prjBoardId = boardVO.getPrjBoardId();
+		scheVO.setPrjBoardId(prjBoardId);
+		boardService.insertSche(scheVO);
+		return "";
+	}
+	
 	//프로젝트 일정 수정
 	@PostMapping("prjScheUpdate")
 	@ResponseBody
