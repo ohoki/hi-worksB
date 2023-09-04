@@ -430,7 +430,7 @@ public class BoardController {
 		return resultMap;
 	}
 	
-	// 게시글별 좋아요 확인
+	// 좋아요 여부 / 좋아요 전체 수
 	@GetMapping("/gePrjLike")
 	@ResponseBody
 	public Map<String, Object> gePrjLike(BoardVO boardVO) {

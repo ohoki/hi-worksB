@@ -1931,7 +1931,7 @@
 			// 댓글 불러오기
 			getCommentList(boardList[i].dataset.id, boardList[i].dataset.type);
 			
-			// 좋아요 여부 (내꺼) / 좋아요 전체 수
+			// 좋아요 여부 / 좋아요 전체 수
 			getPrjLike('${memberInfo.memberId}', boardList[i].dataset.id);
 			
 			
