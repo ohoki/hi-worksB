@@ -314,6 +314,11 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteSche(ScheVO scheVO) {
 		return boardMapper.deleteSche(scheVO.getPrjBoardId());
 	}
+	//프로젝트 일정 참가자 삭제
+	@Override
+	public int deleteScheParticir(int prjBoardId) {
+		return boardMapper.deleteScheParticir(prjBoardId);
+	}
 
 	
 	

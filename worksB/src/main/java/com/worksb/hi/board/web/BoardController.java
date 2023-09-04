@@ -572,7 +572,14 @@ public class BoardController {
 	@RequestMapping("deleteSche")
 	@ResponseBody
 	public int deleteSche(ScheVO scheVO) {
-		return boardService.deleteSche(scheVO);
+		int deleteSche = boardService.deleteSche(scheVO);
+		
+		BoardVO boardVO = new BoardVO();
+		boardVO.setPrjBoardId(scheVO.getPrjBoardId());
+		int deleteBoard = boardService.deleteBoard(boardVO);
+		
+		int deleteParticir = boardService.deleteScheParticir(scheVO.getPrjBoardId());
+		return deleteSche+deleteBoard+deleteParticir;
 	}
 	
 	//프로젝트 일정 캘린더 상세조회

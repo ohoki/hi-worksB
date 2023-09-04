@@ -982,7 +982,9 @@
 		
 		// 일정 수정 폼
 		$('p[data-type="update"]').on('click', function(e){
-
+			console.log('${memberInfo.memberId}')
+			
+			
 			let scheId = $('#prjScheId').val()
 			let prjBoardIdInput = $('#prjBoardId');
 			let prjId = '${projectInfo.projectId}';
@@ -1065,7 +1067,9 @@
 				  data : {"prjBoardId":scheId},
 				  success : function(result){
 					  console.log(result)
-					  alert("삭제완료")
+					  if(result==3){
+						  alert("삭제완료")
+					  };
   					$('div[data-boardmodal]').attr('class','d-none');
 					//상세조회 모달 끄기
 					$('#prjSche-modal').removeClass('modal-prjSche-visible');
