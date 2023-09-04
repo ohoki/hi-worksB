@@ -934,6 +934,7 @@
 				});
 			}
 		};
+		
 		// 일정 참여
 		$('.sche-btns button').on('click', function(e) {
 			let btn = $(e.currentTarget);
@@ -981,6 +982,8 @@
 		
 		// 일정 수정 폼
 		$('p[data-type="update"]').on('click', function(e){
+			let 
+			if()
 			let scheId = $('#prjScheId').val()
 			let prjBoardIdInput = $('#prjBoardId');
 			let prjId = '${projectInfo.projectId}';
@@ -1004,7 +1007,7 @@
 					$('.board-form input[name="scheAddr"]').val(result.scheVO.scheAddr);
 					$('.board-form input[name="scheAddrDetail"]').val(result.scheVO.scheAddrDetail);
 					$('.board-form select[name="alarmDateCode"]').val(result.scheVO.alarmDateCode);
-					$('.board-form textarea[name="prjBoardSubject"]').val(result.boardVO.prjBoardSubject);
+					$('.board-form textarea[name="prjBoardSubject"]').val(editor7.getData());
 					//ckeditor값 넣기
 				},
 				error : function(err){
@@ -1057,7 +1060,6 @@
 			
 			console.log(scheId);
 			if (confirm("삭제하시겠습니까?") == true){ 
-			   console.log("완료되었습니다.");
 			   $.ajax({
 				  url : 'deleteSche',
 				  method : 'GET',
@@ -1237,7 +1239,7 @@
 	            'MathType'
 	        ]
 	   	}).then(newEditor => {
-	   	 	window['editor7'] = newEditor;
+	   	 	let editor7 = newEditor;
 	    }).catch(error => {
 	        console.error(error );
 	    });	
