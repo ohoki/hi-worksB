@@ -27,6 +27,7 @@ import com.worksb.hi.board.service.ScheParticirVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
+import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.ProjectService;
@@ -361,6 +362,39 @@ public class BoardController {
 	public int deleteBoard(BoardVO boardVO) {
 		return boardService.deleteBoard(boardVO);
 	}
+	
+	// 게시글 좋아요 등록/해제
+	@GetMapping("/likeBoard")
+	@ResponseBody
+	public  Map<String, Object> like(BoardVO boardVO){
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		BoardVO likeCheck = boardService.getMemLike(boardVO);
+		if(likeCheck == null) {
+			boardService.insertPrjLike(boardVO);
+			resultMap.put("checkLike", "like");
+		} else {
+			boardService.deletePrjLike(boardVO);
+			resultMap.put("checkLike", "unlike");
+		}
+		return resultMap;
+	}
+	
+	// 좋아요 여부 / 좋아요 전체 수
+	@GetMapping("/gePrjLike")
+	@ResponseBody
+	public Map<String, Object> gePrjLike(BoardVO boardVO) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		BoardVO memberLike = boardService.getMemLike(boardVO);
+		List<BoardVO> boardLike = boardService.getPrjLike(boardVO);
+		
+		resultMap.put("memberLike", memberLike);
+		resultMap.put("boardLike", boardLike);
+		
+		return resultMap;
+	}
+	
 	
 	
 	//상단 고정 여부 수정

@@ -455,6 +455,17 @@
           WHERE a.prj_board_id = #{prjBoardId} 
 	 </select>
 	
+	 <!-- 좋아요 -->
+	<select id="getMemLike" resultType="BoardVO">
+		SELECT	board_id,
+				board_type,
+				member_id,
+				like_id
+		FROM	prj_like
+		WHERE	board_id = #{boardId}	
+			AND	member_id = #{memberId}
+	</select>
+
 	<!-- 업무 정보 변경 -->
 	<update id="updateTaskInfo" parameterType="AllTaskBoardVO">
 		UPDATE prj_task 
@@ -472,8 +483,41 @@
 	 
 	 
 	 
+
 	
+	<insert id="insertPrjLike" parameterType="BoardVO">
+		<selectKey keyProperty="likeId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(like_id), 0) + 1
+			FROM prj_like
+		</selectKey>
+		INSERT INTO prj_like (
+								like_id,
+								board_id,
+								board_type,
+								member_id
+							)
+						VALUES (
+									#{likeId},
+									#{boardId},
+									#{boardType},
+									#{memberId}		
+							)
+	</insert>
 	
+	<delete id="deletePrjLike" parameterType="BoardVO">
+		DELETE	prj_like
+		WHERE	board_id = #{boardId}	
+			AND	member_id = #{memberId}
+	</delete> 
+	
+	<select id="getPrjLike" resultType="BoardVO">
+		SELECT	board_id,
+				board_type,
+				member_id,
+				like_id
+		FROM	prj_like
+		WHERE	board_id = #{boardId}	
+	</select>
 	
 	
 	

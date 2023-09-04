@@ -15,10 +15,10 @@ public class ProjectCmtServiceImpl implements ProjectCmtService {
 	@Autowired
 	ProjectCmtMapper projectCmtMapper;
 	
-	// 댓글 조회
+	// 댓글 전체 조회
 	@Override
 	public List<ProjectCmtVO> projectCmtList(ProjectCmtVO projectCmtVO) {
-		return null;
+		return projectCmtMapper.projectCmtList(projectCmtVO);
 	}
 	
 	// 댓글 등록
@@ -37,6 +37,11 @@ public class ProjectCmtServiceImpl implements ProjectCmtService {
 	@Override
 	public int deleteProjectCmt(ProjectCmtVO projectCmtVO) {
 		return projectCmtMapper.deleteProjectCmt(projectCmtVO);
+	}
+
+	@Override
+	public ProjectCmtVO projectCmtInfo(ProjectCmtVO projectCmtVO) {
+		return projectCmtMapper.projectCmtInfo(projectCmtVO);
 	}
 
 }

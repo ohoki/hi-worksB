@@ -55,6 +55,17 @@ public interface BoardService {
 	// 게시글 정보
 	public BoardVO getBoardInfo(int prjBoardId);
 	
+	// 좋아요 등록
+	public int insertPrjLike(BoardVO boardVO);
+	// 좋아요 취소
+	public int deletePrjLike(BoardVO boardVO);
+	// 좋아요 확인
+	public BoardVO getMemLike(BoardVO boardVO);
+	// 좋아요 확인 - 게시글
+	public List<BoardVO> getPrjLike(BoardVO boardVO);
+
+	
+	
   // 업무글 삭제
 	public int deleteTask(TaskVO taskVO);
 	
