@@ -43,8 +43,4 @@ public class HomeController {
 	@GetMapping("admin")
 	public void admin() {}
 	
-	@GetMapping("lunch")
-	public String lunch() {
-		return "mypage/lunch";
-	}
 }
