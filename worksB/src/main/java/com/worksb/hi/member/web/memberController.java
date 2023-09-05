@@ -336,6 +336,12 @@ public class memberController {
 			memberService.updateMemo(memberVO);
 	    }
     }
+	@GetMapping("/searchMember")
+	@ResponseBody
+	public List<MemberVO> searchMember(@RequestParam("name")String memberName,HttpSession session) {
+		int companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+		return memberService.getMember(companyId,memberName);
+	}
 
 	//회원 초대
 	@GetMapping("/member/inviteMember")

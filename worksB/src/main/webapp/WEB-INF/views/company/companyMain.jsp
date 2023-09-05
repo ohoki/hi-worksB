@@ -138,7 +138,7 @@
 	queryParams += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent('128'); /**/
 	xhr.open('GET', url + queryParams);
 	xhr.onreadystatechange = function () {
-	    if (this.readyState == 4) {
+	    if (this.readyState == 1) {
 	        console.log('Status: '+this.status+'nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'nBody: '+this.responseText);
 	    }
 	};
