@@ -216,6 +216,13 @@ public class AdminController {
 			// list넘기기
 			List<MemberVO> memberList = adminService.companyMemberList(companyId);
 			model.addAttribute("memberList", memberList );
+			
+			//부서, 직급 정보 가져오기
+			List<DepartmentVO> deptList = companyService.getDepartment(company);
+			List<JobVO> jobList = companyService.getJob(company);
+			
+			model.addAttribute("deptList", deptList);
+			model.addAttribute("jobList", jobList);
 			return "adminPage/memberManagement";
 		}
 		
