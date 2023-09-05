@@ -291,7 +291,16 @@ public class BoardController {
 		
 		return "project/projectTask";
 	}
-
+	
+	// 프로젝트 업무탭 - 상위업무 리스트
+	@GetMapping("/getHightaskList")
+	@ResponseBody
+	public List<AllTaskBoardVO> getHightaskList(@RequestParam int projectId) {
+		// 상위 업무 리스트
+		return boardService.getTaskList(projectId);
+	}
+	
+	
 
 	//상위,하위 업무 수정
 	@PostMapping("/updateTask")

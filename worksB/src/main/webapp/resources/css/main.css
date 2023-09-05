@@ -378,14 +378,3 @@ body {
   bottom: 0;
   width: 100%;
 }
-
-.state {
-	position: absolute;
-	width: 10px;
-	height: 10px;
-	border-radius: 50%;
-	bottom: 0;
-	right: 0;
-	z-index: 2;
-	
-}

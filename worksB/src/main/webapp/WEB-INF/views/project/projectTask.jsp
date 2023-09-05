@@ -13,27 +13,42 @@
 <script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 <style>
 	table{
-		border: 1px solid var(--color-light-grey);
+		width: 100%;
+		color : var(--color-dark-grey);
 	}
 	
 	th, td {
-		border: 1px solid var(--color-light-grey);
+		border: 1px solid var(--color-dark-beigie);
+		text-align: right;
 		width : 140px;
+	}
+	
+	th {
+		text-align: center;
+		height: 40px;
+	}
+	
+	td, th {
+		padding: 0 10px;
 	}
 	  
 	tr{
+		border: 1px solid var(--color-dark-beigie);
 		cursor: pointer;
 	}
-	
-	tr:hover{
-		background-color : var(--color-beigie);
+
+	a {
+   		color: black;
+    	text-decoration: none;
 	}
 	.highTask{
-		background-color : var(--color-light-white);
+		background-color : rgb(0, 180, 216, 0.05);
+		font-weight: var(--weight-bold);
 	}
 	
 	.subTaskBtn{
-		background-color : var(--color-dark-blue);
+		background-color: transparent;
+		color: var(--color-dark-grey);
 	}
 	
 	.modal-task-visible {
@@ -260,9 +275,7 @@
 	}
 
 	.task__search{
-		margin-top : 20px;
-		width : 350px;
-		margin-bottom : 20px;
+		margin : 10px;
 	}
 	
 	#task-menu-modal{
@@ -658,15 +671,15 @@
 	<!-- 사진 업로드를 위한 ckfinder -->
 	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 
-	<div>
-		<div>
+	<div style="padding: 0 2px;">
+		<div style="text-align: right; padding: 0 40px;">
 			<input type="text" placeholder="업무명을 검색하세요." class="header__search task__search">
 		</div>
 		<!-- 전체 업무 조회 -->
 		<table class="taskTable">
 			<thead>
 				<tr>
-					<th>버튼자리</th>
+					<th>업무구분</th>
 					<th>업무명</th>
 					<th>상태</th>
 					<th>우선순위</th>
@@ -678,19 +691,6 @@
 				</tr>
 			</thead>
 			<tbody class="taskList" >
-				<c:forEach items="${taskList }" var="task">
-					<tr data-id="${task.prjBoardId}" class="highTask taskTr">
-						<td class="taskBtn"></td>
-			            <td class="prjBoardTitle">${task.prjBoardTitle}</td>
-			            <td class="state">${task.stateName}</td>
-			            <td class="priority">${task.priorityName}</td>
-			            <td class="taskManager"></td>
-			            <td class="startDate"><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd"/></td>
-			            <td class="endDate"><fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd"/></td>
-			            <td class="prjBoardRegdate"><fmt:formatDate value="${task.prjBoardRegdate}" pattern="yyyy-MM-dd"/></td>
-			            <td class="taskId">${task.taskId }</td>
-					</tr>
-				</c:forEach>
 			</tbody>
 		</table>
 		<!-- 전체 업무 조회 끝-->
@@ -1014,10 +1014,15 @@
 	//ckeditor 종료
 
 
-	// 업무 리스트
+	//상위 업무 리스트
 	$(document).ready(function() {
+		getTaskListInfo();
+	});
+	
+	//업무 추가 정보 불러오기
+	function getSubtaskInfo() {
 		let taskBoardList = $('.highTask');
-	    
+		
 		taskBoardList.each(function() {
 			let taskInfo = $(this);
 			let prjBoardId = taskInfo.data('id');
@@ -1027,7 +1032,6 @@
 				type: 'GET',
 				data: { 'prjBoardId': prjBoardId },
 				success: function(taskData) {
-					console.log(taskData);
 					// 업무 담당자
 					let taskManagers = taskData.highManager;
 					let manager = taskInfo.find('.taskManager');
@@ -1039,7 +1043,7 @@
 						let text = " 외 " + count + "명";
 						manager.text(taskManagers[0].memberName + text);
 					} else {
-						manager.text('');
+						manager.text('-');
 					}
 	                
 					// 하위 업무
@@ -1048,7 +1052,7 @@
 					// 하위업무 있을때 버튼
 					if(subTasks.length > 0){
 						let taskBtn = taskInfo.find('.taskBtn');
-						taskBtn.append('<button class="subTaskBtn">버튼</button>');
+						taskBtn.append('<button class="subTaskBtn">하위업무 보기</button>');
 					}
 					
 					for (let j = 0; j < subTasks.length; j++) {
@@ -1067,7 +1071,7 @@
 						if(subTask.priorityName != null){
 							subTaskInfo.append('<td class="subPriority">' + subTask.priorityName + '</td>');
 						}else{
-							subTaskInfo.append('<td class="subPriority"></td>');
+							subTaskInfo.append('<td class="subPriority">-</td>');
 						}
 
 						// 하위 업무 담당자
@@ -1083,17 +1087,22 @@
 						        subManager.text(subManagers[0].memberName + text);
 						    }
 						} else {
-							subManager.text('');
+							subManager.text('-');
 						}
 						subTaskInfo.append(subManager);
 						
 						// 하위 업무는 startDate 없음
-						subTaskInfo.append('<td></td>');
+						subTaskInfo.append('<td>-</td>');
 						if(subTask.endDate != null){
+							subTask.endDate = get_date_str(new Date(subTask.endDate));
+							
 							subTaskInfo.append('<td class="subEndDate">' + subTask.endDate + '</td>');
 						}else{
-							subTaskInfo.append('<td class="subEndDate"></td>');
+							subTaskInfo.append('<td class="subEndDate">-</td>');
 						}
+						
+						subTask.prjBoardRegdate = get_date_str(new Date(subTask.prjBoardRegdate));
+						
 						subTaskInfo.append('<td class="subRegdate">' + subTask.prjBoardRegdate + '</td>');
 						
 						subTaskInfo.append('<td class="subTaskId">' + subTask.taskId + '</td>');
@@ -1123,9 +1132,65 @@
 			});
 
 	    });
-	    
-	});
+	};
 	
+	//날짜 변환
+	function get_date_str(date)
+	{
+	    var sYear = date.getFullYear();
+	    var sMonth = date.getMonth() + 1;
+	    var sDate = date.getDate();
+
+	    sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
+	    sDate  = sDate > 9 ? sDate : "0" + sDate;
+	    return sYear + '/' + sMonth + '/' + sDate;
+	}
+	
+	
+	//업무 리스트 전체 출력
+	function getTaskListInfo() {
+		$.ajax({
+			url:'${pageContext.request.contextPath}/getHightaskList',
+			type : 'GET',
+			data : {'projectId' : '${projectInfo.projectId}'},
+			success : function(taskList) {
+				let taskBoardList = $('.highTask');
+				
+				$('.taskList').empty();
+				
+				for(let i=0; i<taskList.length; i++) {
+					taskList[i].startDate = taskList[i].startDate == null ? '-':get_date_str(new Date(taskList[i].startDate));;
+					taskList[i].endDate = taskList[i].endDate == null ? '-':get_date_str(new Date(taskList[i].endDate));;
+					taskList[i].priorityName = taskList[i].priorityName == null ? '-':taskList[i].priorityName;
+					taskList[i].prjBoardRegdate = get_date_str(new Date(taskList[i].prjBoardRegdate));;
+					
+					
+					let hightaskList = `
+						<tr data-id="\${taskList[i].prjBoardId}" class="highTask taskTr">
+							<td class="taskBtn"></td>
+				            <td class="prjBoardTitle">\${taskList[i].prjBoardTitle}</td>
+				            <td class="state">\${taskList[i].stateName}</td>
+				            <td class="priority">\${taskList[i].priorityName}</td>
+				            <td class="taskManager"></td>
+				            <td class="startDate">\${taskList[i].startDate}</td>
+				            <td class="endDate">\${taskList[i].endDate}</td>
+				            <td class="prjBoardRegdate">\${taskList[i].prjBoardRegdate}</td>
+				            <td class="taskId">\${taskList[i].taskId }</td>
+						</tr>`;
+						
+					$('.taskList').append(hightaskList);
+				}
+				
+				getSubtaskInfo();
+				
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	};
+	
+	//모달 페이지	
 	$('#task-modal').on('click', function(e) {
 	    if ($(e.target).is('#task-modal')) {
 	        $('#task-modal').removeClass('modal-task-visible');
@@ -1149,7 +1214,6 @@
 			type : 'GET',
 			data : {'prjBoardId' : prjBoardId},
 			success : function(taskData) {
-				console.log(taskData);
 				let taskInfo = $('#task-modal');
 				// 클릭한 업무 업무
 				let highTask = taskData.highTask[0];
@@ -1456,7 +1520,7 @@
 			contentType:'application/json',
 			success:function(data){
 				alert('정상적으로 수정되었습니다.');
-				location.href='${pageContext.request.contextPath}/projectTask?projectId=' + data;
+				getTaskListInfo();
 			},error: function(reject) {
 				console.log(reject);
 			}
@@ -1607,7 +1671,6 @@
 	        prjManager.push({prjBoardId, prjParticirId});
 	    });
 		
-		console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 		// 수정
 		$.ajax({
 			url:'${pageContext.request.contextPath}/updateTask',
@@ -1621,6 +1684,7 @@
 				$('.modal-backdrop').removeClass('show');
 				$('.modal-backdrop').css('display', 'none');
 				
+				getTaskListInfo();
 			},error: function(reject) {
 				console.log(reject);
 			}
@@ -1637,9 +1701,8 @@
 				type: 'POST',
 				data: {'prjBoardId' : prjBoardId},
 				success: function(response){
-					console.log(response)
 					alert("삭제되었습니다.");
-					location.href='${pageContext.request.contextPath}/projectTask?projectId=${projectInfo.projectId}';
+					getTaskListInfo();
 				},
 				error: function(error){
 					alert("삭제에 실패했습니다.");
@@ -1668,6 +1731,7 @@
 					$('.modal-backdrop').removeClass('show');
 					$('.modal-backdrop').css('display', 'none');
 					
+					getTaskListInfo();
 				},
 				error: function(error){
 					alert("삭제에 실패했습니다.");
@@ -1816,7 +1880,6 @@
 			data : {'memberId': memberId, 'boardId' : boardId},
 			success : function(likeInfo){
 				// 게시글 좋아요 수
-				console.log(likeInfo)
 				$('#task-modal').find('span[data-likeCount]').text(likeInfo.boardLike.length);
 				
 				// 좋아요 여부
@@ -1834,16 +1897,6 @@
 			}
 		})
 	};
-	/*
-	// 북마크
-	function getBookMark(memberId, projectId){
-		$.ajax({
-
-		})
-	}
-	*/
 </script>
-
-
 </body>
 </html>
