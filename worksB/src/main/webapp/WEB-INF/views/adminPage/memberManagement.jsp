@@ -55,6 +55,7 @@
 </style>
 </head>
 <body>
+	<h2>구성원 관리</h2>
 	<ul>
 		<li>현재 구성원</li>
 		<li>가입 대기</li>
@@ -62,21 +63,21 @@
 	<table>
 		<thead>
 			<tr>
-				<td><input type="checkbox"></td>
-				<td>아이디</td>
-				<td>이름</td>
-				<td>전화번호</td>
-				<td>등급</td>
-				<td>직급번호</td>
-				<td>부서번호</td>
-				<td>근무 상태</td>
-				<td>접속 ip</td>
-				<td>접속 여부</td>
-				<td>관리</td>
+				<th><input type="checkbox"></th>
+				<th>아이디</th>
+				<th>이름</th>
+				<th>전화번호</th>
+				<th>등급</th>
+				<th>직급번호</th>
+				<th>부서번호</th>
+				<th>근무 상태</th>
+				<th>접속 ip</th>
+				<th>접속 여부</th>
+				<th>관리</th>
 			</tr>
 		</thead>
 		<tbody class="taskList">
-			<c:forEach items="${memberList}" var="member">
+			<%-- <c:forEach items="${memberList}" var="member">
 			<tr data-id="${member.memberId }" class="highmember memberTr">
 				<th><input type="checkbox"></th>
 				<th>${member.memberId }</th>
@@ -100,10 +101,8 @@
 				<th>${member.conStatus }</th>
 				<th><input type="button" value="관리"></th>
 			</tr>
-		</c:forEach>
+		</c:forEach> --%>
 		</tbody>
-		
-		
 	</table>
 	<div  id="memberUpdateModal">
 		<form class="updateMember" method="post">
@@ -117,37 +116,31 @@
 				<br>
 				<label>이름 </label>
 				<input data-memberName type="text" name="memberName"><br>
-				<!-- <label>부서명 </label>
-				<input data-deptName type="text" name="deptName"><br>
-				<label>직책 </label>
-				<input data-jobName type="text" name="jobName"><br> -->
+
 				<label>휴대폰 번호 </label>
 				<input data-memberPhone type="text" name="memberphone"><br>
-<!-- 				<label>등급 </label>
-				<input data-memberGrade type="text" name="memberGrade"> -->
-				
 				<p>
 					<span>부서</span>
-						<label for="deptId">
-							<select id="deptId" name="deptId" data-deptId>
-								<option value="" >선택해주세요</option>
-								<c:forEach items="${deptList }" var="dept">
-									<option value="${dept.deptId }" >${dept.deptName }</option>
-								</c:forEach>
-							</select>
-						</label>
-					</p>
-					<p>
-						<span>직책</span>
-						<label for="jobId">
-							<select id="jobId" name="jobId" data-jobId>
-								<option value="" >선택해주세요</option>
-								<c:forEach items="${jobList }" var="job">
-									<option value="${job.jobId }"> ${job.jobName }</option>
-								</c:forEach>
-							</select>
-						</label>
-					</p>
+					<label for="deptId">
+					<select id="deptId" name="deptId" data-deptId>
+						<option value="" >선택해주세요</option>
+							<c:forEach items="${deptList }" var="dept">
+								<option value="${dept.deptId }" >${dept.deptName }</option>
+							</c:forEach>
+					</select>
+					</label>
+				</p>
+				<p>
+					<span>직책</span>
+					<label for="jobId">
+					<select id="jobId" name="jobId" data-jobId>
+						<option value="" >선택해주세요</option>
+							<c:forEach items="${jobList }" var="job">
+								<option value="${job.jobId }"> ${job.jobName }</option>
+							</c:forEach>
+					</select>
+					</label>
+				</p>
 					<p>
 						<span>회원 등급</span>
 						<label for="memberGrade" >
@@ -174,9 +167,9 @@
 	
 		function getmemberList(){
 			$.ajax({
-				url:'${pageContext.request.contextPath}/admin/memberManagements',
+				url:'${pageContext.request.contextPath}/admin/memberManagementss',
 				type : 'GET',
-				data : {'memberId' : ${memberList.memberId} },
+				data : {companyId : "${memberInfo.companyId}" },
 				success : function(taskList){
 					let membersList = $('.highmember');
 					
@@ -185,28 +178,28 @@
 					for(let i=0; i<taskList.lenth; i++){
 						
 						let hightaskList =
-							<tr data-id="${member.memberId }" class="highmember memberTr">
-								<th><input type="checkbox"></th>
-							<th>\${member.memberId }</th>
-							<th>\${member.memberName }</th>
-							<th>\${member.memberPhone }</th>
-							<th>\${member.gradeName }</th>
-							<th>\${member.jobName }</th>
-							<th>\${member.deptName }</th>
+							<tr data-id="\${member.memberId }" class="highmember memberTr">
+								<td><input type="checkbox"></td>
+							<td>\${member.memberId }</td>
+							<td>\${member.memberName }</td>
+							<td>\${member.memberPhone }</td>
+							<td>\${member.gradeName }</td>
+							<td>\${member.jobName }</td>
+							<td>\${member.deptName }</td>
 							<c:choose>
-								<c:when test="${member.empStatus eq 'S1'}">
-									<th>접속중</th>
+								<c:when test="\${member.empStatus eq 'S1'}">
+									<td>접속중</td>
 								</c:when>
-								<c:when test="${member.empStatus eq 'S2'}">
-								<th>자리비움</th>
+								<c:when test="\${member.empStatus eq 'S2'}">
+								<td>자리비움</td>
 								</c:when>
-								<c:when test="${member.empStatus eq 'S3'}">
-								<th>접속 종료</th>
+								<c:when test="\${member.empStatus eq 'S3'}">
+								<td>접속 종료</td>
 								</c:when>
 							</c:choose>
-							<th>\${member.conIp }</th>
-							<th>\${member.conStatus }</th>
-							<th><input type="button" value="관리"></th>
+							<td>\${member.conIp }</td>
+							<td>\${member.conStatus }</td>
+							<td><input type="button" value="관리"></td>
 						</tr>;
 						
 						$(".taskList").append(hightaskList);
@@ -324,14 +317,8 @@
 				break;
 			}
 		}
-		if(memberGrade == 'H1'){
-			
-		}
 	});
-			
-		
-		
-		
+
 	</script>
 </body>
 </html>

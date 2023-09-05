@@ -202,8 +202,29 @@
                         on(m.dept_id = d.dept_id)
                       left outer join job j
                         on(m.job_id = j.job_id)
-		 where member_id = #{memberId}
+		 where company_id = #{companyId}
 	</select>
+	
+	<!-- 승인 대기중 인원 출력 -->
+	<select id="memberAccpList" resultType="MemberVO">
+		select member_id,
+			   member_name,
+			   member_phone,
+			   member_grade,
+			   find_subcode(m.member_grade) AS grade_name,
+			   company_id,
+		  FROM member
+		 WHERE company_accp = #{companyAccp}
+	</select>
+	
+	<!-- 가입 승인 -->
+	<update id="memberAccpUpdate" parameterType="MemberVO">
+		UPDATE member
+			<set>
+				company_accp = 'A1'
+			</set>
+		 WHERE memberId = #{memberId}
+	</update>
 
 	<!--  -->
 	<select id="departmentList" resultType="DepartmentVO">
