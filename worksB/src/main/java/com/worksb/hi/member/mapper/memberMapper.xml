@@ -90,45 +90,44 @@
 	<update id="updateMember" parameterType="MemberVO">
 		UPDATE member 
 			<set>
-				member_id = member_id
 				<if test="memberName != null and !memberName.equals('')">
-				,member_name = #{memberName}
+				member_name = #{memberName},
 				</if>
 				<if test="memberPw != null and !memberPw.equals('')">
-				,member_pw = #{memberPw}
+				member_pw = #{memberPw},
 				</if>
 				<if test="memberPhone != null and !memberPhone.equals('')">
-				,member_phone = #{memberPhone}
+				member_phone = #{memberPhone},
 				</if>
 				<if test="profilePath != null and !profilePath.equals('')">
-				,profile_path = #{profilePath}
+				profile_path = #{profilePath},
 				</if>
 				<if test="realProfilePath != null and !realProfilePath.equals('')">
-				,real_profile_path = #{realProfilePath}
+				real_profile_path = #{realProfilePath},
 				</if>
 				<if test="memberGrade != null and !memberGrade.equals('')">
-				,member_grade = #{memberGrade}
+				member_grade = #{memberGrade},
 				</if>
 				<if test="conIp != null and !conIp.equals('')">
-				,con_ip = #{conIp}
+				con_ip = #{conIp},
 				</if>
 				<if test="jobId != null and jobId != 0">
-				,job_id = #{jobId}
+				job_id = #{jobId},
 				</if>
 				<if test="deptId != null and deptId != 0">
-				,dept_id = #{deptId}
+				dept_id = #{deptId},
 				</if>
 				<if test="empStatus != null and !empStatus.equals('')">
-				,emp_status = #{empStatus}
+				emp_status = #{empStatus},
 				</if>
 				<if test="conStatus != null and !conStatus.equals('')">
-				,con_status = #{conStatus}
+				con_status = #{conStatus},
 				</if>
 				<if test="companyId != null and companyId != 0">
-				,company_id = #{companyId}
+				company_id = #{companyId},
 				</if>
 				<if test="companyAccp != null and !companyAccp.equals('')">
-				,company_accp = #{companyAccp}
+				company_accp = #{companyAccp}
 				</if>
 			</set>
 		WHERE member_id = #{memberId}

@@ -13,23 +13,24 @@
 <script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 <style>
 	table{
-		width: 100%;
+		width: 95%;
 		color : var(--color-dark-grey);
+		margin: 0 auto;
 	}
 	
 	th, td {
 		border: 1px solid var(--color-dark-beigie);
 		text-align: right;
 		width : 140px;
+		text-align: center;
 	}
 	
 	th {
-		text-align: center;
 		height: 40px;
 	}
 	
-	td, th {
-		padding: 0 10px;
+	td {
+		padding: 10px;	
 	}
 	  
 	tr{
@@ -42,17 +43,62 @@
     	text-decoration: none;
 	}
 	.highTask{
-		background-color : rgb(0, 180, 216, 0.05);
+		background-color : rgb(0, 180, 216, 0.03);
 		font-weight: var(--weight-bold);
 	}
 	
 	.subTaskBtn{
 		background-color: transparent;
 		color: var(--color-dark-grey);
+		width: 70px;
+		height: 30px;
+		background: var(--color-dark-red);
+		color: white;
+		border-radius: 5px;
 	}
 	
 	.modal-task-visible {
 		display: block !important;
+	}
+	
+	td[data-state=G1] {
+		font-weight: var(--weight-bold);
+		color: #36c9c6;		
+	}
+	
+	td[data-state=G2] {
+		font-weight: var(--weight-bold);
+		color: #094074;
+	}
+	
+	td[data-state=G3] {
+		color: var(--color-orange);	
+		font-weight: var(--weight-bold);
+	}
+	
+	td[data-state=G4] {
+		color: var(--color-green);	
+		font-weight: var(--weight-bold);
+	}
+	
+	td[data-state=G5] {
+		color: var(--color-dark-white);
+		font-weight: var(--weight-bold);
+	}
+	
+	td[data-priority=F1] {
+		color: red;
+		font-weight: var(--weight-bold);
+	}
+	
+	td.taskId, td.subTaskId {
+		color: var(--color-dark-red);
+		font-weight: var(--weight-bold);
+	}
+	
+	td.prjBoardRegdate, td.startDate, td.endDate,
+	td.subRegdate, td.subStartDate, td.subEndDate {
+		text-align: right;
 	}
 	
 	#task-modal{
@@ -276,6 +322,7 @@
 
 	.task__search{
 		margin : 10px;
+		cursor: default;
 	}
 	
 	#task-menu-modal{
@@ -728,6 +775,7 @@
 						<div class="processivity-value"></div>
 					</div>
 					<span data-processivityvalue></span>
+					<input type="hidden" name="processivity">
 				</div>
 			</div>
 				<div class="d-flex" style="margin-right: 40px;">
@@ -1052,7 +1100,7 @@
 					// 하위업무 있을때 버튼
 					if(subTasks.length > 0){
 						let taskBtn = taskInfo.find('.taskBtn');
-						taskBtn.append('<button class="subTaskBtn">하위업무 보기</button>');
+						taskBtn.append('<button class="subTaskBtn">상위업무</button>');
 					}
 					
 					for (let j = 0; j < subTasks.length; j++) {
@@ -1062,14 +1110,14 @@
 						let subTaskInfo = $('<tr class="subTask taskTr" data-id="' + subTask.prjBoardId + '" data-highTask="' + subTask.highTaskId + '" data-highBoard="'+ taskData.highTask[0].prjBoardId +'" data-bs-toggle="modal" data-bs-target="#updateSubTask-modal"></tr>');
 
 						// 버튼자리 빈 셀
-						subTaskInfo.append('<td></td>');
+						subTaskInfo.append('<td style="text-align:center;"><img src="${pageContext.request.contextPath}/resources/icon/arrow-list.PNG" class="profileImg" style="width: 15px; height:15px;"> 하위업무</td>');
 
 						// 하위 업무 정보
 						subTaskInfo.append('<td class="subPrjBoardTitle">' + subTask.prjBoardTitle + '</td>');
-						subTaskInfo.append('<td class="subState">' + subTask.stateName + '</td>');
+						subTaskInfo.append('<td class="subState" data-state="' + subTask.state +'">' + subTask.stateName + '</td>');
 						
 						if(subTask.priorityName != null){
-							subTaskInfo.append('<td class="subPriority">' + subTask.priorityName + '</td>');
+							subTaskInfo.append('<td class="subPriority" data-priority="' + subTask.priority + '">' + subTask.priorityName + '</td>');
 						}else{
 							subTaskInfo.append('<td class="subPriority">-</td>');
 						}
@@ -1092,7 +1140,7 @@
 						subTaskInfo.append(subManager);
 						
 						// 하위 업무는 startDate 없음
-						subTaskInfo.append('<td>-</td>');
+						subTaskInfo.append('<td class="subStartDate">-</td>');
 						if(subTask.endDate != null){
 							subTask.endDate = get_date_str(new Date(subTask.endDate));
 							
@@ -1169,8 +1217,8 @@
 						<tr data-id="\${taskList[i].prjBoardId}" class="highTask taskTr">
 							<td class="taskBtn"></td>
 				            <td class="prjBoardTitle">\${taskList[i].prjBoardTitle}</td>
-				            <td class="state">\${taskList[i].stateName}</td>
-				            <td class="priority">\${taskList[i].priorityName}</td>
+				            <td class="state" data-state="\${taskList[i].state}">\${taskList[i].stateName}</td>
+				            <td class="priority" data-priority="\${taskList[i].priority}">\${taskList[i].priorityName}</td>
 				            <td class="taskManager"></td>
 				            <td class="startDate">\${taskList[i].startDate}</td>
 				            <td class="endDate">\${taskList[i].endDate}</td>
@@ -1567,7 +1615,7 @@
     			boardTitle.val(subTask.prjBoardTitle);
     			boardState.find('input[value=' + subTask.state + ']').prop('checked', true);
     			boardPriority.find('option[value=' + subTask.priority + ']').prop('selected', true);
-    			inputDate.val(subTask.endDate != null ? subTask.endDate : '-');
+    			inputDate.val(subTask.endDate != null ? subTask.endDate : '');
     			
     			taskManagerBox.empty();
     			
@@ -1743,9 +1791,13 @@
 	
 	
 	//진척도!!
-	$('.progress-bar').on("click", function(event) {
-		const progressBar = event.currentTarget;
-		const progressBarInner = $(event.currentTarget).find('.progress-bar-size');
+	$('.progress-bar').on("click", function(e) {
+		updateProcessivity(e);
+	});
+	
+	function updateProcessivity(e) {
+		const progressBar = e.currentTarget;
+		const progressBarInner = $(e.currentTarget).children('div');
 		// 클릭 위치
 		// 창 왼쪽부터 클릭한 위치까지 거리 - 프로그레스바 왼쪽 좌표 = 클릭 위치
 		const clickedPosition = event.clientX - progressBar.getBoundingClientRect().left;
@@ -1757,20 +1809,19 @@
 		const selectedProgress = Math.round((clickedPosition / totalWidth) * 100 / 10) * 10;
 
 		// 클릭한 진척도 값으로 프로그레스 채우기
-		/* progressBarInner.style.width = selectedProgress + "%"; */
 		progressBarInner.css('width', selectedProgress + "%");
 		
 		// input에 선택 한 값 넣기
-	    const hiddenInput = $(progressBar).next().next(); /* document.querySelector("#boardInsertModal input[name='processivity']") */;
+	    const hiddenInput = $(progressBar).next().next(); 
 		
 		if (hiddenInput) {
 			hiddenInput.val(selectedProgress);
 
 			// 선택된 값 표시
-			const progressValue = $(progressBar).next();/* document.querySelector("#boardInsertModal .progress-value") */;
+			const progressValue = $(progressBar).next();
 			progressValue.text(selectedProgress + "%");
 		}
-	});
+	};
 	
 	// 시작일자, 마감일자 범위 선택하기
 	$(document).on('click', 'input[data-date]', function(e) {
@@ -1897,6 +1948,66 @@
 			}
 		})
 	};
+</script>
+
+<script>
+	//업무 게시글 진행상태 변경
+	$('#task-modal div[data-state] button').on('click', function(e) {
+		let boardContainer = $('#task-modal');
+		let targetBtn = $(e.currentTarget);
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let state = targetBtn.val();
+		
+		console.log(prjBoardId);
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'state' : state},
+			success : function(result) {
+				//업무
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : prjBoardId},
+					success : function(taskData) {
+		                let stateBtn = boardContainer.find('div[data-state]');
+		                let activeBtn = stateBtn.find('.active');
+		                // 진행상태 버튼 활성화
+		                activeBtn.removeClass('active');
+		                stateBtn.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+		                
+		                getTaskListInfo();
+				    }, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	
+	//업무 게시글 진척도 변경
+	$('.processivity').on("click", function(e) {
+		updateProcessivity(e);
+		
+		let boardContainer = $('#task-modal');
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let processivity = boardContainer.find('input[name=processivity]').val();		
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
+			success : function(result) {
+				getTaskListInfo();
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
 </script>
 </body>
 </html>
