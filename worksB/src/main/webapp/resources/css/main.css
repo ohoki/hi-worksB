@@ -217,7 +217,6 @@ body {
 .my-profile__btn, .chat__btn {
 	margin-top:30px;
 	background-color: var(--color-dark-red);
-	background-color: rgb(22, 66, 91, 0.8);
 	width: 80%;
 	height: 50px;
 	text-align: center;

@@ -25,7 +25,7 @@
 	.invite-member-modal-content {
 		position: absolute;
 		background-color: white;
-		width: 40%;
+		width: 30%;
 		height: 30%;
 		top:40%;
 		left: 50%;
@@ -35,7 +35,78 @@
 		padding: 30px 0 15px 0;
 		color: var(--color-dark-grey);
 		border: 1px solid var(--color-dark-beigie);
+		background: #fff url(./resources/img/inviteMember.png) no-repeat center;
+		background-size: 300px;
 	}
+	
+	.invite-member-modal-title {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 10px 30px;
+	}
+	
+	.invite-member-modal-title span {
+		font-weight: var(--weight-bold);
+		font-size: var(--font-small);
+	}
+	
+	.invite-member-modal-subject {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+		justify-content: center;
+		padding: 10px 30px;
+	}
+	
+	.invite-email {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 30px auto;
+	}
+	
+	.invite-email label {
+		font-weight: var(--weight-bold);
+		font-size: var(--font-micro);
+		display: inline-block;
+		width: 60px;
+	}
+	
+	.invite-email input{
+		width: 350px;
+		height: 40px;
+		margin: 10px 20px;
+		border: 1px solid var(--color-dark-beigie);
+		border-radius: 10px;
+		display: inline-block;
+		padding: 0 20px;
+		color: var(--color-dark-grey);
+	}
+	
+	button[name=invite] {
+		margin-top:20px;
+		background-color: var(--color-dark-red);
+		width: 40%;
+		height: 50px;
+		text-align: center;
+		color: white;
+		font-weight: var(--weight-bold);
+		font-size: var(--font-regular);
+		border-radius: 5px;
+	}
+	
+	button[name=invite]:hover {
+		background-color: var(--color-white);
+		color: var(--color-dark-red);
+		border: 1px solid var(--color-dark-red);
+		transition: all 0.5s;
+	}
+	
+	#invitedId::placeholder {
+		color: var(--color-dark-red);
+	}
+	
 </style>
 </head>
 <body>
@@ -47,7 +118,6 @@
 			<ul class="side__menu__items">
 				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/projectList">내 프로젝트</a></li>
 				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/SelectFromCompany">전체 프로젝트</a></li>
-				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/">미확인 업무</a></li>
 			</ul>
 		</div>
 		<!-- 게시판 -->
@@ -56,7 +126,6 @@
 			<ul class="side__menu__items">
 				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/noticeList">사내 공지</a></li>
 				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/carpoolList">같이타요</a></li>
-				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/">동호회</a></li>
 			</ul>
 		</div>
 		<!-- 마이 공간 -->
@@ -80,24 +149,21 @@
 	<!-- 구성원 초대 모달 -->
 	<div id="invite-member-modal">
 		<div class="invite-member-modal-content">
-			<div class="sinvite-member-modal-title">
-				<span>비밀번호 찾기</span>
+			<div class="invite-member-modal-title">
+				<span>구성원 초대</span>
 				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor" name="removeModal">
 			</div>
-			<div style="padding: 10px 30px; padding-left: 100px;">
-				<div class="invite-member-modal-info">
+			<div class="invite-member-modal-subject">
+				<div>
+					직원들과 협업을 시작해보세요.
+				</div>
+				<div class="invite-email">
 					<label for="invitedId">이메일</label>
 					<input id="invitedId" name="invitedId" type="email">
-					<button>인증번호 발송</button>
-				</div>
-				<div class="CertificationNumber">
-					<label for="CertificationNumber">인증번호</label>
-					<input id="CertificationNumber" name="CertificationNumber" disabled type="text">
 				</div>
 			</div>
 			<div>
-				<button type="reset">취소</button>
-				<button type="button" name="invite">인증하기</button>
+				<button type="button" name="invite">초대하기</button>
 			</div>			
 		</div>			
 	</div>
@@ -127,17 +193,29 @@
 			let modalBox = $(e.currentTarget).closest('div[id$="modal"]');
 			removeModal(modalBox);
 		});
+		
+		$('li[data-ivitemember]').on('click', function() {
+			$('#invitedId').focus();
+			$('#invitedId').attr('placeholder', '초대하실 이메일 주소를 입력해주세요.');
+		});
 	</script>
 	<script>
 		$('button[name="invite"]').on('click', function() {
 			let invitedId = $('#invitedId').val();
-			console.log(invitedId);
+			
+			$('#invitedId').val('');
+			$('#invitedId').attr('placeholder', '초대중입니다. 잠시만 기다려주세요.');
+			
+			
 			$.ajax({
 				url: '${pageContext.request.contextPath}/member/inviteMember',
 				type: 'GET',
 				data: {'invitedId' : invitedId},
 				success : function(result) {
-					console.log(result);		
+					if(result == 1) {
+						alert('해당 이메일로 초대장이 발송되었습니다.');
+						removeModal($('#invite-member-modal'));
+					}		
 				},
 				error : function(reject) {
 					console.log(reject);
