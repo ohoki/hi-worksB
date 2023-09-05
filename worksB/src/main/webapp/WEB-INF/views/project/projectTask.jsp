@@ -1834,7 +1834,14 @@
 			}
 		})
 	};
-	
+	/*
+	// 북마크
+	function getBookMark(memberId, projectId){
+		$.ajax({
+
+		})
+	}
+	*/
 </script>
 
 
