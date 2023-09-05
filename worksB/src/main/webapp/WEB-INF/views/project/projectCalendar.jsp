@@ -550,8 +550,7 @@
 			</div>
 			<div class="board-footer">
 				<div>
-					<span class="board-footer-icon"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg">
-						좋아요</span>
+					<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 					<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>
 				</div>
 				<div>
@@ -630,8 +629,7 @@
 			</div>
 			<div class="board-footer">
 				<div>
-					<span class="board-footer-icon"><img alt="좋아요 아이콘" src="/hi/resources/icon/face-laugh-wink-solid.svg">
-						좋아요</span>
+					<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
 					<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘"
 							src="/hi/resources/icon/bookmark-regular.svg"> 북마크</span>
 				</div>
@@ -713,6 +711,7 @@
 	    </div>
 	</div>
 	
+	<!-- 업무 수정 모달 -->
 </body>
 <!-- 상세조회 헤더 버튼 클릭 시 모달 페이지 -->
 <script >
@@ -880,6 +879,68 @@
 			}
 		});
 	};
+	
+	// 좋아요 등록/해제
+	$('span[name="prjLike"]').on('click', function(e){
+		let boardIdInputTag = $(e.currentTarget).parent().parent().parent().find('input[hidden="true"]').eq(0)
+		let boardId = boardIdInputTag.val()
+		let boardType;
+		if(boardIdInputTag.attr('id')==="prjTaskId"){
+			boardType = "C8";
+		}else if(boardIdInputTag.attr('id')==="prjScheId"){
+			boardType = "C6";
+		}
+		let memberId = '${memberInfo.memberId}';
+		$.ajax({
+			url : '${pageContext.request.contextPath}/likeBoard',
+			type : 'GET',
+			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
+			success : function(like){
+				// 게시글 좋아요 수
+				getPrjLike(memberId, boardId);
+				
+				let likeSpan = $('span[name="prjLike"] span');
+				likeSpan.empty();
+				// 좋아요 상태 표시
+				if(like.checkLike == 'like'){
+					likeSpan.append("좋아요 해제");
+				}else{
+					likeSpan.append("좋아요");
+				}
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	})
+	
+	
+	// 좋아요 정보
+	function getPrjLike(memberId, boardId){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getPrjLike',
+			type : 'GET',
+			data : {'memberId': memberId, 'boardId' : boardId},
+			success : function(likeInfo){
+				// 게시글 좋아요 수
+				$('span[name="likeCount"]').text(likeInfo.boardLike.length);
+				
+				// 좋아요 여부
+				let likeSpan = $('span[name="prjLike"] span');
+				likeSpan.empty();
+				
+				if(likeInfo.memberLike != null) {
+					likeSpan.append("좋아요 해제");
+				} else {
+					likeSpan.append("좋아요");
+				}
+			},
+			error : function(reject){
+				console.log(reject)
+			}
+		})
+	};
+	
 	//일정 검색
 	$('.sche__search').keydown(function (key) {
 		event.stopPropagation();
@@ -1044,6 +1105,7 @@
 		
 		//날짜 클릭시 상세조회
 		function eventClickHandler(info){
+			let memberId = '${memberInfo.memberId}'
 			let boardId = info.event.id
 			if(boardId.substr(0,1)==="t"){
 				console.log(boardId.substr(1))
@@ -1128,6 +1190,8 @@
 				     	//댓글조회
 				     	getCommentList(result.highTask[0].prjBoardId, 'C8')
 				     	
+				     	//좋아요 조회
+				     	getPrjLike(memberId, boardId)
 					},
 					error : function(error){
 						console.log(error)
@@ -1175,6 +1239,8 @@
 						$('.board-content div').append(result.boardVO.prjBoardSubject);
 						//댓글 조회
 				     	getCommentList(result.boardVO.prjBoardId, 'C6')
+						//좋아요 조회
+				     	getPrjLike(memberId, boardId)
 					},
 					error:function(error){
 						console.log(error)
@@ -1282,20 +1348,6 @@
 				let boardType = 'C6'
 				let startDate = $('.board-form input[name="startDate"]').val();
 				let endDate = $('.board-form input[name="endDate"]').val()
-				/* let startDate = new Date(start);
-				let endDate = new Date(end); */
-				//
-				/* let realStartDate = new Date(startDate);
-				let realEndDate = new Date(endDate);
-				realStartDate.setHours(startDate.getHours()+9);
-				realEndDate.setHours(endDate.getHours()+9);
-				realStartDate = $(realStartDate).val().replace("T", " ");
-				realEndDate = $(realEndDate).val().replace("T", " ");
-				console.log(realStartDate)
-				console.log(realEndDate) */
-				//작업
-				//작업
-				//작업
 				
 				boardVO = {prjBoardTitle, prjBoardSubject, projectId, memberId, boardType};
 				scheVO = {startDate, endDate, scheAddr, scheAddrDetail, alarmDateCode};

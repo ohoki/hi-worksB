@@ -16,6 +16,9 @@
 	body{
 		color: white;
 	}
+	span{
+		color: gray;
+	}
 </style>
 </head>
 <!-- jquerry -->
