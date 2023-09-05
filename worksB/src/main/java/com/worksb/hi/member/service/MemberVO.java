@@ -50,4 +50,6 @@ public class MemberVO {
 	private String noticeTitle;
 	private int noticeId;
 	private String memoContent;
+	
+	private String gradeName;
 }

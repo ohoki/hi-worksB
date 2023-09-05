@@ -144,11 +144,12 @@
 	</select>
 	
 	<!-- 구성원 단건 조회 -->
-	<select id="CompanyMemberInfo" resultType="MemberVO">
+	<select id="companyMemberInfo" resultType="MemberVO">
 		select m.member_id, 
 			   m.member_name, 
 			   m.member_phone, 
-			   m.member_grade, 
+			   m.member_grade,
+			   find_subcode(m.member_grade) AS gradeName, 
 			   m.con_ip, 
 			   m.job_id, 
 			   m.dept_id, 
@@ -167,7 +168,7 @@
 	</select>
 	
 	<!-- 구성원 정보 수정 -->
-	<update id="updateMember">
+	<update id="updateMember" parameterType="MemberVO">
 		UPDATE member
 			<set>
 				member_name = #{memberName}

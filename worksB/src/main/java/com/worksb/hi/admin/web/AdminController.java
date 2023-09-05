@@ -220,10 +220,15 @@ public class AdminController {
 		// 구성원 정보 단건조회
 		@RequestMapping("/memberManagements")
 		@ResponseBody
-		public String CompanyMemberInfo(MemberVO memberVO, String memberId) {
-			List<MemberVO> member = adminService.companyMemberInfo(memberId);
-			
-			return member;
+		public MemberVO CompanyMemberInfo(MemberVO memberVO) {
+			return adminService.companyMemberInfo(memberVO);
+		}
+		
+		// 구성원 정보 수정
+		@RequestMapping("/memberAdminUpdate")
+		@ResponseBody
+		public String updateMember(MemberVO memberVO) {
+			return adminService.updateMember(memberVO);
 		}
 
 		@PostMapping("/updateRole")

@@ -50,10 +50,22 @@ public class AdminServiceImpl implements AdminService {
 	public List<MemberVO> companyMemberList(int companyId) {
 		return adminmapper.companyMemberList(companyId);
 	}
-	
+
+	// 구성원 상세조회
 	@Override
-	public List<MemberVO> companyMemberInfo(String memberId) {
-		return adminmapper.companyMemberInfo(memberId);
+	public MemberVO companyMemberInfo(MemberVO memberVO) {
+		return adminmapper.companyMemberInfo(memberVO);
+	}
+	
+	// 구성원 정보 수정
+	@Override
+	public String updateMember(MemberVO memberVO) {
+		int result = adminmapper.updateMember(memberVO);
+		if(result == 1) {
+			return memberVO.getMemberId();
+		}else {
+			return null;
+		}
 	}
 	
 	@Override
@@ -128,6 +140,8 @@ public class AdminServiceImpl implements AdminService {
 	public List<ProjectVO> getPrjId(int deptId) {
 		return adminmapper.getPrjId(deptId);
 	}
+
+	
 
 	
 }

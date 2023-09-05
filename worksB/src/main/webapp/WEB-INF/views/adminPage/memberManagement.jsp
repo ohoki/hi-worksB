@@ -55,24 +55,24 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<div id="memberInserModal">
+	<div  id="memberInserModal">
 		<form>
 			<div>
 				<span>구성원 정보 수정</span>
 				<label>이메일</label>
-				<input data-email type="text" value="" readonly="readonly">
+				<input data-memberId type="text" readonly="readonly">
 				<label>회사 번호</label>
-				<input data-memberId type="text" value="" readonly="readonly">
+				<input data-companyId type="text"readonly="readonly">
 				<label>이름</label>
-				<input data-name type="text" value="">
+				<input data-memberName type="text">
 				<label>부서명</label>
-				<input data-dept type="text" value="">
+				<input data-deptName type="text">
 				<label>직책</label>
-				<input data-job type="text" value="">
+				<input data-jobName type="text">
 				<label>휴대폰 번호</label>
-				<input data-phone type="text" value="">
+				<input data-memberPhone type="text">
 				<label>등급</label>
-				<input data-grade type="text" value="">
+				<input data-memberGrade type="text">
 			</div>
 		</form>
 	</div>
@@ -90,17 +90,17 @@
 				type : 'GET',
 				data : {'memberId' : trMemberId },
 				success : function(memberData){
-					
+					console.log(memberData);
 					let memberInfo = $('#memberInserModal');
 					
-					memberInfo.find('input[data-email]').text(highTask.memberId);
-					memberInfo.find('input[data-memberId]').text(highTask.companyId);
-					memberInfo.find('input[data-name]').text(highTask.memberName);
-					memberInfo.find('input[data-dept]').text(highTask.dept_id);
-					memberInfo.find('input[data-job]').text(highTask.job_id);
-					memberInfo.find('input[data-phone]').text(highTask.memberPhone);
-					memberInfo.find('input[data-grade]').text(highTask.memberGrade);
-					
+					memberInfo.find('input[data-memberId]').val(memberData.memberId);
+					memberInfo.find('input[data-companyId]').val(memberData.companyId);
+					memberInfo.find('input[data-memberName]').val(memberData.memberName);
+					memberInfo.find('input[data-deptName]').val(memberData.deptName);
+					memberInfo.find('input[data-jobName]').val(memberData.jobName);
+					memberInfo.find('input[data-memberPhone]').val(memberData.memberPhone);
+					memberInfo.find('input[data-memberGrade]').val(memberData.gradeName);
+					console.log(memberInfo.find('input[data-memberId]').val(memberData.memberId));
 				}
 			});
 			
