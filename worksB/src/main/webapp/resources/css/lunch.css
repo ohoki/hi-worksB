@@ -15,7 +15,7 @@
             margin: 0 auto;
             width: 40%;
             overflow: hidden;
-            background-color: gray;
+            background-color: #ffc107;
         }
         .mandalart-top {
             display: flex;
@@ -42,10 +42,11 @@
             width: 33%;
         }
         .cover-black{
-            background-color : black;
+            background-color : #1e714a;
+            color: #1e714a;
         }
         .reveal-gray{
-            background-color: gray;
+            background-color: #ffc107;
         }
         .mandalart td {
             width: 75px;

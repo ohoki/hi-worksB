@@ -14,7 +14,7 @@
 	    text-decoration: none;
 	}
 	body{
-		color: black;
+		color: white;
 	}
 </style>
 </head>

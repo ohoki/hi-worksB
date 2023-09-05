@@ -49,6 +49,11 @@
     background-color: #ff4719;
     border-color: #ff4719;
 	}
+	.sche__search{
+		margin-top : 20px;
+		width : 350px;
+		margin-bottom : 20px;
+	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -63,7 +68,9 @@
 	<div>
 		<div align="center">
 			<h3>마이 캘린더</h3>
-			<input type="text" placeholder="검색어를 입력하세요"><button class="scheBtn">검색</button>
+			<div align="center">
+				<input type="text" placeholder="제목과 내용을 검색하세요." class="header__search sche__search">
+			</div>
 		</div>
 	</div>
 	<div id="calendar-container">

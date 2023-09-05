@@ -38,6 +38,7 @@
 		display: none;
 		left: 0;
 		top: 0;
+		z-index: 1;
 	}
 	.prjSche-modal__content, .prjTask-modal__content{
 		position: absolute;
@@ -468,6 +469,19 @@
 		background-color: var(--color-dark-red);
 		border: 3px solid var(--color-dark-red);
 	}
+	.sche__search{
+		margin-top : 20px;
+		width : 350px;
+		margin-bottom : 20px;
+	}
+	.board-comment {
+	    padding: 5px 40px;
+	    border-top: 1px solid var(--color-dark-beigie);
+	    display: flex;
+	    align-items: center;
+	    justify-content: space-between;
+	    color: var(--color-dark-grey);
+	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -479,6 +493,9 @@
 <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 <!-- 본문 -->
 <body>
+	<div align="center">
+		<input type="text" placeholder="제목과 내용을 검색하세요." class="header__search sche__search">
+	</div>
 	<div id="calendar-container">
 		<div id="calendar">
 		</div>
@@ -538,12 +555,13 @@
 					<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>
 				</div>
 				<div>
-					<span class="board-footer-info">댓글 7</span>
-					<span class="board-footer-info">좋아요 14</span>
+					<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
+					<span class="board-footer-info">좋아요 <span name="likeCount"></span></span>
 				</div>
 			</div>
 			<!-- 댓글 -->
-			
+			<div name="board-comment-box">
+			</div>
 		</div>
 		<!-- board 버튼 클릭 시 모달 -->
 		<div class="d-none" data-boardmodal>
@@ -618,12 +636,13 @@
 							src="/hi/resources/icon/bookmark-regular.svg"> 북마크</span>
 				</div>
 				<div>
-					<span class="board-footer-info">댓글 7</span>
-					<span class="board-footer-info">좋아요 14</span>
+					<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
+					<span class="board-footer-info">좋아요 <span name="likeCount"></span></span>
 				</div>
 			</div>
 			<!-- 댓글 구현 -->
-			
+			<div name="board-comment-box">
+			</div>
 		</div>
 		<!-- board 버튼 클릭 시 모달 -->
 		<div class="d-none" data-boardmodal>
@@ -776,7 +795,7 @@
 				$('.board-form input[name="scheAddr"]').val(result.scheVO.scheAddr);
 				$('.board-form input[name="scheAddrDetail"]').val(result.scheVO.scheAddrDetail);
 				$('.board-form select[name="alarmDateCode"]').val(result.scheVO.alarmDateCode);
-				$('.board-form textarea[name="prjBoardSubject"]').val(editor7.getData());
+				editor7.setData(result.boardVO.prjBoardSubject);
 				//ckeditor값 넣기
 			},
 			error : function(err){
@@ -812,28 +831,142 @@
 		   console.log("취소되었습니다");
 		}
 	};
+	// 댓글 리스트
+	function getCommentList(boardId, boardType){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/projectCmtList',
+			type : 'GET',
+			data : {'boardId' : boardId, 'boardType': boardType},
+			success : function(comments){
+				let boardCommentBox = $('.prjTask-modal__content').find('div[name="board-comment-box"]');
+				let scheBoardCommentBox = $('.prjSche-modal__content').find('div[name="board-comment-box"]');
+				boardCommentBox.empty();
+				scheBoardCommentBox.empty();
+				
+				if(comments.length != 0) {
+					for(let i =0; i<comments.length; i++) {
+						let boardComment =`
+							<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+								<div class="d-flex">
+									<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profileImg">
+									<div>
+										<div style="margin: 5px 0;">
+											<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+											<span>\${comments[i].commentRegdate }</span>
+										</div>
+										<div style="margin: 5px 0;">
+											\${comments[i].commentContent }
+										</div>
+									</div>								
+								</div>
+							</div>`;
+							
+						boardCommentBox.prepend(boardComment);
+						scheBoardCommentBox.prepend(boardComment);
+					}
+					let moreComment=`
+						<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
+							댓글
+						</div>`;
+						
+					boardCommentBox.prepend(moreComment);
+					scheBoardCommentBox.prepend(moreComment);
+				} 
+				// 댓글 수
+				$('.board-footer').find('span[name="commentCount"]').text(comments.length);
+				
+			}, error : function(reject) {
+				console.log(reject);
+			}
+		});
+	};
+	//일정 검색
+	$('.sche__search').keydown(function (key) {
+		event.stopPropagation();
+        if(key.keyCode == 13){//키가 13이면 실행 (엔터는 13)
+            searchTasknSche();
+            $('.sche__search').val("");
+        }
+    });
+    //프로젝트 캘린더 일정/업무 검색
+    function searchTasknSche(){
+    	let searchKeyword = $('.sche__search').val();
+    	console.log(searchKeyword)
+    	let projectId = ${projectInfo.projectId}
+    	console.log()
+    	$.ajax({
+    		url : 'searchCalendar',
+    		method : 'GET',
+    		data : {"projectId" : projectId, "searchKeyword" : searchKeyword},
+    		dataType : 'JSON',
+    		success : function(result){
+				calendar.removeAllEvents();
+				calendar.addEventSource(result.scheList);
+				calendar.addEventSource(result.taskList);
+    			
+    		},
+    		error : function(err){
+    			console.log(err)
+    		}
+    		
+    	});
+    };
 </script>
 
 <!-- 캘린더 js -->
 <script>
-function renderAll(){
-	let projectId = ${projectInfo.projectId}
-	$.ajax({
-		url : 'projectCalendarRender',
-	    method: 'GET',
-	    dataType: 'JSON',
-	    data : {"projectId" : projectId},
-	    success : function(result){
-	    	console.log(result)
-			calendar.removeAllEvents();
-			calendar.addEventSource(result.scheList);
-			calendar.addEventSource(result.taskList);
-	    },
-	    error : function(error){
-	    	
-	    }
-	});
-};
+	function renderAll(){
+		let projectId = ${projectInfo.projectId}
+		$.ajax({
+			url : 'projectCalendarRender',
+		    method: 'GET',
+		    dataType: 'JSON',
+		    data : {"projectId" : projectId},
+		    success : function(result){
+		    	console.log(result)
+				calendar.removeAllEvents();
+				calendar.addEventSource(result.scheList);
+				calendar.addEventSource(result.taskList);
+		    },
+		    error : function(error){
+		    	
+		    }
+		});
+	};
+	function scheFilter(){
+		let projectId = ${projectInfo.projectId}
+		$.ajax({
+			url : 'projectCalendarRender',
+		    method: 'GET',
+		    dataType: 'JSON',
+		    data : {"projectId" : projectId},
+		    success : function(result){
+		    	console.log(result)
+				calendar.removeAllEvents();
+				calendar.addEventSource(result.scheList);
+		    },
+		    error : function(error){
+		    	
+		    }
+		});
+	}
+	function taskFilter(){
+		let projectId = ${projectInfo.projectId}
+		$.ajax({
+			url : 'projectCalendarRender',
+		    method: 'GET',
+		    dataType: 'JSON',
+		    data : {"projectId" : projectId},
+		    success : function(result){
+		    	console.log(result)
+				calendar.removeAllEvents();
+				calendar.addEventSource(result.taskList);
+		    },
+		    error : function(error){
+		    	
+		    }
+		});
+	}
 	var calendar 
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
@@ -852,24 +985,23 @@ function renderAll(){
 			customButtons : {
 				scheBtn : {
 					text : '일정필터',
-					click : function(){
-						//일정필터 
-					}
+					click : scheFilter
 				},
 				taskBtn : {
 					text : '업무필터',
-					click : function(){
-						//업무필터
-					}
+					click : taskFilter
+				},
+				viewBtn : {
+					text : '전체조회',
+					click : renderAll
 				}
 			},
 			headerToolbar : {
-				left : 'prev,today,next scheBtn,taskBtn',
+				left : 'prev,today,next scheBtn,taskBtn,viewBtn',
 				center : 'title',
 				right : 'dayGridMonth,timeGridWeek'
 			},
 			locale : "ko",
-			timeZone: 'Asia/Seoul',
 			navLinks : false, // can click day/week names to navigate views
 			selectable : true,
 			selectMirror : true,
@@ -993,6 +1125,8 @@ function renderAll(){
 								subTaskList.append(li);
 					        }
 				     	}
+				     	//댓글조회
+				     	getCommentList(result.highTask[0].prjBoardId, 'C8')
 				     	
 					},
 					error : function(error){
@@ -1000,6 +1134,7 @@ function renderAll(){
 					}
 				});
 			}else if(boardId.substr(0,1)!=="t"){
+				$('.board-content div').children().remove();
 				$.ajax({
 					url:'getScheBoardInfo',
 					method:'GET',
@@ -1038,6 +1173,8 @@ function renderAll(){
 		                	$('.sche-addr').empty();
 		                }
 						$('.board-content div').append(result.boardVO.prjBoardSubject);
+						//댓글 조회
+				     	getCommentList(result.boardVO.prjBoardId, 'C6')
 					},
 					error:function(error){
 						console.log(error)
@@ -1107,8 +1244,7 @@ function renderAll(){
 			let scheAddr = $('.board-form input[name="scheAddr"]').val();
 			let scheAddrDetail = $('.board-form input[name="scheAddrDetail"]').val();
 			let alarmDateCode = $('.board-form select[name="alarmDateCode"]').val();
-			let prjBoardSubject = $('.board-form textarea[name="prjBoardSubject"]').val();
-			
+			let prjBoardSubject = editor7.getData();
 			//ckeditor 값 넣기
 			
 			//버튼의 text를 확인후 수정과 입력으로 나눠서 진행
@@ -1265,6 +1401,7 @@ function renderAll(){
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 	//ckeditor 시작
+	let editor7;
 		CKEDITOR.ClassicEditor.create(document.querySelector('#editor7'), {
 	        toolbar: {
 	        	 items: [
@@ -1346,7 +1483,7 @@ function renderAll(){
 	            'MathType'
 	        ]
 	   	}).then(newEditor => {
-	   	 	let editor7 = newEditor;
+	   	 	editor7 = newEditor;
 	    }).catch(error => {
 	        console.error(error );
 	    });	

@@ -129,6 +129,12 @@ public interface BoardMapper {
 	
 	
 	//정현
+    //프로젝트 캘린더 검색 조회
+    public List<BoardVO> searchCalendarBoard(BoardVO boardVO);
+    //프로젝트 캘린더 일정 검색조회
+    public ScheVO searchScheCalendar(int prjBoardId);
+    //프로젝트 캘린더 업무 검색조회
+    public TaskVO searchTaskCalendar(int prjBoardId);
 	//일정 수정
 	public int updateSche(ScheVO scheVO);
 	//일정 삭제

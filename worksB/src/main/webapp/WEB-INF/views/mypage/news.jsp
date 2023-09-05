@@ -16,6 +16,7 @@
 	경제
 	<div id="economyNews">
 	</div>
+	<br>
 	사회
 	<div id="socialNews">
 	</div>

@@ -121,6 +121,12 @@ public interface BoardService {
 	
 	
 	//정현
+    //프로젝트 캘린더 검색 조회
+    public List<BoardVO> searchCalendarBoard(BoardVO boardVO);
+    //프로젝트 캘린더 일정 검색 조회
+    public ScheVO searchScheCal(int prjBoardId);
+    //프로젝트 캘린더 업무 검색 조회
+    public TaskVO searchTaskCal(int prjBoardId);
 	//일정 수정
 	public int updateSche(ScheVO scheVO);
 	//일정 삭제

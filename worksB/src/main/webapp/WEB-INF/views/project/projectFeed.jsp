@@ -1210,7 +1210,7 @@
 							</div>
 							<div>
 								<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
-								<span class="board-footer-info">좋아요 <span name="likeCount"></span>
+								<span class="board-footer-info">좋아요 <span name="likeCount"></span></span>
 							</div>
 						</div>
 						<!-- 댓글창 -->
