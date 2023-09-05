@@ -192,6 +192,22 @@ public class BoardController {
 		return boardService.getScheInfo(scheVO); 
 	}
 	
+	// 일정 수정용 조회
+	@GetMapping("getSche")
+	@ResponseBody
+	public Map<String, Object> getScheBoard(ScheVO scheVO){
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		int prjBoardId = scheVO.getPrjBoardId();
+        BoardVO boardInfo = boardService.getBoardInfo(prjBoardId);
+        
+        ScheVO scheInfo = boardService.getScheInfo(scheVO);
+        
+        resultMap.put("boardInfo", boardInfo);
+        resultMap.put("scheInfo", scheInfo);
+        
+        return resultMap;
+	}
 	// 투표 조회
 	@GetMapping("getVoteInfo")
 	@ResponseBody
@@ -312,6 +328,13 @@ public class BoardController {
 	public int deleteTask(TaskVO taskVO){
     	return boardService.deleteTask(taskVO); 
 	}
+	//프로젝트 일정 수정
+	@PostMapping("updateFeedSche")
+	public String updateFeedSche(ScheVO scheVO, BoardVO boardVO) {
+		boardService.updateBoard(boardVO);
+		boardService.updateSche(scheVO);
+		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+	}
 	
 	// 투표 삭제
 	@PostMapping("/deleteVote")
@@ -384,9 +407,9 @@ public class BoardController {
 	}
 	
 	// 좋아요 여부 / 좋아요 전체 수
-	@GetMapping("/gePrjLike")
+	@GetMapping("/getPrjLike")
 	@ResponseBody
-	public Map<String, Object> gePrjLike(BoardVO boardVO) {
+	public Map<String, Object> getPrjLike(BoardVO boardVO) {
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		BoardVO memberLike = boardService.getMemLike(boardVO);
@@ -554,6 +577,23 @@ public class BoardController {
 		return result;
 	}
 	
+	//프로젝트 일정 입력
+	@PostMapping("calInsertSche")
+	@ResponseBody
+	public String insertSche(@RequestBody BoardRequestVO brVO) {
+		System.out.println(brVO);
+		BoardVO boardVO = new BoardVO();
+		ScheVO scheVO = new ScheVO();
+		boardVO = brVO.getBoardVO();
+		scheVO = brVO.getScheVO();
+		
+		boardService.insertBoard(boardVO);
+		int prjBoardId = boardVO.getPrjBoardId();
+		scheVO.setPrjBoardId(prjBoardId);
+		boardService.insertSche(scheVO);
+		return "";
+	}
+	
 	//프로젝트 일정 수정
 	@PostMapping("prjScheUpdate")
 	@ResponseBody
@@ -572,7 +612,14 @@ public class BoardController {
 	@RequestMapping("deleteSche")
 	@ResponseBody
 	public int deleteSche(ScheVO scheVO) {
-		return boardService.deleteSche(scheVO);
+		int deleteSche = boardService.deleteSche(scheVO);
+		
+		BoardVO boardVO = new BoardVO();
+		boardVO.setPrjBoardId(scheVO.getPrjBoardId());
+		int deleteBoard = boardService.deleteBoard(boardVO);
+		
+		int deleteParticir = boardService.deleteScheParticir(scheVO.getPrjBoardId());
+		return deleteSche+deleteBoard+deleteParticir;
 	}
 	
 	//프로젝트 일정 캘린더 상세조회

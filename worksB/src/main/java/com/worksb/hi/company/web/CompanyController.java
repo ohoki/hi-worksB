@@ -115,7 +115,7 @@ public class CompanyController {
 	public String practiceCompany(CompanyVO companyVO, HttpSession session) {
 		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
 		MemberVO member = new MemberVO();
-		member.setMemberId((String)session.getAttribute("memberId"));
+		member.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
 		member.setCompanyId(dbCompany.getCompanyId());
 		// 관리자 승인여부 확인
 		if("A1".equals(dbCompany.getAdmAccp())) { 

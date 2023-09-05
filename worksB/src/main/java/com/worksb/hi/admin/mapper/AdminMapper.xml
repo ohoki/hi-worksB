@@ -179,10 +179,8 @@
 			</set>
 		 WHERE member_id = #{memberId}
 	</update>
-	
+
 	<!--  -->
-	
-	
 	<select id="departmentList" resultType="DepartmentVO">
 		SELECT
 		    d.dept_id,
@@ -283,10 +281,20 @@
 		ORDER BY project_id
 	</select>
 	
-	<select id="getPrjId"  resultType="ProjectVO">
+	<select id="getPrjId"  resultType="int">
 		SELECT project_id
 		FROM project
 		WHERE dept_id=#{deptId}
 		ORDER BY project_id
 	</select>
+	
+	<update id="updateProjectName" parameterType="Map">
+		<foreach collection="pjIdAndName" item="value" index="key" separator=";" open="DECLARE BEGIN" close=";END;">
+
+		 	UPDATE project
+       		SET project_name = #{value}
+       		WHERE project_id = #{key} 
+
+   	 	</foreach>
+	</update>
 </mapper>

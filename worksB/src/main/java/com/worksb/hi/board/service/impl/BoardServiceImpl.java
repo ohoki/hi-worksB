@@ -74,6 +74,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 	
+	//일정 등록
 	@Override
 	public int insertSche(ScheVO scheVO) {
 		int result = boardMapper.insertSche(scheVO);
@@ -313,6 +314,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int deleteSche(ScheVO scheVO) {
 		return boardMapper.deleteSche(scheVO.getPrjBoardId());
+	}
+	//프로젝트 일정 참가자 삭제
+	@Override
+	public int deleteScheParticir(int prjBoardId) {
+		return boardMapper.deleteScheParticir(prjBoardId);
 	}
 
 	

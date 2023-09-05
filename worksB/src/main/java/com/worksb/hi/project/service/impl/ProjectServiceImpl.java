@@ -108,6 +108,16 @@ public class ProjectServiceImpl implements ProjectService {
 	public PrjParticirVO getParticirByProject(PrjParticirVO particirVO) {
 		return projectMapper.getParticirByProject(particirVO);
 	}
+	//프로젝트 승인 대기 조회
+	@Override
+	public List<PrjParticirVO> getCheckParticir(PrjParticirVO prjParticirVO) {
+		return projectMapper.getCheckParticir(prjParticirVO);
+	}
+	//프로젝트 참여 승인하기update
+	@Override
+	public int updateAccpParticir(PrjParticirVO prjParticirVO) {
+		return projectMapper.updateAccpParticir(prjParticirVO);
+	}
 	
 
 	
@@ -204,6 +214,8 @@ public class ProjectServiceImpl implements ProjectService {
 	public int updateFile(FileDataVO vo) {
 		return projectMapper.updateFile(vo);
 	}
+
+	
 
 	
 	

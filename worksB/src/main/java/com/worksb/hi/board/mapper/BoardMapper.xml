@@ -729,6 +729,11 @@
 		DELETE prj_sche
 		WHERE prj_board_id = #{prjBoardId}
 	</delete>
+	<!-- 프로젝트 일정 참가자 삭제 -->
+	<delete id="deleteScheParticir">
+		DELETE sche_particir
+		WHERE prj_board_id = #{prjBoardId}
+	</delete>
 	<!-- 프로젝트 일정 캘린더 조회 -->
 	<select id="getScheCalendar" resultType="ScheVO">
 		SELECT b.prj_board_id

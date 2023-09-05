@@ -1,15 +1,15 @@
 package com.worksb.hi.admin.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.company.service.CompanyVO;
-import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.company.service.JobVO;
+import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.FileDataVO;
 import com.worksb.hi.project.service.ProjectVO;
 
@@ -52,7 +52,9 @@ public interface AdminMapper {
 	//해당 부서번호에 해당하는 프로젝트의 이름 불러오이
 	public List<ProjectVO>getPrjName(int deptId);
 	//해당 부서번호에 해당하는 프로젝트아이디를 불러오기
-	public List<ProjectVO>getPrjId(int deptId);
+	public int[] getPrjId(int deptId);
+	//부서이름변경시 프로젝트이름의 부서이름까지 변경
+	public int updateProjectName(@Param("pjIdAndName") Map<String,String>pjIdAndName);
 	
 	//직급insert
 	public int insertRole(JobVO vo);

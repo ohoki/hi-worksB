@@ -36,4 +36,7 @@ public interface MemberService {
 	
 	// 공지사항
 	public List<MemberVO> getNoticeList(MemberVO memberVO);
+	
+	//모달검색창의 멤버 불러오기
+	public List<MemberVO>getMember(int companyId,String memberName);
 }
