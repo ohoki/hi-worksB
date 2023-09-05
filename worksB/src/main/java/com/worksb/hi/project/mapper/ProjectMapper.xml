@@ -350,9 +350,11 @@
 
 <!-- 즐겨찾기 갱신 -->
 <update id="updateStar" parameterType="ProjectVO">
-	UPDATE prj_particir SET 
-	       project_markup=#{projectMarkup}
-	 WHERE project_id=#{projectId} 
+	UPDATE prj_particir 
+		<set>
+			project_markup=#{projectMarkup}
+		</set> 
+	   WHERE project_id=#{projectId} 
 	   AND member_id=#{memberId}
 </update>
 

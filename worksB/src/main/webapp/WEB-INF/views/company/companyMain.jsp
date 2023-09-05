@@ -22,14 +22,14 @@
 						<div class="project-list">
 							<ul>
 								<c:forEach items="${projectList}" var="project">
-									<li class="d-flex project-list-item">
+									<li class="d-flex project-list-item" data-prjid="${project.projectId}">
 										<div class="d-flex">
-											<img class="icon" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg"> 
+											<img class="icon" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-bookmark> 
 											<a href="${pageContext.request.contextPath}/projectFeed?projectId=${project.projectId}">${project.projectName}</a>
 										</div>
 										<div class="d-flex">
-											5
-											<img class="icon" name="prjParticirList" data-id="${list.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+											${project.particirNumber }
+											<img class="icon" name="prjParticirList" data-id="${project.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 										</div>
 									</li>
 								</c:forEach>
@@ -185,9 +185,59 @@
 		});
 	}
 //----------메모장
+
+//즐겨찾기
+//즐겨해제
+
+$(document).on('click', 'img[data-bookmark]', function(e) {
+	let projectId = $(e.currentTarget).closest('.project-list-item').data('prjid');
+	let data = { 'projectMarkup': 'A2', 'projectId': projectId, 'memberId' : '${memberInfo.memberId}' };
 	
-	
-	
+	console.log(data, projectId);
+	if(confirm('즐겨찾기를 해제하시겠습니까?')) {
+		$.ajax({
+			url:'${pageContext.request.contextPath }/updateStar',
+			type:'POST',
+			data:JSON.stringify(data),
+			contentType:'application/json',
+			success : function(result) {
+				$.ajax({
+					url : '${pageContext.request.contextPath }/getStarProject',
+					type : 'POST',
+					data : {'memberId' : '${memberInfo.memberId}'},
+					success : function(prjLists) {
+						console.log(prjLists);
+						let projectLists = $('.project-list ul');
+						
+						projectLists.empty();
+						
+						for(let i =0; i<prjLists.length; i++) {
+							let projectList = `
+								<li class="d-flex project-list-item" data-prjid="\${prjLists[i].projectId}">
+									<div class="d-flex">
+										<img class="icon" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-bookmark> 
+										<a href="${pageContext.request.contextPath}/projectFeed?projectId=\${prjLists[i].projectId}">\${prjLists[i].projectName}</a>
+									</div>
+									<div class="d-flex">
+										\${prjLists[i].particirNumber}
+										<img class="icon" name="prjParticirList" data-id="\${prjLists[i].projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+									</div>
+								</li>`;
+								
+							projectLists.append(projectList);	
+						}
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				})	
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		});	
+	}
+});
 </script>
 </body>
 </html>

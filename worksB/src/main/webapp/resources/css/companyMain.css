@@ -149,6 +149,10 @@
 	height: 20px;	
 }
 
+img[data-bookmark] {
+	cursor: pointer;
+}
+
 
 .d-flex {
 	display: flex;

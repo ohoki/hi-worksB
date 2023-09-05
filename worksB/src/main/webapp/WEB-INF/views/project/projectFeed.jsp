@@ -437,6 +437,7 @@
 			height: 7px;
 			border-radius:2px;
 			background-color: var(--color-green);
+			transition: all 0.5s;
 		}
 		
 		.sub-task-lists {
@@ -2073,6 +2074,7 @@
 				}
 			}else if(type == 'update') {		// ========= 수정
 				visibleDiv.removeClass('d-b');
+				$('div[data-boardmodal]').removeClass('d-b');
 				if(boardType == 'C5') {
 					$(board).addClass('d-b');
 				} else if(boardType == 'C6') {
@@ -3423,13 +3425,6 @@
 								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrUpdate" name="scheAddr">
 								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소">
 							</div>
-							<select name="alarmDateCode">
-								<option value="" selected>알림 설정</option>
-								<option value="L1">10분 전 미리 알림</option>
-								<option value="L2">1시간 전 미리 알림</option>
-								<option value="L3">1일 전 미리 알림</option>
-								<option value="L4">7일 전 미리 알림</option>
-							</select>
 						</div>
 						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor7"></textarea>
 					</div>

@@ -141,12 +141,18 @@
 	
 	<!-- 내 프로젝트 -->
 	<select id="getProjectList" resultType="MemberVO">
+		WITH a AS (SELECT COUNT(pp.prj_particir_id) particir_number, 
+							pp.project_id 
+				   FROM prj_particir pp LEFT JOIN project p 
+				   ON pp.project_id = p.project_id 
+				   WHERE pp.particir_accp = 'A1' group by pp.project_id)
 		SELECT	p.project_name,
-				p.project_id
-		FROM	project p
+				p.project_id,
+                a.particir_number
+		FROM	(project p
 			JOIN	prj_particir pp
-			ON p.project_id = pp.project_id
-		WHERE pp.member_id= #{memberId}
+			ON p.project_id = pp.project_id) LEFT JOIN a ON a.project_id = p.project_id
+		WHERE pp.member_id= #{memberId} AND pp.project_markup = 'A1'
 		ORDER BY p.project_id DESC
 	</select>
 	
