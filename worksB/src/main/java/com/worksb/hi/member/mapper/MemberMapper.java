@@ -2,6 +2,8 @@ package com.worksb.hi.member.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.worksb.hi.member.service.MemberVO;
 
 public interface MemberMapper {
@@ -39,5 +41,8 @@ public interface MemberMapper {
 	
 	//접속상태 변경
 	public void updateMemberState(MemberVO member);
+	
+	//모달검색창의 멤버 불러오기
+	public List<MemberVO>getMember(@Param("companyId")int companyId,@Param("memberName")String memberName);
 	
 }

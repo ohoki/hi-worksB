@@ -43,8 +43,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 			request.getSession().setAttribute("companyInfo", company);
 		}
 		request.getSession().setAttribute("memberInfo", member);
-		//세션값 설정 2시간
-		request.getSession().setMaxInactiveInterval(60*60*2);
+		//세션 시간 설정
+		request.getSession().setMaxInactiveInterval(60*20);
 		
 		response.sendRedirect("start");
 	}

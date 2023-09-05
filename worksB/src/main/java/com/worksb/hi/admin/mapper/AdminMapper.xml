@@ -126,6 +126,7 @@
 		  FROM member
 		 WHERE company_id = #{companyId}
 	</select>
+  
 	<select id="departmentList" resultType="DepartmentVO">
 		SELECT
 		    d.dept_id,
@@ -157,6 +158,7 @@
 			company_id=#{companId}
 		ORDER BY job_id
 	</select>
+	
 	<insert id="insertDept" parameterType="DepartmentVO">
 		<selectKey keyProperty="deptId" resultType="int" order="BEFORE">
 			SELECT NVL(MAX(dept_id),0)+1
@@ -175,11 +177,13 @@
 				)
 		
 	</insert>
+	
 	<select id="getNewestDep" resultType="DepartmentVO">
 		SELECT dept_id,dept_name,company_id 
 		FROM department
 		WHERE dept_id=(SELECT MAX(dept_id) FROM department)
 	</select>
+	
 	<delete id="deleteDept" parameterType="int">
 		DELETE department where dept_id=#{deptId}
 	</delete>
@@ -215,16 +219,28 @@
 		UPDATE job set job_name=#{jobName}
 		WHERE job_id=#{jobId}
 	</update>
+	
 	<select id="getPrjName" resultType="ProjectVO">
 		SELECT project_name 
 		FROM project 
 		WHERE dept_id=#{deptId}
 		ORDER BY project_id
 	</select>
-	<select id="getPrjId"  resultType="ProjectVO">
+	
+	<select id="getPrjId"  resultType="int">
 		SELECT project_id
 		FROM project
 		WHERE dept_id=#{deptId}
 		ORDER BY project_id
 	</select>
+	
+	<update id="updateProjectName" parameterType="Map">
+		<foreach collection="pjIdAndName" item="value" index="key" separator=";" open="DECLARE BEGIN" close=";END;">
+
+		 	UPDATE project
+       		SET project_name = #{value}
+       		WHERE project_id = #{key} 
+
+   	 	</foreach>
+	</update>
 </mapper>

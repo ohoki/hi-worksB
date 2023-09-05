@@ -169,7 +169,6 @@
 							#{memberId},
 							#{memoContent}
 						)
-					
 	</insert>
 	
 	<!-- 메모 수정 -->
@@ -188,5 +187,32 @@
 			ON n.company_id = c.company_id
 		WHERE	c.company_id = #{companyId}
 		ORDER BY n.notice_id DESC
+	</select>
+	
+	<select id="getMember" resultType="MemberVO">
+		SELECT MEMBER_ID,
+				MEMBER_NAME,
+				MEMBER_PW,
+				MEMBER_PHONE,
+				PROFILE_PATH,
+				REAL_PROFILE_PATH,
+				member_grade,
+				'ROLE_' || MEMBER_GRADE role,
+				CON_IP,
+				job_id,
+				dept_id,
+				(SELECT job_name FROM job WHERE job_id = member.job_id) job_name,
+				(SELECT dept_name FROM department WHERE dept_id = member.dept_id) dept_name,
+				EMP_STATUS,
+				CON_STATUS,
+				COMPANY_ID,
+				LOGIN_FAIL,
+				LOGIN_LOCK,
+				MAIL_KEY,
+				MAIL_AUTH,
+				COMPANY_ACCP 
+		FROM member
+		WHERE member_name LIKE '%'||#{memberName}||'%'
+		AND company_id=#{companyId}
 	</select>
 </mapper>

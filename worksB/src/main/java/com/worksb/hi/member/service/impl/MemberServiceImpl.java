@@ -160,4 +160,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.getNoticeList(memberVO);
 	}
 
+	@Override
+	public List<MemberVO> getMember(int companyId, String memberName) {
+		return memberMapper.getMember(companyId, memberName);
+	}
+
 }

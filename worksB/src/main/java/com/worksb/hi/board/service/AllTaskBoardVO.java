@@ -15,8 +15,8 @@ public class AllTaskBoardVO {
 	private int prjBoardId;
 	private String prjBoardTitle;
 	private String prjBoardSubject;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Date prjBoardRegdate;
 	private String memberId;
 	private String inspYn;
