@@ -2409,25 +2409,23 @@
 										</div>								
 									</div>
 									<div name="boardMenu">
-									</div>
+			                        	\${comments[i].memberId == member ? 
+			                        		`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+			                        		<span name="deleteComment" class="cursor">삭제</span>` : ''}
+			                    	</div>
 								</div>`;
 								
 							boardCommentBox.prepend(boardComment);
 							
-							if(comments[i].memberId == member){
-								let menuDiv = boardCommentBox.find('div[name="board-comment"]').eq(i).find('div[name="boardMenu"]');
-								
-								let menuList = `<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-									<span name="deleteComment" class="cursor">삭제</span>`;
-								menuDiv.append(menuList);
-							}
-							
 						}
-							let moreComment=`
-								<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
-									댓글 더보기
-								</div>`;
-							boardCommentBox.prepend(moreComment);
+						
+						// 댓글 2개까지만 출력 -> 댓글 더보기
+						let moreComment=`
+							<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
+								댓글 더보기
+							</div>`;
+						boardCommentBox.prepend(moreComment);
+						
 					} else {
 						boardCommentBox.empty();
 						
@@ -2447,17 +2445,14 @@
 										</div>								
 									</div>
 									<div name="boardMenu">
-									</div>
+			                        	\${comments[i].memberId == member ? 
+			                        		`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+			                        		<span name="deleteComment" class="cursor">삭제</span>` : ''}
+			                    	</div>
 								</div>`;
 								
 							boardCommentBox.prepend(boardComment);
 							
-							if(comments[i].memberId == member){
-								let menuDiv = boardCommentBox.find('div[name="board-comment"]').eq(i).find('div[name="boardMenu"]');
-								let menuList = `<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-									<span name="deleteComment" class="cursor">삭제</span>`;
-								menuDiv.append(menuList);
-							}
 						}
 					}
 				}
@@ -2476,6 +2471,7 @@
 		let prjBoardId = boardContainer.data('id');
 		let boardType = boardContainer.data('type');
 		let boardCommentBox = boardContainer.find('div[name="board-comment-box"]');
+		let member = '${memberInfo.memberId}';
 		$.ajax({
 			url : '${pageContext.request.contextPath}/projectCmtList',
 			type : 'GET',
@@ -2497,13 +2493,15 @@
 									</div>
 								</div>								
 							</div>
-							<div>
-								<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-								<span name="deleteComment" class="cursor">삭제</span>
-							</div>
+							<div name="boardMenu">
+                        		\${comments[i].memberId == member ? 
+                        			`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+                        			<span name="deleteComment" class="cursor">삭제</span>` : ''}
+                    		</div>
 						</div>`;
 						
 					boardCommentBox.prepend(boardComment);
+					
 				}
 			},
 			error : function(reject){
