@@ -1091,7 +1091,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1161,7 +1163,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1179,9 +1183,6 @@
 								<span data-start></span>
 								<span> ~ </span>
 								<span data-end></span>
-							</div>
-							<div class="sche-alarm">
-								<span></span>
 							</div>
 						</div>
 						<div class="d-flex" style="margin-right: 40px;">
@@ -1256,7 +1257,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1349,7 +1352,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -2185,7 +2190,6 @@
 					success : function(sche) {
 						let startDate = $(boardList[i]).find('span[data-start]');
 						let endDate = $(boardList[i]).find('span[data-end]');
-						let alarmSpan = $(boardList[i]).find('.sche-alarm').children('span');
 						let addrSpan = $(boardList[i]).find('.sche-addr');
 						let attendYesCount = $(boardList[i]).find('.sche-particir-count');
 						let attendNoCount = $(boardList[i]).find('.sche-nonParticir-count');
@@ -2194,10 +2198,6 @@
 						
 						startDate.text(sche.startDate);
 		                endDate.text(sche.endDate);
-		                //알림 설정 여부
-		                if(sche.alarmDateCodeLiteral != null) {
-		                	alarmSpan.text(sche.alarmDateCodeLiteral);	
-		                }
 		                //장소 설정 여부
 		                if(sche.scheAddr != null) {
 		                	$(addrSpan).append('<span> ' + sche.scheAddr + sche.scheAddrDetail + '</span>');
@@ -2387,7 +2387,8 @@
 			data : {'boardId' : boardId, 'boardType': boardType},
 			success : function(comments){
 				let boardCommentBox = $('div[data-id=' + boardId + ']').find('div[name="board-comment-box"]');
-				
+				let member = '${memberInfo.memberId}';
+
 				boardCommentBox.empty();
 				
 				if(comments.length != 0) {
@@ -2407,13 +2408,19 @@
 											</div>
 										</div>								
 									</div>
-									<div>
-										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-										<span name="deleteComment" class="cursor">삭제</span>
+									<div name="boardMenu">
 									</div>
 								</div>`;
 								
 							boardCommentBox.prepend(boardComment);
+							
+							if(comments[i].memberId == member){
+								let menuDiv = boardCommentBox.find('div[name="board-comment"]').eq(i).find('div[name="boardMenu"]');
+								
+								let menuList = `<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+									<span name="deleteComment" class="cursor">삭제</span>`;
+								menuDiv.append(menuList);
+							}
 							
 						}
 							let moreComment=`
@@ -2439,13 +2446,18 @@
 											</div>
 										</div>								
 									</div>
-									<div>
-										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-										<span name="deleteComment" class="cursor">삭제</span>
+									<div name="boardMenu">
 									</div>
 								</div>`;
 								
 							boardCommentBox.prepend(boardComment);
+							
+							if(comments[i].memberId == member){
+								let menuDiv = boardCommentBox.find('div[name="board-comment"]').eq(i).find('div[name="boardMenu"]');
+								let menuList = `<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+									<span name="deleteComment" class="cursor">삭제</span>`;
+								menuDiv.append(menuList);
+							}
 						}
 					}
 				}
@@ -3190,13 +3202,6 @@
 								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrInsert" name="scheAddr">
 								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
 							</div>
-							<select name="alarmDateCode">
-								<option value="" selected>알림 설정</option>
-								<option value="L1">10분 전 미리 알림</option>
-								<option value="L2">1시간 전 미리 알림</option>
-								<option value="L3">1일 전 미리 알림</option>
-								<option value="L4">7일 전 미리 알림</option>
-							</select>
 						</div>
 						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor3"></textarea>
 					</div>
@@ -3408,13 +3413,6 @@
 								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrUpdate" name="scheAddr">
 								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소">
 							</div>
-							<select name="alarmDateCode">
-								<option value="" selected>알림 설정</option>
-								<option value="L1">10분 전 미리 알림</option>
-								<option value="L2">1시간 전 미리 알림</option>
-								<option value="L3">1일 전 미리 알림</option>
-								<option value="L4">7일 전 미리 알림</option>
-							</select>
 						</div>
 						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor7"></textarea>
 					</div>

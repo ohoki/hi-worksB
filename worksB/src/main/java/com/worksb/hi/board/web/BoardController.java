@@ -29,14 +29,12 @@ import com.worksb.hi.board.service.ScheParticirVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
-import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
-import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
-
-import oracle.jdbc.proxy.annotation.Post;
+import com.worksb.hi.projectCmt.service.ProjectCmtService;
+import com.worksb.hi.projectCmt.service.ProjectCmtVO;
 
 // 이진 0818 게시판관리 - 게시글,업무,일정,투표 등록
 
@@ -51,6 +49,9 @@ public class BoardController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	ProjectCmtService projectCmtService;
 	
 	// 이진
 	// 게시글 등록 폼
@@ -146,26 +147,6 @@ public class BoardController {
 		// 일정
         if(boardType.equals("C6")) {
         	scheVO.setPrjBoardId(prjBoardId);
-        	
-        	if(!scheVO.getAlarmDateCode().equals("")) {
-        		//알람 시간 구하기
-            	String code = scheVO.getAlarmDateCode();
-            	Date startDate = scheVO.getStartDate();
-            	Calendar cal = Calendar.getInstance();
-            	// L1 -> 10분전, L2 -> 1시간 전, L3 -> 1일 전, L4 -> 7일 전
-            	cal.setTime(startDate);
-            	if(code.equals("L1")) {
-            		cal.add(Calendar.MINUTE, -10);
-            	} else if(code.equals("L2")) {
-            		cal.add(Calendar.HOUR, -1);
-            	} else if(code.equals("L3")) {
-            		cal.add(Calendar.DATE, -1);
-            	} else if(code.equals("L4")) {
-            		cal.add(Calendar.DATE, -7);
-            	}
-            	//알림 시간 등록
-            	scheVO.setAlarmDate(cal.getTime());
-        	}
         	
         	boardService.insertSche(scheVO);
         	
@@ -386,6 +367,11 @@ public class BoardController {
 	@PostMapping("/deleteBoard")
 	@ResponseBody
 	public int deleteBoard(BoardVO boardVO) {
+		ProjectCmtVO projectCmtVO = new ProjectCmtVO();
+		projectCmtVO.setBoardId(boardVO.getPrjBoardId());
+		// 댓글 삭제
+		projectCmtService.deleteProjectCmtByBoard(projectCmtVO);
+		
 		return boardService.deleteBoard(boardVO);
 	}
 	
@@ -420,7 +406,29 @@ public class BoardController {
 		
 		return resultMap;
 	}
+	// 북마크 등록/해제
+	@GetMapping("/bookmarkBoard")
+	@ResponseBody
+	public  Map<String, Object> bookmarkBoard(BoardVO boardVO){
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		BoardVO bookmarkCheck = boardService.getBookmarkInfo(boardVO);
+		if(bookmarkCheck == null) {
+			boardService.insertBookmark(boardVO);
+			resultMap.put("checkBookmark", "bookmark");
+		} else {
+			boardService.deleteBookmark(boardVO);
+			resultMap.put("checkBookmark", "noBookmark");
+		}
+		return resultMap;
+	}
 	
+	// 북마크 조회
+	@GetMapping("/getBookmarkInfo")
+	@ResponseBody
+	public BoardVO getBookmarkInfo(BoardVO boardVO) {
+		return boardService.getBookmarkInfo(boardVO);
+	}
 	
 	
 	//상단 고정 여부 수정
@@ -617,6 +625,11 @@ public class BoardController {
 		BoardVO boardVO = new BoardVO();
 		boardVO.setPrjBoardId(scheVO.getPrjBoardId());
 		int deleteBoard = boardService.deleteBoard(boardVO);
+		
+		// 댓글 삭제
+		ProjectCmtVO projectCmtVO = new ProjectCmtVO();
+		projectCmtVO.setBoardId(scheVO.getPrjBoardId());
+		projectCmtService.deleteProjectCmtByBoard(projectCmtVO);
 		
 		int deleteParticir = boardService.deleteScheParticir(scheVO.getPrjBoardId());
 		return deleteSche+deleteBoard+deleteParticir;

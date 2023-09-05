@@ -192,7 +192,11 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getPrjLike(boardVO);
 	}
 
-	
+	//북마크 조회
+	@Override
+	public BoardVO getBookmarkInfo(BoardVO boardVO) {
+		return boardMapper.getBookmarkInfo(boardVO);
+	}
 	
 	// 게시글 정보
 	@Override
@@ -320,6 +324,8 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteScheParticir(int prjBoardId) {
 		return boardMapper.deleteScheParticir(prjBoardId);
 	}
+
+	
 
 	
 	
