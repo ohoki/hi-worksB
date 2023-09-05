@@ -26,12 +26,15 @@ public interface AdminMapper {
 	//projectlist
 	public List<ProjectVO>projectList(@Param("companyId")int companyId,@Param("pagingvo")PagingVO pagingVO);
 	
-	//수정
+	// 회사 정보 수정
 	public int updateCompany(CompanyVO companyVO);
-	
 	// 회사 구성원 리스트
-	public List<MemberVO> CompanyMemberList(int companyId);
-
+	public List<MemberVO> companyMemberList(int companyId);
+	// 구성원 정보 조회
+	public MemberVO companyMemberInfo(MemberVO memberVO);
+	// 구성원 정보 수정
+	public int updateMember(MemberVO memberVO);
+	
 	//부서목록
 	public List<DepartmentVO>departmentList(int companyId);
   
