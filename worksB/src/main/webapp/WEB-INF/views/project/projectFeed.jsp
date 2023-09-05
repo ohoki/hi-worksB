@@ -3982,7 +3982,7 @@
 		            'MathType'
 		        ]
 		   	}).then(newEditor => {
-		   	 	window['editor'+i] = newEditor;
+		   	 	  window['editor'+i] = newEditor;
 		    })
 		    .catch( error => {
 		        console.error( error );

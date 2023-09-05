@@ -495,6 +495,7 @@
 				</div>
 				<div>
 					<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+					<input type="text" class="memberId" hidden="true">
 				</div>
 			</div>
 			<div class="board-title">
@@ -547,7 +548,7 @@
 		<!-- board 버튼 클릭 시 모달 -->
 		<div class="d-none" data-boardmodal>
 			<div class="board-modal-content">
-				<p data-type="update" data-bs-toggle="modal" data-bs-target="#boardUpdateModal">게시글 수정</p>
+				<p data-type="update">게시글 수정</p>
 				<p data-type="delete">게시글 삭제</p>
 			</div>			
 		</div>
@@ -564,7 +565,7 @@
 					<input type="text" class="board-headder-info__regDate">
 				</div>
 				<div>
-					<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+					<!-- <img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg"> -->
 				</div>
 			</div>
 			<div class="board-title">
@@ -696,7 +697,7 @@
 </body>
 <!-- 상세조회 헤더 버튼 클릭 시 모달 페이지 -->
 <script >
-	//모달페이지 출력
+	//상세정보 모달페이지 출력
 	$('.board-header-btn').on('click', function(e) {
 		let modal = $(e.currentTarget).parent().parent().parent().parent().find('div[data-boardmodal]');
 		console.log(modal)
@@ -713,24 +714,126 @@
 	$('div[data-boardmodal]').on('click', function(e) {
 		$(e.currentTarget).removeClass('d-b');
 	});
+
+	$('#boardUpdateModal').on('click',function(e){
+		e.stopPropagation();
+		if ($(e.target).is('#boardUpdateModal')) {
+	        $('#boardUpdateModal').removeClass('d-b');
+	    }
+	})
+
 	
 	$('.board-modal-content p').on('click', function(e) {
 		e.stopPropagation();
-		let boardContainer = $(e.currentTarget).closest('.board-container');
-		let boardId = boardContainer.data('id');
-		let prjId = '${projectInfo.projectId}';
-		let type = $(e.currentTarget).data('type');
 		
-		if(type == 'update') {
-			console.log(boardContainer.html);
-		}else if(type == 'delete') {
+		let memberId = '${memberInfo.memberId}'
+		let writer = $('.memberId').val();
+		if(memberId!==writer){
+			alert("작성자만 수정 가능합니다.");
+			return;
 			
-		}
+		}else{
+			let boardContainer = $(e.currentTarget).closest('.board-container');
+			let boardId = boardContainer.data('id');
+			let prjId = '${projectInfo.projectId}';
+			let type = $(e.currentTarget).data('type');
+			
+			if(type == 'update') {
+				$('#boardUpdateModal').addClass("d-b")
+				updateSche(e);
+			}else if(type == 'delete') {
+				deleteSche();
+			};
+		};
 	});
+	
+	// 일정 수정 폼
+    function updateSche(e){
+		//일정수정
+		$('.insert-board-modal-title div').text("일정 수정");
+		//수정버튼
+		$('.modal-footer button[type="submit"]').text("수정")
+		let scheId = $('#prjScheId').val()
+		let prjBoardIdInput = $('#prjBoardId');
+		let prjId = '${projectInfo.projectId}';
+		
+		let boardUpdateModal = $('#boardUpdateModal');
+		let sche = boardUpdateModal.find('form[name="sche"]');
+		
+		prjBoardIdInput.val(scheId);
+		$.ajax({
+			url:'getScheBoardInfo',
+			method:'GET',
+			data: {"prjBoardId" : scheId},
+			dataType:"JSON",
+			success:function(result){
+				console.log(result)
+				$('.board-form input[name="prjBoardId"]').val(result.boardVO.prjBoardId)
+				//제목
+				$('.board-form-title').val(result.boardVO.prjBoardTitle); 
+				$('.board-form input[name="startDate"]').val(result.scheVO.startDate);
+				$('.board-form input[name="endDate"]').val(result.scheVO.endDate);
+				$('.board-form input[name="scheAddr"]').val(result.scheVO.scheAddr);
+				$('.board-form input[name="scheAddrDetail"]').val(result.scheVO.scheAddrDetail);
+				$('.board-form select[name="alarmDateCode"]').val(result.scheVO.alarmDateCode);
+				$('.board-form textarea[name="prjBoardSubject"]').val(editor7.getData());
+				//ckeditor값 넣기
+			},
+			error : function(err){
+				console.log(err)
+			}
+		});
+	};
+	//일정 삭제하기
+	function deleteSche(){
+		let scheId = $('#prjScheId').val()
+		
+		console.log(scheId);
+		if (confirm("삭제하시겠습니까?") == true){ 
+		   $.ajax({
+			  url : 'deleteSche',
+			  method : 'GET',
+			  data : {"prjBoardId":scheId},
+			  success : function(result){
+				  console.log(result)
+				  if(result==3){
+					  alert("삭제완료")
+				  };
+					$('div[data-boardmodal]').attr('class','d-none');
+				//상세조회 모달 끄기
+				$('#prjSche-modal').removeClass('modal-prjSche-visible');
+				  renderAll();
+			  },
+			  error : function(err){
+				  console.log(err)
+			  }
+		   });
+		}else{
+		   console.log("취소되었습니다");
+		}
+	};
 </script>
 
 <!-- 캘린더 js -->
 <script>
+function renderAll(){
+	let projectId = ${projectInfo.projectId}
+	$.ajax({
+		url : 'projectCalendarRender',
+	    method: 'GET',
+	    dataType: 'JSON',
+	    data : {"projectId" : projectId},
+	    success : function(result){
+	    	console.log(result)
+			calendar.removeAllEvents();
+			calendar.addEventSource(result.scheList);
+			calendar.addEventSource(result.taskList);
+	    },
+	    error : function(error){
+	    	
+	    }
+	});
+};
 	var calendar 
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
@@ -766,10 +869,11 @@
 				right : 'dayGridMonth,timeGridWeek'
 			},
 			locale : "ko",
+			timeZone: 'Asia/Seoul',
 			navLinks : false, // can click day/week names to navigate views
 			selectable : true,
 			selectMirror : true,
-			select : function(){},
+			select : insertSche,
 			//ajax로 db데이터 화면에 뿌리기
 			//events: data,
 			eventClick : eventClickHandler
@@ -781,26 +885,32 @@
 		calendar.addEventSource(scheList);
 		calendar.addEventSource(taskList);
 		
-		function renderAll(){
-			let projectId = ${projectInfo.projectId}
-			$.ajax({
-				url : 'projectCalendarRender',
-			    method: 'GET',
-			    dataType: 'JSON',
-			    data : {"projectId" : projectId},
-			    success : function(result){
-			    	console.log(result)
-					calendar.removeAllEvents();
-					calendar.addEventSource(result.scheList);
-					calendar.addEventSource(result.taskList);
-			    },
-			    error : function(error){
-			    	
-			    }
-			});
+
+		//일정 입력
+		function insertSche(arg){
+			console.log(arg)
+			$('.insert-board-modal-title div').text("일정 입력");
+			$('#boardUpdateModal').addClass("d-b");
+			
+			//제목초기화
+			$('.board-form-title').val("");
+			//주소 초기화
+			$('#scheAddr').val("");
+			$('#scheAddrDetail').val("");
+			//선택날짜로 입력값 넣기
+			let now = new Date();
+			let hours = now.getHours();
+			let minutes = now.getMinutes();
+			let nowTime = hours+":"+minutes
+			
+			$('.board-form input[name="startDate"]').val(arg.startStr+" "+nowTime);
+			$('.board-form input[name="endDate"]').val(arg.endStr+" "+nowTime);
+			$('.modal-footer button[type="submit"]').text("입력")
+			calendar.unselect();
 		};
 		
 		
+		//날짜 클릭시 상세조회
 		function eventClickHandler(info){
 			let boardId = info.event.id
 			if(boardId.substr(0,1)==="t"){
@@ -899,6 +1009,7 @@
 						console.log(result)
 						
 						$('#prjScheId').val(result.boardVO.prjBoardId);
+						$('.memberId').val(result.boardVO.memberId)
 						$('#prjSche-modal').addClass('modal-prjSche-visible');
 						$('.board-headder-info__memberName').text(result.memberName)
 						$('.board-headder-info__regDate').val(result.boardVO.prjBoardRegdate)
@@ -980,43 +1091,7 @@
 			});
 		})
 		
-		// 일정 수정 폼
-		$('p[data-type="update"]').on('click', function(e){
-			console.log('${memberInfo.memberId}')
-			
-			
-			let scheId = $('#prjScheId').val()
-			let prjBoardIdInput = $('#prjBoardId');
-			let prjId = '${projectInfo.projectId}';
-			
-			let boardUpdateModal = $('#boardUpdateModal');
-			let sche = boardUpdateModal.find('form[name="sche"]');
-			
-			prjBoardIdInput.val(scheId);
-			$.ajax({
-				url:'getScheBoardInfo',
-				method:'GET',
-				data: {"prjBoardId" : scheId},
-				dataType:"JSON",
-				success:function(result){
-					console.log(result)
-					$('.board-form input[name="prjBoardId"]').val(result.boardVO.prjBoardId)
-					//제목
-					$('.board-form-title').val(result.boardVO.prjBoardTitle); 
-					$('.board-form input[name="startDate"]').val(result.scheVO.startDate);
-					$('.board-form input[name="endDate"]').val(result.scheVO.endDate);
-					$('.board-form input[name="scheAddr"]').val(result.scheVO.scheAddr);
-					$('.board-form input[name="scheAddrDetail"]').val(result.scheVO.scheAddrDetail);
-					$('.board-form select[name="alarmDateCode"]').val(result.scheVO.alarmDateCode);
-					$('.board-form textarea[name="prjBoardSubject"]').val(editor7.getData());
-					//ckeditor값 넣기
-				},
-				error : function(err){
-					console.log(err)
-				}
-			});
-			
-		});
+
 		//일정 수정 데이터 보내기
 		$(document).on('submit', 'form[name="sche"]', function(e){
 			e.preventDefault();
@@ -1024,65 +1099,94 @@
 			let boardVO ={};
 			let scheVO = {};
 			
+			let projectId = $('#projectId').val();
+			let memberId = $('#memberId').val();
+			
 			let prjBoardId = $('.board-form input[name="prjBoardId"]').val();
 			let prjBoardTitle = $('.board-form-title').val();
-			let startDate = $('.board-form input[name="startDate"]').val();
-			let endDate = $('.board-form input[name="endDate"]').val();
 			let scheAddr = $('.board-form input[name="scheAddr"]').val();
 			let scheAddrDetail = $('.board-form input[name="scheAddrDetail"]').val();
 			let alarmDateCode = $('.board-form select[name="alarmDateCode"]').val();
 			let prjBoardSubject = $('.board-form textarea[name="prjBoardSubject"]').val();
 			
-			boardVO = {prjBoardId, prjBoardTitle, prjBoardSubject};
-			scheVO = {startDate, endDate, scheAddr, scheAddrDetail,alarmDateCode};
-			boardRequestVO = {boardVO, scheVO}
-			console.log(boardRequestVO)
 			//ckeditor 값 넣기
-			$.ajax({
-				url : '${pageContext.request.contextPath}/prjScheUpdate',
-				method : 'POST',
-				data : JSON.stringify(boardRequestVO),
-				contentType:'application/json',
-				success:function(data){
-					alert('정상적으로 수정되었습니다.');
-					$('div[data-boardmodal]').attr('class','d-none');
-					$('.sche-addr span[class="sche-addr__info"]').remove();
-					//상세조회 모달 끄기
-					$('#prjSche-modal').removeClass('modal-prjSche-visible');
-					renderAll();
-				},error: function(reject) {
-					console.log(reject);
-				}
-			});
-		});
-		//일정 삭제하기
-		$('p[data-type="delete"]').on('click', function(e){
-			let scheId = $('#prjScheId').val()
 			
-			console.log(scheId);
-			if (confirm("삭제하시겠습니까?") == true){ 
-			   $.ajax({
-				  url : 'deleteSche',
-				  method : 'GET',
-				  data : {"prjBoardId":scheId},
-				  success : function(result){
-					  console.log(result)
-					  if(result==3){
-						  alert("삭제완료")
-					  };
-  					$('div[data-boardmodal]').attr('class','d-none');
-					//상세조회 모달 끄기
-					$('#prjSche-modal').removeClass('modal-prjSche-visible');
-					  renderAll();
-				  },
-				  error : function(err){
-					  console.log(err)
-				  }
-			   });
-			}else{
-			   console.log("취소되었습니다");
+			//버튼의 text를 확인후 수정과 입력으로 나눠서 진행
+			let btnText = $('.modal-footer button[type="submit"]').text();
+			if(btnText==="수정"){
+				//날짜 수정
+				let startDate = $('.board-form input[name="startDate"]').val();
+				let endDate = $('.board-form input[name="endDate"]').val();
+				boardVO = {prjBoardId, prjBoardTitle, prjBoardSubject};
+				scheVO = {startDate, endDate, scheAddr, scheAddrDetail,alarmDateCode};
+				boardRequestVO = {boardVO, scheVO}
+				$.ajax({
+					url : '${pageContext.request.contextPath}/prjScheUpdate',
+					method : 'POST',
+					data : JSON.stringify(boardRequestVO),
+					contentType:'application/json',
+					success:function(data){
+						alert('정상적으로 수정되었습니다.');
+						$('div[data-boardmodal]').attr('class','d-none');
+						$('.sche-addr span[class="sche-addr__info"]').remove();
+						//상세조회 모달 끄기
+						$('#prjSche-modal').removeClass('modal-prjSche-visible');
+						$('#boardUpdateModal').removeClass('d-b');
+						renderAll();
+					},error: function(reject) {
+						console.log(reject);
+					}
+				});
+			}else if(btnText==="입력"){
+				if(prjBoardTitle===""||prjBoardTitle===null){
+					alert("제목을 입력하세요")
+					$('.board-form-title').focus();
+					return;
+				}
+				let boardType = 'C6'
+				let startDate = $('.board-form input[name="startDate"]').val();
+				let endDate = $('.board-form input[name="endDate"]').val()
+				/* let startDate = new Date(start);
+				let endDate = new Date(end); */
+				//
+				/* let realStartDate = new Date(startDate);
+				let realEndDate = new Date(endDate);
+				realStartDate.setHours(startDate.getHours()+9);
+				realEndDate.setHours(endDate.getHours()+9);
+				realStartDate = $(realStartDate).val().replace("T", " ");
+				realEndDate = $(realEndDate).val().replace("T", " ");
+				console.log(realStartDate)
+				console.log(realEndDate) */
+				//작업
+				//작업
+				//작업
+				
+				boardVO = {prjBoardTitle, prjBoardSubject, projectId, memberId, boardType};
+				scheVO = {startDate, endDate, scheAddr, scheAddrDetail, alarmDateCode};
+				boardRequestVO = {boardVO, scheVO}
+				console.log(boardRequestVO)
+				console.log(JSON.stringify(boardRequestVO))
+				$.ajax({
+					url : '${pageContext.request.contextPath}/calInsertSche',
+					method : 'POST',
+					data : JSON.stringify(boardRequestVO),
+					contentType : 'application/json',
+					success : function(result){
+						console.log(result);
+						$('div[data-boardmodal]').attr('class','d-none');
+						$('.sche-addr span[class="sche-addr__info"]').remove();
+						//상세조회 모달 끄기
+						$('#prjSche-modal').removeClass('modal-prjSche-visible');
+						$('#boardUpdateModal').removeClass('d-b');
+						renderAll();
+					},
+					error : function(err){
+						console.log(err);
+					}
+				});
 			}
 		});
+
 		
 		// 시작일자, 마감일자 범위 선택하기
 		$(document).on('click', 'input[data-date]', function(e) {

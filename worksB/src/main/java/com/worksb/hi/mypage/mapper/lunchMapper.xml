@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.worksb.hi.mypage.mapper.LunchMapper">
+	<select id="selectLunchList" resultType="LunchVO">
+		SELECT lunch_category, lunch_menu
+		FROM lunch
+		ORDER BY lunch_category
+	</select>
+	
+	<select id="selectLunchCate" resultType="LunchVO">
+		SELECT DISTINCT lunch_category
+		FROM lunch
+		ORDER BY lunch_category
+	</select>
+</mapper>

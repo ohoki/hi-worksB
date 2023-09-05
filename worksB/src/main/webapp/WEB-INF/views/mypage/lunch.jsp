@@ -99,78 +99,11 @@
 <script>
     //모달창 띄우기
     var myModal = new bootstrap.Modal(document.getElementById('exampleModal'))
+	
+    let lunchList = ${lunchList}
 
-    var menuCategory = ['한식', '중식', '일식', '아시안', '분식', '양식', '고기', '치킨', '햄버거'];
-
-    var exam = [{
-            "name": "한식",
-            "menu": [
-                "비빔밥", "백반", "냉면", "제육", "보쌈", "닭갈비", "삼계탕", "찜닭", "국밥"
-            ]
-        },
-        {
-            "name": "중식",
-            "menu": [
-                "짜장면", "짬뽕", "볶음밥", "딤섬", "멘보샤", "유린기", "팔보채", "중화비빔밥", "탕수육"
-            ]
-        },
-        {
-            "name": "아시안",
-            "menu": [
-                "베트남 쌀국수", "팟타이", "분짜", "반미", "짜조", "쏨땀", "푸팟퐁", "똠얌꿍", "나시고랭"
-            ]
-        },
-        {
-            "name": "분식",
-            "menu": [
-                "토스트", "라면", "우동", "막국수", "칼국수", "떡볶이", "만두", "김밥", "쫄면"
-            ]
-        },
-        {
-            "name": "양식",
-            "menu": [
-                "파스타", "피자", "햄버거", "스테이크", "타코", "오믈렛", "포케", "리소토", "샐러드"
-            ]
-        },
-        {
-            "name": "고기",
-            "menu": [
-                "갈비", "떡갈비", "불고기", "곱창", "육회", "막창", "족발", "삼겹살", "소고기"
-            ]
-        },
-        {
-            "name": "일식",
-            "menu": [
-                "초밥", "돈부리", "소바", "야키니쿠", "나베", "라멘", "텐동", "규동", "오니기리"
-            ]
-        },
-        {
-            "name": "햄버거",
-            "menu": [
-                "버거킹", "NBB", "맥도날드", "맘스터치", "오일리버거", "KFC", "롯데리아", "쉑쉑버거", "수제버거"
-            ]
-        },
-        {
-            "name": "치킨",
-            "menu": [
-                "bbq", "bhc", "네네치킨", "굽네치킨", "파파이스", "교촌치킨", "kfc", "60계", "지코바"
-            ]
-        }
-    ];
-
-    var koreanFood = ['비빔밥', '백반', '냉면', '제육', '보쌈', '닭갈비', '삼계탕', '찜닭', '국밥'];
-    var chineseFood = ['짜장면', '짬뽕', '볶음밥', '딤섬', '멘보샤', '유린기', '팔보채', '중화비빔밥', '탕수육'];
-    var japaneseFood = ['초밥', '돈부리', '소바', '야키니쿠', '나베', '라멘', '텐동', '규동', '오니기리'];
-    var asianFood = ['베트남 쌀국수', '팟타이', '분짜', '반미', '짜조', '쏨땀', '푸팟퐁', '똠얌꿍', '나시고랭'];
-    var boonsik = ['순대', '라면', '우동', '막국수', '칼국수', '떡볶이', '만두', '김밥', '쫄면'];
-    var westernFood = ['파스타', '피자', '햄버거', '스테이크', '타코', '오믈렛', '포케', '리소토', ''];
-    var meat = ['갈비', '떡갈비', '불고기', '곱창', '육회', '막창', '족발', '삼겹살', '소고기'];
-    var chicken = ['bbq', 'bhc', '네네치킨', '굽네치킨', '파파이스', '교촌치킨', 'kfc', '60계', '지코바'];
-    var hamburger = ["버거킹", "NBB", "맥도날드", "맘스터치", "오일리버거", "KFC", "롯데리아", "쉑쉑버거", "수제버거"]
-
-    var dessert = ['크림빵', '케이크', '빙수', '푸딩', '쿠키', '도넛', '타르트', '휘낭시에', '마카롱'];
-
-
+    
+   
     //만다라트 가운데항목 만드는 함수
     function manda() {
 
@@ -219,7 +152,7 @@
         //가운데 들어갈 메뉴 카테고리들 입력
         for (let i = 0; i < 9; i++) {
             if (i != 4) {
-                document.getElementById('manda').querySelectorAll('td')[i].innerText = exam[random[i]].name
+                document.getElementById('manda').querySelectorAll('td')[i].innerText = lunchList[random[i]].name
             } else if (i == 4) {
                 continue;
             }
@@ -249,7 +182,7 @@
                                 document.getElementById('manda').querySelectorAll('td')[i - 1].innerText) {
                         for (let k = 0; k < 9; k++) {
                             let tdTag = document.getElementById('manda' + i).querySelectorAll('td')[k];
-                            tdTag.innerText = exam[random[i - 1]].menu[random[k]];
+                            tdTag.innerText = lunchList[random[i - 1]].menu[random[k]];
                             tdTag.addEventListener("click", searchMenu);;
                         }
                     }
@@ -273,7 +206,7 @@
                     if (document.getElementById('manda' + i).querySelectorAll('td')[4].innerText === 
                                 document.getElementById('manda').querySelectorAll('td')[i].innerText) {
                         for (let k = 0; k < 9; k++) {
-                            document.getElementById('manda' + i).querySelectorAll('td')[k].innerText = exam[random[i]].menu[k]
+                            document.getElementById('manda' + i).querySelectorAll('td')[k].innerText = lunchList[random[i]].menu[k]
                         }
                     }
                 }
@@ -366,10 +299,10 @@
                     if (document.getElementById('manda' + i).querySelectorAll('td')[4].innerText === document
                         .getElementById('manda').querySelectorAll('td')[i - 1].innerText) {
                         for (let k = 0; k < 9; k++) {
-                            if (exam[k].name === document.getElementById('manda' + i).querySelectorAll('td')[4].innerText) {
+                            if (lunchList[k].name === document.getElementById('manda' + i).querySelectorAll('td')[4].innerText) {
                                 for (let j = 0; j < 9; j++) {
                                     document.getElementById('manda' + i)
-                                    .querySelectorAll('td')[j].innerText = exam[k].menu[random[j]]
+                                    .querySelectorAll('td')[j].innerText = lunchList[k].menu[random[j]]
 
                                 }
                             }
@@ -396,11 +329,11 @@
                     if (document.getElementById('manda' + i).querySelectorAll('td')[4].innerText === document
                         .getElementById('manda').querySelectorAll('td')[i].innerText) {
                         for (let k = 0; k < 9; k++) {
-                            if (exam[k].name === document.getElementById('manda' + i).querySelectorAll('td')[4]
+                            if (lunchList[k].name === document.getElementById('manda' + i).querySelectorAll('td')[4]
                                 .innerText) {
                                 for (let j = 0; j < 9; j++) {
                                     document.getElementById('manda' + i)
-                                    .querySelectorAll('td')[j].innerText = exam[k].menu[random[j]]
+                                    .querySelectorAll('td')[j].innerText = lunchList[k].menu[random[j]]
 
                                 }
                             }

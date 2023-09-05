@@ -74,6 +74,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 	
+	//일정 등록
 	@Override
 	public int insertSche(ScheVO scheVO) {
 		int result = boardMapper.insertSche(scheVO);
