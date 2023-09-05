@@ -101,12 +101,14 @@
 		let maxSize = 512000;
 // 		let countfile=<c:out value="${size}" />;
 		
-	
-	
-		function search(p){
-			searchform.nowPage.value=p;
-			searchform.submit();
-		}
+		//엔터로검색
+		$('.search__input').on('keyup', (e)=>{
+			if(e.keyCode===13){
+				searchform.nowPage.value=p;
+				searchform.submit();
+			}
+		});
+
 		function check(fileId){
 		    let checkbox=$('#' + fileId);
 		    let isChecked=checkbox.prop('checked');

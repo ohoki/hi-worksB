@@ -29,14 +29,10 @@ import com.worksb.hi.board.service.ScheParticirVO;
 import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
-import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
-import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
-
-import oracle.jdbc.proxy.annotation.Post;
 
 // 이진 0818 게시판관리 - 게시글,업무,일정,투표 등록
 
@@ -687,4 +683,19 @@ public class BoardController {
 
 	    return resultMap;
 	}
+	//주현
+	@GetMapping("/searchTask")
+	public void searchTask(@RequestParam("searchKeyword")String prjBoardTitle,Model m,@RequestParam("projectId")int projectId) {
+//		Map<String, Object> resultMap = new HashMap<>();
+		//m.addAttribute("managerList",boardService.searchingTaskManagerList(prjBoardTitle));
+		m.addAttribute("taskList",boardService.searchingList(prjBoardTitle));
+		m.addAttribute("searchKeyword",prjBoardTitle);
+		
+		// 프로젝트 정보
+		ProjectVO projectInfo = projectService.getProjectInfo(projectId);
+		m.addAttribute("projectInfo", projectInfo);
+		
+	}
+
+	
 }

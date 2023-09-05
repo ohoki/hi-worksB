@@ -321,6 +321,16 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.deleteScheParticir(prjBoardId);
 	}
 
+	@Override
+	public List<AllTaskBoardVO> searchingTaskManagerList(String title) {
+		return boardMapper.searchingTaskManagerList(title);
+	}
+
+	@Override
+	public List<AllTaskBoardVO> searchingList(String title) {
+		return boardMapper.searchingList(title);
+	}
+
 	
 	
 	

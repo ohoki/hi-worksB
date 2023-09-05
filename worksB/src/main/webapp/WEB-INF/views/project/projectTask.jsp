@@ -1845,5 +1845,19 @@
 </script>
 
 
+<!-- 주현이스크립트~~~ -->
+<script>
+let projectId=${projectInfo.projectId}
+$('.task__search').on('keyup', (e)=>{
+	if(e.keyCode==13){
+		let searchKeyword=$('.task__search').val();
+		if(searchKeyword==""){
+			alert('검색어를 입력하세요')
+		}
+		location.href="${pageContext.request.contextPath}/searchTask?searchKeyword="+searchKeyword+"&projectId="+projectId;
+	}
+});
+</script>
 </body>
+
 </html>
