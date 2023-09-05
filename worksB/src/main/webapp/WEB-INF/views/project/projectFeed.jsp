@@ -2617,7 +2617,7 @@
 	// 좋아요 정보
 	function getPrjLike(memberId, boardId){
 		$.ajax({
-			url : '${pageContext.request.contextPath}/gePrjLike',
+			url : '${pageContext.request.contextPath}/getPrjLike',
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId},
 			success : function(likeInfo){

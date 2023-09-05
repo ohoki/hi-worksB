@@ -407,9 +407,9 @@ public class BoardController {
 	}
 	
 	// 좋아요 여부 / 좋아요 전체 수
-	@GetMapping("/gePrjLike")
+	@GetMapping("/getPrjLike")
 	@ResponseBody
-	public Map<String, Object> gePrjLike(BoardVO boardVO) {
+	public Map<String, Object> getPrjLike(BoardVO boardVO) {
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		BoardVO memberLike = boardService.getMemLike(boardVO);

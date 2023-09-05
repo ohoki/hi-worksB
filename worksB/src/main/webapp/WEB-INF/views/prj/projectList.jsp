@@ -11,7 +11,40 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/projectList.css">
 <style>
+#prjParticir-modal{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.1);
+	font-size: 12px;
+	display: none;
+	left: 0;
+	top: 0;
+}
 
+.prjParticir-modal-title{
+	font-size: 15px;
+	justify-content: space-between;
+	font-weight: var(--weight-bold);
+	padding: 5px 10px;
+}
+
+.prjParticir-modal-content{
+	position: absolute;
+	width: 15%;
+	height: 30%;
+	background-color: white;
+	font-size: 12px;
+	padding: 20px 15px;
+	z-index: 10;
+	overflow: auto;
+	overflow-x: hidden;
+	border-radius: 5px;
+}
+
+.modal-visible {
+	display: block !important;
+}
 </style>
 </head>
 <body>
@@ -42,7 +75,7 @@
 					</c:if> 
 					</div>
 					<div class="project-info">
-						${list.prjParticirNum }<img class="icon" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+						${list.prjParticirNum }<img class="icon" name="prjParticirList" data-id="${list.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 						<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
 						<span class="unread-project">1</span>
 					</div>
@@ -68,13 +101,24 @@
 						</c:if> 
 					</div>
 					<div class="project-info">
-						${list.prjParticirNum }<img class="icon" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+						${list.prjParticirNum }<img class="icon" name="prjParticirList" data-id="${list.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 						<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
 						<span class="unread-project">1</span>
 					</div>
 				</div>
 			</c:forEach>
 		</div>
+	</div>
+	
+	<!-- 프로젝트 참여자 모달 -->
+	<div id="prjParticir-modal">
+		<div class="prjParticir-modal-content">
+			<div class="prjParticir-modal-title">
+				<span>프로젝트 참여자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="prjParticir"></div>
+		</div>			
 	</div>
 </body>
 <script>
@@ -133,9 +177,69 @@
 		});
 };
 
-
+	
 
     //drag event
+    
+    
+    //모달 닫기
+	$('[id*=modal]').on('click', function() {
+		$('.modal-visible').removeClass('modal-visible');
+	});
+	
+	// 프로젝트 참여자 리스트
+	$('img[name="prjParticirList"]').on('click', function(e){
+		let projectId = $(this).data('id');
+		
+		let x = e.clientX - 320 ;
+		let y = e.clientY;
+		
+		$('.prjParticir-modal-content').css('left', x + 'px');
+		$('.prjParticir-modal-content').css('top', y + 'px');
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath }/particirList',
+			type : 'GET',
+			data : {'projectId': projectId},
+			success : function(particir){
+				let particirDiv = $('#prjParticir');
+				particirDiv.empty();
+				
+				for(let i=0; i<particir.length; i++) {
+					//div태그
+					let employeeDiv = document.createElement('div');
+					employeeDiv.classList.add('flex');
+					employeeDiv.classList.add('employee');
+					//이미지 태그
+					let employeeProfile = document.createElement('img');
+					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.classList.add('employee-img');
+					if(particir[i].realProfilePath != null) {
+						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
+					}else {
+						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					}
+					//스팬 태그
+					let span = document.createElement('span');
+					span.innerText = particir[i].memberName;
+					//히든 인풋 태그 (멤버id값)
+					let input = document.createElement('input');
+					input.setAttribute('type', 'hidden');
+					input.value = particir[i].memberId;
+					//태그 삽입
+					employeeDiv.append(employeeProfile);
+					employeeDiv.append(span);
+					employeeDiv.append(input);
+					
+					particirDiv.append(employeeDiv);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+		$('#prjParticir-modal').addClass('modal-visible');
+	})
     
     </script>
 
