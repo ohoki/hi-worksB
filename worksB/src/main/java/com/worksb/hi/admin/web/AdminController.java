@@ -239,6 +239,12 @@ public class AdminController {
 		public String updateMember(MemberVO memberVO) {
 			return adminService.updateMember(memberVO);
 		}
+		// 회사 구성원 리스트 출력 ajax
+		@RequestMapping("/memberManagement")
+		@ResponseBody
+		public String CompanyMemberList() {
+			return null;
+		}
 
 		@PostMapping("/updateRole")
 		@ResponseBody

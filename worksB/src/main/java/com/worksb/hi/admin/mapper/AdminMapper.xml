@@ -180,6 +180,30 @@
 			</set>
 		 WHERE member_id = #{memberId}
 	</update>
+	
+	<!-- 구성원 전체 리스트 조회 ajax -->
+	<select id="companyMemberLists" resultType="MemberVO">
+		select m.member_id, 
+			   m.member_name, 
+			   m.member_phone, 
+			   m.member_grade,
+			   find_subcode(m.member_grade) AS grade_name,
+			   m.con_ip, 
+			   m.job_id, 
+			   m.dept_id, 
+			   m.emp_status, 
+			   m.con_status, 
+			   c.company_id, 
+			   d.dept_name, 
+			   j.job_name
+		  from member m join company c
+                        on(m.company_id = c.company_id)
+                      left outer join department d
+                        on(m.dept_id = d.dept_id)
+                      left outer join job j
+                        on(m.job_id = j.job_id)
+		 where member_id = #{memberId}
+	</select>
 
 	<!--  -->
 	<select id="departmentList" resultType="DepartmentVO">

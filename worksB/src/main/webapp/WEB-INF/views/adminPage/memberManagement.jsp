@@ -60,21 +60,24 @@
 		<li>가입 대기</li>
 	</ul>
 	<table>
-		<tr>
-			<td><input type="checkbox"></td>
-			<td>아이디</td>
-			<td>이름</td>
-			<td>전화번호</td>
-			<td>등급</td>
-			<td>직급번호</td>
-			<td>부서번호</td>
-			<td>근무 상태</td>
-			<td>접속 ip</td>
-			<td>접속 여부</td>
-			<td>관리</td>
-		</tr>
-		<c:forEach items="${memberList}" var="member">
-			<tr data-id="${member.memberId }" class="memberTr">
+		<thead>
+			<tr>
+				<td><input type="checkbox"></td>
+				<td>아이디</td>
+				<td>이름</td>
+				<td>전화번호</td>
+				<td>등급</td>
+				<td>직급번호</td>
+				<td>부서번호</td>
+				<td>근무 상태</td>
+				<td>접속 ip</td>
+				<td>접속 여부</td>
+				<td>관리</td>
+			</tr>
+		</thead>
+		<tbody class="taskList">
+			<c:forEach items="${memberList}" var="member">
+			<tr data-id="${member.memberId }" class="highmember memberTr">
 				<th><input type="checkbox"></th>
 				<th>${member.memberId }</th>
 				<th>${member.memberName }</th>
@@ -98,6 +101,9 @@
 				<th><input type="button" value="관리"></th>
 			</tr>
 		</c:forEach>
+		</tbody>
+		
+		
 	</table>
 	<div  id="memberUpdateModal">
 		<form class="updateMember" method="post">
@@ -161,6 +167,61 @@
 		</form>
 	</div>
 	<script>
+		 $(document).ready(function() {
+			 getmemberList();
+	  	 });
+
+	
+		function getmemberList(){
+			$.ajax({
+				url:'${pageContext.request.contextPath}/admin/memberManagements',
+				type : 'GET',
+				data : {'memberId' : ${memberList.memberId} },
+				success : function(taskList){
+					let membersList = $('.highmember');
+					
+					$(taskList).empty();
+					
+					for(let i=0; i<taskList.lenth; i++){
+						
+						let hightaskList =
+							<tr data-id="${member.memberId }" class="highmember memberTr">
+								<th><input type="checkbox"></th>
+							<th>\${member.memberId }</th>
+							<th>\${member.memberName }</th>
+							<th>\${member.memberPhone }</th>
+							<th>\${member.gradeName }</th>
+							<th>\${member.jobName }</th>
+							<th>\${member.deptName }</th>
+							<c:choose>
+								<c:when test="${member.empStatus eq 'S1'}">
+									<th>접속중</th>
+								</c:when>
+								<c:when test="${member.empStatus eq 'S2'}">
+								<th>자리비움</th>
+								</c:when>
+								<c:when test="${member.empStatus eq 'S3'}">
+								<th>접속 종료</th>
+								</c:when>
+							</c:choose>
+							<th>\${member.conIp }</th>
+							<th>\${member.conStatus }</th>
+							<th><input type="button" value="관리"></th>
+						</tr>;
+						
+						$(".taskList").append(hightaskList);
+					}
+					
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				}
+			})
+		}
+		
+	
+	
 		$(document).on("click", ".memberTr", function(e){
 			// 버블링 제거
 			e.stopPropagation();

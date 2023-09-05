@@ -34,6 +34,8 @@ public interface AdminMapper {
 	public MemberVO companyMemberInfo(MemberVO memberVO);
 	// 구성원 정보 수정
 	public int updateMember(MemberVO memberVO);
+	// 구성원 리스트 ajax
+	public List<MemberVO> companyMemberLists(int companyId);
 	
 	//부서목록
 	public List<DepartmentVO>departmentList(int companyId);
