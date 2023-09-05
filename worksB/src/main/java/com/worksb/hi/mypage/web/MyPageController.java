@@ -54,7 +54,7 @@ public class MyPageController {
 	};
 	
 	   
-    @GetMapping("news")
+    @GetMapping("/naverNews")
     public String naver(Model model) {
 
 

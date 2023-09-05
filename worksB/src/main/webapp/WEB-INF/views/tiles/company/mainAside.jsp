@@ -64,7 +64,7 @@
 		<div class="side__menu">
 			<ul class="side__menu__items">
 				<li class="side__menu__item"><a href="privateSche">마이 캘린더</a></li>
-				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/news">네이버 뉴스</a></li>
+				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/naverNews">네이버 뉴스</a></li>
 				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/lunch">점.메.추</a></li>
 			</ul>
 		</div>

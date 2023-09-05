@@ -869,6 +869,7 @@ function renderAll(){
 				right : 'dayGridMonth,timeGridWeek'
 			},
 			locale : "ko",
+			timeZone: 'Asia/Seoul',
 			navLinks : false, // can click day/week names to navigate views
 			selectable : true,
 			selectMirror : true,
@@ -1143,24 +1144,25 @@ function renderAll(){
 					return;
 				}
 				let boardType = 'C6'
-				let start = $('.board-form input[name="startDate"]').val();
-				let end = $('.board-form input[name="endDate"]').val()
-				let startDate = new Date(start);
-				let endDate = new Date(end);
-				let realStartDate = new Date(startDate);
+				let startDate = $('.board-form input[name="startDate"]').val();
+				let endDate = $('.board-form input[name="endDate"]').val()
+				/* let startDate = new Date(start);
+				let endDate = new Date(end); */
+				//
+				/* let realStartDate = new Date(startDate);
 				let realEndDate = new Date(endDate);
 				realStartDate.setHours(startDate.getHours()+9);
 				realEndDate.setHours(endDate.getHours()+9);
 				realStartDate = $(realStartDate).val().replace("T", " ");
 				realEndDate = $(realEndDate).val().replace("T", " ");
 				console.log(realStartDate)
-				console.log(realEndDate)
+				console.log(realEndDate) */
 				//작업
 				//작업
 				//작업
 				
 				boardVO = {prjBoardTitle, prjBoardSubject, projectId, memberId, boardType};
-				scheVO = {realStartDate, realEndDate, scheAddr, scheAddrDetail, alarmDateCode};
+				scheVO = {startDate, endDate, scheAddr, scheAddrDetail, alarmDateCode};
 				boardRequestVO = {boardVO, scheVO}
 				console.log(boardRequestVO)
 				console.log(JSON.stringify(boardRequestVO))
