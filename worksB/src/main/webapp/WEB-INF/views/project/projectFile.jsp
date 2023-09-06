@@ -142,8 +142,6 @@
 </head>
 <body>
 <c:set var="size" value="${fileList.size() }" />
-
-
 	<div class="file-main-box">
 		<div class="d-flex file-header" style="justify-content: flex-end;">
 			<!-- 업로드와 다운로드 --> 
@@ -156,6 +154,7 @@
 				<input type="hidden" name="prjId" value="${projectInfo.projectId }" >
 			</form>
 		</div>
+
 		<table>
 			<thead>
 				<tr>

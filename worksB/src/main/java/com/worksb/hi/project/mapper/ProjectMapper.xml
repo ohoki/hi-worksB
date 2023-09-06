@@ -178,7 +178,8 @@
 		FROM	prj_particir p
 		JOIN	member m
 		ON		p.member_id=m.member_id
-		WHERE	project_id = #{projectId} AND p.particir_accp = 'A1'
+		WHERE	project_id = #{projectId} 
+		AND p.particir_accp = 'A1'
 	</select>
 	
 	<!-- 프로젝트 즐겨찾기 여부 -->

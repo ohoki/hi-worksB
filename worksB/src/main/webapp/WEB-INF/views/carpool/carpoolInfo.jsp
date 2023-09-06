@@ -123,7 +123,7 @@ div h2 {
 </head>
 <body>
 	<div class="top">
-		<h2>공지사항</h2>
+		<h2>카풀게시판</h2>
 	</div>
 	<div class="body">
 		<form action="carpoolInfo" method="post">
@@ -176,7 +176,7 @@ div h2 {
 			</table>
 		</form>
 		<div>
-			<button onclick="participate('${carpoolInfo.passenger}','${carpoolInfo.boardId}',${carpoolInfo.passenger },${ participantsCounting})">참여하기</button>
+			<button onclick="participate('${carpoolInfo.boardId}',${carpoolInfo.passenger },${ participantsCounting},'${carpoolInfo.memberId }','${memberId }')">참여하기</button>
 			<button onclick="cancel('${carpoolInfo.boardId}','${memberId}')">취소하기</button>
 			<div id="participants">
 				<c:forEach items="${ participantList}" var="list">
@@ -196,27 +196,7 @@ div h2 {
 			</div>
 		</div>
 		
-<!-- 		모달창 -->
-		<div id="employee-modal">
-				<div class="employee__content">
-					<div>
-						<img src="" alt="기본 프로필 사진" class="my-profile-logo" id="e-img">	
-						<div class="employee-modal__name"></div>
-						<ul>
-							<li class="my-profile-item"><img alt="소속 회사" src="${pageContext.request.contextPath}/resources/icon/building-solid.svg" class="item-icon"><span id="e-company">${companyInfo.companyName }</span></li>
-							<li class="my-profile-item"><img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/envelope-solid.svg" class="item-icon"><span id="e-id"></span></li>
-							<li class="my-profile-item"><img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/mobile-screen-button-solid.svg" class="item-icon"><span id="e-phone"></span></li>
-							<li class="my-profile-item">
-								<img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/circle-info-solid.svg" class="item-icon">
-								<span id="e-dept"></span></li>
-						</ul>
-						<form name="chatForm" action="${pageContext.request.contextPath}/sendRequest" method="POST">
-							<input type="hidden" name="roomName" id="roomNameField" value="">
-							<button type="submit" class="chat__btn" onclick="sendRequest()">채팅하기</button>
-						</form>
-					</div>	
-				</div>			
-			</div>
+
 		
 		<!-- 아래부터 댓글 공간 -->
 		<div>
@@ -236,7 +216,25 @@ div h2 {
 	</div>
 </body>
 <script>
-	function participate(passenger,boardId,available,counted){
+	function participate(boardId,available,counted,writer,memberId){
+		if(writer==memberId){
+			alert('작성자는 신청하지 못합니다')
+			return;
+		}
+
+		let requestList=[];
+		let countChildren=$('#participants').children()
+		requestList.length=countChildren.length
+		if(requestList.length==0){
+			
+		}
+		for(let i=0;i<requestList.length;i++){
+			if(memberId==$('.m-info').data('id')){
+				alert('이미 신청하였습니다.')
+				return;
+			}
+		}
+
 		if(available<=counted){
 			alert('마감되었습니다.')
 			return;

@@ -5,13 +5,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ 
+ <link rel="stylesheet" href="/resources/demos/style.css">
+ 
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
+	<form id="sform" name="searchcategories" method="post" action="${pageContext.request.contextPath}/admin/searchByDate">
+		<input type="hidden" name="searchkeyword" value="${searchkeyword }">
+    	<input type="hidden" name="searchBoardType" id="b-type" value="${boardType }">
+    	<input type="hidden" name="startDate" id="start-date">
+    	<input type="hidden" name="endDate" id="end-date">
+	</form>
+
 	<div>
 		<p>파일 다운로드 이력</p>
 	</div>
+		<div id="pick-date">
+<!-- 		날짜에 관한 것 -->
+			<input type="text" id="start-datepicker">
+			<input type="text" id="end-datepicker">
+		</div>
 	<table>
 		<thead>
 			<tr>
@@ -61,5 +80,67 @@
 	function search(p){
 		location.href="${pageContext.request.contextPath }/admin/downloadlist?nowPage="+p
 }
+	
+	
+	//datepicker시작일
+	 $( function() {
+	    $('#start-datepicker').datepicker({
+	    	dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	            ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+	            ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+	            ,changeYear: true //option값 년 선택 가능
+	            ,changeMonth: true //option값  월 선택 가능                
+	            ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+	            ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+	            ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+	            ,buttonText: "선택" //버튼 호버 텍스트              
+	            ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+	            ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+	            ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+	            ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+	            ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+	    		,onSelect:function(d){
+	                $('#start-datepicker').val(d)
+	    		}
+	    });
+		  } );
+	 $('#start-datepicker').datepicker('setDate', 'today')
+	 
+	 
+	 //종료일
+	  $( function() {
+	    $('#end-datepicker').datepicker({
+	    	dateFormat: 'yy-mm-dd' //달력 날짜 형태
+	            ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+	            ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+	            ,changeYear: true //option값 년 선택 가능
+	            ,changeMonth: true //option값  월 선택 가능                
+	            ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+	            ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+	            ,buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+	            ,buttonText: "선택" //버튼 호버 텍스트              
+	            ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+	            ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+	            ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+	            ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+	            ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+				,onSelect:function(d){
+		                $('#end-datepicker').val(d)
+		                let start=$('#start-datepicker').val()
+		                let end=$('#end-datepicker').val()
+		                if(start==0){
+		                	alert('시작일을 먼저 선택해 주세요')
+		                }else if(start>end){
+		                	alert('시작일을 잘못 입력하였습니다')
+		                }else{
+			                $('#end-date').val(end)
+			                $('#start-date').val(start)
+			                $('#sform').submit();     	
+		                }
+						
+				}
+	    });
+		  } );
+	 $('#end-datepicker').datepicker('setDate', 'today')
 </script>
 </html>
