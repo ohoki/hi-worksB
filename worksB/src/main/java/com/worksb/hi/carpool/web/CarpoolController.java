@@ -78,7 +78,9 @@ public class CarpoolController {
 	
 	// 수정 폼
 	@GetMapping("/carpoolUpdate")
-	public String carpoolUpdateForm() {
+	public String carpoolUpdateForm(CarpoolVO carpoolVO, Model model) {
+		CarpoolVO findVO = carpoolService.getCarpoolInfo(carpoolVO);
+		model.addAttribute("carpoolInfo", findVO);
 		return "carpool/carpoolUpdate";
 	}
 	

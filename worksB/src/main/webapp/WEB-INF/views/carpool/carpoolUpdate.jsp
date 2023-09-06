@@ -104,6 +104,13 @@ div h2 {
 </style>
 </head>
 <body>
+	<!-- api -->
+	<!-- ckeditor -->
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/super-build/ckeditor.js"></script>
+	<!-- 사진 업로드를 위한 ckfinder -->
+	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+	<!-- ckeditor 끝 -->
 	<div class="top">
 		<h2>카풀 수정</h2>
 	</div>
@@ -113,7 +120,7 @@ div h2 {
 				<thead>
 					<tr class="main__p">
 						<th class="table__title">
-							<input type="text" name="boardTitle" value="${carpoolInfo.carpoolTitle }">
+							<input type="text" name="boardTitle" value="${carpoolInfo.boardTitle }">
 						</th>
 					</tr>
 				</thead>
@@ -121,7 +128,7 @@ div h2 {
 					<tr>
 						<td>
 							<div class="content">
-								<input type="text" name="boardContent" value="${carpoolInfo.carpoolContent }">
+								<textarea name="boardContent" id="editor">${carpoolInfo.boardContent }</textarea>
 							</div>
 						</td>
 					</tr>
@@ -147,5 +154,90 @@ div h2 {
 			<button type="submit">수정</button>
 		</form>
 	</div>
+	<script>
+	
+	/* ck에디터 */
+	CKEDITOR.ClassicEditor.create(document.querySelector('#editor'), {
+        toolbar: {
+        	 items: [
+				'alignment', '|',
+				'heading', '|',
+				'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+				'exportPDF', 'insertImage', 'mediaEmbed',
+				'-',
+				'specialCharacters', '|',
+				'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',                     
+				'findAndReplace', 'selectAll'
+             ],
+             shouldNotGroupWhenFull: true
+         },
+        // Changing the language of the interface requires loading the language file using the <script> tag.
+        language: 'ko',
+        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+            ]
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+        placeholder: '내용을 입력하세요.',
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+        fontFamily: {
+            options: [
+                'default',
+                '궁서체',
+	    		'돋움',
+                'Arial, Helvetica, sans-serif',
+                'Courier New, Courier, monospace',
+                'Georgia, serif',
+                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                'Tahoma, Geneva, sans-serif',
+                'Times New Roman, Times, serif',
+                'Trebuchet MS, Helvetica, sans-serif',
+                'Verdana, Geneva, sans-serif',
+            ],
+            supportAllValues: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+        fontSize: {
+            options: [ 10, 12, 14, 16, 18, 20, 22 ],
+            supportAllValues: true
+        },
+        // The "super-build" contains more premium features that require additional configuration, disable them below.
+        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+        removePlugins: [
+            // These two are commercial, but you can try them out without registering to a trial.
+            // 'ExportPdf',
+            // 'ExportWord',
+            'CKBox',
+            'EasyImage',
+            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+            // Storing images as Base64 is usually a very bad idea.
+            // Replace it on production website with other solutions:
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+            // 'Base64UploadAdapter',
+            'RealTimeCollaborativeComments',
+            'RealTimeCollaborativeTrackChanges',
+            'RealTimeCollaborativeRevisionHistory',
+            'PresenceList',
+            'Comments',
+            'TrackChanges',
+            'TrackChangesData',
+            'RevisionHistory',
+            'Pagination',
+            'WProofreader',
+            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+            // from a local file system (file://) - load this site via HTTP server if you enable MathType
+            'MathType'
+        ]
+    });	
+	</script>
 </body>
 </html>

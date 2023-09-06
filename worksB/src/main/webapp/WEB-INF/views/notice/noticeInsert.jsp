@@ -123,6 +123,7 @@ div h2 {
 	<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/super-build/ckeditor.js"></script>
 	<!-- 사진 업로드를 위한 ckfinder -->
 	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+	<!-- ckeditor 끝 -->
 	<div class="top">
 		<h2>공지사항 작성</h2>
 	</div>

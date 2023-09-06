@@ -68,7 +68,6 @@
 				<th>부서번호</th>
 				<th>직급번호</th>
 				<th>근무 상태</th>
-				<th>접속 여부</th>
 				<th>관리</th>
 			</tr>
 			<tr class="memberMenuTwo">
@@ -170,12 +169,8 @@
 								<td>\${taskList[i].deptName }</td>
 								<td>\${taskList[i].jobName }</td>
 								<td>\${taskList[i].empStatus }</td>
-								if(\${taskList[i].conStatus } == null){
-									<td>오프라인</td>
-								}
 								<td><input type="button" value="관리"></td>
 							</tr>`;
-						
 							$(".taskList").append(hightaskList);
 						} 
 					},
@@ -260,7 +255,6 @@
 			})
 		});
 			
-		
 		//셀렉트 박스 값 설정
 	$(window).on('load', function() {
 		let dept = $('#deptId option');
@@ -383,9 +377,6 @@
 			}
 			
 		});
-		
-		
-		
 	</script>
 </body>
 </html>
