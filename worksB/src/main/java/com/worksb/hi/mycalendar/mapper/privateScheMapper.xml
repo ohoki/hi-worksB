@@ -59,10 +59,10 @@
 								, #{scheContent}
 								, sysdate
 								, #{coordinate}
-								, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS')
-								, TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
+								, #{startDate}
+								, #{endDate}
 								, #{memberId}
-								, TO_DATE(#{alarmDate}, 'YYYY-MM-DD HH24:MI:SS')
+								, #{alarmDate}
 								)
 	</insert>
 	<update id="updatePsche" parameterType="PrivateScheVO">
@@ -79,13 +79,13 @@
 				coordinate = #{coordinate},
 			</if>
 			<if test="startDate != null and !startDate.equals('')">
-				start_date = TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS'),
+				start_date = #{startDate},
 			</if>
 			<if test="endDate != null and !endDate.equals('')">
-				end_date = TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS'),
+				end_date = #{endDate},
 			</if>
 			<if test="alarmDate != null and !alarmDate.equals('')">
-				alarm_date = TO_DATE(#{alarmDate}, 'YYYY-MM-DD HH24:MI:SS'),
+				alarm_date = #{alarmDate}, 
 			</if>
 		</set>
 		WHERE sche_id = #{scheId}

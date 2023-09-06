@@ -64,6 +64,13 @@
 		height : 30px;
 		background-color: #06b306b3;
 	}
+	.tdlView{
+		padding : 30px;
+	}
+	.modal-content{
+		height: 600px;
+	}
+	
 </style>
 </head>
 <!-- full calendar  -->
@@ -193,11 +200,12 @@
 			      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker6"  autocomplete="off">
 			      	<input id="listId" name="listId" type="text" hidden="hidden">
 		      	</form>
-	      		<p>To Do List 목록</p>
 	      		<hr>
+	      		<p>To Do List 진행도</p>
 	      		<div class="progress-bar">
 	      			<div class="progress-bar__line"></div>
 	      		</div>
+	      		<p>To Do List 목록</p>
 		      	<div class="tdlList-view">
 		      	</div>
 	      	</div>
@@ -347,7 +355,6 @@
 		//변수선언
 		var calendarEl = document.getElementById('calendar');
 		calendar = new FullCalendar.Calendar(calendarEl, {
-			themeSystem: 'united',
 			dayMaxEventRows : true, // for all non-TimeGrid views
 			views : {
 				timeGrid : {
@@ -383,6 +390,7 @@
 				right : 'tdlBtn,myCustomButton dayGridMonth,timeGridWeek'
 			},
 			locale : "ko",
+			timeZone : 'local',
 			navLinks : false, // can click day/week names to navigate views
 			selectable : true,
 			selectMirror : true,
@@ -401,6 +409,7 @@
 				  method: "GET",
 				  dataType: "json"
 			}).done(function(data){
+				console.log(data)
 				calendar.removeAllEvents();
 				calendar.addEventSource(data);
 				calendar.getEventSources()
@@ -464,7 +473,8 @@
 	    				}
 	    				let bar = (checkedLength/optionLength)*100;
 	    				let percent = Math.floor(bar)
-	    				$('.progress-bar__line').css('width',percent+'%')
+	    				$('.progress-bar__line').css('width',percent+'%').text(percent+'%')
+	    				
 	    				
 	    				$('#tdlUpdateBtn').on('click', function(){tdlUpdateForm(result)});
 	    			},
@@ -472,8 +482,8 @@
 	    				alert("조회오류");
 	    			}
 	    		});
-	    		//개인일정일 경우
 	    	}else if(scheId.substr(0,1)!==t){
+	    		//개인일정일 경우
 				let data = { "scheId" : scheId};
 				$.ajax({
 					url:"${pageContext.request.contextPath}/selectPsche",
@@ -481,6 +491,7 @@
 					data: data,
 					dataType: "json",
 					success:function(result){
+						console.log(result)
 						
 						selectModal.show();
 						//삭제버튼 있을시 삭제

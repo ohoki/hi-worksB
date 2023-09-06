@@ -17,8 +17,8 @@ public class PrivateScheServiceImpl implements PrivateScheService {
 	
 	//단건조회
 	@Override
-	public PrivateScheVO selectPsche(PrivateScheVO privateScheVO) {
-		return privateScheMapper.selectPsche(privateScheVO.getScheId());
+	public PrivateScheVO selectPsche(int scheId) {
+		return privateScheMapper.selectPsche(scheId);
 	}
 	
 	//전체조회

@@ -1,6 +1,8 @@
 package com.worksb.hi.mycalendar.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,15 +13,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
@@ -52,12 +51,14 @@ public class PrivateScheController {
 		JSONObject jsonObj = new JSONObject();
 		JSONArray jsonArr = new JSONArray();
 		HashMap<String, Object> hash = new HashMap<String, Object>();
-		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
 		for(int i=0;i<priScheList.size();i++) {
 			hash.put("id", priScheList.get(i).getScheId());//단건조회용 sche_id 입력
 			hash.put("title", priScheList.get(i).getScheTitle()); //제목
-			hash.put("start", priScheList.get(i).getStartDate()); //시작일자
-			hash.put("end", priScheList.get(i).getEndDate()); //종료일자
+			String strStartDate = simpleDateFormat.format(priScheList.get(i).getStartDate());
+			hash.put("start", strStartDate); //시작일자
+			String strEndDate = simpleDateFormat.format(priScheList.get(i).getEndDate()); 
+			hash.put("end", strEndDate); //종료일자
 			
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -103,11 +104,11 @@ public class PrivateScheController {
 	//개인일정 단건조회
 	@GetMapping("selectPsche")
 	@ResponseBody
-	public PrivateScheVO viewPsche(PrivateScheVO vo, Model model) {
-		PrivateScheVO scheVO = new PrivateScheVO();
-		scheVO.setScheId(vo.getScheId());
-		scheVO = privateScheService.selectPsche(scheVO);
-		model.addAttribute("priSche", scheVO);
+	public PrivateScheVO viewPsche(@RequestParam int scheId) {
+		PrivateScheVO scheVO = privateScheService.selectPsche(scheId);
+		//클라이언트시간에 맞게 날짜값 수정
+//		Date startDate = scheVO.getStartDate();
+//		scheVO.setStartDate(null);
 		return scheVO;
 	}
 	
