@@ -7,9 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-</style>
+<style><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script></style>
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
 <c:set var="size" value="${fileList.size() }" />
@@ -20,7 +21,7 @@
 		<form  action="${pageContext.request.contextPath }/uploadFiles" method="post" enctype="multipart/form-data" >
 			<input type="file" name="file" id="upload">
 			<input type="hidden" name="prjId" value="${projectInfo.projectId }" >
-<!-- 			<input type="text" name="title" "> -->
+
 			<button type="submit" id="upload">업로드</button>
 		</form>
 			<button type="button" onclick="download()">다운로드</button>
