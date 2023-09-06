@@ -13,31 +13,92 @@
 <script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 <style>
 	table{
-		border: 1px solid var(--color-light-grey);
+		width: 95%;
+		color : var(--color-dark-grey);
+		margin: 0 auto;
 	}
 	
 	th, td {
-		border: 1px solid var(--color-light-grey);
+		border: 1px solid var(--color-dark-beigie);
+		text-align: right;
 		width : 140px;
+		text-align: center;
+	}
+	
+	th {
+		height: 40px;
+	}
+	
+	td {
+		padding: 10px;	
 	}
 	  
 	tr{
+		border: 1px solid var(--color-dark-beigie);
 		cursor: pointer;
 	}
-	
-	tr:hover{
-		background-color : var(--color-beigie);
+
+	a {
+   		color: black;
+    	text-decoration: none;
 	}
 	.highTask{
-		background-color : var(--color-light-white);
+		background-color : rgb(0, 180, 216, 0.03);
+		font-weight: var(--weight-bold);
 	}
 	
 	.subTaskBtn{
-		background-color : var(--color-dark-blue);
+		background-color: transparent;
+		color: var(--color-dark-grey);
+		width: 70px;
+		height: 30px;
+		background: var(--color-dark-red);
+		color: white;
+		border-radius: 5px;
 	}
 	
 	.modal-task-visible {
 		display: block !important;
+	}
+	
+	td[data-state=G1] {
+		font-weight: var(--weight-bold);
+		color: #36c9c6;		
+	}
+	
+	td[data-state=G2] {
+		font-weight: var(--weight-bold);
+		color: #094074;
+	}
+	
+	td[data-state=G3] {
+		color: var(--color-orange);	
+		font-weight: var(--weight-bold);
+	}
+	
+	td[data-state=G4] {
+		color: var(--color-green);	
+		font-weight: var(--weight-bold);
+	}
+	
+	td[data-state=G5] {
+		color: var(--color-dark-white);
+		font-weight: var(--weight-bold);
+	}
+	
+	td[data-priority=F1] {
+		color: red;
+		font-weight: var(--weight-bold);
+	}
+	
+	td.taskId, td.subTaskId {
+		color: var(--color-dark-red);
+		font-weight: var(--weight-bold);
+	}
+	
+	td.prjBoardRegdate, td.startDate, td.endDate,
+	td.subRegdate, td.subStartDate, td.subEndDate {
+		text-align: right;
 	}
 	
 	#task-modal{
@@ -260,9 +321,8 @@
 	}
 
 	.task__search{
-		margin-top : 20px;
-		width : 350px;
-		margin-bottom : 20px;
+		margin : 10px;
+		cursor: default;
 	}
 	
 	#task-menu-modal{
@@ -658,15 +718,15 @@
 	<!-- 사진 업로드를 위한 ckfinder -->
 	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 
-	<div>
-		<div>
+	<div style="padding: 0 2px;">
+		<div style="text-align: right; padding: 0 40px;">
 			<input type="text" placeholder="업무명을 검색하세요." class="header__search task__search">
 		</div>
 		<!-- 전체 업무 조회 -->
 		<table class="taskTable">
 			<thead>
 				<tr>
-					<th>버튼자리</th>
+					<th>업무구분</th>
 					<th>업무명</th>
 					<th>상태</th>
 					<th>우선순위</th>
@@ -678,19 +738,6 @@
 				</tr>
 			</thead>
 			<tbody class="taskList" >
-				<c:forEach items="${taskList }" var="task">
-					<tr data-id="${task.prjBoardId}" class="highTask taskTr">
-						<td class="taskBtn"></td>
-			            <td class="prjBoardTitle">${task.prjBoardTitle}</td>
-			            <td class="state">${task.stateName}</td>
-			            <td class="priority">${task.priorityName}</td>
-			            <td class="taskManager"></td>
-			            <td class="startDate"><fmt:formatDate value="${task.startDate}" pattern="yyyy-MM-dd"/></td>
-			            <td class="endDate"><fmt:formatDate value="${task.endDate}" pattern="yyyy-MM-dd"/></td>
-			            <td class="prjBoardRegdate"><fmt:formatDate value="${task.prjBoardRegdate}" pattern="yyyy-MM-dd"/></td>
-			            <td class="taskId">${task.taskId }</td>
-					</tr>
-				</c:forEach>
 			</tbody>
 		</table>
 		<!-- 전체 업무 조회 끝-->
@@ -728,6 +775,7 @@
 						<div class="processivity-value"></div>
 					</div>
 					<span data-processivityvalue></span>
+					<input type="hidden" name="processivity">
 				</div>
 			</div>
 				<div class="d-flex" style="margin-right: 40px;">
@@ -1014,10 +1062,15 @@
 	//ckeditor 종료
 
 
-	// 업무 리스트
+	//상위 업무 리스트
 	$(document).ready(function() {
+		getTaskListInfo();
+	});
+	
+	//업무 추가 정보 불러오기
+	function getSubtaskInfo() {
 		let taskBoardList = $('.highTask');
-	    
+		
 		taskBoardList.each(function() {
 			let taskInfo = $(this);
 			let prjBoardId = taskInfo.data('id');
@@ -1027,7 +1080,6 @@
 				type: 'GET',
 				data: { 'prjBoardId': prjBoardId },
 				success: function(taskData) {
-					console.log(taskData);
 					// 업무 담당자
 					let taskManagers = taskData.highManager;
 					let manager = taskInfo.find('.taskManager');
@@ -1039,7 +1091,7 @@
 						let text = " 외 " + count + "명";
 						manager.text(taskManagers[0].memberName + text);
 					} else {
-						manager.text('');
+						manager.text('-');
 					}
 	                
 					// 하위 업무
@@ -1048,7 +1100,7 @@
 					// 하위업무 있을때 버튼
 					if(subTasks.length > 0){
 						let taskBtn = taskInfo.find('.taskBtn');
-						taskBtn.append('<button class="subTaskBtn">버튼</button>');
+						taskBtn.append('<button class="subTaskBtn">상위업무</button>');
 					}
 					
 					for (let j = 0; j < subTasks.length; j++) {
@@ -1058,16 +1110,16 @@
 						let subTaskInfo = $('<tr class="subTask taskTr" data-id="' + subTask.prjBoardId + '" data-highTask="' + subTask.highTaskId + '" data-highBoard="'+ taskData.highTask[0].prjBoardId +'" data-bs-toggle="modal" data-bs-target="#updateSubTask-modal"></tr>');
 
 						// 버튼자리 빈 셀
-						subTaskInfo.append('<td></td>');
+						subTaskInfo.append('<td style="text-align:center;"><img src="${pageContext.request.contextPath}/resources/icon/arrow-list.PNG" class="profileImg" style="width: 15px; height:15px;"> 하위업무</td>');
 
 						// 하위 업무 정보
 						subTaskInfo.append('<td class="subPrjBoardTitle">' + subTask.prjBoardTitle + '</td>');
-						subTaskInfo.append('<td class="subState">' + subTask.stateName + '</td>');
+						subTaskInfo.append('<td class="subState" data-state="' + subTask.state +'">' + subTask.stateName + '</td>');
 						
 						if(subTask.priorityName != null){
-							subTaskInfo.append('<td class="subPriority">' + subTask.priorityName + '</td>');
+							subTaskInfo.append('<td class="subPriority" data-priority="' + subTask.priority + '">' + subTask.priorityName + '</td>');
 						}else{
-							subTaskInfo.append('<td class="subPriority"></td>');
+							subTaskInfo.append('<td class="subPriority">-</td>');
 						}
 
 						// 하위 업무 담당자
@@ -1083,17 +1135,22 @@
 						        subManager.text(subManagers[0].memberName + text);
 						    }
 						} else {
-							subManager.text('');
+							subManager.text('-');
 						}
 						subTaskInfo.append(subManager);
 						
 						// 하위 업무는 startDate 없음
-						subTaskInfo.append('<td></td>');
+						subTaskInfo.append('<td class="subStartDate">-</td>');
 						if(subTask.endDate != null){
+							subTask.endDate = get_date_str(new Date(subTask.endDate));
+							
 							subTaskInfo.append('<td class="subEndDate">' + subTask.endDate + '</td>');
 						}else{
-							subTaskInfo.append('<td class="subEndDate"></td>');
+							subTaskInfo.append('<td class="subEndDate">-</td>');
 						}
+						
+						subTask.prjBoardRegdate = get_date_str(new Date(subTask.prjBoardRegdate));
+						
 						subTaskInfo.append('<td class="subRegdate">' + subTask.prjBoardRegdate + '</td>');
 						
 						subTaskInfo.append('<td class="subTaskId">' + subTask.taskId + '</td>');
@@ -1123,9 +1180,65 @@
 			});
 
 	    });
-	    
-	});
+	};
 	
+	//날짜 변환
+	function get_date_str(date)
+	{
+	    var sYear = date.getFullYear();
+	    var sMonth = date.getMonth() + 1;
+	    var sDate = date.getDate();
+
+	    sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
+	    sDate  = sDate > 9 ? sDate : "0" + sDate;
+	    return sYear + '/' + sMonth + '/' + sDate;
+	}
+	
+	
+	//업무 리스트 전체 출력
+	function getTaskListInfo() {
+		$.ajax({
+			url:'${pageContext.request.contextPath}/getHightaskList',
+			type : 'GET',
+			data : {'projectId' : '${projectInfo.projectId}'},
+			success : function(taskList) {
+				let taskBoardList = $('.highTask');
+				
+				$('.taskList').empty();
+				
+				for(let i=0; i<taskList.length; i++) {
+					taskList[i].startDate = taskList[i].startDate == null ? '-':get_date_str(new Date(taskList[i].startDate));;
+					taskList[i].endDate = taskList[i].endDate == null ? '-':get_date_str(new Date(taskList[i].endDate));;
+					taskList[i].priorityName = taskList[i].priorityName == null ? '-':taskList[i].priorityName;
+					taskList[i].prjBoardRegdate = get_date_str(new Date(taskList[i].prjBoardRegdate));;
+					
+					
+					let hightaskList = `
+						<tr data-id="\${taskList[i].prjBoardId}" class="highTask taskTr">
+							<td class="taskBtn"></td>
+				            <td class="prjBoardTitle">\${taskList[i].prjBoardTitle}</td>
+				            <td class="state" data-state="\${taskList[i].state}">\${taskList[i].stateName}</td>
+				            <td class="priority" data-priority="\${taskList[i].priority}">\${taskList[i].priorityName}</td>
+				            <td class="taskManager"></td>
+				            <td class="startDate">\${taskList[i].startDate}</td>
+				            <td class="endDate">\${taskList[i].endDate}</td>
+				            <td class="prjBoardRegdate">\${taskList[i].prjBoardRegdate}</td>
+				            <td class="taskId">\${taskList[i].taskId }</td>
+						</tr>`;
+						
+					$('.taskList').append(hightaskList);
+				}
+				
+				getSubtaskInfo();
+				
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	};
+	
+	//모달 페이지	
 	$('#task-modal').on('click', function(e) {
 	    if ($(e.target).is('#task-modal')) {
 	        $('#task-modal').removeClass('modal-task-visible');
@@ -1149,7 +1262,6 @@
 			type : 'GET',
 			data : {'prjBoardId' : prjBoardId},
 			success : function(taskData) {
-				console.log(taskData);
 				let taskInfo = $('#task-modal');
 				// 클릭한 업무 업무
 				let highTask = taskData.highTask[0];
@@ -1456,7 +1568,7 @@
 			contentType:'application/json',
 			success:function(data){
 				alert('정상적으로 수정되었습니다.');
-				location.href='${pageContext.request.contextPath}/projectTask?projectId=' + data;
+				getTaskListInfo();
 			},error: function(reject) {
 				console.log(reject);
 			}
@@ -1503,7 +1615,7 @@
     			boardTitle.val(subTask.prjBoardTitle);
     			boardState.find('input[value=' + subTask.state + ']').prop('checked', true);
     			boardPriority.find('option[value=' + subTask.priority + ']').prop('selected', true);
-    			inputDate.val(subTask.endDate != null ? subTask.endDate : '-');
+    			inputDate.val(subTask.endDate != null ? subTask.endDate : '');
     			
     			taskManagerBox.empty();
     			
@@ -1607,7 +1719,6 @@
 	        prjManager.push({prjBoardId, prjParticirId});
 	    });
 		
-		console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 		// 수정
 		$.ajax({
 			url:'${pageContext.request.contextPath}/updateTask',
@@ -1621,6 +1732,7 @@
 				$('.modal-backdrop').removeClass('show');
 				$('.modal-backdrop').css('display', 'none');
 				
+				getTaskListInfo();
 			},error: function(reject) {
 				console.log(reject);
 			}
@@ -1637,9 +1749,8 @@
 				type: 'POST',
 				data: {'prjBoardId' : prjBoardId},
 				success: function(response){
-					console.log(response)
 					alert("삭제되었습니다.");
-					location.href='${pageContext.request.contextPath}/projectTask?projectId=${projectInfo.projectId}';
+					getTaskListInfo();
 				},
 				error: function(error){
 					alert("삭제에 실패했습니다.");
@@ -1668,6 +1779,7 @@
 					$('.modal-backdrop').removeClass('show');
 					$('.modal-backdrop').css('display', 'none');
 					
+					getTaskListInfo();
 				},
 				error: function(error){
 					alert("삭제에 실패했습니다.");
@@ -1679,9 +1791,13 @@
 	
 	
 	//진척도!!
-	$('.progress-bar').on("click", function(event) {
-		const progressBar = event.currentTarget;
-		const progressBarInner = $(event.currentTarget).find('.progress-bar-size');
+	$('.progress-bar').on("click", function(e) {
+		updateProcessivity(e);
+	});
+	
+	function updateProcessivity(e) {
+		const progressBar = e.currentTarget;
+		const progressBarInner = $(e.currentTarget).children('div');
 		// 클릭 위치
 		// 창 왼쪽부터 클릭한 위치까지 거리 - 프로그레스바 왼쪽 좌표 = 클릭 위치
 		const clickedPosition = event.clientX - progressBar.getBoundingClientRect().left;
@@ -1693,20 +1809,19 @@
 		const selectedProgress = Math.round((clickedPosition / totalWidth) * 100 / 10) * 10;
 
 		// 클릭한 진척도 값으로 프로그레스 채우기
-		/* progressBarInner.style.width = selectedProgress + "%"; */
 		progressBarInner.css('width', selectedProgress + "%");
 		
 		// input에 선택 한 값 넣기
-	    const hiddenInput = $(progressBar).next().next(); /* document.querySelector("#boardInsertModal input[name='processivity']") */;
+	    const hiddenInput = $(progressBar).next().next(); 
 		
 		if (hiddenInput) {
 			hiddenInput.val(selectedProgress);
 
 			// 선택된 값 표시
-			const progressValue = $(progressBar).next();/* document.querySelector("#boardInsertModal .progress-value") */;
+			const progressValue = $(progressBar).next();
 			progressValue.text(selectedProgress + "%");
 		}
-	});
+	};
 	
 	// 시작일자, 마감일자 범위 선택하기
 	$(document).on('click', 'input[data-date]', function(e) {
@@ -1816,7 +1931,6 @@
 			data : {'memberId': memberId, 'boardId' : boardId},
 			success : function(likeInfo){
 				// 게시글 좋아요 수
-				console.log(likeInfo)
 				$('#task-modal').find('span[data-likeCount]').text(likeInfo.boardLike.length);
 				
 				// 좋아요 여부
@@ -1834,29 +1948,66 @@
 			}
 		})
 	};
-	/*
-	// 북마크
-	function getBookMark(memberId, projectId){
-		$.ajax({
-
-		})
-	}
-	*/
 </script>
 
-
-<!-- 주현이스크립트~~~ -->
 <script>
-let projectId=${projectInfo.projectId}
-$('.task__search').on('keyup', (e)=>{
-	if(e.keyCode==13){
-		let searchKeyword=$('.task__search').val();
-		if(searchKeyword==""){
-			alert('검색어를 입력하세요')
-		}
-		location.href="${pageContext.request.contextPath}/searchTask?searchKeyword="+searchKeyword+"&projectId="+projectId;
-	}
-});
+	//업무 게시글 진행상태 변경
+	$('#task-modal div[data-state] button').on('click', function(e) {
+		let boardContainer = $('#task-modal');
+		let targetBtn = $(e.currentTarget);
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let state = targetBtn.val();
+		
+		console.log(prjBoardId);
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'state' : state},
+			success : function(result) {
+				//업무
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : prjBoardId},
+					success : function(taskData) {
+		                let stateBtn = boardContainer.find('div[data-state]');
+		                let activeBtn = stateBtn.find('.active');
+		                // 진행상태 버튼 활성화
+		                activeBtn.removeClass('active');
+		                stateBtn.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+		                
+		                getTaskListInfo();
+				    }, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	
+	//업무 게시글 진척도 변경
+	$('.processivity').on("click", function(e) {
+		updateProcessivity(e);
+		
+		let boardContainer = $('#task-modal');
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let processivity = boardContainer.find('input[name=processivity]').val();		
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
+			success : function(result) {
+				getTaskListInfo();
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
 </script>
 </body>
 

@@ -379,7 +379,7 @@ body {
   width: 100%;
 }
 
-.state {
+.employee .state {
 	position: absolute;
 	width: 10px;
 	height: 10px;
@@ -387,5 +387,4 @@ body {
 	bottom: 0;
 	right: 0;
 	z-index: 2;
-	
 }

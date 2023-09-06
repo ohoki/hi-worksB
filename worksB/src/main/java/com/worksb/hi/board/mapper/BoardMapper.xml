@@ -472,7 +472,12 @@
 	<update id="updateTaskInfo" parameterType="AllTaskBoardVO">
 		UPDATE prj_task 
 			<set>
-				state = #{state}
+				<if test="state !=null and !state.equals('')">
+				state = #{state},
+				</if>
+				<if test="processivity !=null and !processivity.equals('')">
+				processivity = #{processivity}
+				</if>
 			</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
