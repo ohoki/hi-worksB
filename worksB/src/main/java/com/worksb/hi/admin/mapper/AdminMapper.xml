@@ -202,7 +202,7 @@
                         on(m.dept_id = d.dept_id)
                       left outer join job j
                         on(m.job_id = j.job_id)
-		 where company_id = #{companyId}
+		 where c.company_id = #{companyId}
 	</select>
 	
 	<!-- 승인 대기중 인원 출력 -->
@@ -214,7 +214,19 @@
 			   find_subcode(m.member_grade) AS grade_name,
 			   company_id,
 		  FROM member
-		 WHERE company_accp = #{companyAccp}
+		 WHERE company_accp = 'A2' and companyId_id = #{companyId}
+	</select>
+	
+	<!-- 승인 대기중 인원 출력 ajax -->
+	<select id="memberAccpLista" resultType="MemberVO">
+		select member_id,
+			   member_name,
+			   member_phone,
+			   member_grade,
+			   find_subcode(m.member_grade) AS grade_name,
+			   company_id,
+		  FROM member
+		 WHERE company_accp = #{companyAccp} and companyId_id = #{companyId}
 	</select>
 	
 	<!-- 가입 승인 -->

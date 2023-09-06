@@ -80,6 +80,10 @@ public class AdminServiceImpl implements AdminService {
 	public List<MemberVO> memberAccpList(String companyAccp) {
 		return adminMapper.memberAccpList(companyAccp);
 	}
+	//가입 대기중 회원 리스트 ajax
+	public List<MemberVO> memberAccpLista(int companyId){
+		return adminMapper.memberAccpLista(companyId);
+	}
 	// 가입 승인
 	@Override
 	public String memberAccpUpdate(MemberVO memberVO) {

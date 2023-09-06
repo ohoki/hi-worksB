@@ -215,7 +215,7 @@ public class AdminController {
 			Integer companyId = company.getCompanyId();
 			// list넘기기
 			List<MemberVO> memberList = adminService.companyMemberList(companyId);
-			model.addAttribute("memberList", memberList );
+			model.addAttribute("member", memberList );
 			
 			//부서, 직급 정보 가져오기
 			List<DepartmentVO> deptList = companyService.getDepartment(company);
@@ -248,8 +248,13 @@ public class AdminController {
 		// 승인 대기중인 구성원 리스트
 		@RequestMapping("/memberAccpList")
 		public List<MemberVO> memberAccpList(MemberVO memberVO, String companyAccp){
-			
 			return adminService.memberAccpList(companyAccp);
+		}
+		// 승인 대기중 리스트 ajax
+		@RequestMapping("/memberAccpLista")
+		@ResponseBody
+		public List<MemberVO> memberAccpLista(MemberVO memberVO, int companyId){
+			return adminService.memberAccpLista(companyId);
 		}
 		// 가입 승인
 		@RequestMapping("/memberAccpUpdate")

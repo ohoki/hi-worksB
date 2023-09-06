@@ -34,6 +34,8 @@ public interface AdminService {
 	public List<MemberVO> companyMemberLists(int companyId);
 	//가입 대기중 회원 리스트
 	public List<MemberVO> memberAccpList(String companyAccp);
+	//가입 대기중 회원 리스트 ajax
+	public List<MemberVO> memberAccpLista(int company);
 	// 가입 승인
 	public String memberAccpUpdate(MemberVO memberVO);
 

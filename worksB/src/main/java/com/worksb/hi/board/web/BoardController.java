@@ -32,6 +32,7 @@ import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.board.service.VoteVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 import com.worksb.hi.projectCmt.service.ProjectCmtService;
