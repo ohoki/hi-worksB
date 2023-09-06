@@ -177,15 +177,15 @@
 					
 					for(let i=0; i<taskList.lenth; i++){
 						
-						let hightaskList =
+						let hightaskList ='
 							<tr data-id="\${member.memberId }" class="highmember memberTr">
 								<td><input type="checkbox"></td>
-							<td>\${member.memberId }</td>
-							<td>\${member.memberName }</td>
-							<td>\${member.memberPhone }</td>
-							<td>\${member.gradeName }</td>
-							<td>\${member.jobName }</td>
-							<td>\${member.deptName }</td>
+								<td>\${member.memberId }</td>
+								<td>\${member.memberName }</td>
+								<td>\${member.memberPhone }</td>
+								<td>\${member.gradeName }</td>
+								<td>\${member.jobName }</td>
+								<td>\${member.deptName }</td>
 							<c:choose>
 								<c:when test="\${member.empStatus eq 'S1'}">
 									<td>접속중</td>
@@ -200,7 +200,7 @@
 							<td>\${member.conIp }</td>
 							<td>\${member.conStatus }</td>
 							<td><input type="button" value="관리"></td>
-						</tr>;
+						</tr>';
 						
 						$(".taskList").append(hightaskList);
 					}
