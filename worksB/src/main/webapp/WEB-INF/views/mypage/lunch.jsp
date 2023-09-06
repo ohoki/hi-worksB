@@ -14,7 +14,10 @@
 	    text-decoration: none;
 	}
 	body{
-		color: black;
+		color: white;
+	}
+	span{
+		color: gray;
 	}
 </style>
 </head>

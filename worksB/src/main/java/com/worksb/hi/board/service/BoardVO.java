@@ -41,4 +41,7 @@ COORDINATE                 VARCHAR2(60)
 	private int bookmarkId;
 	private int boardId;
 	private int likeId;
+	
+	//프로젝트 캘린더 검색단어]
+	private String searchKeyword;
 }

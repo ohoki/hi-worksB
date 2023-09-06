@@ -1,6 +1,7 @@
 package com.worksb.hi.board.web;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,7 +36,6 @@ import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
 import com.worksb.hi.projectCmt.service.ProjectCmtService;
 import com.worksb.hi.projectCmt.service.ProjectCmtVO;
-
 
 // 이진 0818 게시판관리 - 게시글,업무,일정,투표 등록
 
@@ -601,6 +601,72 @@ public class BoardController {
 		return result;
 	}
 	
+	//프로젝트 캘린더 검색 조회
+	@GetMapping("searchCalendar")
+	@ResponseBody
+	public Map<String, List<Map<String, Object>>> searchCalendar(BoardVO bdVO){
+		List<BoardVO> boardList = boardService.searchCalendarBoard(bdVO);
+		
+        List<ScheVO> scheList =  new ArrayList();
+        List<TaskVO> taskList = new ArrayList();
+		for(int i=0;i<boardList.size();i++) {
+			if(boardList.get(i).getBoardType().equals("C6")) {
+				scheList.add(boardService.searchScheCal(boardList.get(i).getPrjBoardId()));
+			}else if(boardList.get(i).getBoardType().equals("C8")){
+				taskList.add(boardService.searchTaskCal(boardList.get(i).getPrjBoardId()));
+			}
+		}
+		JSONObject jsonObj = new JSONObject();
+		JSONArray scheArr = new JSONArray();
+		JSONArray taskArr = new JSONArray();
+		HashMap<String, Object> hash = new HashMap<String, Object>();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+		for(int i=0;i<scheList.size();i++) {
+			if(scheList.get(i)==null) {
+				break;
+			}
+			hash.put("id", scheList.get(i).getPrjBoardId());//단건조회용 sche_id 입력
+			hash.put("title", scheList.get(i).getPrjBoardTitle()); //제목
+			//원하는 데이터 포맷 지정
+			String strStartDate = simpleDateFormat.format(scheList.get(i).getStartDate()); 
+			hash.put("start", strStartDate); //시작일자
+			String strEndDate = simpleDateFormat.format(scheList.get(i).getEndDate()); 
+			hash.put("end", strEndDate); //종료일자
+			
+			jsonObj = new JSONObject(hash);
+			scheArr.add(jsonObj);
+		}
+		for(int i=0;i<taskList.size();i++) {
+			if(taskList.get(i)==null) {
+				break;
+			}
+			hash.put("id", "t"+taskList.get(i).getPrjBoardId());//단건조회용 sche_id 입력
+			hash.put("title", taskList.get(i).getPrjBoardTitle()); //제목
+			//원하는 데이터 포맷 지정
+			String strStartDate = simpleDateFormat.format(taskList.get(i).getStartDate()); 
+			hash.put("start", strStartDate); //시작일자
+			String strEndDate = simpleDateFormat.format(taskList.get(i).getEndDate()); 
+			hash.put("end", strEndDate); //종료일자
+			hash.put("allDay", "true");
+			hash.put("color", "#2a9d8f");
+			
+			jsonObj = new JSONObject(hash);
+			taskArr.add(jsonObj);
+		}
+//		//참여자 정보
+//		PrjParticirVO particir = new PrjParticirVO();
+//        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+//        particir.setProjectId(projectId);
+//        PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
+        
+        HashMap<String, List<Map<String, Object>>> result = new HashMap<String, List<Map<String,Object>>>();
+        result.put("scheList", scheArr);
+        result.put("taskList", taskArr);
+        
+		return result;
+	}
+	
+	
 	//프로젝트 일정 입력
 	@PostMapping("calInsertSche")
 	@ResponseBody
@@ -665,7 +731,6 @@ public class BoardController {
 		String memberId = vo.getBoardVO().getMemberId();
 		memberVO.setMemberId(memberId);
 		memberVO = memberService.selectMember(memberVO);
-		System.out.println(memberVO);
 		vo.setMemberName(memberVO.getMemberName());
 		vo.setRealProfilePath(memberVO.getRealProfilePath());
 		return vo;

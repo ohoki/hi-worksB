@@ -324,6 +324,21 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteScheParticir(int prjBoardId) {
 		return boardMapper.deleteScheParticir(prjBoardId);
 	}
+	//프로젝트 캘린더 검색 조회
+	@Override
+	public List<BoardVO> searchCalendarBoard(BoardVO boardVO) {
+		return boardMapper.searchCalendarBoard(boardVO);
+	}
+	//프로젝트 캘린더 일정 검색 조회
+	@Override
+	public ScheVO searchScheCal(int prjBoardId) {
+		return boardMapper.searchScheCalendar(prjBoardId);
+	}
+	//프로젝트 캘린더 업무 검색 조회
+	@Override
+	public TaskVO searchTaskCal(int prjBoardId) {
+		return boardMapper.searchTaskCalendar(prjBoardId);
+	}
 
 	@Override
 	public List<AllTaskBoardVO> searchingTaskManagerList(String title) {

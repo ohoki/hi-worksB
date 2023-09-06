@@ -62,13 +62,14 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public String updateMember(MemberVO memberVO) {
 		int result = adminMapper.updateMember(memberVO);
-		
+	
     if(result == 1) {
 			return memberVO.getMemberId();
 		}else {
 			return null;
 		}
 	}
+  
 	// ajax로 수정
 	@Override
 	public List<MemberVO> companyMemberLists(int companyId) {

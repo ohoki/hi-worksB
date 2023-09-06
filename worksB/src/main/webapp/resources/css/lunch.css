@@ -11,11 +11,16 @@
             text-align: right;
             color: black;
         }
+        .ojc__btn-group{
+            margin-right: 20%;
+            text-align: right;
+            color: black;
+        }
         .mandalart {
             margin: 0 auto;
             width: 40%;
             overflow: hidden;
-            background-color: gray;
+            background-color: #fd7e14;
         }
         .mandalart-top {
             display: flex;
@@ -42,10 +47,11 @@
             width: 33%;
         }
         .cover-black{
-            background-color : black;
+            background-color : #ffc107;
+            color: #ffc107;
         }
         .reveal-gray{
-            background-color: gray;
+            background-color: #fd7e14;
         }
         .mandalart td {
             width: 75px;
@@ -54,6 +60,11 @@
             font-size: small;
             border: 1px solid white;
         }
+        .btn-primary {
+		    color: #fff;
+		    background-color: #ffc107;
+		    border-color: #fff;
+		}
 
         .map_wrap, .map_wrap * {padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
         .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
