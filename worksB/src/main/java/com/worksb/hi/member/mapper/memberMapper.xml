@@ -90,45 +90,44 @@
 	<update id="updateMember" parameterType="MemberVO">
 		UPDATE member 
 			<set>
-				member_id = member_id
 				<if test="memberName != null and !memberName.equals('')">
-				,member_name = #{memberName}
+				member_name = #{memberName},
 				</if>
 				<if test="memberPw != null and !memberPw.equals('')">
-				,member_pw = #{memberPw}
+				member_pw = #{memberPw},
 				</if>
 				<if test="memberPhone != null and !memberPhone.equals('')">
-				,member_phone = #{memberPhone}
+				member_phone = #{memberPhone},
 				</if>
 				<if test="profilePath != null and !profilePath.equals('')">
-				,profile_path = #{profilePath}
+				profile_path = #{profilePath},
 				</if>
 				<if test="realProfilePath != null and !realProfilePath.equals('')">
-				,real_profile_path = #{realProfilePath}
+				real_profile_path = #{realProfilePath},
 				</if>
 				<if test="memberGrade != null and !memberGrade.equals('')">
-				,member_grade = #{memberGrade}
+				member_grade = #{memberGrade},
 				</if>
 				<if test="conIp != null and !conIp.equals('')">
-				,con_ip = #{conIp}
+				con_ip = #{conIp},
 				</if>
 				<if test="jobId != null and jobId != 0">
-				,job_id = #{jobId}
+				job_id = #{jobId},
 				</if>
 				<if test="deptId != null and deptId != 0">
-				,dept_id = #{deptId}
+				dept_id = #{deptId},
 				</if>
 				<if test="empStatus != null and !empStatus.equals('')">
-				,emp_status = #{empStatus}
+				emp_status = #{empStatus},
 				</if>
 				<if test="conStatus != null and !conStatus.equals('')">
-				,con_status = #{conStatus}
+				con_status = #{conStatus},
 				</if>
 				<if test="companyId != null and companyId != 0">
-				,company_id = #{companyId}
+				company_id = #{companyId},
 				</if>
 				<if test="companyAccp != null and !companyAccp.equals('')">
-				,company_accp = #{companyAccp}
+				company_accp = #{companyAccp}
 				</if>
 			</set>
 		WHERE member_id = #{memberId}
@@ -142,12 +141,18 @@
 	
 	<!-- 내 프로젝트 -->
 	<select id="getProjectList" resultType="MemberVO">
+		WITH a AS (SELECT COUNT(pp.prj_particir_id) particir_number, 
+							pp.project_id 
+				   FROM prj_particir pp LEFT JOIN project p 
+				   ON pp.project_id = p.project_id 
+				   WHERE pp.particir_accp = 'A1' group by pp.project_id)
 		SELECT	p.project_name,
-				p.project_id
-		FROM	project p
+				p.project_id,
+                a.particir_number
+		FROM	(project p
 			JOIN	prj_particir pp
-			ON p.project_id = pp.project_id
-		WHERE pp.member_id= #{memberId}
+			ON p.project_id = pp.project_id) LEFT JOIN a ON a.project_id = p.project_id
+		WHERE pp.member_id= #{memberId} AND pp.project_markup = 'A1'
 		ORDER BY p.project_id DESC
 	</select>
 	

@@ -24,8 +24,8 @@ public class CarpoolServiceImpl implements CarpoolService {
 	}
 
 	@Override
-	public List<CarpoolVO> getCarpoolList(PagingVO pagingVO, SearchVO searchVO) {
-		return carpoolMapper.selectCarpoolAll(pagingVO, searchVO);
+	public List<CarpoolVO> getCarpoolList(PagingVO pagingVO, SearchVO searchVO,int companyId) {
+		return carpoolMapper.selectCarpoolAll(pagingVO, searchVO,companyId);
 	}
 
 	@Override
@@ -63,6 +63,31 @@ public class CarpoolServiceImpl implements CarpoolService {
 		}else {
 			return 0;
 		}
+	}
+
+	@Override
+	public int getPCount(int boardId) {
+		return carpoolMapper.getPCount(boardId);
+	}
+
+	@Override
+	public int applyCarpool(CarpoolVO vo) {
+		return carpoolMapper.applyCarpool(vo);
+	}
+
+	@Override
+	public String getApplicantName(String memberId) {
+		return carpoolMapper.getApplicantName(memberId);
+	}
+
+	@Override
+	public List<CarpoolVO> getApplicantList(int boardId) {
+		return carpoolMapper.getApplicantList(boardId);
+	}
+
+	@Override
+	public int cancelCarpool(int boardId) {
+		return carpoolMapper.cancelCarpool(boardId);
 	}
 
 }

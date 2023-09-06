@@ -47,6 +47,7 @@ import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.company.service.CompanyVO;
+import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.DeptVO;
 import com.worksb.hi.project.service.FileDataVO;
@@ -65,6 +66,9 @@ public class ProjectController {
 	
 	@Autowired
 	BoardService boardService;
+	
+	@Autowired
+	MemberService memberService;
 	
 	//주현
 	@Value("${file.upload.path}")
@@ -277,7 +281,7 @@ public class ProjectController {
 	
 	
 	
-	//개인 프로젝트리스트출력(리스트형식)
+	//개인 프로젝트리스트출력
 	@GetMapping("/projectList")
 	public String projectList(Model m,HttpSession session) {
 		String memberId =((MemberVO)session.getAttribute("memberInfo")).getMemberId();
@@ -288,7 +292,17 @@ public class ProjectController {
 		m.addAttribute("noneBookmarked",projectService.searchPrjCls(memberId,"A1"));
 		return"prj/projectList";
 	}
-
+	
+	//내 즐겨찾기 프로젝트
+	@PostMapping("/getStarProject")
+	@ResponseBody
+	public List<MemberVO> getStarProject(MemberVO member) {
+		 return memberService.getProjectList(member);
+	}
+	
+	
+	
+	
 	//즐겨찾기갱신
 	@PostMapping("/updateStar")
 	@ResponseBody

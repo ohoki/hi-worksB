@@ -135,5 +135,11 @@ public interface BoardService {
 	public List<TaskVO> getTaskCalendar(int projectId);
 	//프로젝트 일정 상세 조회
 	public BoardVO getScheBoardInfo(int prjBoardId);
-
+	
+	
+	
+	//검색어에 해당하는 매니저목록
+	public List<AllTaskBoardVO> searchingTaskManagerList(String title);
+	//매니저목록을 제외한 리스트
+	public List<AllTaskBoardVO> searchingList(String title);
 }
