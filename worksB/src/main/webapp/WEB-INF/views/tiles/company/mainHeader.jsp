@@ -30,10 +30,6 @@
 			<a href="#" data-type="employees"> 
 			<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/comments-solid.svg" class="header__profile">
 			</a>
-			<!-- 알림 -->
-			<a href="#" data-type="alarm"> 
-				<img alt="알림 보기" src="${pageContext.request.contextPath}/resources/icon/bell-solid.svg" class="header__profile">
-			</a>
 			<!-- 프로필 -->
 			<c:if test="${memberInfo.realProfilePath eq null }">
 			<a href="#" data-type="profile"> <img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진"
