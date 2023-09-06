@@ -22,13 +22,141 @@
 	.d-b {
 		display: block !important;
 	}
-	#calendar-container {
-		width: 70%;
+	
+	.calander-main-box {
+		width: 90%;
 		margin: 0 auto;
 	}
+	
+	#calendar-container {
+		
+	}
+	
+	.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
+	    border-bottom-left-radius: 0px;
+	    border-top-left-radius: 0px;
+	    margin-left: 0;
+	}
+	
+	.fc-prev-button {
+		width: 10px;
+		height: 30px;
+		padding: 0 15px 0 0 !important;
+	}
+	
+	.fc-next-button {
+		width: 10px;
+		height: 30px;
+		padding: 0 15px 0 0 !important;
+	}
+	
+	.fc-today-button {
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+	}
+	
+	.fc-dayGridMonth-button {
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+	}
+	
+	.fc-timeGridWeek-button {
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+	}
+	
+	.fc .fc-button-primary:focus {
+    	box-shadow: none;
+	}
+
+ 	.fc .fc-button:focus {
+    	box-shadow: none;
+    	outline: none;
+	}
+	
+    .fc .fc-button:active{
+	   	box-shadow: none;
+	}
+    
+    	
+	.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
+    	box-shadow: none;
+    }
+	
+	.fc-scheBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: rgb(249, 166, 52, 0.7) !important;
+		border: none !important;
+		transition: all 0.5s;
+	}
+	
+	.fc-scheBtn-button:hover {
+		background-color: rgb(249, 166, 52) !important;
+	}
+	
+	
+	.fc-taskBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: rgb(156, 187, 58, 0.7) !important;
+		border: none !important;
+		transition: all 0.5s;
+	}
+	
+	.fc-taskBtn-button:hover {
+		background-color: rgb(156, 187, 58) !important;
+	}
+	
+	.fc-viewBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: rgb(0, 175, 185, 0.7) !important;	
+		border: none !important;
+		transition: all 0.5s;
+	}
+	
+	.fc-viewBtn-button:hover {
+		background-color: rgb(0, 175, 185) !important;
+	}
+	
+	.fc-toolbar-title {
+		color: var(--color-dark-grey);
+		font-weight: var(--weight-bold);
+		font-size: var(--font-regular) !important;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	.modal-prjSche-visible {
 		display: block !important;
 	}
+	
 	#prjSche-modal, #prjTask-modal{
 		position: absolute;
 		width: 100%;
@@ -40,6 +168,7 @@
 		top: 0;
 		z-index: 1;
 	}
+	
 	.prjSche-modal__content, .prjTask-modal__content{
 		position: absolute;
 		right: 0;
@@ -51,6 +180,7 @@
 		padding: 20px 15px;
 		z-index: 10;
 	}
+	
 	.flex {
 		display: flex;
 	}
@@ -470,9 +600,7 @@
 		border: 3px solid var(--color-dark-red);
 	}
 	.sche__search{
-		margin-top : 20px;
-		width : 350px;
-		margin-bottom : 20px;
+		margin : 20px 0;
 	}
 	.board-comment {
 	    padding: 5px 40px;
@@ -501,13 +629,16 @@
 <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 <!-- 본문 -->
 <body>
-	<div align="center">
-		<input type="text" placeholder="제목과 내용을 검색하세요." class="header__search sche__search">
-	</div>
-	<div id="calendar-container">
-		<div id="calendar">
+	<div class="calander-main-box">
+		<div style="text-align: right;">
+			<input type="text" placeholder="제목과 내용을 검색하세요." class="header__search sche__search">
+		</div>
+		<div id="calendar-container">
+			<div id="calendar">
+			</div>
 		</div>
 	</div>
+	
 	<!-- 일정 상세조회 모달 -->
 	<div id="prjSche-modal">
 		<div class="prjSche-modal__content">
@@ -810,6 +941,7 @@
 			}
 		});
 	};
+	
 	//일정 삭제하기
 	function deleteSche(){
 		let scheId = $('#prjScheId').val()
@@ -838,6 +970,7 @@
 		   console.log("취소되었습니다");
 		}
 	};
+	
 	// 댓글 리스트
 	function getCommentList(boardId, boardType){
 		$.ajax({
@@ -1000,7 +1133,6 @@
 		}
 	});
 	
-	
 	//일정 검색
 	$('.sche__search').keydown(function (key) {
 		event.stopPropagation();
@@ -1106,22 +1238,22 @@
 			},
 			customButtons : {
 				scheBtn : {
-					text : '일정필터',
+					text : '일정',
 					click : scheFilter
 				},
 				taskBtn : {
-					text : '업무필터',
+					text : '업무',
 					click : taskFilter
 				},
 				viewBtn : {
-					text : '전체조회',
+					text : '전체',
 					click : renderAll
 				}
 			},
 			headerToolbar : {
-				left : 'prev,today,next scheBtn,taskBtn,viewBtn',
+				left : 'prev,today,next dayGridMonth,timeGridWeek',
 				center : 'title',
-				right : 'dayGridMonth,timeGridWeek'
+				right : 'scheBtn,taskBtn,viewBtn'
 			},
 			locale : "ko",
 			navLinks : false, // can click day/week names to navigate views
