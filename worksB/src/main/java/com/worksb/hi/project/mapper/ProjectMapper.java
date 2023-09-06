@@ -47,6 +47,12 @@ public interface ProjectMapper {
 	
 	//프로젝트 참여 승인하기update
 	public int updateAccpParticir(PrjParticirVO prjParticirVO);
+	
+	//프로젝트 만료
+	public int updateProjectCls(ProjectVO projectVO);
+	
+	// 프로젝트 나가기
+	public int deleteParticir(PrjParticirVO prjParticirVO);
   
   
   

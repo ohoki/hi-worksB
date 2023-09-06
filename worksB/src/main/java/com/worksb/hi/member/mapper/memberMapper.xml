@@ -148,11 +148,12 @@
 				   WHERE pp.particir_accp = 'A1' group by pp.project_id)
 		SELECT	p.project_name,
 				p.project_id,
-                a.particir_number
+                a.particir_number,
+                pp.project_markup
 		FROM	(project p
 			JOIN	prj_particir pp
 			ON p.project_id = pp.project_id) LEFT JOIN a ON a.project_id = p.project_id
-		WHERE pp.member_id= #{memberId} AND pp.project_markup = 'A1'
+		WHERE pp.member_id= #{memberId}
 		ORDER BY p.project_id DESC
 	</select>
 	

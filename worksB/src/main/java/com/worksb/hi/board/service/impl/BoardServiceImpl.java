@@ -168,25 +168,37 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	
-	
+	// 좋아요 등록
 	@Override
 	public int insertPrjLike(BoardVO boardVO) {
 		return boardMapper.insertPrjLike(boardVO);
 	}
-
+	// 좋아요 해제 -회원용
 	@Override
 	public int deletePrjLike(BoardVO boardVO) {
 		return boardMapper.deletePrjLike(boardVO);
 	}
-
+	// 좋아요 조회 -회원용
 	@Override
 	public BoardVO getMemLike(BoardVO boardVO) {
 		return boardMapper.getMemLike(boardVO);
 	}
-
+	// 좋아요 조회 -게시글 전체 조회용
 	@Override
 	public List<BoardVO> getPrjLike(BoardVO boardVO) {
 		return boardMapper.getPrjLike(boardVO);
+	}
+	
+	// 좋아요 삭제 -게시글 전체 삭제용
+	@Override
+	public int deletePrjLikeByBoard(BoardVO boardVO) {
+		return boardMapper.deletePrjLikeByBoard(boardVO);
+	}
+	
+	// 북마크 삭제 -게시글 전체 삭제용
+	@Override
+	public int deleteBookmarkByBoard(BoardVO boardVO) {
+		return boardMapper.deleteBookmarkByBoard(boardVO);
 	}
 
 	//북마크 조회
@@ -351,6 +363,9 @@ public class BoardServiceImpl implements BoardService {
 	public List<AllTaskBoardVO> searchingList(String title) {
 		return boardMapper.searchingList(title);
 	}
+
+
+	
 
 
 	

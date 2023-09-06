@@ -119,7 +119,17 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectMapper.updateAccpParticir(prjParticirVO);
 	}
 	
-
+	// 프로젝트 만료
+	@Override
+	public int updateProjectCls(ProjectVO projectVO) {
+		return projectMapper.updateProjectCls(projectVO);
+	}
+	
+	// 프로젝트 나가기
+	@Override
+	public int deleteParticir(PrjParticirVO prjParticirVO) {
+		return projectMapper.deleteParticir(prjParticirVO);
+	}
 	
 
 
@@ -214,6 +224,8 @@ public class ProjectServiceImpl implements ProjectService {
 	public int updateFile(FileDataVO vo) {
 		return projectMapper.updateFile(vo);
 	}
+
+	
 
 	
 

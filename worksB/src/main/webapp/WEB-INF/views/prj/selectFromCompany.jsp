@@ -320,7 +320,7 @@
 	$('img[name="prjParticirList"]').on('click', function(e){
 		let projectId = $(this).data('id');
 		
-		let x = e.clientX - 320;
+		let x = e.clientX - 280;
 		let y = e.clientY;
 		
 		$('.prjParticir-modal-content').css('left', x + 'px');
