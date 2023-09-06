@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -33,7 +34,10 @@ import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.company.service.JobVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.PrjParticirVO;
+import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
+import com.worksb.hi.search.service.SearchingVO;
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
@@ -46,6 +50,8 @@ public class AdminController {
 	MemberService memberService;
 	@Autowired
 	AdminService adminService;
+	@Autowired
+	ProjectService projectService;
 	
 	@RequestMapping("/companyInfo")
 	public String companyInfo() {
@@ -141,6 +147,12 @@ public class AdminController {
 			int total=adminService.prjcount(companyId);
 			PagingVO pagingvo=new PagingVO(total,nowPage,cntPerPage);
 			List<ProjectVO> list=adminService.projectList(companyId, pagingvo);
+			//프로젝트명에서 부서명은 제거
+			for(ProjectVO name:list) {
+				String deptANdName=name.getProjectName();
+				String nameList[]=deptANdName.split("]");
+				name.setProjectName(nameList[1]);
+			}
 			m.addAttribute("paging", pagingvo);
 			m.addAttribute("list",list);
 			return "admin/projectList";
@@ -314,4 +326,38 @@ public class AdminController {
 			}
 			return 0;
 		}
+		@PostMapping("/updatePrjName")
+		@ResponseBody
+		public int updatePrjName(@RequestBody ProjectVO vo) {
+			List<String> oldDeptName=adminService.getDeptName(vo);
+			String deptName[]=oldDeptName.get(0).split("]");
+			String filteredDeptName=deptName[0]+"]";
+			String prjName=vo.getProjectName();
+			vo.setProjectName(filteredDeptName+prjName);
+			
+			Map<String,String>pjIdAndName=new HashMap<>();
+			pjIdAndName.put(Integer.toString(vo.getProjectId()), vo.getProjectName());
+			return adminService.updateProjectName(pjIdAndName);
+		}
+		
+		@GetMapping("/getParticirList")
+		@ResponseBody
+		public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
+			return projectService.getParticirList(projectId);
+		}
+		
+		@GetMapping("/getManager")
+		@ResponseBody
+		public List<PrjParticirVO> getManager(@RequestParam String memberId,@RequestParam("projectId") int projectId ){
+			return adminService.getManager(memberId,projectId);
+		}
+//		@PostMapping("/searchByDate")
+//		public String searchByDate(HttpSession session,Model m,SearchingVO vo,
+//				 @RequestParam("searchkeyword") String searchKeyword,
+//				 @RequestParam("searchBoardType") String boardType,
+//				 @RequestParam("startDate")String startDate,
+//				 @RequestParam("endDate")String endDate) {
+//			
+//			return "";
+//		}
 }

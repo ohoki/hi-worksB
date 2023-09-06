@@ -71,7 +71,7 @@
 <body>
 	<div class="register-form-box">
 		<h1 class="register-form-box__title">회사정보</h1>
-		<form action="${pageContext.request.contextPath }/member/insertCompany" method="post" enctype="multipart/form-data" class="register-form">
+		<form action="${pageContext.request.contextPath }/member/insertCompany" method="post" enctype="multipart/form-data" class="register-form" id="companyRegisterForm">
 			<label for="companyName">회사명
 				<input type="text" placeholder="회사명" name="companyName" required >
 			</label>
@@ -135,7 +135,7 @@
 	});
 	
 	//로고 없으면 알림창
-	$('form').on('submit', function(e) {
+	$('#companyRegisterForm').on('submit', function(e) {
 		e.preventDefault();
 		
 		if(fileDOM.value == '') {

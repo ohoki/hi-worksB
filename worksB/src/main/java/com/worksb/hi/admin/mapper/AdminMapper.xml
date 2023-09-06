@@ -61,7 +61,7 @@
 			    FROM (			    
                     SELECT
 						p.project_id,
-                        (SELECT COUNT(pp.member_id) FROM prj_particir pp where pp.project_id=p.project_id) mnumber,
+                        (SELECT COUNT(pp.member_id) FROM prj_particir pp WHERE pp.project_id=p.project_id AND particir_accp='A1') mnumber,
 						project_name, 
 						project_access,  
 						manager_accp,   
@@ -358,11 +358,34 @@
 	
 	<update id="updateProjectName" parameterType="Map">
 		<foreach collection="pjIdAndName" item="value" index="key" separator=";" open="DECLARE BEGIN" close=";END;">
-
 		 	UPDATE project
        		SET project_name = #{value}
        		WHERE project_id = #{key} 
 
    	 	</foreach>
 	</update>
+	
+	<select id="getDeptName" resultType="String">
+		SELECT project_name
+		FROM project 
+		WHERE dept_id=#{deptId}
+	</select>
+	
+	<select id="getManager" resultType="PrjParticirVO">
+		SELECT	p.prj_particir_id,
+				p.member_id,
+				p.manager,
+				p.project_id,
+				p.alarm_yn,
+				p.project_markup,
+				p.particir_accp,
+				m.member_name,
+				m.real_profile_path
+		FROM	prj_particir p
+		JOIN	member m
+		ON		p.member_id=m.member_id
+		WHERE		project_id = #{projectId} 
+				AND p.particir_accp = 'A1'
+				AND m.member_id=#{memberId}
+	</select>
 </mapper>

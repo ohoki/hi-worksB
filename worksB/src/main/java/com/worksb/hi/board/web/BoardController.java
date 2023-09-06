@@ -2,8 +2,6 @@ package com.worksb.hi.board.web;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -721,7 +719,7 @@ public class BoardController {
 	//프로젝트 일정 캘린더 상세조회
 	@GetMapping("getScheBoardInfo")
 	@ResponseBody
-	public BoardRequestVO getScheBoardInfo(@RequestParam("prjBoardId") int prjBoardId) {
+	public BoardRequestVO getScheBoardInfo(@RequestParam("prjBoardId") int prjBoardId, HttpSession session) {
 		BoardRequestVO vo = new BoardRequestVO();
 		ScheVO scheVO = new ScheVO();
 		scheVO.setPrjBoardId(prjBoardId);
@@ -734,13 +732,27 @@ public class BoardController {
 		memberVO = memberService.selectMember(memberVO);
 		vo.setMemberName(memberVO.getMemberName());
 		vo.setRealProfilePath(memberVO.getRealProfilePath());
+		
+	    //북마크 여부 조회
+	    List<BoardVO> markedUserId = boardService.findMarkedUserId(prjBoardId);
+	    String nowMemberId = ((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+	    String markedUser = null;
+	    for(int i=0;i<markedUserId.size();i++) {
+	    	if(markedUserId.get(i).getMarkedUserId().equals(nowMemberId)) {
+	    		markedUser = "yes";
+	    		break;
+	    	}else {
+	    		markedUser = "no";
+	    	}
+	    }
+		vo.setMarkedUserId(markedUser);
 		return vo;
 	}
 	
 	//프로젝트 업무 캘린더 상세조회
 	@GetMapping("getTaskBoardInfo")
 	@ResponseBody
-	public Map<String, Object> getTaskBoardInfo(@RequestParam("prjBoardId") int prjBoardId) {
+	public Map<String, Object> getTaskBoardInfo(@RequestParam("prjBoardId") int prjBoardId, HttpSession session) {
 		//BoardRequestVO vo = new BoardRequestVO();
 		Map<String, Object> resultMap = new HashMap<>();
 	    
@@ -773,11 +785,28 @@ public class BoardController {
 	        // 하위 업무 담당자 정보 추가
 	        subManager.put(subTaskPrjBoardId, subManagerInfo);
 	    }
-
+	    
+	    //북마크 여부 조회
+	    List<BoardVO> markedUserId = boardService.findMarkedUserId(prjBoardId);
+	    String memberId = ((MemberVO)session.getAttribute("memberInfo")).getMemberId();
+	    String markedUser = null;
+	    for(int i=0;i<markedUserId.size();i++) {
+	    	if(markedUserId.get(i)==null) {
+	    		markedUser = "no";
+	    	}
+	    	if(markedUserId.get(i).getMarkedUserId().equals(memberId)) {
+	    		markedUser = "yes";
+	    		break;
+	    	}else {
+	    		markedUser = "no";
+	    	}
+	    }
+	    
 	    resultMap.put("highTask", highTask);
 	    resultMap.put("subTask", subTask);
 	    resultMap.put("highManager", highManager);
 	    resultMap.put("subManager", subManager);
+	    resultMap.put("markedUserId", markedUser);
 	    
 
 	    return resultMap;

@@ -14,6 +14,7 @@ import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.company.service.JobVO;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.FileDataVO;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectVO;
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -173,6 +174,16 @@ public class AdminServiceImpl implements AdminService {
 	public int updateProjectName(Map<String,String>pjIdAndName) {
 		return adminMapper.updateProjectName(pjIdAndName);
 		//plsql블럭으로 for문안돌리고 여기서 for문돌려도 됨 for문 돌린 갯수가 update갯수가 되겟죵?
+	}
+
+	@Override
+	public List<String> getDeptName(ProjectVO vo) {
+		return adminMapper.getDeptName(vo);
+	}
+
+	@Override
+	public List<PrjParticirVO> getManager(String memberId,int projectId) {
+		return adminMapper.getManager(memberId,projectId);
 	}
 
 
