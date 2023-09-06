@@ -123,6 +123,8 @@ public interface BoardService {
 	
 	
 	//정현
+    //프로젝트 캘린더 북마크 여부 조회
+    public List<BoardVO> findMarkedUserId(int prjBoardId);
     //프로젝트 캘린더 검색 조회
     public List<BoardVO> searchCalendarBoard(BoardVO boardVO);
     //프로젝트 캘린더 일정 검색 조회
