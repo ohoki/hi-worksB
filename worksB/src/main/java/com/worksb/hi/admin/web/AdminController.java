@@ -210,19 +210,26 @@ public class AdminController {
 		
 		// 회사 구성원 리스트
 		@RequestMapping("/memberManagement")
-		public String CompanyMemberList(Model model, HttpSession session, MemberVO memberVO) {
+		public String companyMemberList(Model model, HttpSession session, MemberVO memberVO) {
 			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
 			Integer companyId = company.getCompanyId();
 			// list넘기기
 			List<MemberVO> memberList = adminService.companyMemberList(companyId);
 			model.addAttribute("memberList", memberList );
+			
+			//부서, 직급 정보 가져오기
+			List<DepartmentVO> deptList = companyService.getDepartment(company);
+			List<JobVO> jobList = companyService.getJob(company);
+			
+			model.addAttribute("deptList", deptList);
+			model.addAttribute("jobList", jobList);
 			return "adminPage/memberManagement";
 		}
 		
 		// 구성원 정보 단건조회
 		@RequestMapping("/memberManagements")
 		@ResponseBody
-		public MemberVO CompanyMemberInfo(MemberVO memberVO) {
+		public MemberVO companyMemberInfo(MemberVO memberVO) {
 			return adminService.companyMemberInfo(memberVO);
 		}
 		
@@ -232,7 +239,25 @@ public class AdminController {
 		public String updateMember(MemberVO memberVO) {
 			return adminService.updateMember(memberVO);
 		}
-
+		// 회사 구성원 리스트 출력 ajax
+		@RequestMapping("/memberManagementss")
+		@ResponseBody
+		public List<MemberVO> companyMemberLists(MemberVO memberVO, int companyId) {
+			return adminService.companyMemberLists(companyId);
+		}
+		// 승인 대기중인 구성원 리스트
+		@RequestMapping("/memberAccpList")
+		public List<MemberVO> memberAccpList(MemberVO memberVO, String companyAccp){
+			
+			return adminService.memberAccpList(companyAccp);
+		}
+		// 가입 승인
+		@RequestMapping("/memberAccpUpdate")
+		@ResponseBody
+		public String memberAccpUpdate(MemberVO memberVO) {
+			return adminService.memberAccpUpdate(memberVO);
+		}
+		
 		@PostMapping("/updateRole")
 		@ResponseBody
 		public int updateRole(@RequestParam("roleId")int jobId,@RequestParam("roleName") String jobName) {
