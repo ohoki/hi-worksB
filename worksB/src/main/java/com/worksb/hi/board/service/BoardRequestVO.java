@@ -17,4 +17,5 @@ public class BoardRequestVO {
 	
 	String memberName;
 	String realProfilePath;
+	String markedUserId;
 }

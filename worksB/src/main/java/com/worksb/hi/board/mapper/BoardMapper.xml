@@ -715,6 +715,13 @@
 	
 
 	<!-- 정현 -->
+	<!-- 프로젝트 캘린더 북마크 여부 조회 -->
+	<select id="findMarkedUser" resultType="BoardVO">
+		SELECT
+		        member_id as "markedUserId"
+		FROM bookmark
+		WHERE board_id = #{prjBoardId}
+	</select>
 	<!-- 프로젝트 일정 수정 -->
 	<update id="updateSche" parameterType="ScheVO">
 		UPDATE prj_sche

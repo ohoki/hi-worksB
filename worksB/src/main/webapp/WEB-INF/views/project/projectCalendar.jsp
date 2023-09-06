@@ -482,6 +482,14 @@
 	    justify-content: space-between;
 	    color: var(--color-dark-grey);
 	}
+	.board-comment img {
+	    margin: 10px 20px 10px 0;
+	}
+	.profileImg{
+	    width: 40px;
+	    height: 40px;
+	    border-radius: 10px;
+	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -941,6 +949,58 @@
 		})
 	};
 	
+	//북마크 기능
+	$('span[data-bookmark]').on('click', function(e) {
+		let boardIdInputTag = $(e.currentTarget).parent().parent().parent().find('input[hidden="true"]').eq(0)
+		let prjBoardId = boardIdInputTag.val()
+		let boardType;
+		if(boardIdInputTag.attr('id')==="prjTaskId"){
+			boardType = "C8";
+		}else if(boardIdInputTag.attr('id')==="prjScheId"){
+			boardType = "C6";
+		}
+		let prjId = '${projectInfo.projectId}';
+		let memberId = '${memberInfo.memberId}';
+		let bookmark = $(e.currentTarget).data('bookmark');
+		let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
+		console.log(data)
+		if(bookmark == 'no') {
+			if(confirm('이 게시글을 북마크 하시겠습니까?')) {
+				$.ajax({
+					url : '${pageContext.request.contextPath}/insertBookmark',
+					type : 'POST',
+					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+					success : function() {
+						$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+						$(e.currentTarget).data('bookmark', 'yes');
+						
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				});	
+			}
+		}else if(bookmark == 'yes') {
+			if(confirm('북마크를 해제 하시겠습니까?')) {
+				$.ajax({
+					url : '${pageContext.request.contextPath}/deleteBookmark',
+					type : 'POST',
+					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+					success : function() {
+						$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg').data('data-bookmark', 'no');
+						$(e.currentTarget).data('bookmark', 'no');
+						
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				})
+			}
+			
+		}
+	});
+	
+	
 	//일정 검색
 	$('.sche__search').keydown(function (key) {
 		event.stopPropagation();
@@ -952,7 +1012,6 @@
     //프로젝트 캘린더 일정/업무 검색
     function searchTasknSche(){
     	let searchKeyword = $('.sche__search').val();
-    	console.log(searchKeyword)
     	let projectId = ${projectInfo.projectId}
     	console.log()
     	$.ajax({
@@ -961,6 +1020,7 @@
     		data : {"projectId" : projectId, "searchKeyword" : searchKeyword},
     		dataType : 'JSON',
     		success : function(result){
+    			console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.scheList);
 				calendar.addEventSource(result.taskList);
@@ -988,6 +1048,7 @@
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.scheList);
 				calendar.addEventSource(result.taskList);
+				calendar.getEventSources()
 		    },
 		    error : function(error){
 		    	
@@ -1118,6 +1179,16 @@
 					success : function(result){
 						console.log(result)
 						console.log(result.highTask[0])
+						
+				     	//북마크 여부 조회 
+				     	if(result.markedUserId=="yes"){
+							$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+							$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'yes');
+				     	}else if(result.markedUserId=="no"||result.markedUserId===null){
+							$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
+							$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'no');
+				     	}
+						
 						$('#prjTask-modal').addClass('modal-prjSche-visible');
 						$('#prjTaskId').val(result.highTask[0].prjBoardId)
 						//프사 확인
@@ -1189,9 +1260,10 @@
 				     	}
 				     	//댓글조회
 				     	getCommentList(result.highTask[0].prjBoardId, 'C8')
-				     	
+
 				     	//좋아요 조회
 				     	getPrjLike(memberId, boardId)
+				     	
 					},
 					error : function(error){
 						console.log(error)
@@ -1206,6 +1278,15 @@
 					dataType:"JSON",
 					success:function(result){
 						console.log(result)
+						
+				     	//북마크 여부 조회   board-footer   data-bookmark   img
+				     	if(result.markedUserId=="yes"){
+							$('.prjSche-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+							$('.prjSche-modal__content span[data-bookmark]').data('bookmark', 'yes');
+				     	}else if(result.markedUserId=="no"||result.markedUserId===null){
+							$('.prjSche-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
+							$('.prjSche-modal__content span[data-bookmark]').data('bookmark', 'no');
+				     	}
 						
 						$('#prjScheId').val(result.boardVO.prjBoardId);
 						$('.memberId').val(result.boardVO.memberId)
@@ -1248,6 +1329,10 @@
 				});
 			}
 		};
+		
+		
+		
+		
 		
 		// 일정 참여
 		$('.sche-btns button').on('click', function(e) {

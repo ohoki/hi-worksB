@@ -132,6 +132,8 @@ public interface BoardMapper {
 	
 	
 	//정현
+	//프로젝트 북마크 여부 조회
+	public List<BoardVO> findMarkedUser(int prjBoardId);
     //프로젝트 캘린더 검색 조회
     public List<BoardVO> searchCalendarBoard(BoardVO boardVO);
     //프로젝트 캘린더 일정 검색조회
