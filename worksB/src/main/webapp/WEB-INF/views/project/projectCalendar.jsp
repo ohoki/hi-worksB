@@ -29,7 +29,6 @@
 	}
 	
 	#calendar-container {
-		
 	}
 	
 	.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
@@ -56,7 +55,14 @@
 		line-height: 15px;
 		padding: 0 !important;
 		font-size: var(--font-micro) !important;
+		background-color: var(--color-dark-red) !important;
+		border: 1px solid var(--color-dark-red) !important;
 	}
+	
+	.fc .fc-button:disabled {
+	    opacity: 1;
+	}
+	
 	
 	.fc-dayGridMonth-button {
 		width: 70px;
@@ -103,7 +109,7 @@
 		transition: all 0.5s;
 	}
 	
-	.fc-scheBtn-button:hover {
+	.fc-scheBtn-button:hover, .fc-scheBtn-button:focus {
 		background-color: rgb(249, 166, 52) !important;
 	}
 	
@@ -119,7 +125,7 @@
 		transition: all 0.5s;
 	}
 	
-	.fc-taskBtn-button:hover {
+	.fc-taskBtn-button:hover, .fc-taskBtn-button:focus {
 		background-color: rgb(156, 187, 58) !important;
 	}
 	
@@ -134,7 +140,7 @@
 		transition: all 0.5s;
 	}
 	
-	.fc-viewBtn-button:hover {
+	.fc-viewBtn-button:hover, .fc-viewBtn-button:focus, .fc-viewBtn-button:not(:disabled):active {
 		background-color: rgb(0, 175, 185) !important;
 	}
 	
@@ -144,7 +150,11 @@
 		font-size: var(--font-regular) !important;
 	}
 	
-	
+	.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+	    background-color: var(--color-dark-beigie);
+	    border-color: var(--color-dark-beigie);
+	    color: var(--color-dark-grey);
+	}
 	
 	
 	
@@ -157,7 +167,7 @@
 		display: block !important;
 	}
 	
-	#prjSche-modal, #prjTask-modal{
+	#prjSche-modal, #prjTask-modal, #boardUpdateModal{
 		position: absolute;
 		width: 100%;
 		height: 100%;
@@ -618,6 +628,14 @@
 	    height: 40px;
 	    border-radius: 10px;
 	}
+	
+	.processivity {
+		cursor: pointer;
+	}
+	
+	#prjTask-modal div[data-state] button.active {
+	    background-color: var(--color-dark-red);
+	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -712,6 +730,7 @@
 	
 	<!-- 업무 상세조회 모달 -->
 	<div id="prjTask-modal">
+		<input type="hidden" value="" name="prjBoardId">
 		<div class="prjTask-modal__content">
 			<input type="text" id="prjTaskId" hidden="true">
 			<div class="board-header">
@@ -742,6 +761,7 @@
 						<div class="processivity-value"></div>
 					</div>
 					<span data-processivityvalue></span>
+					<input type="hidden" name="processivity">
 				</div>
 			</div>
 			<div class="d-flex" style="margin-right: 40px;">
@@ -857,7 +877,7 @@
 	//상세정보 모달페이지 출력
 	$('.board-header-btn').on('click', function(e) {
 		let modal = $(e.currentTarget).parent().parent().parent().parent().find('div[data-boardmodal]');
-		console.log(modal)
+		console.log(modal);
 		let modalContent = modal.children('.board-modal-content');
 		let x = e.clientX - 150;
 		let y = e.clientY + 5;
@@ -1164,7 +1184,95 @@
     		
     	});
     };
+    
+    $('.btn-close').on('click', function(e) {
+    	$('#boardUpdateModal').removeClass('d-b');
+    });
 </script>
+
+<script>
+
+function updateProcessivity(e) {
+	const progressBar = e.currentTarget;
+	const progressBarInner = $(e.currentTarget).children('div');
+	// 클릭 위치
+	// 창 왼쪽부터 클릭한 위치까지 거리 - 프로그레스바 왼쪽 좌표 = 클릭 위치
+	const clickedPosition = event.clientX - progressBar.getBoundingClientRect().left;
+	
+	// 프로그레스 전체 길이
+	const totalWidth = progressBar.offsetWidth;
+	
+	// 진척도 값 계산
+	const selectedProgress = Math.round((clickedPosition / totalWidth) * 100 / 10) * 10;
+
+	// 클릭한 진척도 값으로 프로그레스 채우기
+	progressBarInner.css('width', selectedProgress + "%");
+	
+	// input에 선택 한 값 넣기
+    const hiddenInput = $(progressBar).next().next(); 
+	
+	if (hiddenInput) {
+		hiddenInput.val(selectedProgress);
+
+		// 선택된 값 표시
+		const progressValue = $(progressBar).next();
+		progressValue.text(selectedProgress + "%");
+	}
+};
+
+	//업무 게시글 진행상태 변경
+	$('#prjTask-modal div[data-state] button').on('click', function(e) {
+		let boardContainer = $('#prjTask-modal');
+		let targetBtn = $(e.currentTarget);
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let state = targetBtn.val();
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'state' : state},
+			success : function(result) {
+				//업무
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : prjBoardId},
+					success : function(taskData) {
+		                let stateBtn = boardContainer.find('div[data-state]');
+		                let activeBtn = stateBtn.find('.active');
+		                // 진행상태 버튼 활성화
+		                activeBtn.removeClass('active');
+		                stateBtn.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+				    }, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	
+	//업무 게시글 진척도 변경
+	$('.processivity').on("click", function(e) {
+		updateProcessivity(e);
+		
+		let boardContainer = $('#prjTask-modal');
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let processivity = boardContainer.find('input[name=processivity]').val();		
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+</script>
+
 
 <!-- 캘린더 js -->
 <script>
@@ -1301,16 +1409,13 @@
 			let memberId = '${memberInfo.memberId}'
 			let boardId = info.event.id
 			if(boardId.substr(0,1)==="t"){
-				console.log(boardId.substr(1))
-				boardId = boardId.substr(1)
+				boardId = boardId.substr(1);
 				$.ajax({
 					url:'getTaskBoardInfo',
 					method : 'GET',
 					data : {"prjBoardId" : boardId},
 					dataType : 'JSON',
 					success : function(result){
-						console.log(result)
-						console.log(result.highTask[0])
 						
 				     	//북마크 여부 조회 
 				     	if(result.markedUserId=="yes"){
@@ -1320,7 +1425,8 @@
 							$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
 							$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'no');
 				     	}
-						
+				     	
+						$('#prjTask-modal').find('input[name="prjBoardId"]').val(boardId);					     	
 						$('#prjTask-modal').addClass('modal-prjSche-visible');
 						$('#prjTaskId').val(result.highTask[0].prjBoardId)
 						//프사 확인
@@ -1338,7 +1444,7 @@
 						//업무 번호
 						$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
 						//업무 진행 상황
-						$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).css('background-color', 'var(--color-dark-red)');
+						$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).addClass('active');
 						//업무 날짜 지정
 				        if(result.highTask[0].startDate != null) {
 				        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text(result.highTask[0].startDate);
