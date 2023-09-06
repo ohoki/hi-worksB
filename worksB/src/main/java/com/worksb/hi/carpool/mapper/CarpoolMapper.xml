@@ -31,21 +31,23 @@
 		select *
 		from (  select rownum rn, a.*
         		from (select *
-              		  from carpool_board n JOIN member m
-              		  on n.member_id = m.member_id
+              		  from carpool_board n 
+              		  JOIN member m
+              		  on (n.member_id = m.member_id)
+              		  WHERE m.company_id=#{companyId}
 					<if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
 					<choose>
 					<when test="searchVO.searchtype == 1 ">
-						WHERE board_title like '%' || #{searchVO.searchkeyword } || '%'
+						AND board_title like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 2 ">
-						WHERE board_content like '%' || #{searchVO.searchkeyword } || '%'
+						AND board_content like '%' || #{searchVO.searchkeyword } || '%'
 					</when>
 					<when test="searchVO.searchtype == 3 ">
-						WHERE member_name like  '%${searchVO.searchkeyword }%'
+						AND member_name like  '%${searchVO.searchkeyword }%'
 					</when>
 					<when test="searchVO.searchtype == 4 ">
-						WHERE ( board_title like '%${searchVO.searchkeyword }%' or board_content like '%${searchVO.searchkeyword }%')
+						AND ( board_title like '%${searchVO.searchkeyword }%' or board_content like '%${searchVO.searchkeyword }%')
 					</when>
 					</choose>
 					</if>               		  
@@ -136,5 +138,54 @@
 	<delete id="carpoolDelete" parameterType="int">
 		DELETE FROM carpool_board
 		WHERE board_id = #{carpoolId}
+	</delete>
+	
+	<select id="getPCount" resultType="int">
+		SELECT COUNT(member_id) 
+		FROM car_vote_particir 
+		where board_id=#{boardId}
+	</select>
+	
+<!-- 	SELECT carpool_seq.NEXTVAL FROM dual -->
+				
+	
+	<insert id="applyCarpool" parameterType="CarpoolVO">
+		<selectKey keyProperty="car_vote_particir_id" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(car_vote_particir_id), 0) +1
+			FROM car_vote_particir
+		</selectKey>
+		INSERT INTO car_vote_particir
+						(
+						car_vote_particir_id,
+						member_id,
+						board_id
+						)
+			VALUES(
+						#{car_vote_particir_id},
+						#{memberId},
+						#{boardId}
+				)
+	</insert>
+	
+	<select id="getApplicantName" resultType="String">
+		SELECT member_name 
+		FROM member
+		WHERE member_id=#{memberId}
+	</select>
+	
+	<select id="getApplicantList" resultType="CarpoolVO">
+		SELECT 						
+			c.car_vote_particir_id,
+			c.member_id,
+			c.board_id,
+            m.member_name
+		FROM car_vote_particir c
+        JOIN member m on(m.member_id=c.member_id)
+		WHERE board_id=#{boardId}
+	</select>
+	
+	<delete id="cancelCarpool" parameterType="int">
+		DELETE car_vote_particir
+		WHERE board_id=#{boardId}
 	</delete>
 </mapper>
