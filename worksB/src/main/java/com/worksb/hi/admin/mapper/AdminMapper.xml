@@ -172,11 +172,21 @@
 	<update id="updateMember" parameterType="MemberVO">
 		UPDATE member
 			<set>
-				member_name = #{memberName}
-				, member_phone = #{memberPhone}
-				, member_grade = #{memberGrade}
-				, job_id = #{jobId}
-				, dept_id = #{deptId}
+				<if test="memberName !=null and !memberName.equals('')">
+					member_name = #{memberName},
+				</if>
+				<if test="memberPhone !=null and !memberPhone.equals('')">
+					member_phone = #{memberPhone},
+				</if>
+				<if test="memberGrade !=null and !memberGrade.equals('')">
+					member_grade = #{memberGrade},
+				</if>
+				<if test="jobId !=null and !jobId.equals('')">
+					job_id = #{jobId},
+				</if>
+				<if test="deptId !=null and !deptId.equals('')">
+					dept_id = #{deptId}
+				</if>
 			</set>
 		 WHERE member_id = #{memberId}
 	</update>
@@ -211,10 +221,10 @@
 			   member_name,
 			   member_phone,
 			   member_grade,
-			   find_subcode(m.member_grade) AS grade_name,
-			   company_id,
+			   find_subcode(member_grade) AS grade_name,
+			   company_id
 		  FROM member
-		 WHERE company_accp = 'A2' and companyId_id = #{companyId}
+		  WHERE company_accp = 'A2' and company_id = #{companyId}
 	</select>
 	
 	<!-- 승인 대기중 인원 출력 ajax -->
@@ -223,10 +233,10 @@
 			   member_name,
 			   member_phone,
 			   member_grade,
-			   find_subcode(m.member_grade) AS grade_name,
-			   company_id,
+			   find_subcode(member_grade) AS grade_name,
+			   company_id
 		  FROM member
-		 WHERE company_accp = #{companyAccp} and companyId_id = #{companyId}
+		 WHERE company_accp = 'A2' and company_id = #{companyId}
 	</select>
 	
 	<!-- 가입 승인 -->
