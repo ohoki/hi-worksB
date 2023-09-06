@@ -598,6 +598,14 @@
 			)
 	</insert>
 	 -->
+	 
+	 <!-- 북마크 조회 -->
+	 <select id="getBookmarkInfo" resultType="BoardVO">
+	 	SELECT	member_id
+		FROM    bookmark
+		WHERE   member_id = #{memberId}
+			AND board_id = #{prjBoardId}
+	 </select>
 	
 	
 <!-- 	주현 -->

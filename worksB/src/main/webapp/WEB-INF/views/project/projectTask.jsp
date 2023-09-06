@@ -804,7 +804,7 @@
 		<div class="board-footer">
 			<div >
 				<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
-				<span class="board-footer-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크</span>
+				<span class="board-footer-icon" name="bookmark-icon"> 북마크</span>
 			</div>
 				<div>
 					<span class="board-footer-info">댓글 <span data-commentCount></span></span>
@@ -1061,7 +1061,6 @@
 	});	
 	//ckeditor 종료
 
-
 	//상위 업무 리스트
 	$(document).ready(function() {
 		getTaskListInfo();
@@ -1069,6 +1068,7 @@
 	
 	//업무 추가 정보 불러오기
 	function getSubtaskInfo() {
+
 		let taskBoardList = $('.highTask');
 		
 		taskBoardList.each(function() {
@@ -1378,7 +1378,16 @@
 				    likeBoard('${memberInfo.memberId}', prjBoardId, 'C8');
 				});
 				
-		     
+				// 북마크 정보
+				getBookmarkInfo('${memberInfo.memberId}', prjBoardId);
+				
+				// 북마크 등록/해제
+				$('span[name="bookmark-icon"]').on('click', function(e){
+					bookmarkBoard('${memberInfo.memberId}', "${projectInfo.projectId}", prjBoardId, 'C8');
+				});
+					
+				
+				
 		    }, error : function(reject) {
 				console.log(reject);
 			}
@@ -1904,6 +1913,7 @@
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
 			success : function(like){
+				console.log(like)
 				// 게시글 좋아요 수
 				getPrjLike(memberId, boardId);
 				
@@ -1948,6 +1958,58 @@
 			}
 		})
 	};
+
+	// 북마크 정보
+	function getBookmarkInfo(memberId, boardId){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getBookmarkInfo',
+			type : 'GET',
+			data : {'memberId': memberId, 'prjBoardId' : boardId},
+			success : function(bookmark){
+				console.log(bookmark)
+				let bookmarkSpan = $('#task-modal').find('span[name="bookmark-icon"]')
+				bookmarkSpan.empty();
+				if(bookmark != 0 ){
+					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크`;
+					bookmarkSpan.prepend(bookmarkImg);
+					
+				}else{
+					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크`;
+					bookmarkSpan.prepend(bookmarkImg);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+	}
+	
+	// 북마크 등록/해제
+	function bookmarkBoard(memberId, projectId, boardId, boardType){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/bookmarkBoard',
+			type : 'GET',
+			data : {'memberId': memberId, 'projectId': projectId, 'prjBoardId' : boardId, 'boardType': boardType},
+			success : function(bookmark){
+				console.log(bookmark)
+				getBookmarkInfo(memberId, boardId);
+				
+				let bookmarkSpan = $('#task-modal').find('span[name="bookmark-icon"]')
+				bookmarkSpan.empty();
+				
+				if(bookmark.checkBookmark == 'bookmark'){
+					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크`;
+					bookmarkSpan.prepend(bookmarkImg);
+				}else{
+					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크`;
+					bookmarkSpan.prepend(bookmarkImg);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+	}
 </script>
 
 <script>

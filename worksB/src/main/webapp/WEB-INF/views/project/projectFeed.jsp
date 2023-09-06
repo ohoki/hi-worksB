@@ -1093,7 +1093,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1163,7 +1165,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1181,9 +1185,6 @@
 								<span data-start></span>
 								<span> ~ </span>
 								<span data-end></span>
-							</div>
-							<div class="sche-alarm">
-								<span></span>
 							</div>
 						</div>
 						<div class="d-flex" style="margin-right: 40px;">
@@ -1258,7 +1259,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1351,7 +1354,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -2189,7 +2194,6 @@
 					success : function(sche) {
 						let startDate = $(boardList[i]).find('span[data-start]');
 						let endDate = $(boardList[i]).find('span[data-end]');
-						let alarmSpan = $(boardList[i]).find('.sche-alarm').children('span');
 						let addrSpan = $(boardList[i]).find('.sche-addr');
 						let attendYesCount = $(boardList[i]).find('.sche-particir-count');
 						let attendNoCount = $(boardList[i]).find('.sche-nonParticir-count');
@@ -2198,10 +2202,6 @@
 						
 						startDate.text(sche.startDate);
 		                endDate.text(sche.endDate);
-		                //알림 설정 여부
-		                if(sche.alarmDateCodeLiteral != null) {
-		                	alarmSpan.text(sche.alarmDateCodeLiteral);	
-		                }
 		                //장소 설정 여부
 		                if(sche.scheAddr != null) {
 		                	sche.scheAddrDetail = sche.scheAddrDetail != null ? sche.scheAddrDetail : '';
@@ -2395,7 +2395,8 @@
 			data : {'boardId' : boardId, 'boardType': boardType},
 			success : function(comments){
 				let boardCommentBox = $('div[data-id=' + boardId + ']').find('div[name="board-comment-box"]');
-				
+				let member = '${memberInfo.memberId}';
+
 				boardCommentBox.empty();
 				
 				if(comments.length != 0) {
@@ -2415,20 +2416,24 @@
 											</div>
 										</div>								
 									</div>
-									<div>
-										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-										<span name="deleteComment" class="cursor">삭제</span>
-									</div>
+									<div name="boardMenu">
+			                        	\${comments[i].memberId == member ? 
+			                        		`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+			                        		<span name="deleteComment" class="cursor">삭제</span>` : ''}
+			                    	</div>
 								</div>`;
 								
 							boardCommentBox.prepend(boardComment);
 							
 						}
-							let moreComment=`
-								<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
-									댓글 더보기
-								</div>`;
-							boardCommentBox.prepend(moreComment);
+						
+						// 댓글 2개까지만 출력 -> 댓글 더보기
+						let moreComment=`
+							<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
+								댓글 더보기
+							</div>`;
+						boardCommentBox.prepend(moreComment);
+						
 					} else {
 						boardCommentBox.empty();
 						
@@ -2447,13 +2452,15 @@
 											</div>
 										</div>								
 									</div>
-									<div>
-										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-										<span name="deleteComment" class="cursor">삭제</span>
-									</div>
+									<div name="boardMenu">
+			                        	\${comments[i].memberId == member ? 
+			                        		`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+			                        		<span name="deleteComment" class="cursor">삭제</span>` : ''}
+			                    	</div>
 								</div>`;
 								
 							boardCommentBox.prepend(boardComment);
+							
 						}
 					}
 				}
@@ -2472,6 +2479,7 @@
 		let prjBoardId = boardContainer.data('id');
 		let boardType = boardContainer.data('type');
 		let boardCommentBox = boardContainer.find('div[name="board-comment-box"]');
+		let member = '${memberInfo.memberId}';
 		$.ajax({
 			url : '${pageContext.request.contextPath}/projectCmtList',
 			type : 'GET',
@@ -2493,13 +2501,15 @@
 									</div>
 								</div>								
 							</div>
-							<div>
-								<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-								<span name="deleteComment" class="cursor">삭제</span>
-							</div>
+							<div name="boardMenu">
+                        		\${comments[i].memberId == member ? 
+                        			`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+                        			<span name="deleteComment" class="cursor">삭제</span>` : ''}
+                    		</div>
 						</div>`;
 						
 					boardCommentBox.prepend(boardComment);
+					
 				}
 			},
 			error : function(reject){

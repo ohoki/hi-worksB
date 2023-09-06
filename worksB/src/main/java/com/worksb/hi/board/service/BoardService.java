@@ -64,6 +64,8 @@ public interface BoardService {
 	// 좋아요 확인 - 게시글
 	public List<BoardVO> getPrjLike(BoardVO boardVO);
 
+	// 북마크 조회
+	public BoardVO getBookmarkInfo(BoardVO boardVO);
 	
 	
   // 업무글 삭제
