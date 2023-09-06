@@ -828,6 +828,7 @@
 		        AND t.high_task_id IS NULL
 		        AND t.start_date IS NOT NULL
 		        AND t.end_date IS NOT NULL
+	</select>
 
 <!-- 	 검색관련부분(참여자리스트) -->
 	<select id="searchingTaskManagerList" resultType="AllTaskBoardVO">

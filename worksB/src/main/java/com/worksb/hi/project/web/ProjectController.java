@@ -676,19 +676,9 @@ public class ProjectController {
 		@PostMapping("/updateDownloadFile")
 		@ResponseBody
 		public int downloadList(@RequestBody FileDataVO data,HttpSession session) throws UnsupportedEncodingException, URISyntaxException {
-		    //String encodedFilename = URLEncoder.encode(data.getFileName(), StandardCharsets.UTF_8.toString());
-			//data.setFileName(encodedFilename);
-			//System.out.println(data);
 			data.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
 			return projectService.updateFile(data);
 		}
-		
-//		@GetMapping("/chat")
-//		public String chatting() {
-//			return "prj/chatting";
-//		}
-	
-		
 		
 		//정현
 		//프로젝트 캘린더 페이지 이동

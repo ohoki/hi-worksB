@@ -36,7 +36,7 @@
 			</div>
 			<div style="padding: 10px 30px; padding-left: 100px;">
 				<div class="searchPw-modal-info">
-					<label for="searchMemberId">아아디</label>
+					<label for="searchMemberId">이메일</label>
 					<input id="searchMemberId" name="searchMemberId" type="email">
 					<button>인증번호 발송</button>
 				</div>
