@@ -48,7 +48,6 @@ public class AdminServiceImpl implements AdminService {
 
 	// 회사 구성원 리스트
 	@Override
-
 	public List<MemberVO> companyMemberList(int companyId) {
 		return adminMapper.companyMemberList(companyId);
 	}
@@ -149,6 +148,7 @@ public class AdminServiceImpl implements AdminService {
 		//plsql블럭으로 for문안돌리고 여기서 for문돌려도 됨 for문 돌린 갯수가 update갯수가 되겟죵?
 		
 	}
+
 
 	
 

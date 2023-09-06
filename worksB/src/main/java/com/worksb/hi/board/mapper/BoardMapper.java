@@ -119,8 +119,10 @@ public interface BoardMapper {
 	//업무 정보 변경
     public int updateTaskInfo(AllTaskBoardVO taskVO);
 	
-	
-	
+    //검색어에 해당하는 매니저목록
+  	public List<AllTaskBoardVO>searchingTaskManagerList(String title);
+	//매니저목록을 제외한 리스트
+	public List<AllTaskBoardVO> searchingList(String title);
 	
 	
 	
