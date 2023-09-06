@@ -1909,8 +1909,7 @@
 			$('.voteParticr-modal-content').css('top', y + 'px');
 			
 			voteParticirDiv.empty();
-			
-			if(anonyVoteText != '') {
+			if(anonyVoteText == '') {
 				$.ajax({
 					url : '${pageContext.request.contextPath}/getVoteParticir',
 					type : 'GET',
@@ -3117,10 +3116,6 @@
 					</div>
 		        </div>
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C5">
 	         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	              	<button type="reset" class="modal-footer-btn">취소</button>
@@ -3198,10 +3193,6 @@
 		        </div>
 		        
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C5">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	             	<button type="reset" class="modal-footer-btn">취소</button>
@@ -3233,10 +3224,6 @@
 		        </div>
 		        
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C6">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	             	<button type="reset" class="modal-footer-btn">취소</button>
@@ -3283,10 +3270,6 @@
 		        </div>
 		        
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C7">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	             	<button type="reset" class="modal-footer-btn">취소</button>
@@ -3327,10 +3310,6 @@
 					</div>
 		        </div>
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C5">
 	         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	              	<button type="reset" class="modal-footer-btn">취소</button>
@@ -3406,14 +3385,10 @@
 		        </div>
 		        
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C8">
-		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		             	<button type="reset" class="modal-footer-btn">취소</button>
-		             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
+	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	             	<button type="reset" class="modal-footer-btn">취소</button>
+	             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
 				</div>
 			</form>
 		
@@ -3441,10 +3416,6 @@
 		        </div>
 		        
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C6">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	             	<button type="reset" class="modal-footer-btn">취소</button>
@@ -3491,10 +3462,6 @@
 		        </div>
 		        
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C7">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
 	             	<button type="reset" class="modal-footer-btn">취소</button>
@@ -3529,7 +3496,6 @@
 					success: function(boardData){
 						$(board).find('[name=prjBoardTitle]').val(boardData.prjBoardTitle);
 						editor5.setData(boardData.prjBoardSubject);
-						$("select[name='inspYn']").val(boardData.inspYn);
 						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
 					},
 					error: function(reject){
@@ -3547,7 +3513,6 @@
 						
 						$(sche).find('[name=prjBoardTitle]').val(boardInfo.prjBoardTitle);
 						editor7.setData(boardInfo.prjBoardSubject);
-						$("select[name='inspYn']").val(boardInfo.inspYn);
 						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
 						
 						$(sche).find('[name=startDate]').val(scheInfo.startDate);
@@ -3579,8 +3544,6 @@
 						$("input[name='resultYn']").prop('checked', voteInfo.resultYn == "A1" ? true : false);
 						
 						$(vote).find('[name=endDate]').val(voteInfo.endDate);
-						
-						$("select[name='inspYn']").val(voteInfo.inspYn);
 						
 						// 투표 항목
 						let voteList = $(vote).find('.board-vote-list');
@@ -4324,7 +4287,7 @@
 		// 투표 항목 추가하기           
         $('.add-vote-list-btn').on('click', function () {                                        
             $('.board-vote-list').append (                        
-                '<input type="text" name="listContent" placeholder="내용을 입력해주세요.">'                    
+                '<div><input type="text" name="listContent" placeholder="내용을 입력해주세요."><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>'                    
             ); // end append                            
         });        
 		// 투표 항목 삭제

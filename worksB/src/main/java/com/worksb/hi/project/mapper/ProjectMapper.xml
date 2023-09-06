@@ -214,7 +214,18 @@
 			AND	project_id = #{projectId}
 	</update>
 	
-	
+	<!-- 프로젝트 만료 -->
+	<update id="updateProjectCls" parameterType="ProjectVO">
+		UPDATE	project
+		SET		project_cls = 'A1'
+		WHERE	project_id = #{projectId}
+	</update>
+	<!-- 프로젝트 나가기 -->
+	<delete id="deleteParticir" parameterType="PrjParticirVO">
+		DELETE	prj_particir
+		WHERE	member_id = #{memberId}
+			AND	project_id = #{projectId}
+	</delete>
 	
 	
 	

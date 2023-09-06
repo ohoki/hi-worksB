@@ -243,6 +243,19 @@ public class ProjectController {
 		return projectService.updateAccpParticir(prjParticirVO);
 	}
 	
+	// 프로젝트 만료
+	@PostMapping("/updateProjectCls")
+	@ResponseBody
+	public int updateProjectCls(ProjectVO projectVO) {
+		return projectService.updateProjectCls(projectVO);
+	}
+	// 프로젝트 나가기
+	@PostMapping("/deleteParticir")
+	@ResponseBody
+	public int deleteParticir(PrjParticirVO prjParticirVO) {
+		return projectService.deleteParticir(prjParticirVO);
+	}
+	
 	
 	
 	
@@ -469,7 +482,11 @@ public class ProjectController {
 		//프로젝트정보등록
 		ProjectVO projectInfo = projectService.getProjectInfo(vo.getProjectId());
 		m.addAttribute("projectInfo", projectInfo);
-		PrjParticirVO particirInfo=projectService.getMarkupInfo(vo.getProjectId(),memberId);
+		
+		PrjParticirVO particir = new PrjParticirVO();
+        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+        particir.setProjectId(vo.getProjectId());
+        PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
 		m.addAttribute("particirInfo",particirInfo);
 		
 		//관리자여부 파악

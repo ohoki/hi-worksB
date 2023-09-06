@@ -56,12 +56,17 @@ public interface BoardMapper {
 	
 	// 좋아요 등록
 	public int insertPrjLike(BoardVO boardVO);
-	// 좋아요 취소
+	// 좋아요 삭제 - 회원용
 	public int deletePrjLike(BoardVO boardVO);
-	// 좋아요 확인 - 회원
+	// 좋아요 확인 - 회원용
 	public BoardVO getMemLike(BoardVO boardVO);
-	// 좋아요 확인 - 게시글
+	// 좋아요 확인 - 게시글 전체 조회용
 	public List<BoardVO> getPrjLike(BoardVO boardVO);
+	// 좋아요 삭제 - 게시글 전체 삭제용
+	public int deletePrjLikeByBoard(BoardVO boardVO);
+	
+	// 북마크 삭제 - 게시글 전체 삭제용
+	public int deleteBookmarkByBoard(BoardVO boardVO);
 
 	// 북마크 조회
 	public BoardVO getBookmarkInfo(BoardVO boardVO);

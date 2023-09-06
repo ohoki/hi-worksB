@@ -274,7 +274,6 @@
 	    border-radius: 5px;
 	    text-align: center;
 	    border: 1px solid transparent;
-	    cursor: pointer;
 	}
 
 	#task-modal .sub-state {
@@ -752,8 +751,7 @@
 					<div class="board-headder-info__memberName" data-memberName></div>
 					<span data-regdate></span>
 				</div>
-				<div>
-				<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+				<div name="boardMenu">
 				</div>
 			</div>
 			<div class="board-title">
@@ -822,8 +820,8 @@
 	<div id="task-menu-modal">
 		<div class="task-menu__content">
 			<ul>
-				<li class="update-task-btn" data-bs-toggle="modal" data-bs-target="#boardUpdateModal">수정</li>
-				<li class="delete-task-btn">삭제</li>
+				<li class="update-task-btn" data-bs-toggle="modal" data-bs-target="#boardUpdateModal">게시글 수정</li>
+				<li class="delete-task-btn">게시글 삭제</li>
 			</ul>
 		</div>
 	</div>
@@ -905,10 +903,6 @@
 					</div>
 		        </div>
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C8">
 	             	<button type="reset" class="modal-footer-btn">취소</button>
 	             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
@@ -1364,8 +1358,19 @@
 					subTaskList.append(li);
 		        }
 		     	
+		     	// 메뉴
 		     	$('.update-task-btn').attr('data-id', prjBoardId);
 		     	$('.delete-task-btn').attr('data-id', prjBoardId);
+		     	
+		     	// 작성자만 메뉴 버튼 활성화
+		     	let boardMemberId = highTask.memberId;
+		     	let memberId = '${memberInfo.memberId}'
+		     	let menu = `\${boardMemberId == memberId ? 
+	        			`<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">` 
+	        			: ''}`;
+        			
+		     	$('div[name="boardMenu"]').empty();
+		     	$('div[name="boardMenu"]').append(menu);
 				
 		     	//댓글 정보		     	
 		     	getCommentList(prjBoardId, 'C8');
@@ -1442,7 +1447,7 @@
 	};
 	
 	// 업무글 메뉴 모달
-	$('.task-menu-btn').on('click', function(e){
+	$(document).on('click', '.task-menu-btn', function(e){
 		let x = e.clientX - 120;
 		let y = e.clientY;
 		let modalContent = $('.task-menu__content');
@@ -1452,6 +1457,7 @@
 		
 		$('#task-menu-modal').addClass('modal-task-visible');
 	})
+	
 	
 	// 수정 폼 모달
 	$('.update-task-btn').on('click', function(e){

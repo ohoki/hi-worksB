@@ -457,7 +457,7 @@
           WHERE a.prj_board_id = #{prjBoardId} 
 	 </select>
 	
-	 <!-- 좋아요 -->
+	 <!-- 좋아요 -회원용 -->
 	<select id="getMemLike" resultType="BoardVO">
 		SELECT	board_id,
 				board_type,
@@ -491,7 +491,7 @@
 	 
 	 
 
-	
+	<!-- 좋아요 등록 -->
 	<insert id="insertPrjLike" parameterType="BoardVO">
 		<selectKey keyProperty="likeId" resultType="int" order="BEFORE">
 			SELECT NVL(MAX(like_id), 0) + 1
@@ -511,12 +511,14 @@
 							)
 	</insert>
 	
+	<!-- 좋아요 삭제 -회원용 -->
 	<delete id="deletePrjLike" parameterType="BoardVO">
 		DELETE	prj_like
 		WHERE	board_id = #{boardId}	
 			AND	member_id = #{memberId}
 	</delete> 
 	
+	<!-- 좋아요 조회 -게시글용  -->
 	<select id="getPrjLike" resultType="BoardVO">
 		SELECT	board_id,
 				board_type,
@@ -526,7 +528,17 @@
 		WHERE	board_id = #{boardId}	
 	</select>
 	
+	<!-- 좋아요 삭제 -게시글 전체삭제용 -->
+	<delete id="deletePrjLikeByBoard" parameterType="BoardVO">
+		DELETE	prj_like
+		WHERE	board_id = #{prjBoardId}	
+	</delete>
 	
+	<!-- 북마크 삭제 -게시글 전체삭제용 -->
+	<delete id="deleteBookmarkByBoard" parameterType="BoardVO">
+		DELETE bookmark
+		WHERE	board_id = #{prjBoardId}
+	</delete>
 	
 	
 	
@@ -828,6 +840,7 @@
 		        AND t.high_task_id IS NULL
 		        AND t.start_date IS NOT NULL
 		        AND t.end_date IS NOT NULL
+	</select>
 
 <!-- 	 검색관련부분(참여자리스트) -->
 	<select id="searchingTaskManagerList" resultType="AllTaskBoardVO">
