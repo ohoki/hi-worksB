@@ -126,6 +126,7 @@
 			   m.member_name, 
 			   m.member_phone, 
 			   m.member_grade, 
+			   find_subcode(m.member_grade) AS grade_name,
 			   m.con_ip, 
 			   m.job_id, 
 			   m.dept_id, 
@@ -134,11 +135,11 @@
 			   c.company_id, 
 			   d.dept_name, 
 			   j.job_name
-		  from member m left join company c
+		  from member m join company c
                         on(m.company_id = c.company_id)
-                      join department d
+                      left outer join department d
                         on(m.dept_id = d.dept_id)
-                      join job j
+                      left outer join job j
                         on(m.job_id = j.job_id)
 		where m.company_id = #{companyId}
 	</select>
@@ -149,7 +150,7 @@
 			   m.member_name, 
 			   m.member_phone, 
 			   m.member_grade,
-			   find_subcode(m.member_grade) AS gradeName, 
+			   find_subcode(m.member_grade) AS grade_name,
 			   m.con_ip, 
 			   m.job_id, 
 			   m.dept_id, 
@@ -158,11 +159,11 @@
 			   c.company_id, 
 			   d.dept_name, 
 			   j.job_name
-		  from member m left join company c
+		  from member m join company c
                         on(m.company_id = c.company_id)
-                      join department d
+                      left outer join department d
                         on(m.dept_id = d.dept_id)
-                      join job j
+                      left outer join job j
                         on(m.job_id = j.job_id)
 		 where member_id = #{memberId}
 	</select>
@@ -175,9 +176,54 @@
 				, member_phone = #{memberPhone}
 				, member_grade = #{memberGrade}
 				, job_id = #{jobId}
-				, dept_id = #{dept_id}
+				, dept_id = #{deptId}
 			</set>
 		 WHERE member_id = #{memberId}
+	</update>
+	
+	<!-- 구성원 전체 리스트 조회 ajax -->
+	<select id="companyMemberLists" resultType="MemberVO">
+		select m.member_id, 
+			   m.member_name, 
+			   m.member_phone, 
+			   m.member_grade,
+			   find_subcode(m.member_grade) AS grade_name,
+			   m.con_ip, 
+			   m.job_id, 
+			   m.dept_id, 
+			   m.emp_status, 
+			   m.con_status, 
+			   c.company_id, 
+			   d.dept_name, 
+			   j.job_name
+		  from member m join company c
+                        on(m.company_id = c.company_id)
+                      left outer join department d
+                        on(m.dept_id = d.dept_id)
+                      left outer join job j
+                        on(m.job_id = j.job_id)
+		 where company_id = #{companyId}
+	</select>
+	
+	<!-- 승인 대기중 인원 출력 -->
+	<select id="memberAccpList" resultType="MemberVO">
+		select member_id,
+			   member_name,
+			   member_phone,
+			   member_grade,
+			   find_subcode(m.member_grade) AS grade_name,
+			   company_id,
+		  FROM member
+		 WHERE company_accp = #{companyAccp}
+	</select>
+	
+	<!-- 가입 승인 -->
+	<update id="memberAccpUpdate" parameterType="MemberVO">
+		UPDATE member
+			<set>
+				company_accp = 'A1'
+			</set>
+		 WHERE memberId = #{memberId}
 	</update>
 
 	<!--  -->

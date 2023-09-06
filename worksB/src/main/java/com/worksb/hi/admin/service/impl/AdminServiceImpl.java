@@ -48,7 +48,6 @@ public class AdminServiceImpl implements AdminService {
 
 	// 회사 구성원 리스트
 	@Override
-
 	public List<MemberVO> companyMemberList(int companyId) {
 		return adminMapper.companyMemberList(companyId);
 	}
@@ -63,6 +62,29 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public String updateMember(MemberVO memberVO) {
 		int result = adminMapper.updateMember(memberVO);
+	
+    if(result == 1) {
+			return memberVO.getMemberId();
+		}else {
+			return null;
+		}
+	}
+  
+	// ajax로 수정
+	@Override
+	public List<MemberVO> companyMemberLists(int companyId) {
+		return adminMapper.companyMemberLists(companyId);
+	}
+	// 승인대기중인 구성원 리스트
+	@Override
+	public List<MemberVO> memberAccpList(String companyAccp) {
+		return adminMapper.memberAccpList(companyAccp);
+	}
+	// 가입 승인
+	@Override
+	public String memberAccpUpdate(MemberVO memberVO) {
+		int result = adminMapper.memberAccpUpdate(memberVO);
+
 		if(result == 1) {
 			return memberVO.getMemberId();
 		}else {
@@ -147,10 +169,8 @@ public class AdminServiceImpl implements AdminService {
 	public int updateProjectName(Map<String,String>pjIdAndName) {
 		return adminMapper.updateProjectName(pjIdAndName);
 		//plsql블럭으로 for문안돌리고 여기서 for문돌려도 됨 for문 돌린 갯수가 update갯수가 되겟죵?
-		
 	}
 
-	
 
 	
 }

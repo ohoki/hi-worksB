@@ -323,7 +323,7 @@
 		}).responseText;
     	
     	return result;
-};
+	};
 
 	
 	//모달 닫기

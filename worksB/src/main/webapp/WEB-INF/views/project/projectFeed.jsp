@@ -429,6 +429,7 @@
 			border-radius:2px;
 			background-color: var(--color-light-white);
 			margin-right: 10px;
+			cursor: pointer;
 		}
 		
 		.processivity-value {
@@ -436,6 +437,7 @@
 			height: 7px;
 			border-radius:2px;
 			background-color: var(--color-green);
+			transition: all 0.5s;
 		}
 		
 		.sub-task-lists {
@@ -1091,7 +1093,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1161,7 +1165,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1179,9 +1185,6 @@
 								<span data-start></span>
 								<span> ~ </span>
 								<span data-end></span>
-							</div>
-							<div class="sche-alarm">
-								<span></span>
 							</div>
 						</div>
 						<div class="d-flex" style="margin-right: 40px;">
@@ -1256,7 +1259,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1349,7 +1354,9 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-							<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								<c:if test="${board.memberId eq memberInfo.memberId}">
+									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+								</c:if>
 							</div>
 						</div>
 						<div class="board-title">
@@ -1370,6 +1377,7 @@
 									<div class="processivity-value"></div>
 								</div>
 								<span data-processivityvalue></span>
+								<input type="hidden" name="processivity">
 							</div>
 						</div>
 						<div class="d-flex" style="margin-right: 40px;">
@@ -2071,6 +2079,7 @@
 				}
 			}else if(type == 'update') {		// ========= 수정
 				visibleDiv.removeClass('d-b');
+				$('div[data-boardmodal]').removeClass('d-b');
 				if(boardType == 'C5') {
 					$(board).addClass('d-b');
 				} else if(boardType == 'C6') {
@@ -2185,7 +2194,6 @@
 					success : function(sche) {
 						let startDate = $(boardList[i]).find('span[data-start]');
 						let endDate = $(boardList[i]).find('span[data-end]');
-						let alarmSpan = $(boardList[i]).find('.sche-alarm').children('span');
 						let addrSpan = $(boardList[i]).find('.sche-addr');
 						let attendYesCount = $(boardList[i]).find('.sche-particir-count');
 						let attendNoCount = $(boardList[i]).find('.sche-nonParticir-count');
@@ -2194,12 +2202,10 @@
 						
 						startDate.text(sche.startDate);
 		                endDate.text(sche.endDate);
-		                //알림 설정 여부
-		                if(sche.alarmDateCodeLiteral != null) {
-		                	alarmSpan.text(sche.alarmDateCodeLiteral);	
-		                }
 		                //장소 설정 여부
 		                if(sche.scheAddr != null) {
+		                	sche.scheAddrDetail = sche.scheAddrDetail != null ? sche.scheAddrDetail : '';
+		                		
 		                	$(addrSpan).append('<span> ' + sche.scheAddr + sche.scheAddrDetail + '</span>');
 		                }else {
 		                	$(addrSpan).empty();
@@ -2299,6 +2305,7 @@
 		                let state = $(boardList[i]).find('div[data-state]');
 		                let processivity = $(boardList[i]).find('div[data-processivity]');
 		                let processivityValueDiv = $(boardList[i]).find('.processivity-value');
+		                let processivityHiddenInput = $(boardList[i]).find('input[name="processivity"]');
 		                let prioriy = $(boardList[i]).find('div[data-prioriy]');
 		                let taskManagers = $(boardList[i]).find('.task-manager');
 		                let processivityValue = $(boardList[i]).find('span[data-processivityvalue]');
@@ -2320,7 +2327,8 @@
 		                state.children('button[value=' + highTask.state + ']' ).addClass('active');
 		                //진척도
 		                processivityValueDiv.css('width', highTask.processivity + "%");
-		                processivityValue.text(highTask.processivity + "%");		                
+		                processivityValue.text(highTask.processivity + "%");
+		                processivityHiddenInput.val(highTask.processivity);
 		             	// 우선 순위
 		             	 if(highTask.priorityName != null) {
 		             		prioriy.text('우선순위 : ' + highTask.priorityName);
@@ -2387,7 +2395,8 @@
 			data : {'boardId' : boardId, 'boardType': boardType},
 			success : function(comments){
 				let boardCommentBox = $('div[data-id=' + boardId + ']').find('div[name="board-comment-box"]');
-				
+				let member = '${memberInfo.memberId}';
+
 				boardCommentBox.empty();
 				
 				if(comments.length != 0) {
@@ -2407,20 +2416,24 @@
 											</div>
 										</div>								
 									</div>
-									<div>
-										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-										<span name="deleteComment" class="cursor">삭제</span>
-									</div>
+									<div name="boardMenu">
+			                        	\${comments[i].memberId == member ? 
+			                        		`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+			                        		<span name="deleteComment" class="cursor">삭제</span>` : ''}
+			                    	</div>
 								</div>`;
 								
 							boardCommentBox.prepend(boardComment);
 							
 						}
-							let moreComment=`
-								<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
-									댓글 더보기
-								</div>`;
-							boardCommentBox.prepend(moreComment);
+						
+						// 댓글 2개까지만 출력 -> 댓글 더보기
+						let moreComment=`
+							<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
+								댓글 더보기
+							</div>`;
+						boardCommentBox.prepend(moreComment);
+						
 					} else {
 						boardCommentBox.empty();
 						
@@ -2439,13 +2452,15 @@
 											</div>
 										</div>								
 									</div>
-									<div>
-										<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-										<span name="deleteComment" class="cursor">삭제</span>
-									</div>
+									<div name="boardMenu">
+			                        	\${comments[i].memberId == member ? 
+			                        		`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+			                        		<span name="deleteComment" class="cursor">삭제</span>` : ''}
+			                    	</div>
 								</div>`;
 								
 							boardCommentBox.prepend(boardComment);
+							
 						}
 					}
 				}
@@ -2464,6 +2479,7 @@
 		let prjBoardId = boardContainer.data('id');
 		let boardType = boardContainer.data('type');
 		let boardCommentBox = boardContainer.find('div[name="board-comment-box"]');
+		let member = '${memberInfo.memberId}';
 		$.ajax({
 			url : '${pageContext.request.contextPath}/projectCmtList',
 			type : 'GET',
@@ -2485,13 +2501,15 @@
 									</div>
 								</div>								
 							</div>
-							<div>
-								<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
-								<span name="deleteComment" class="cursor">삭제</span>
-							</div>
+							<div name="boardMenu">
+                        		\${comments[i].memberId == member ? 
+                        			`<span name="updateComment" class="cursor" style="margin-right: 10px;">수정</span>
+                        			<span name="deleteComment" class="cursor">삭제</span>` : ''}
+                    		</div>
 						</div>`;
 						
 					boardCommentBox.prepend(boardComment);
+					
 				}
 			},
 			error : function(reject){
@@ -2977,15 +2995,36 @@
 					type : 'GET',
 					data : {'prjBoardId' : prjBoardId},
 					success : function(taskData) {
-		                let state = boardContainer.find('div[data-state]');
-		                let activeBtn = state.find('.active');
+		                let stateBtn = boardContainer.find('div[data-state]');
+		                let activeBtn = stateBtn.find('.active');
 		                // 진행상태 버튼 활성화
 		                activeBtn.removeClass('active');
-		                state.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+		                stateBtn.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
 				    }, error : function(reject) {
 						console.log(reject);
 					}
 				});
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	
+	//업무 게시글 진척도 변경
+	$('.processivity').on("click", function(e) {
+		updateProcessivity(e);
+		
+		let boardContainer = $(e.currentTarget).closest('.board-container');
+		let prjBoardId = boardContainer.data('id');
+		let processivity = boardContainer.find('input[name=processivity]').val();
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
+			success : function(result) {
+				console.log(result);
 			},
 			error : function(reject) {
 				console.log(reject);
@@ -3073,7 +3112,7 @@
 			<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none d-b" name="board">
 				<div class="insert-board-area">
 					<div class="board-form" >
-						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
 						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor1"></textarea>
 					</div>
 		        </div>
@@ -3084,9 +3123,8 @@
 					</select>
 					<input type="hidden" name="boardType" value="C5">
 	         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	              	<button type="reset" class="modal-footer-btn">임시저장</button>
+	              	<button type="reset" class="modal-footer-btn">취소</button>
 	              	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-	              	<div><a href="#">임시저장 게시글 보기</a></div>
 				</div>
 			</form>
 			
@@ -3094,7 +3132,7 @@
 			<form class="dis-none" name="task">
 				<div class="insert-board-area">
 					<div class="board-form" >
-						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
 						<div class="board-state">
 							<input type="radio" class="btn-check" name="state" value="G1" id="option1" autocomplete="off" checked>
 							<label for="option1">요청</label>
@@ -3166,9 +3204,8 @@
 					</select>
 					<input type="hidden" name="boardType" value="C5">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	             	<button type="reset" class="modal-footer-btn">임시저장</button>
+	             	<button type="reset" class="modal-footer-btn">취소</button>
 	             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">등록</button>
-	             	<div><a href="#">임시저장 게시글 보기</a></div>
 				</div>
 			</form>
 		
@@ -3176,13 +3213,13 @@
 			<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none" id="sche" name="sche">
 				<div class="insert-board-area">
 					<div class="board-form" >
-						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
 						<div class="m-bt">
 							<label for="startDate">시작일 : </label>
-							<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off">
+							<input type="text" name="startDate" class="date-input startDate" data-date autocomplete="off" required>
 							
 							<label for="endDate">마감일 : </label>
-							<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off">
+							<input type="text" name="endDate" class="date-input endDate" disabled autocomplete="off" required>
 						</div>
 						<div class="d-flex m-bt" style="justify-content: flex-start;">
 							<div>
@@ -3190,13 +3227,6 @@
 								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrInsert" name="scheAddr">
 								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
 							</div>
-							<select name="alarmDateCode">
-								<option value="" selected>알림 설정</option>
-								<option value="L1">10분 전 미리 알림</option>
-								<option value="L2">1시간 전 미리 알림</option>
-								<option value="L3">1일 전 미리 알림</option>
-								<option value="L4">7일 전 미리 알림</option>
-							</select>
 						</div>
 						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor3"></textarea>
 					</div>
@@ -3207,11 +3237,10 @@
 						<option value="E2">전체 공개</option>
 						<option value="E1">프로젝트 관리자만</option>
 					</select>
-						<input type="hidden" name="boardType" value="C6">
-		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		             	<button type="reset" class="modal-footer-btn">임시저장</button>
-		             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-		             	<div><a href="#">임시저장 게시글 보기</a></div>
+					<input type="hidden" name="boardType" value="C6">
+	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	             	<button type="reset" class="modal-footer-btn">취소</button>
+	             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
 				</div>
 			</form>
 		        
@@ -3219,7 +3248,7 @@
 			<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none" id="vote" name="vote">
 				<div class="insert-board-area">
 					<div class="board-form" >
-						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
+						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
 						
 						<div class="d-flex m-bt" style="justify-content: flex-start;">
 							<div class="form-check form-switch">
@@ -3239,7 +3268,7 @@
 						
 						<div class="m-bt">
 							<label for="endDate">마감일 : </label>
-							<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off">
+							<input type="text" name="endDate" class="date-input endDate" data-date autocomplete="off" required>
 						</div>
 						
 						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor4"></textarea>
@@ -3259,10 +3288,9 @@
 						<option value="E1">프로젝트 관리자만</option>
 					</select>
 					<input type="hidden" name="boardType" value="C7">
-		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		             	<button type="reset" class="modal-footer-btn">임시저장</button>
-		             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-		             	<div><a href="#">임시저장 게시글 보기</a></div>
+	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	             	<button type="reset" class="modal-footer-btn">취소</button>
+	             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
 				</div>
 			</form>
 	    </div>
@@ -3305,9 +3333,8 @@
 					</select>
 					<input type="hidden" name="boardType" value="C5">
 	         		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	              	<button type="reset" class="modal-footer-btn">임시저장</button>
+	              	<button type="reset" class="modal-footer-btn">취소</button>
 	              	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-	              	<div><a href="#">임시저장 게시글 보기</a></div>
 				</div>
 			</form>
 			
@@ -3408,13 +3435,6 @@
 								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrUpdate" name="scheAddr">
 								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소">
 							</div>
-							<select name="alarmDateCode">
-								<option value="" selected>알림 설정</option>
-								<option value="L1">10분 전 미리 알림</option>
-								<option value="L2">1시간 전 미리 알림</option>
-								<option value="L3">1일 전 미리 알림</option>
-								<option value="L4">7일 전 미리 알림</option>
-							</select>
 						</div>
 						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor7"></textarea>
 					</div>
@@ -3425,11 +3445,10 @@
 						<option value="E2">전체 공개</option>
 						<option value="E1">프로젝트 관리자만</option>
 					</select>
-						<input type="hidden" name="boardType" value="C6">
-		        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-		             	<button type="reset" class="modal-footer-btn">임시저장</button>
-		             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-		             	<div><a href="#">임시저장 게시글 보기</a></div>
+					<input type="hidden" name="boardType" value="C6">
+	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
+	             	<button type="reset" class="modal-footer-btn">취소</button>
+	             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
 				</div>
 			</form>
 		        
@@ -3478,9 +3497,8 @@
 					</select>
 					<input type="hidden" name="boardType" value="C7">
 	        		<input type="hidden" name="projectId" value="${projectInfo.projectId}">
-	             	<button type="reset" class="modal-footer-btn">임시저장</button>
+	             	<button type="reset" class="modal-footer-btn">취소</button>
 	             	<button type="submit" class="modal-footer-btn" data-bs-dismiss="modal">등록</button>
-	             	<div><a href="#">임시저장 게시글 보기</a></div>
 				</div>
 			</form>
 	    </div>
@@ -4156,9 +4174,13 @@
 		});
 			
 		//진척도!!
-		$('.progress-bar').on("click", function(event) {
-			const progressBar = event.currentTarget;
-			const progressBarInner = $(event.currentTarget).find('.progress-bar-size');
+		$('.progress-bar').on("click", function(e) {
+			updateProcessivity(e);
+		});
+		
+		function updateProcessivity(e) {
+			const progressBar = e.currentTarget;
+			const progressBarInner = $(e.currentTarget).children('div');
 			// 클릭 위치
 			// 창 왼쪽부터 클릭한 위치까지 거리 - 프로그레스바 왼쪽 좌표 = 클릭 위치
 			const clickedPosition = event.clientX - progressBar.getBoundingClientRect().left;
@@ -4170,20 +4192,21 @@
 			const selectedProgress = Math.round((clickedPosition / totalWidth) * 100 / 10) * 10;
 	
 			// 클릭한 진척도 값으로 프로그레스 채우기
-			/* progressBarInner.style.width = selectedProgress + "%"; */
 			progressBarInner.css('width', selectedProgress + "%");
 			
 			// input에 선택 한 값 넣기
-		    const hiddenInput = $(progressBar).next().next(); /* document.querySelector("#boardInsertModal input[name='processivity']") */;
+		    const hiddenInput = $(progressBar).next().next(); 
 			
 			if (hiddenInput) {
 				hiddenInput.val(selectedProgress);
 	
 				// 선택된 값 표시
-				const progressValue = $(progressBar).next();/* document.querySelector("#boardInsertModal .progress-value") */;
+				const progressValue = $(progressBar).next();
 				progressValue.text(selectedProgress + "%");
 			}
-		});
+		}
+		
+		
 		
 		// 하위 업무 추가하기
 	    $('.add-sub-task-btn').on('click', function(e) {

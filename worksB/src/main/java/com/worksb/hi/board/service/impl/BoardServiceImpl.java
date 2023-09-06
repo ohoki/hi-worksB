@@ -192,7 +192,11 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getPrjLike(boardVO);
 	}
 
-	
+	//북마크 조회
+	@Override
+	public BoardVO getBookmarkInfo(BoardVO boardVO) {
+		return boardMapper.getBookmarkInfo(boardVO);
+	}
 	
 	// 게시글 정보
 	@Override
@@ -335,6 +339,18 @@ public class BoardServiceImpl implements BoardService {
 	public TaskVO searchTaskCal(int prjBoardId) {
 		return boardMapper.searchTaskCalendar(prjBoardId);
 	}
+
+	@Override
+	public List<AllTaskBoardVO> searchingTaskManagerList(String title) {
+		return boardMapper.searchingTaskManagerList(title);
+	}
+
+	@Override
+	public List<AllTaskBoardVO> searchingList(String title) {
+		return boardMapper.searchingList(title);
+	}
+
+	
 
 	
 	

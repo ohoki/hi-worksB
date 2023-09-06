@@ -15,8 +15,11 @@ public interface ProjectCmtService {
 	// 댓글 수정
 	public int updateProjectCmt(ProjectCmtVO projectCmtVO);
 	
-	// 댓글 삭제
+	// 댓글 개별 삭제
 	public int deleteProjectCmt(ProjectCmtVO projectCmtVO);
+	
+	// 게시글 댓글 전체삭제
+	public int deleteProjectCmtByBoard(ProjectCmtVO projectCmtVO);
 	
 	// 댓글 조회
 	public ProjectCmtVO projectCmtInfo(ProjectCmtVO projectCmtVO);
