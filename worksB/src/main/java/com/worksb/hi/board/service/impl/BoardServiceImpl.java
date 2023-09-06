@@ -4,12 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.board.mapper.BoardMapper;
 import com.worksb.hi.board.service.AllTaskBoardVO;
-import com.worksb.hi.board.service.BoardRequestVO;
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.board.service.ScheParticirVO;
@@ -339,7 +336,12 @@ public class BoardServiceImpl implements BoardService {
 	public TaskVO searchTaskCal(int prjBoardId) {
 		return boardMapper.searchTaskCalendar(prjBoardId);
 	}
-
+	//프로젝트 캘린더 북마크 여부 조회
+	@Override
+	public List<BoardVO> findMarkedUserId(int prjBoardId) {
+		return boardMapper.findMarkedUser(prjBoardId);
+	}
+	
 	@Override
 	public List<AllTaskBoardVO> searchingTaskManagerList(String title) {
 		return boardMapper.searchingTaskManagerList(title);
@@ -349,6 +351,7 @@ public class BoardServiceImpl implements BoardService {
 	public List<AllTaskBoardVO> searchingList(String title) {
 		return boardMapper.searchingList(title);
 	}
+
 
 	
 
