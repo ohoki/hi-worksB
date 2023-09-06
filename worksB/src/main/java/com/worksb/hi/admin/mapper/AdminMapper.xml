@@ -245,7 +245,7 @@
 			<set>
 				company_accp = 'A1'
 			</set>
-		 WHERE memberId = #{memberId}
+		 WHERE member_id = #{memberId}
 	</update>
 
 	<!--  -->

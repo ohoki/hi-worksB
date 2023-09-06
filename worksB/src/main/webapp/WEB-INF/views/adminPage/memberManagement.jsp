@@ -59,7 +59,7 @@
 		<button type="button" id="memberManagement">구성원 관리</button>
 		<button type="button" id="welcomeCompany">회사 가입 승인</button>
 	<table>
-		<thead>
+		<thead id="tableHead">
 			<tr class="memberMenuOne">
 				<th>아이디</th>
 				<th>이름</th>
@@ -144,7 +144,7 @@
 			 getmemberList();
 			 $('.memberMenuTwo').empty();
 	  	 });
-		 
+		 /* 구성원 리스트 가져오기 */
 		function getmemberList(){
 			$.ajax({
 				url:'${pageContext.request.contextPath}/admin/memberManagementss',
@@ -170,7 +170,9 @@
 								<td>\${taskList[i].deptName }</td>
 								<td>\${taskList[i].jobName }</td>
 								<td>\${taskList[i].empStatus }</td>
-								<td>\${taskList[i].conStatus }</td>
+								if(\${taskList[i].conStatus } == null){
+									<td>오프라인</td>
+								}
 								<td><input type="button" value="관리"></td>
 							</tr>`;
 						
@@ -184,7 +186,7 @@
 		};
 		
 	
-	
+		/* 클릭했을때 해당 id 정보를 가져오고, 모달 띄우기 */
 		$(document).on("click", ".memberTr", function(e){
 			// 버블링 제거
 			e.stopPropagation();
@@ -223,6 +225,7 @@
 
 		});
 		
+		/* 회원 정보 수정 */
 		$(document).on("click", ".updateButton", function(e){
 			
 			let memberInfo = $('#memberUpdateModal');
@@ -249,8 +252,8 @@
 				 deptId : deptId}, 
 			function(resonse) {
 				alert("수정성공!");
-				$('.taskList').empty();
-				getmemberList(); /* append라 새로고침이 안댐... */
+				$('.taskList').empty(); // 기존 데이터 삭제
+				getmemberList();		// 새 데이터 출력
 				// 모달 닫기
 				memberUpdateModal.style.display = "none";
 				document.body.style.overflow = "auto"; // 스크롤바 보이기
@@ -295,19 +298,46 @@
 
 		/* 버튼누르면 table교체 */
 		$(document).on("click" ,"#memberManagement", function(e){
+			
+			let firstMenu = `
+				<tr class="memberMenuOne">
+					<th>아이디</th>
+					<th>이름</th>
+					<th>전화번호</th>
+					<th>등급</th>
+					<th>부서번호</th>
+					<th>직급번호</th>
+					<th>근무 상태</th>
+					<th>접속 여부</th>
+					<th>관리</th>
+				</tr>`;
+							
+			$('.memberMenuOne').empty(); // 첫번째 thead 삭제
 			$('.memberMenuTwo').empty(); // 두번째 thead 삭제
 			$('.taskList').empty(); // 구성원 목록 삭제
 			$('.taskLists').empty(); // 승인대기 목록 삭제
-								 // 첫번째 thead등록 나중에 하자
+			$('#tableHead').append(firstMenu);	// 첫번째 thead등록 나중에 하자
 			getmemberList(); // 구성원 목록 가져오기
 		});
+		
 		$(document).on("click" ,"#welcomeCompany", function(e){
+			let secondMenu =`
+				<tr class="memberMenuTwo">
+					<th>아이디</th>
+					<th>이름</th>
+					<th>전화번호</th>
+					<th>등급</th>
+					<th>회사 번호</th>
+					<th>관리</th>
+				</tr>`;
+			
 			$('.memberMenuOne').empty(); // 첫번째 thead 삭제
+			$('.memberMenuTwo').empty(); // 두번째 thead 삭제
 			$('.taskList').empty(); // 구성원 목록 삭제
 			$('.taskLists').empty(); // 승인대기 목록 삭제
-									// 두번째 thead 넣기
+			$('#tableHead').append(secondMenu);// 두번째 thead 넣기
 			acceptMemberForm();		// 승인대기 목록 넣기
-		})
+		});
 		/* 교체 끝 */
 		
 		/* 회사 가입 승인 페이지 */
@@ -336,15 +366,26 @@
 			})
 		}
 		
-		$(document).on("click", ".updateButton", function(e){
+		/* 가입 신청 승인 ajax */
+		$(document).on("click", ".acceptButton", function(e){
 			e.stopPropagation();
+			if(confirm("신청을 수락하시겠습니까?") == true){
+				let trData = $(this).closest("tr");
+				let memberIdData = trData.data('id');
+				console.log(memberIdData);
+				
+				$.get("memberAccpUpdate", {memberId : 'memberIdData'}, 
+					function(data){
+						console.log("승인 성공")
+				})
+			}else {
+				console.log("취소")
+			}
 			
-			let button = $(this).cl;
-			console.log(button);
 		});
 		
 		
-		$()
+		
 	</script>
 </body>
 </html>
