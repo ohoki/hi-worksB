@@ -64,6 +64,8 @@ public interface BoardService {
 	// 좋아요 확인 - 게시글
 	public List<BoardVO> getPrjLike(BoardVO boardVO);
 
+	// 북마크 조회
+	public BoardVO getBookmarkInfo(BoardVO boardVO);
 	
 	
   // 업무글 삭제
@@ -133,5 +135,11 @@ public interface BoardService {
 	public List<TaskVO> getTaskCalendar(int projectId);
 	//프로젝트 일정 상세 조회
 	public BoardVO getScheBoardInfo(int prjBoardId);
-
+	
+	
+	
+	//검색어에 해당하는 매니저목록
+	public List<AllTaskBoardVO> searchingTaskManagerList(String title);
+	//매니저목록을 제외한 리스트
+	public List<AllTaskBoardVO> searchingList(String title);
 }

@@ -72,4 +72,10 @@
 		DELETE	prj_comment
 		WHERE	comment_id = #{commentId}	
 	</delete>
+	
+	<!-- 게시글 댓글 전체삭제 -->
+	<delete id="deleteProjectCmtByBoard" parameterType="ProjectCmtVO">
+		DELETE	prj_comment
+		WHERE	board_id = #{boardId}	
+	</delete>
 </mapper>

@@ -38,10 +38,17 @@ public class ProjectCmtServiceImpl implements ProjectCmtService {
 	public int deleteProjectCmt(ProjectCmtVO projectCmtVO) {
 		return projectCmtMapper.deleteProjectCmt(projectCmtVO);
 	}
-
+	
+	// 댓글 조회
 	@Override
 	public ProjectCmtVO projectCmtInfo(ProjectCmtVO projectCmtVO) {
 		return projectCmtMapper.projectCmtInfo(projectCmtVO);
+	}
+	
+	// 게시글 댓글 전체삭제
+	@Override
+	public int deleteProjectCmtByBoard(ProjectCmtVO projectCmtVO) {
+		return projectCmtMapper.deleteProjectCmtByBoard(projectCmtVO);
 	}
 
 }

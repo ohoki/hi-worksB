@@ -116,7 +116,9 @@ div h2 {
     height: 30px;
     font-weight: bold;
 }
-
+/* #employee-modal{ */
+/* 	display:hidden; */
+/* } */
 </style>
 </head>
 <body>
@@ -167,12 +169,21 @@ div h2 {
 								</p>
 								<p>탑승 인원 수 : ${carpoolInfo.passenger }</p>
 								<p>출발 시간 : <fmt:formatDate value="${carpoolInfo.departureDate }" pattern="yyyy/MM/dd HH:mm"/></p>
-							</div>
+							</div>							
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</form>
+		<div>
+			<button onclick="participate('${carpoolInfo.passenger}','${carpoolInfo.boardId}',${carpoolInfo.passenger },${ participantsCounting})">참여하기</button>
+			<button onclick="cancel('${carpoolInfo.boardId}','${memberId}')">취소하기</button>
+			<div id="participants">
+				<c:forEach items="${ participantList}" var="list">
+					<p class="m-info" data-id="${list.memberId }">${list.memberName }</p>
+				</c:forEach>
+			</div>
+		</div>
 		<div class="buttonss">
 			<div class="button1">
 				<button type="button" class="buttonss__button" onclick="location.href='carpoolList'">목록</button>
@@ -184,6 +195,28 @@ div h2 {
 				</c:if>
 			</div>
 		</div>
+		
+<!-- 		모달창 -->
+		<div id="employee-modal">
+				<div class="employee__content">
+					<div>
+						<img src="" alt="기본 프로필 사진" class="my-profile-logo" id="e-img">	
+						<div class="employee-modal__name"></div>
+						<ul>
+							<li class="my-profile-item"><img alt="소속 회사" src="${pageContext.request.contextPath}/resources/icon/building-solid.svg" class="item-icon"><span id="e-company">${companyInfo.companyName }</span></li>
+							<li class="my-profile-item"><img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/envelope-solid.svg" class="item-icon"><span id="e-id"></span></li>
+							<li class="my-profile-item"><img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/mobile-screen-button-solid.svg" class="item-icon"><span id="e-phone"></span></li>
+							<li class="my-profile-item">
+								<img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/circle-info-solid.svg" class="item-icon">
+								<span id="e-dept"></span></li>
+						</ul>
+						<form name="chatForm" action="${pageContext.request.contextPath}/sendRequest" method="POST">
+							<input type="hidden" name="roomName" id="roomNameField" value="">
+							<button type="submit" class="chat__btn" onclick="sendRequest()">채팅하기</button>
+						</form>
+					</div>	
+				</div>			
+			</div>
 		
 		<!-- 아래부터 댓글 공간 -->
 		<div>
@@ -202,4 +235,64 @@ div h2 {
 		</div>
 	</div>
 </body>
+<script>
+	function participate(passenger,boardId,available,counted){
+		if(available<=counted){
+			alert('마감되었습니다.')
+			return;
+		}
+		$.ajax({
+			url:"${pageContext.request.contextPath }/applyCarpool",
+			data:{'boardId':boardId},
+			method:'GET'
+		})
+		.done(data=>{
+			let pTag=$('<p>').text(data.memberName);
+			pTag.addClass('m-info');
+			pTag.attr('data-id', data.memberId);
+			$('#participants').append(pTag)
+		})
+		.fail(reject=>{
+			console.log(reject)
+		})
+	}
+	$('.m-info').click(function(){
+		
+	})
+	
+	function cancel(boardId,memberId){
+		let pList=[];
+		pList.length=$('[data-id]').length;
+		let count=pList.length;
+		//참여자인원수만큼포문돌리기
+		for(let i=0;i<pList.length;i++){
+			let cancelData=$('[data-id]')[i];		
+			console.log($('.m-info').data('id'))
+			//로그인한 아이디와 일치하는지 확인
+			if($('.m-info').data('id')==memberId){
+				$.ajax({
+					url:'${pageContext.request.contextPath }/cancelCarpool',
+					data:{'boardId':boardId},
+					method:'GET'
+				})
+				.done(data=>{
+					if(data==null){
+						alert('취소를 실패했습니다.다시 시도해 주세요');
+						count--;
+					}
+					cancelData.remove();	
+				})
+				.fail(reject=>{
+					console.log(reject)
+				})
+				return;
+			}
+		}
+		if(count==pList.length){
+			alert('참여신청을 하지 않았습니다')		
+		}
+
+		
+	}
+</script>
 </html>

@@ -171,6 +171,8 @@
 	//비밀번호 확인
 	$('#checkPwBtn').on('click', function() {
 		let pw = $('#oldPw').val();
+		let newPw = $('#newPw').val();
+		let pwCheck = $('#pwCheck').val();
 		
 		if(pw.length == 0) {
 			alert('현재 비밀번호를 입력해주세요.');
@@ -203,6 +205,8 @@
 	//비밀번호 변경
 	$('#updatePwBtn').on('click', function() {
 		let special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+		let newPw = $('#newPw').val();
+		let pwCheck = $('#pwCheck').val();
 		
 		//현재 비밀번호 확인 여부
 		if($('#oldPw').attr('disabled') != 'disabled') {
@@ -214,7 +218,7 @@
 		if(newPw.length < 6 || newPw.length > 12) {
 			alert('비밀번호는 6~12자 사이로 입력해주세요.');
 			$('#newPw').val('');
-			$('#newPwCheck').val('');
+			$('#pwCheck').val('');
 			$('#newPw').focus();
 			return false;
 		}
@@ -223,14 +227,12 @@
 		if(special_pattern.test(newPw) != true){
 		    alert('비밀번호에 특수문자를 넣어주세요.');
 		    $('#newPw').val('');
-			$('#newPwCheck').val('');
+			$('#pwCheck').val('');
 			$('#newPw').focus();
 			return false;
 		}
-		//새 비밀번호 일치 여부
-		let newPw = $('#newPw').val();
-		let pwCheck = $('#pwCheck').val();
 		
+		//새 비밀번호 일치 여부
 		if(newPw != pwCheck) {
 			alert('비밀번호가 일치하지 않습니다.');
 			$('#newPw').val('');

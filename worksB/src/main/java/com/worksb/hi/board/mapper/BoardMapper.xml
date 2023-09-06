@@ -472,7 +472,12 @@
 	<update id="updateTaskInfo" parameterType="AllTaskBoardVO">
 		UPDATE prj_task 
 			<set>
-				state = #{state}
+				<if test="state !=null and !state.equals('')">
+				state = #{state},
+				</if>
+				<if test="processivity !=null and !processivity.equals('')">
+				processivity = #{processivity}
+				</if>
 			</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
@@ -593,6 +598,14 @@
 			)
 	</insert>
 	 -->
+	 
+	 <!-- 북마크 조회 -->
+	 <select id="getBookmarkInfo" resultType="BoardVO">
+	 	SELECT	member_id
+		FROM    bookmark
+		WHERE   member_id = #{memberId}
+			AND board_id = #{prjBoardId}
+	 </select>
 	
 	
 <!-- 	주현 -->
@@ -768,5 +781,64 @@
 			   , coordinate 
 		FROM prj_board
 		WHERE prj_board_id = #{prjBoardId}
+	</select>
+<!-- 	 검색관련부분(참여자리스트) -->
+	<select id="searchingTaskManagerList" resultType="AllTaskBoardVO">
+		SELECT 
+				tt.prj_board_id, 
+				tt.prj_particir_id, 
+				tt.resp_id, 
+				pp.member_id,
+				m.member_name
+		FROM task_manager tt 
+		
+		JOIN prj_particir pp ON pp.prj_particir_id=tt.prj_particir_id
+		
+		JOIN (
+   			SELECT
+       	 		prj_board_id,
+        		prj_board_title,
+        		prj_board_regdate
+    		FROM 
+        		prj_board 
+    		WHERE
+        		prj_board_title LIKE '%'||#{title}||'%'
+    		AND
+        		board_type='C8'
+			)p  ON(p.prj_board_id=tt.prj_board_id)
+			
+		JOIN member m on(m.member_id=pp.member_id)
+		
+		ORDER BY tt.prj_board_id
+	</select>
+	<!-- 	 검색관련부분(참여자리스트제외한리스트) -->
+	<select id="searchingList" resultType="AllTaskBoardVO">
+		SELECT 
+				t.high_task_id,
+				t.start_date,
+				t.end_date,
+				find_subcode(t.priority) priority,
+				find_subcode(state) state,
+				t.processivity,
+				t.prj_board_id,
+				t.task_id,
+				t.company_id,
+				p.prj_board_title
+		
+		FROM prj_task t
+		
+		JOIN (
+    		SELECT
+        		prj_board_id,
+        		prj_board_title,
+        		prj_board_regdate
+    		FROM 
+        		prj_board 
+    		WHERE
+        		prj_board_title LIKE '%'||#{title}||'%'
+    		AND
+        		board_type='C8'
+				)p  ON(p.prj_board_id=t.prj_board_id)
+			ORDER BY t.prj_board_id
 	</select>
 </mapper>

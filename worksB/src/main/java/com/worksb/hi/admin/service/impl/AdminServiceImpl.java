@@ -1,6 +1,5 @@
 package com.worksb.hi.admin.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +62,8 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public String updateMember(MemberVO memberVO) {
 		int result = adminMapper.updateMember(memberVO);
-		if(result == 1) {
+		
+    if(result == 1) {
 			return memberVO.getMemberId();
 		}else {
 			return null;
@@ -83,6 +83,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public String memberAccpUpdate(MemberVO memberVO) {
 		int result = adminMapper.memberAccpUpdate(memberVO);
+
 		if(result == 1) {
 			return memberVO.getMemberId();
 		}else {
@@ -168,6 +169,7 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.updateProjectName(pjIdAndName);
 		//plsql블럭으로 for문안돌리고 여기서 for문돌려도 됨 for문 돌린 갯수가 update갯수가 되겟죵?
 	}
+
 
 	
 }

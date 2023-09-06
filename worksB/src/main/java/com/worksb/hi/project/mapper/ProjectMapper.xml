@@ -250,6 +250,8 @@
 	        COUNT(*)  AS prj_particir_num
 	    FROM
 	        prj_particir
+        WHERE 
+        	particir_accp='A1'
 	    GROUP BY
 	        project_id
 	) pp1 ON (p.project_id = pp1.project_id)
@@ -298,6 +300,8 @@
 	        COUNT(*)  AS prj_particir_num
 	    FROM
 	        prj_particir
+        WHERE 
+        	particir_accp='A1'
 	    GROUP BY
 	        project_id
 	) pp1 ON (p.project_id = pp1.project_id)
@@ -336,7 +340,7 @@
        find_subcode(p.comment_access) AS comment_access, 
        p.dept_id,
        find_subcode(p.project_cls) AS project_cls,
-       (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id) AS prj_particir_num
+       (SELECT COUNT(*) from prj_particir pp WHERE p.project_id=pp.project_id AND particir_accp='A1') AS prj_particir_num
    FROM
        project p
    WHERE
@@ -350,9 +354,11 @@
 
 <!-- 즐겨찾기 갱신 -->
 <update id="updateStar" parameterType="ProjectVO">
-	UPDATE prj_particir SET 
-	       project_markup=#{projectMarkup}
-	 WHERE project_id=#{projectId} 
+	UPDATE prj_particir 
+		<set>
+			project_markup=#{projectMarkup}
+		</set> 
+	   WHERE project_id=#{projectId} 
 	   AND member_id=#{memberId}
 </update>
 

@@ -25,6 +25,7 @@ public class CarpoolVO {
 	private String coordinate;
 	private String boardType;
 	private int companyId;
-	
+	private int applicant;
 	private String memberName;
+	private int car_vote_particir_id;
 }

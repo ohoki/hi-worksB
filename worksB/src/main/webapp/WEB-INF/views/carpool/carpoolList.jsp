@@ -232,10 +232,12 @@ form {
 		</form>
 	</div>
 	<script>
+	//검색버튼 눌러서 검색
 		function search(p){
 			searchform.nowPage.value=p;
 			searchform.submit();
 		}
+	
 	</script>
 </body>
 </html>
