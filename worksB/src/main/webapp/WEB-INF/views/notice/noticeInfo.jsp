@@ -486,17 +486,18 @@
 		
 		// 댓글 등록 ajax
 		document.getElementById('insertButton').addEventListener('click', function(){
-			let commentContent = $("textarea[name='commentContent']").val();
+			let commentContent = $("textarea[name='commentContent']");
+			
 			console.log(commentContent);
 	    	$.post("boardCmtInsert", {boardId : ${noticeInfo.noticeId} , 
 	    							  boardType : 'C2', 
 	    							  memberId : '${memberInfo.memberId}' ,
-	    							  commentContent : commentContent ,
+	    							  commentContent : commentContent.val() ,
 	    							  parentId : 0 
 	    	}, function (response) {
-			    	$('.commentContent').text('');
-			    	commentContent.value = '';
-			    	getcmtList();
+	    		commentContent.val('');
+			    	
+		    	getcmtList();
 			    });
 		});
 		

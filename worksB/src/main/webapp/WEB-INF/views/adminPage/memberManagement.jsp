@@ -56,52 +56,32 @@
 </head>
 <body>
 	<h2>구성원 관리</h2>
-	<ul>
-		<li>현재 구성원</li>
-		<li>가입 대기</li>
-	</ul>
+		<button type="button" id="memberManagement">구성원 관리</button>
+		<button type="button" id="welcomeCompany">회사 가입 승인</button>
 	<table>
 		<thead>
-			<tr>
-				<th><input type="checkbox"></th>
+			<tr class="memberMenuOne">
 				<th>아이디</th>
 				<th>이름</th>
 				<th>전화번호</th>
 				<th>등급</th>
-				<th>직급번호</th>
 				<th>부서번호</th>
+				<th>직급번호</th>
 				<th>근무 상태</th>
-				<th>접속 ip</th>
 				<th>접속 여부</th>
 				<th>관리</th>
 			</tr>
-		</thead>
-		<tbody class="taskList">
-			<%-- <c:forEach items="${memberList}" var="member">
-			<tr data-id="${member.memberId }" class="highmember memberTr">
-				<th><input type="checkbox"></th>
-				<th>${member.memberId }</th>
-				<th>${member.memberName }</th>
-				<th>${member.memberPhone }</th>
-				<th>${member.gradeName }</th>
-				<th>${member.jobName }</th>
-				<th>${member.deptName }</th>
-				<c:choose>
-					<c:when test="${member.empStatus eq 'S1'}">
-					<th>접속중</th>
-					</c:when>
-					<c:when test="${member.empStatus eq 'S2'}">
-					<th>자리비움</th>
-					</c:when>
-					<c:when test="${member.empStatus eq 'S3'}">
-					<th>접속 종료</th>
-					</c:when>
-				</c:choose>
-				<th>${member.conIp }</th>
-				<th>${member.conStatus }</th>
-				<th><input type="button" value="관리"></th>
+			<tr class="memberMenuTwo">
+				<th>아이디</th>
+				<th>이름</th>
+				<th>전화번호</th>
+				<th>등급</th>
+				<th>회사 번호</th>
+				<th>관리</th>
 			</tr>
-		</c:forEach> --%>
+		</thead>
+		<!-- 구성원 목록이 출력되는 페이지 -->
+		<tbody class="taskList taskLists">
 		</tbody>
 	</table>
 	<div  id="memberUpdateModal">
@@ -162,56 +142,46 @@
 	<script>
 		 $(document).ready(function() {
 			 getmemberList();
+			 $('.memberMenuTwo').empty();
 	  	 });
-
-	
+		 
 		function getmemberList(){
 			$.ajax({
 				url:'${pageContext.request.contextPath}/admin/memberManagementss',
 				type : 'GET',
-				data : {companyId : "${memberInfo.companyId}" },
+				data : {companyId : '${memberInfo.companyId}' },
 				success : function(taskList){
-					let membersList = $('.highmember');
-					
-					$(taskList).empty();
-					
-					for(let i=0; i<taskList.lenth; i++){
+					for(let i=0; i<taskList.length; i++){
 						
-						let hightaskList ='
-							<tr data-id="\${member.memberId }" class="highmember memberTr">
-								<td><input type="checkbox"></td>
-								<td>\${member.memberId }</td>
-								<td>\${member.memberName }</td>
-								<td>\${member.memberPhone }</td>
-								<td>\${member.gradeName }</td>
-								<td>\${member.jobName }</td>
-								<td>\${member.deptName }</td>
-							<c:choose>
-								<c:when test="\${member.empStatus eq 'S1'}">
-									<td>접속중</td>
-								</c:when>
-								<c:when test="\${member.empStatus eq 'S2'}">
-								<td>자리비움</td>
-								</c:when>
-								<c:when test="\${member.empStatus eq 'S3'}">
-								<td>접속 종료</td>
-								</c:when>
-							</c:choose>
-							<td>\${member.conIp }</td>
-							<td>\${member.conStatus }</td>
-							<td><input type="button" value="관리"></td>
-						</tr>';
+						if(taskList[i].empStatus == "S1") {
+							taskList[i].empStatus == '접속중';
+						} else if(taskList[i].empStatus == "S2") {
+							taskList[i].empStatus == '자리비움';
+						} else if(taskList[i].empStatus == "S3") {
+							taskList[i].empStatus == '접속종료';
+						}
 						
-						$(".taskList").append(hightaskList);
-					}
-					
+						let hightaskList =`
+							<tr data-id="\${taskList[i].memberId }" class="highmember memberTr">
+								<td>\${taskList[i].memberId }</td>
+								<td>\${taskList[i].memberName }</td>
+								<td>\${taskList[i].memberPhone }</td>
+								<td>\${taskList[i].gradeName }</td>
+								<td>\${taskList[i].deptName }</td>
+								<td>\${taskList[i].jobName }</td>
+								<td>\${taskList[i].empStatus }</td>
+								<td>\${taskList[i].conStatus }</td>
+								<td><input type="button" value="관리"></td>
+							</tr>`;
+						
+							$(".taskList").append(hightaskList);
+						} 
 					},
 					error : function(reject){
 						console.log(reject);
 					}
-				}
 			})
-		}
+		};
 		
 	
 	
@@ -247,7 +217,6 @@
 					closeUpdateForm.addEventListener("click", () => {
 					memberUpdateModal.style.display = "none";
 					document.body.style.overflow = "auto"; // 스크롤바 보이기
-
 					});
 				}
 			});
@@ -261,6 +230,7 @@
 			let memberName = memberInfo.find('input[data-memberName]').val();
 			let memberPhone = memberInfo.find('input[data-memberPhone]').val();
 			let memberGrade = memberInfo.find('select[data-memberGrade]').val();
+			let companyId = memberInfo.find('input[data-companyId]').val();
 			let jobId = memberInfo.find('select[data-jobId]').val();
 			let deptId = memberInfo.find('select[data-deptId]').val();
 			console.log(memberName);
@@ -270,35 +240,34 @@
 			console.log(deptId);
 			
 			$.post("${pageContext.request.contextPath}/admin/memberAdminUpdate", 
-										{memberId : memberId,
-				 						 memberName : memberName,
-				 						 memberPhone : memberPhone,
-				 						 memberGrade : memberGrade,
-				 						 jobId : jobId,
-				 						 deptId : deptId}, 
-				function(resonse) {
-				
-						alert("수정성공!");
-
-						// 모달 닫기
-						memberUpdateModal.style.display = "none";
-						document.body.style.overflow = "auto"; // 스크롤바 보이기
-						location.reload() 
-					
-			} )
-			
-		})
+				{memberId : memberId,
+				 companyId : companyId,
+				 memberName : memberName,
+				 memberPhone : memberPhone,
+				 memberGrade : memberGrade,
+				 jobId : jobId,
+				 deptId : deptId}, 
+			function(resonse) {
+				alert("수정성공!");
+				$('.taskList').empty();
+				getmemberList(); /* append라 새로고침이 안댐... */
+				// 모달 닫기
+				memberUpdateModal.style.display = "none";
+				document.body.style.overflow = "auto"; // 스크롤바 보이기
+			})
+		});
 			
 		
 		//셀렉트 박스 값 설정
 	$(window).on('load', function() {
 		let dept = $('#deptId option');
 		let job = $('#jobId option');
+		let grade = $('#grade.option');
 		
 		let memberInfo = $('#memberUpdateModal');
 		let jobId = memberInfo.find('select[data-jobId]').val();
 		let deptId = memberInfo.find('select[data-deptId]').val();
-		let memberGrade = memberInfo.find('select[data-memberGrade]').val();
+		let gradeId = memberInfo.find('select[data-memberGrade]').val();
 		
 		//부서
 		for(let i = 0; dept.length; i++) {
@@ -317,8 +286,65 @@
 				break;
 			}
 		}
+		
+		if(gradeId == 'H1'){
+			grade[0].removeAttribute('selected');
+			grade[0].setAttribute('selected', '');
+		}
 	});
 
+		/* 버튼누르면 table교체 */
+		$(document).on("click" ,"#memberManagement", function(e){
+			$('.memberMenuTwo').empty(); // 두번째 thead 삭제
+			$('.taskList').empty(); // 구성원 목록 삭제
+			$('.taskLists').empty(); // 승인대기 목록 삭제
+								 // 첫번째 thead등록 나중에 하자
+			getmemberList(); // 구성원 목록 가져오기
+		});
+		$(document).on("click" ,"#welcomeCompany", function(e){
+			$('.memberMenuOne').empty(); // 첫번째 thead 삭제
+			$('.taskList').empty(); // 구성원 목록 삭제
+			$('.taskLists').empty(); // 승인대기 목록 삭제
+									// 두번째 thead 넣기
+			acceptMemberForm();		// 승인대기 목록 넣기
+		})
+		/* 교체 끝 */
+		
+		/* 회사 가입 승인 페이지 */
+		function acceptMemberForm(){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/admin/memberAccpLista' ,
+				type : 'GET',
+				data : {companyId : '${memberInfo.companyId}'},
+				success : function(taskLists){
+					for(let i=0; i<taskLists.length; i++){
+						let hightaskList =`
+							<tr data-id="\${taskLists[i].memberId }" class="highmember memberTrs">
+								<td>\${taskLists[i].memberId }</td>
+								<td>\${taskLists[i].memberName }</td>
+								<td>\${taskLists[i].memberPhone }</td>
+								<td>\${taskLists[i].gradeName }</td>
+								<td>\${taskLists[i].companyId }</td>
+								<td><input type="button" class="acceptButton" value="수락"></td>
+							</tr>`;
+						$(".taskLists").append(hightaskList);
+					}
+				}, 
+				error : function(reject){
+					console.log(reject);
+				}
+			})
+		}
+		
+		$(document).on("click", ".updateButton", function(e){
+			e.stopPropagation();
+			
+			let button = $(this).cl;
+			console.log(button);
+		});
+		
+		
+		$()
 	</script>
 </body>
 </html>
