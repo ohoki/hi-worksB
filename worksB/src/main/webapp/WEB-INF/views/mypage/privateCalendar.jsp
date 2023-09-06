@@ -54,16 +54,30 @@
 		width : 350px;
 		margin-bottom : 20px;
 	}
+	.progress-bar{
+		height: 30px;
+		width : 70%;
+		background-color: #6c757d5c;
+		border-radius: 30px; 
+	}
+	.progress-bar__line{
+		height : 30px;
+		background-color: #06b306b3;
+	}
 </style>
 </head>
 <!-- full calendar  -->
-<script
-	src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <!-- dateTimePicker -->
 <script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
+<!-- ckeditor -->
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/super-build/ckeditor.js"></script>
+<!-- 사진 업로드를 위한 ckfinder -->
+<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 <body>
 	<div>
 		<div align="center">
@@ -100,7 +114,7 @@
 						</select><br>
 						<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberInfo.memberName }" readonly="readonly"><br>
 						<label for="coordinate">장소 : </label><input id="coordinate" name="coordinate" type="text" ><br>
-						<label for="scheContent">내용 : </label><textarea id="scheContent" name="scheContent" rows="" cols="90%"></textarea>
+						<label for="scheContent">내용 : </label><textarea id="editor1" name="scheContent" ></textarea>
 					</form>
                 </div>
                 <div class="modal-footer">
@@ -135,7 +149,7 @@
 				<label for="memberId">작성자 : </label><input name="memberId" type="text" value=""><br>
 				<label for="coordinate">장소 : </label><input name="coordinate" type="text" ><br>
 				<input id="scheId" name="scheId" type="text" hidden="hidden">
-				<label for="scheContent">내용 : </label><textarea name="scheContent" rows="" cols="90%"></textarea>
+				<label for="scheContent">내용 : </label><textarea name="scheContent" id="editor2" hidden="true"></textarea>
 			</form>
 	      </div>
 	      <div class="modal-footer">
@@ -179,6 +193,11 @@
 			      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker6"  autocomplete="off">
 			      	<input id="listId" name="listId" type="text" hidden="hidden">
 		      	</form>
+	      		<p>To Do List 목록</p>
+	      		<hr>
+	      		<div class="progress-bar">
+	      			<div class="progress-bar__line"></div>
+	      		</div>
 		      	<div class="tdlList-view">
 		      	</div>
 	      	</div>
@@ -212,7 +231,7 @@
 	});
 	
 	$('#tdlModal').on('hidden.bs.modal', function (e) {
-		$('.tdlList, tdlList-view').children().remove();
+		$('.tdlList, .tdlList-view').children().remove();
 		if($('.tdlList-view').next()!==null){
 			$('.tdlList-view').next().remove();
 		}
@@ -415,8 +434,7 @@
 	    				let applyDate = result.todoList[0].applyDate.substr(0,10);
 	    				$('#tdlFormView input').eq(2).val(applyDate).datetimepicker('destroy');
 	    				$('#listId').val(result.todoList[0].listId);
-    					$('.tdlList-view').append('<p></p>').text("To Do List 목록")
-    					$('.tdlList-view').append('<hr>')
+    					$('.tdlList-view').append('')
     					//ITEM항목 생성
 	    				for(let i = 0; i<result.item.length;i++){
 							let divTag = $('<div></div>')
@@ -435,6 +453,18 @@
 							$('.tdlList-view input[name="content"]').eq(i).val(contents).prop("readonly",true);
 							$('.tdlLineDeleteBtn').attr("class","tdlLineDeleteBtn-hidden")
 	    				}
+    					//진행도 표시
+	    				let optionLength = $('.tdlList-view div').length;
+	    				let checkboxList = $('.tdlList-view div').find('input[type="checkbox"]')
+	    				let checkedLength = 0;
+	    				for(let i=0;i<optionLength;i++){
+	    					if(checkboxList.eq(i).is(':checked')){
+	    						checkedLength += 1;
+	    					}
+	    				}
+	    				let bar = (checkedLength/optionLength)*100;
+	    				let percent = Math.floor(bar)
+	    				$('.progress-bar__line').css('width',percent+'%')
 	    				
 	    				$('#tdlUpdateBtn').on('click', function(){tdlUpdateForm(result)});
 	    			},
@@ -475,7 +505,14 @@
 	
 						$('#scheViewForm input').eq(3).val(memName);
 						$('#scheViewForm input').eq(4).val(result.coordinate);
-						$('#scheViewForm textarea').val(result.scheContent);
+						
+						$('.scheSubject').remove();
+						$('.ck-reset_all, .ck-editor__main').css('display', 'none');
+						let divTag = $('<div></div>');
+						divTag.attr('class', 'scheSubject').append(result.scheContent);
+						$('#scheViewForm').append(divTag);
+						$('#editor2').val(result.scheContent)
+						
 						$('#scheId').val(result.scheId);
 						$('#updateBtn').text('수정/삭제').on("click", function(){updateScheForm(info)});
 					},
@@ -519,6 +556,7 @@
 			let nowTimeAfter = nowYear+'-'+nowMonth+'-'+nowDate+' '+afterhours+':'+after;
 			$('#datetimepicker1').val(nowTime);
 			$('#datetimepicker2').val(nowTimeAfter);
+			$('.ck-reset_all, .ck-editor__main').css('display', 'block');
 			
 		};
 		//날짜 클릭시 일정 입력모달창
@@ -532,23 +570,20 @@
 			//해당 날짜가져오기
 			$('#datetimepicker1').val(arg.startStr);
 			$('#datetimepicker2').val(arg.endStr);
+			$('.ck-reset_all, .ck-editor__main').css('display', 'block');
 			calendar.unselect();
 		};
 		//개인일정 db입력
 		$('#insertBtn').on("click", function(event){
 			event.preventDefault();
-			for(let i=0;i<$('#scheForm input').length-1;i++){
-				if($('#scheForm input').eq(i).val()===null || $('#scheForm input').eq(i).val()===''){
-					alert("필수값을 입력해주세요");
-					$('#scheForm input').eq(i).focus();
-					return false;
-				};
-			};
-			if($('#scheForm textarea').val()===null || $('#scheForm textarea').val()===''){
-				alert("필수값을 입력해주세요");
-				$('#scheForm textarea').focus();
-				return false;
-			};
+			let title = $('#scheForm input[name="scheTitle"]')
+			if(title.val()===''||title.val()===null){
+				alert("제목을 입력하세요");
+				$('#scheForm input[name="scheTitle"]').focus();
+				return;
+			}
+			
+			$('#editor1').val(editor1.getData())
 			$('#scheForm input[name="memberId"]').val(memberId);
 			let pScheFormInsert = $('#scheForm')
 			let pScheObj = serializeObject(pScheFormInsert);
@@ -793,6 +828,11 @@
 			});
 			//알람시간 활성화
 			$(".alarmDate option").prop("disabled",false);
+			
+			$('.ck-reset_all, .ck-editor__main').css('display','block');
+			editor2.setData($('#editor2').val())
+			$('.scheSubject').remove();
+			
 			$('#updateBtn').text('수정완료');
 			let $btn = $('<button type="button" class="btn btn-primary" id="deleteBtn">삭제</button>');
 			let scheId = (info.event.id);
@@ -804,43 +844,37 @@
 		
 		//일정 수정
 		function updateSche(e, info){
-			let doIt;
-			for(let i = 0; i < $('#scheViewForm input').length-1; i++){
-				if(i==4 && ($('#scheViewForm input').eq(4).val()=== null || $('#scheViewForm input').eq(4).val() === "")){
-					continue;
-				}else if($('#scheViewForm input').eq(i).val()=== null || $('#scheViewForm input').eq(i).val() === ""){
-					alert('필수값을 입력해주세요');
-					$('#scheViewForm input').eq(i).focus();
-					doIt = 1;
-					break;
-				}
+			let title = $('#scheViewForm input[name="scheTitle"]')
+			if(title.val()===''||title.val()===null){
+				alert("제목을 입력하세요");
+				title.focus();
+				return;
 			}
 			
-			if(doIt != 1){
-				//폼태그 배열화
-				
-				let scheViewForm = $('#scheViewForm')
-				
-				let obj = serializeObject(scheViewForm);
-				
-				$.ajax({
-					url : '${pageContext.request.contextPath}/updatePsche',
-					method : 'post',
-					data : obj,
-					success : function(result){
-						//캘린더 event 업데이트
-						loadPriSche();
-					},
-					error : function(err){
-						console.log(err);
-					}
-				});
-				
-				//삭제버튼 삭제
-				$('#updateBtn').prev('button').remove();
-				//모달창 닫기
-				selectModal.hide();
-			}
+			//폼태그 배열화
+			
+			$('#editor2').val(editor2.getData())
+			let scheViewForm = $('#scheViewForm')
+			
+			let obj = serializeObject(scheViewForm);
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/updatePsche',
+				method : 'post',
+				data : obj,
+				success : function(result){
+					//캘린더 event 업데이트
+					loadPriSche();
+				},
+				error : function(err){
+					console.log(err);
+				}
+			});
+			
+			//삭제버튼 삭제
+			$('#updateBtn').prev('button').remove();
+			//모달창 닫기
+			selectModal.hide();
 		};
 		
 		//form데이터 배열화
@@ -899,5 +933,146 @@
 		}
 	});
 	
+</script>
+<!-- 게시글 작성 SCRIPT -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+	//ckeditor 시작
+	for(let i =1; i<9; i++) {
+		CKEDITOR.ClassicEditor.create(document.querySelector('#editor' + i), {
+	        toolbar: {
+	        	 items: [
+					'alignment', '|',
+					'heading', '|',
+					'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+					'exportPDF', 'insertImage', 'mediaEmbed',
+					'-',
+					'specialCharacters', '|',
+					'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',                     
+					'findAndReplace', 'selectAll'
+	             ],
+	             shouldNotGroupWhenFull: true
+	         },
+	        // Changing the language of the interface requires loading the language file using the <script> tag.
+	        language: 'ko',
+	        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+	        heading: {
+	            options: [
+	                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+	                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+	                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+	                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+	                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+	                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+	                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+	            ]
+	        },
+	        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+	        placeholder: '내용을 입력하세요.',
+	        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+	        fontFamily: {
+	            options: [
+	                'default',
+	                '궁서체',
+		    		'돋움',
+	                'Arial, Helvetica, sans-serif',
+	                'Courier New, Courier, monospace',
+	                'Georgia, serif',
+	                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+	                'Tahoma, Geneva, sans-serif',
+	                'Times New Roman, Times, serif',
+	                'Trebuchet MS, Helvetica, sans-serif',
+	                'Verdana, Geneva, sans-serif',
+	            ],
+	            supportAllValues: true
+	        },
+	        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+	        fontSize: {
+	            options: [ 10, 12, 14, 16, 18, 20, 22 ],
+	            supportAllValues: true
+	        },
+	        // The "super-build" contains more premium features that require additional configuration, disable them below.
+	        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+	        removePlugins: [
+	            // These two are commercial, but you can try them out without registering to a trial.
+	            // 'ExportPdf',
+	            // 'ExportWord',
+	            'CKBox',
+	            'EasyImage',
+	            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+	            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+	            // Storing images as Base64 is usually a very bad idea.
+	            // Replace it on production website with other solutions:
+	            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+	            // 'Base64UploadAdapter',
+	            'RealTimeCollaborativeComments',
+	            'RealTimeCollaborativeTrackChanges',
+	            'RealTimeCollaborativeRevisionHistory',
+	            'PresenceList',
+	            'Comments',
+	            'TrackChanges',
+	            'TrackChangesData',
+	            'RevisionHistory',
+	            'Pagination',
+	            'WProofreader',
+	            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+	            // from a local file system (file://) - load this site via HTTP server if you enable MathType
+	            'MathType'
+	        ]
+	   	}).then(newEditor => {
+	   	 	  window['editor'+i] = newEditor;
+	    })
+	    .catch( error => {
+	        console.error( error );
+	    });	
+	};
+	//ckeditor 종료
+	
+	$('#scheAddrInsert').on('click',getAddr)
+	$('#scheAddrUpdate').on('click',getAddr)
+	
+	function getAddr(){
+		new daum.Postcode({
+			oncomplete: function(data) {
+				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+				$('#scheAddrDetail').prop('disabled', false);
+				// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				var addr = ''; // 주소 변수
+				var extraAddr = ''; // 참고항목 변수
+				
+				//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+				if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+				    addr = data.roadAddress;
+				} else { // 사용자가 지번 주소를 선택했을 경우(J)
+				    addr = data.jibunAddress;
+				}
+				
+				// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+				if(data.userSelectedType === 'R'){
+				    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+				    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+				    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+				        extraAddr += data.bname;
+				    }
+				    // 건물명이 있고, 공동주택일 경우 추가한다.
+				    if(data.buildingName !== '' && data.apartment === 'Y'){
+				        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+				    }
+				    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+				    if(extraAddr !== ''){
+				        extraAddr = ' (' + extraAddr + ')';
+				    }
+				    // 조합된 참고항목을 해당 필드에 넣는다.
+				    	addr = addr + extraAddr;
+				} 
+				// 주소 정보를 해당 필드에 넣는다.
+				$('input[name="scheAddr"]').val(addr);
+				// 커서를 상세주소 필드로 이동한다.
+				$('input[name="scheAddrDetail"]').val('');
+				$('input[name="scheAddrDetail"]').focus();
+			}
+		}).open();
+	} 
 </script>
 </html>
