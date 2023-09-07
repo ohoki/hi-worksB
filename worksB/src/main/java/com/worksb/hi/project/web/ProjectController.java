@@ -243,6 +243,19 @@ public class ProjectController {
 		return projectService.updateAccpParticir(prjParticirVO);
 	}
 	
+	// 프로젝트 만료
+	@PostMapping("/updateProjectCls")
+	@ResponseBody
+	public int updateProjectCls(ProjectVO projectVO) {
+		return projectService.updateProjectCls(projectVO);
+	}
+	// 프로젝트 나가기
+	@PostMapping("/deleteParticir")
+	@ResponseBody
+	public int deleteParticir(PrjParticirVO prjParticirVO) {
+		return projectService.deleteParticir(prjParticirVO);
+	}
+	
 	
 	
 	
@@ -469,7 +482,11 @@ public class ProjectController {
 		//프로젝트정보등록
 		ProjectVO projectInfo = projectService.getProjectInfo(vo.getProjectId());
 		m.addAttribute("projectInfo", projectInfo);
-		PrjParticirVO particirInfo=projectService.getMarkupInfo(vo.getProjectId(),memberId);
+		
+		PrjParticirVO particir = new PrjParticirVO();
+        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
+        particir.setProjectId(vo.getProjectId());
+        PrjParticirVO particirInfo = projectService.getParticirByProject(particir);
 		m.addAttribute("particirInfo",particirInfo);
 		
 		//관리자여부 파악
@@ -705,6 +722,7 @@ public class ProjectController {
 				hash.put("start", strStartDate); //시작일자
 				String strEndDate = simpleDateFormat.format(scheList.get(i).getEndDate()); 
 				hash.put("end", strEndDate); //종료일자
+				hash.put("color", "rgba(249, 166, 52, 0.7)");
 				
 				jsonObj = new JSONObject(hash);
 				scheArr.add(jsonObj);
@@ -718,11 +736,12 @@ public class ProjectController {
 				String strEndDate = simpleDateFormat.format(taskList.get(i).getEndDate()); 
 				hash.put("end", strEndDate); //종료일자
 				hash.put("allDay", "true");
-				hash.put("color", "#2a9d8f");
+				hash.put("color", "rgba(156, 187, 58, 0.7)");
 				
 				jsonObj = new JSONObject(hash);
 				taskArr.add(jsonObj);
 			}
+			
 			//참여자 정보
 			PrjParticirVO particir = new PrjParticirVO();
 	        particir.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());

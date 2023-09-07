@@ -67,6 +67,12 @@ public interface BoardService {
 	// 북마크 조회
 	public BoardVO getBookmarkInfo(BoardVO boardVO);
 	
+	// 좋아요 삭제 - 게시글 전체 삭제용
+	public int deletePrjLikeByBoard(BoardVO boardVO);
+	
+	// 북마크 삭제 - 게시글 전체 삭제용
+	public int deleteBookmarkByBoard(BoardVO boardVO);
+	
 	
   // 업무글 삭제
 	public int deleteTask(TaskVO taskVO);

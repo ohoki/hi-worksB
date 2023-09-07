@@ -274,7 +274,6 @@
 	    border-radius: 5px;
 	    text-align: center;
 	    border: 1px solid transparent;
-	    cursor: pointer;
 	}
 
 	#task-modal .sub-state {
@@ -709,6 +708,37 @@
 	.board-footer-info {
 		margin-left: 10px;
 	}
+	
+	#taskManager-modal{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.1);
+		font-size: 12px;
+		display: none;
+		left: 0;
+		top: 0;
+		z-index: 200;
+	}
+	.taskManager-modal-title{
+		font-size: 15px;
+		justify-content: space-between;
+		font-weight: var(--weight-bold);
+		padding: 5px 10px;
+	}
+	
+	.taskManager-modal-content{
+		position: absolute;
+		width: 15%;
+		height: 30%;
+		background-color: white;
+		font-size: 12px;
+		padding: 20px 15px;
+		z-index: 10;
+		overflow: auto;
+		overflow-x: hidden;
+		border-radius: 5px;
+	}
 </style>
 </head>
 <body>
@@ -752,8 +782,7 @@
 					<div class="board-headder-info__memberName" data-memberName></div>
 					<span data-regdate></span>
 				</div>
-				<div>
-				<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
+				<div name="boardMenu">
 				</div>
 			</div>
 			<div class="board-title">
@@ -822,8 +851,8 @@
 	<div id="task-menu-modal">
 		<div class="task-menu__content">
 			<ul>
-				<li class="update-task-btn" data-bs-toggle="modal" data-bs-target="#boardUpdateModal">수정</li>
-				<li class="delete-task-btn">삭제</li>
+				<li class="update-task-btn" data-bs-toggle="modal" data-bs-target="#boardUpdateModal">게시글 수정</li>
+				<li class="delete-task-btn">게시글 삭제</li>
 			</ul>
 		</div>
 	</div>
@@ -905,10 +934,6 @@
 					</div>
 		        </div>
 		        <div class="modal-footer">
-					<select name="inspYn" class="modal-footer-select">
-						<option value="E2">전체 공개</option>
-						<option value="E1">프로젝트 관리자만</option>
-					</select>
 					<input type="hidden" name="boardType" value="C8">
 	             	<button type="reset" class="modal-footer-btn">취소</button>
 	             	<button type="button" class="modal-footer-btn" name="btnAddTask" data-bs-dismiss="modal">수정</button>
@@ -969,6 +994,17 @@
 				<button type="button" class="updateSubTask-modal-btn">수정하기</button>
 			</div>
 		</form>
+	</div>
+	
+	<!-- 업무 담당자 모달 -->
+	<div id="taskManager-modal">
+		<div class="taskManager-modal-content">
+			<div class="d-flex taskManager-modal-title">
+				<span>담당자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="managers"></div>
+		</div>			
 	</div>
 
 <script>
@@ -1251,6 +1287,12 @@
 	    }
 	});
 	
+	$('#taskManager-modal').on('click', function(e) {
+	    if ($(e.target).is('#taskManager-modal')) {
+	        $('#taskManager-modal').removeClass('modal-task-visible');
+	    }
+	});
+	
 	// 업무 상세내용 모달 (상위업무)
 	$(document).on("click", ".highTask", function(e){
 		e.stopPropagation();
@@ -1364,8 +1406,19 @@
 					subTaskList.append(li);
 		        }
 		     	
+		     	// 메뉴
 		     	$('.update-task-btn').attr('data-id', prjBoardId);
 		     	$('.delete-task-btn').attr('data-id', prjBoardId);
+		     	
+		     	// 작성자만 메뉴 버튼 활성화
+		     	let boardMemberId = highTask.memberId;
+		     	let memberId = '${memberInfo.memberId}'
+		     	let menu = `\${boardMemberId == memberId ? 
+	        			`<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">` 
+	        			: ''}`;
+        			
+		     	$('div[name="boardMenu"]').empty();
+		     	$('div[name="boardMenu"]').append(menu);
 				
 		     	//댓글 정보		     	
 		     	getCommentList(prjBoardId, 'C8');
@@ -1442,7 +1495,7 @@
 	};
 	
 	// 업무글 메뉴 모달
-	$('.task-menu-btn').on('click', function(e){
+	$(document).on('click', '.task-menu-btn', function(e){
 		let x = e.clientX - 120;
 		let y = e.clientY;
 		let modalContent = $('.task-menu__content');
@@ -1452,6 +1505,7 @@
 		
 		$('#task-menu-modal').addClass('modal-task-visible');
 	})
+	
 	
 	// 수정 폼 모달
 	$('.update-task-btn').on('click', function(e){
@@ -2070,6 +2124,69 @@
 			}
 		})
 	});
+	
+	// 업무 담당자 리스트
+	$(document).on('click', '.task-manager', function(e){
+		let boardContainer = $('#task-modal');
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let x = e.clientX -500 ;
+		let y = e.clientY;
+		
+		$('.taskManager-modal-content').css('left', x + 'px');
+		$('.taskManager-modal-content').css('top', y + 'px');
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getManager',
+			type : 'GET',
+			data : {'prjBoardId' : prjBoardId},
+			success : function(managers) {
+				let managerDiv = $('#managers');
+				managerDiv.empty();
+				
+				if(managers.length != 0) {
+					//멤버 리스트 태그 만들기
+					for(let i=0; i<managers.length; i++) {
+						//div태그
+						let employeeDiv = document.createElement('div');
+						employeeDiv.classList.add('flex');
+						employeeDiv.classList.add('employee');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(managers[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+managers[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = managers[i].memberName;
+						//히든 인풋 태그 (멤버id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.value = managers[i].memberId;
+						//태그 삽입
+						employeeDiv.append(employeeProfile);
+						employeeDiv.append(span);
+						employeeDiv.append(input);
+						
+						managerDiv.append(employeeDiv);
+					}
+				} else {
+					let noManagerDiv = document.createElement('div');
+					noManagerDiv.classList.add('noManager');
+					noManagerDiv.innerText = '담당자가 존재하지 않습니다.';
+					
+					managerDiv.append(noManagerDiv);
+				}
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		});
+		$('#taskManager-modal').addClass('modal-task-visible');
+	})
 </script>
 </body>
 

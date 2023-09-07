@@ -52,4 +52,5 @@ public class MemberVO {
 	private String memoContent;
 	private int particirNumber;
 	private String gradeName;
+	private String projectMarkup;
 }

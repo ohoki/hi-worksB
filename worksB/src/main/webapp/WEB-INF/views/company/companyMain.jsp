@@ -24,12 +24,17 @@
 								<c:forEach items="${projectList}" var="project">
 									<li class="d-flex project-list-item" data-prjid="${project.projectId}">
 										<div class="d-flex">
-											<img class="icon" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-bookmark> 
+											<c:if test="${project.projectMarkup eq 'A2'}">
+												<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg" data-bookmark="no">	
+											</c:if>
+											<c:if test="${project.projectMarkup eq 'A1'}">
+												<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg" data-bookmark="yes">	
+											</c:if>
 											<a href="${pageContext.request.contextPath}/projectFeed?projectId=${project.projectId}">${project.projectName}</a>
 										</div>
 										<div class="d-flex">
 											${project.particirNumber }
-											<img class="icon" name="prjParticirList" data-id="${project.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+											<img class="icon particir-icon" name="prjParticirList" data-id="${project.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 										</div>
 									</li>
 								</c:forEach>
@@ -69,50 +74,30 @@
 			</div>
 		</div>
 	</div>
+	<!-- 프로젝트 참여자 모달 -->
+	<div id="prjParticir-modal">
+		<div class="prjParticir-modal-content">
+			<div class="prjParticir-modal-title">
+				<span>프로젝트 참여자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="prjParticir"></div>
+		</div>			
+	</div>
 <script>
-/*
-	//OpenWeatherMap API 키
-	const apiKey = '2f238cd00e432238f8fedcfe8ee3553e';
 	
-	// 현재 위치 정보 가져오기
-	function getCurrentPosition() {
-	    if ('geolocation' in navigator) {
-	        navigator.geolocation.getCurrentPosition(function(position) {
-	            const latitude = position.coords.latitude;
-	            const longitude = position.coords.longitude;
-	            
-	            getWeatherByCoordinates(latitude, longitude);
-	            console.log(latitude, longitude)
-
-	        }, function(error) {
-	            console.error('Error getting current position:', error);
-	        });
-	    } else {
-	        console.error('Geolocation is not available.');
-	    }
+	//날짜 변환
+	function get_date_str(date)
+	{
+	    var sYear = date.getFullYear();
+	    var sMonth = date.getMonth() + 1;
+	    var sDate = date.getDate();
+	
+	    sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
+	    sDate  = sDate > 9 ? sDate : "0" + sDate;
+	    return sYear + sMonth + sDate;
 	}
 	
-	// 페이지 로딩 시 현재 위치 정보 가져오기
-	getCurrentPosition();
-	
-	// 날씨 정보 가져오기
-	function getWeatherByCoordinates(latitude, longitude) {
-		//const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=2f238cd00e432238f8fedcfe8ee3553e`;
-		const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
-		console.log("========================="+apiUrl)
-		$.ajax({
-			url: apiUrl,
-			method: 'GET',
-			dataType: 'json',
-			success: function(data) {
-				console.log(data)
-			},
-			error: function(error) {
-				console.error('Error fetching weather data:', error);
-			}
-		});
-	}
-*/
 
 	//날씨정보 조회
 	var xhr = new XMLHttpRequest();
@@ -121,13 +106,13 @@
 	queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /**/
 	queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('1000'); /**/
 	queryParams += '&' + encodeURIComponent('dataType') + '=' + encodeURIComponent('JSON'); /**/
-	queryParams += '&' + encodeURIComponent('base_date') + '=' + encodeURIComponent('20230904'); /**/
+	queryParams += '&' + encodeURIComponent('base_date') + '=' + encodeURIComponent(get_date_str(new Date())); /**/
 	queryParams += '&' + encodeURIComponent('base_time') + '=' + encodeURIComponent('0600'); /**/
 	queryParams += '&' + encodeURIComponent('nx') + '=' + encodeURIComponent('35'); /**/
 	queryParams += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent('128'); /**/
 	xhr.open('GET', url + queryParams);
 	xhr.onreadystatechange = function () {
-	    if (this.readyState == 1) {
+	    if (this.readyState == 4) {
 	        console.log('Status: '+this.status+'nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'nBody: '+this.responseText);
 	    }
 	};
@@ -189,7 +174,7 @@
 //즐겨찾기
 //즐겨해제
 
-$(document).on('click', 'img[data-bookmark]', function(e) {
+/* $(document).on('click', 'img[data-bookmark]', function(e) {
 	let projectId = $(e.currentTarget).closest('.project-list-item').data('prjid');
 	let data = { 'projectMarkup': 'A2', 'projectId': projectId, 'memberId' : '${memberInfo.memberId}' };
 	
@@ -237,7 +222,113 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 			}
 		});	
 	}
-});
+}); */
+
+	//즐겨찾기
+	let bookMark = $('img[data-bookmark]');
+	
+	bookMark.on('click', function(e) {
+		let data = $(e.currentTarget).data('bookmark');
+		let projectId = $(e.currentTarget).closest('.project-list-item').data('prjid');
+		//즐찾 등록/해제
+		if(data == 'yes') {
+			let result = updateStar('A2', projectId);
+			
+			if(result == 'bookmark-updated') {
+				alert('즐겨찾기가 해제되었습니다.');
+				$(e.currentTarget).data('bookmark', 'no');
+				$(e.currentTarget).attr('src', '${pageContext.request.contextPath }/resources/icon/emptyStar.svg');
+			} else {
+				alert('즐겨찾기 갱신에 실패했습니다.');
+			}
+		} else if(data == 'no') {
+			let result = updateStar('A1', projectId);
+			
+			if(result == 'bookmark-updated') {
+				alert('즐겨찾기에 추가되었습니다.');
+				$(e.currentTarget).data('bookmark', 'yes');
+				$(e.currentTarget).attr('src', '${pageContext.request.contextPath }/resources/icon/star-solid.svg');
+			} else {
+				alert('즐겨찾기 갱신에 실패했습니다.');
+			}
+		}
+	});
+	
+	//즐겨찾기 관련 정보를 DB에 연동
+	function updateStar(markup, projectId){
+		let data = { 'projectMarkup': markup, 'projectId': projectId };
+		let result = $.ajax({
+			url:'${pageContext.request.contextPath }/updateStar',
+			type:'post', 
+			async: false,
+			data:JSON.stringify(data),
+			contentType:'application/json'
+		}).responseText;
+		
+		return result;
+	};
+
+	
+	// 프로젝트 참여자 리스트
+	$('img[name="prjParticirList"]').on('click', function(e){
+		let projectId = $(this).data('id');
+		
+		let x = e.clientX - 280;
+		let y = e.clientY;
+		
+		$('.prjParticir-modal-content').css('left', x + 'px');
+		$('.prjParticir-modal-content').css('top', y + 'px');
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath }/particirList',
+			type : 'GET',
+			data : {'projectId': projectId},
+			success : function(particir){
+				let particirDiv = $('#prjParticir');
+				particirDiv.empty();
+				
+				for(let i=0; i<particir.length; i++) {
+					//div태그
+					let employeeDiv = document.createElement('div');
+					employeeDiv.classList.add('flex');
+					employeeDiv.classList.add('employee');
+					//이미지 태그
+					let employeeProfile = document.createElement('img');
+					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.classList.add('employee-img');
+					if(particir[i].realProfilePath != null) {
+						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
+					}else {
+						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					}
+					//스팬 태그
+					let span = document.createElement('span');
+					span.innerText = particir[i].memberName;
+					//히든 인풋 태그 (멤버id값)
+					let input = document.createElement('input');
+					input.setAttribute('type', 'hidden');
+					input.value = particir[i].memberId;
+					//태그 삽입
+					employeeDiv.append(employeeProfile);
+					employeeDiv.append(span);
+					employeeDiv.append(input);
+					
+					particirDiv.append(employeeDiv);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+		$('#prjParticir-modal').addClass('modal-visible');
+	})
+	
+	//모달 닫기
+	$('[id*=modal]').on('click', function() {
+		$('.modal-visible').removeClass('modal-visible');
+	});
+
+
 </script>
 </body>
 </html>

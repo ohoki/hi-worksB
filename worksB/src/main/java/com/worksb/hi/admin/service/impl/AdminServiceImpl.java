@@ -14,6 +14,7 @@ import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.company.service.JobVO;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.FileDataVO;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectVO;
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -77,8 +78,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 	// 승인대기중인 구성원 리스트
 	@Override
-	public List<MemberVO> memberAccpList(String companyAccp) {
-		return adminMapper.memberAccpList(companyAccp);
+	public List<MemberVO> memberAccpList(int companyId) {
+		return adminMapper.memberAccpList(companyId);
+	}
+	//가입 대기중 회원 리스트 ajax
+	public List<MemberVO> memberAccpLista(int companyId){
+		return adminMapper.memberAccpLista(companyId);
 	}
 	// 가입 승인
 	@Override
@@ -169,6 +174,26 @@ public class AdminServiceImpl implements AdminService {
 	public int updateProjectName(Map<String,String>pjIdAndName) {
 		return adminMapper.updateProjectName(pjIdAndName);
 		//plsql블럭으로 for문안돌리고 여기서 for문돌려도 됨 for문 돌린 갯수가 update갯수가 되겟죵?
+	}
+
+	@Override
+	public List<String> getDeptName(ProjectVO vo) {
+		return adminMapper.getDeptName(vo);
+	}
+
+	@Override
+	public List<PrjParticirVO> getManager(String memberId,int projectId) {
+		return adminMapper.getManager(memberId,projectId);
+	}
+
+	@Override
+	public int updateManager(PrjParticirVO vo) {
+		return adminMapper.updateManager(vo);
+	}
+
+	@Override
+	public int deleteManager(PrjParticirVO vo) {
+		return adminMapper.deleteManager(vo);
 	}
 
 

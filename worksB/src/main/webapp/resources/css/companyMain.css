@@ -148,7 +148,9 @@
 	width: 20px; 
 	height: 20px;	
 }
-
+.particir-icon{
+	cursor: pointer;
+}
 img[data-bookmark] {
 	cursor: pointer;
 }
@@ -158,4 +160,39 @@ img[data-bookmark] {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+}
+
+#prjParticir-modal{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.1);
+	font-size: 12px;
+	display: none;
+	left: 0;
+	top: 0;
+}
+
+.prjParticir-modal-title{
+	font-size: 15px;
+	justify-content: space-between;
+	font-weight: var(--weight-bold);
+	padding: 5px 10px;
+}
+
+.prjParticir-modal-content{
+	position: absolute;
+	width: 15%;
+	height: 30%;
+	background-color: white;
+	font-size: 12px;
+	padding: 20px 15px;
+	z-index: 10;
+	overflow: auto;
+	overflow-x: hidden;
+	border-radius: 5px;
+}
+
+.modal-visible {
+	display: block !important;
 }

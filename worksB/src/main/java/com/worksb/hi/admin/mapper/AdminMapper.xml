@@ -61,7 +61,7 @@
 			    FROM (			    
                     SELECT
 						p.project_id,
-                        (SELECT COUNT(pp.member_id) FROM prj_particir pp where pp.project_id=p.project_id) mnumber,
+                        (SELECT COUNT(pp.member_id) FROM prj_particir pp WHERE pp.project_id=p.project_id AND particir_accp='A1') mnumber,
 						project_name, 
 						project_access,  
 						manager_accp,   
@@ -172,11 +172,21 @@
 	<update id="updateMember" parameterType="MemberVO">
 		UPDATE member
 			<set>
-				member_name = #{memberName}
-				, member_phone = #{memberPhone}
-				, member_grade = #{memberGrade}
-				, job_id = #{jobId}
-				, dept_id = #{deptId}
+				<if test="memberName !=null and !memberName.equals('')">
+					member_name = #{memberName},
+				</if>
+				<if test="memberPhone !=null and !memberPhone.equals('')">
+					member_phone = #{memberPhone},
+				</if>
+				<if test="memberGrade !=null and !memberGrade.equals('')">
+					member_grade = #{memberGrade},
+				</if>
+				<if test="jobId !=null and !jobId.equals('')">
+					job_id = #{jobId},
+				</if>
+				<if test="deptId !=null and !deptId.equals('')">
+					dept_id = #{deptId}
+				</if>
 			</set>
 		 WHERE member_id = #{memberId}
 	</update>
@@ -202,7 +212,7 @@
                         on(m.dept_id = d.dept_id)
                       left outer join job j
                         on(m.job_id = j.job_id)
-		 where company_id = #{companyId}
+		 where c.company_id = #{companyId}
 	</select>
 	
 	<!-- 승인 대기중 인원 출력 -->
@@ -211,10 +221,22 @@
 			   member_name,
 			   member_phone,
 			   member_grade,
-			   find_subcode(m.member_grade) AS grade_name,
-			   company_id,
+			   find_subcode(member_grade) AS grade_name,
+			   company_id
 		  FROM member
-		 WHERE company_accp = #{companyAccp}
+		  WHERE company_accp = 'A2' and company_id = #{companyId}
+	</select>
+	
+	<!-- 승인 대기중 인원 출력 ajax -->
+	<select id="memberAccpLista" resultType="MemberVO">
+		select member_id,
+			   member_name,
+			   member_phone,
+			   member_grade,
+			   find_subcode(member_grade) AS grade_name,
+			   company_id
+		  FROM member
+		 WHERE company_accp = 'A2' and company_id = #{companyId}
 	</select>
 	
 	<!-- 가입 승인 -->
@@ -223,7 +245,7 @@
 			<set>
 				company_accp = 'A1'
 			</set>
-		 WHERE memberId = #{memberId}
+		 WHERE member_id = #{memberId}
 	</update>
 
 	<!--  -->
@@ -336,11 +358,44 @@
 	
 	<update id="updateProjectName" parameterType="Map">
 		<foreach collection="pjIdAndName" item="value" index="key" separator=";" open="DECLARE BEGIN" close=";END;">
-
 		 	UPDATE project
        		SET project_name = #{value}
        		WHERE project_id = #{key} 
 
    	 	</foreach>
+	</update>
+	
+	<select id="getDeptName" resultType="String">
+		SELECT project_name
+		FROM project 
+		WHERE dept_id=#{deptId}
+	</select>
+	
+	<select id="getManager" resultType="PrjParticirVO">
+		SELECT	p.prj_particir_id,
+				p.member_id,
+				p.manager,
+				p.project_id,
+				p.alarm_yn,
+				p.project_markup,
+				p.particir_accp,
+				m.member_name,
+				m.real_profile_path
+		FROM	prj_particir p
+		JOIN	member m
+		ON		p.member_id=m.member_id
+		WHERE		project_id = #{projectId} 
+				AND p.particir_accp = 'A1'
+				AND m.member_id=#{memberId}
+	</select>
+	<update id="updateManager" parameterType="PrjParticirVO">
+		UPDATE prj_particir SET manager='A1' 
+		WHERE  member_id=#{memberId}
+		AND project_id=#{projectId}
+	</update>
+	<update id="deleteManager" parameterType="PrjParticirVO">
+		UPDATE prj_particir SET manager='A2'
+		WHERE manager='A1'
+		AND project_id=#{projectId}
 	</update>
 </mapper>

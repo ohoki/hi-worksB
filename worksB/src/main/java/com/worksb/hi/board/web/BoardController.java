@@ -382,10 +382,14 @@ public class BoardController {
 	@PostMapping("/deleteBoard")
 	@ResponseBody
 	public int deleteBoard(BoardVO boardVO) {
+		// 댓글 삭제
 		ProjectCmtVO projectCmtVO = new ProjectCmtVO();
 		projectCmtVO.setBoardId(boardVO.getPrjBoardId());
-		// 댓글 삭제
 		projectCmtService.deleteProjectCmtByBoard(projectCmtVO);
+		// 좋아요 삭제
+		boardService.deletePrjLikeByBoard(boardVO);
+		// 북마크 삭제
+		boardService.deleteBookmarkByBoard(boardVO);
 		
 		return boardService.deleteBoard(boardVO);
 	}
@@ -569,6 +573,7 @@ public class BoardController {
 			hash.put("start", strStartDate); //시작일자
 			String strEndDate = simpleDateFormat.format(scheList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
+			hash.put("color", "rgba(249, 166, 52, 0.7)");
 			
 			jsonObj = new JSONObject(hash);
 			scheArr.add(jsonObj);
@@ -582,7 +587,7 @@ public class BoardController {
 			String strEndDate = simpleDateFormat.format(taskList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
 			hash.put("allDay", "true");
-			hash.put("color", "#2a9d8f");
+			hash.put("color", "rgba(156, 187, 58, 0.7)");
 			
 			jsonObj = new JSONObject(hash);
 			taskArr.add(jsonObj);
@@ -631,6 +636,7 @@ public class BoardController {
 			hash.put("start", strStartDate); //시작일자
 			String strEndDate = simpleDateFormat.format(scheList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
+			hash.put("color", "rgba(249, 166, 52, 0.7)");
 			
 			jsonObj = new JSONObject(hash);
 			scheArr.add(jsonObj);
@@ -647,7 +653,7 @@ public class BoardController {
 			String strEndDate = simpleDateFormat.format(taskList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
 			hash.put("allDay", "true");
-			hash.put("color", "#2a9d8f");
+			hash.put("color", "rgba(156, 187, 58, 0.7)");
 			
 			jsonObj = new JSONObject(hash);
 			taskArr.add(jsonObj);
@@ -711,6 +717,11 @@ public class BoardController {
 		ProjectCmtVO projectCmtVO = new ProjectCmtVO();
 		projectCmtVO.setBoardId(scheVO.getPrjBoardId());
 		projectCmtService.deleteProjectCmtByBoard(projectCmtVO);
+		
+		// 좋아요 삭제
+		boardService.deletePrjLikeByBoard(boardVO);
+		// 북마크 삭제
+		boardService.deleteBookmarkByBoard(boardVO);
 		
 		int deleteParticir = boardService.deleteScheParticir(scheVO.getPrjBoardId());
 		return deleteSche+deleteBoard+deleteParticir;

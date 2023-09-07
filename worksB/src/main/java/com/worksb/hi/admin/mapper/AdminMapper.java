@@ -11,6 +11,7 @@ import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.company.service.JobVO;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.project.service.FileDataVO;
+import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectVO;
 
 public interface AdminMapper {
@@ -37,7 +38,9 @@ public interface AdminMapper {
 	// 구성원 리스트 ajax
 	public List<MemberVO> companyMemberLists(int companyId);
 	//가입 대기중 회원 리스트
-	public List<MemberVO> memberAccpList(String companyAccp);
+	public List<MemberVO> memberAccpList(int companyId);
+	//가입 대기중 회원 리스트 ajax
+	public List<MemberVO> memberAccpLista(int companyId);
 	// 가입 승인
 	public int memberAccpUpdate(MemberVO memberVO);
 	
@@ -69,4 +72,13 @@ public interface AdminMapper {
 	public int deleteRole(int jobId);
 	//직급업데이트
 	public int updateRole(JobVO vo);
+	
+	//부서정보가져요기
+	public List<String> getDeptName(ProjectVO vo);
+	//매니저정보가져오기
+	public List<PrjParticirVO> getManager(@Param("memberId")String memberId,@Param("projectId")int projectId);
+	//매니저정보 수정하기
+	public int updateManager(PrjParticirVO vo);
+	//기존의 매니저는 삭제하기
+	public int deleteManager(PrjParticirVO vo);
 }

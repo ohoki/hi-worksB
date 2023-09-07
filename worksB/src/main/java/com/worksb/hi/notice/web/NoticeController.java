@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.boardCmt.service.BoardCmtService;
-import com.worksb.hi.boardCmt.service.BoardCmtVO;
+
 import com.worksb.hi.comLike.service.ComLikeService;
 import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.common.PagingVO;
@@ -37,9 +37,6 @@ public class NoticeController {
 	
     @Autowired
     ComLikeService comLikeService;
-    
-    @Autowired
-    BoardCmtService boardCmtService;
 	
 	//페이징 전체조회
 	@GetMapping("noticeList")

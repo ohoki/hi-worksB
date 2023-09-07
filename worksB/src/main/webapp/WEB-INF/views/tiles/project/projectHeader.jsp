@@ -189,32 +189,22 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<ul id="menuList">
-					<li data-toggle="modal" data-target="#subMenuModal11">알림설정</li>
 					<c:if test="${particirInfo.manager eq 'A1'}">
 						<li onclick="location.href='projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
 					</c:if>
 					<c:if test="${particirInfo.manager eq 'A1'}">
-						<li data-toggle="modal" data-target="#subMenuModal14">프로젝트 삭제</li>	
+						<li class="projectCls">프로젝트 만료</li>	
 					</c:if>
-					<li data-toggle="modal" data-target="#subMenuModal12">프로젝트 나가기</li>
+					<c:if test="${particirInfo.manager eq 'A2'}">
+						<li class="paricirExit">프로젝트 나가기</li>
+					</c:if>
+					
 				</ul>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="modal" tabindex="-1" id="subMenuModal11">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">알림설정</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<p>알림설정</p>
-			</div>
-		</div>
-	</div>
-</div>
+
 
 <div class="modal" tabindex="-1" id="subMenuModal12">
 	<div class="modal-dialog">
@@ -420,5 +410,43 @@
 		
 	}
 	
+	// 프로젝트 만료 - 관리자
+	$('.projectCls').on('click', function(e){
+		let check = confirm("프로젝트를 만료하시겠습니까?");
+		if(check){
+			$.ajax({
+				url: '${pageContext.request.contextPath}/updateProjectCls',
+				type: 'POST',
+				data: {'projectId' : '${projectInfo.projectId}'},
+				success: function(response){
+					alert('프로젝트가 만료되었습니다.');
+					location.href='${pageContext.request.contextPath }/SelectFromCompany';
+				},
+				error: function(error){
+					alert("실패했습니다.");
+					console.log(error);
+				}
+			})
+		}
+	});
+	
+	// 프로젝트 나가기 - 참여자
+	$('.paricirExit').on('click', function(e){
+		let check = confirm("프로젝트를 나가시겠습니까?");
+		if(check){
+			$.ajax({
+				url: '${pageContext.request.contextPath}/deleteParticir',
+				type: 'POST',
+				data: {'projectId' : '${projectInfo.projectId}', 'memberId' : '${memberInfo.memberId}'},
+				success: function(response){
+					location.href='${pageContext.request.contextPath }/projectList';
+				},
+				error: function(error){
+					alert("실패했습니다.");
+					console.log(error);
+				}
+			})
+		}
+	});
 </script>
 </html>

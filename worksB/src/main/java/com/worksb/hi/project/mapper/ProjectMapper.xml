@@ -178,7 +178,8 @@
 		FROM	prj_particir p
 		JOIN	member m
 		ON		p.member_id=m.member_id
-		WHERE	project_id = #{projectId} AND p.particir_accp = 'A1'
+		WHERE	project_id = #{projectId} 
+		AND p.particir_accp = 'A1'
 	</select>
 	
 	<!-- 프로젝트 즐겨찾기 여부 -->
@@ -214,7 +215,18 @@
 			AND	project_id = #{projectId}
 	</update>
 	
-	
+	<!-- 프로젝트 만료 -->
+	<update id="updateProjectCls" parameterType="ProjectVO">
+		UPDATE	project
+		SET		project_cls = 'A1'
+		WHERE	project_id = #{projectId}
+	</update>
+	<!-- 프로젝트 나가기 -->
+	<delete id="deleteParticir" parameterType="PrjParticirVO">
+		DELETE	prj_particir
+		WHERE	member_id = #{memberId}
+			AND	project_id = #{projectId}
+	</delete>
 	
 	
 	
@@ -604,7 +616,7 @@
 		#{fileId},
 		#{fileName},
 		#{fileType},
-		SYSDATE,
+		current_date,
 		#{convertedSize},
 		#{memberId}
 	)

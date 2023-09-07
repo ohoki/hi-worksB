@@ -99,7 +99,7 @@
 			   					  ,#{noticeTitle}
 			   				  	  ,#{noticeContent}
 			   				 	  ,#{memberId}
-			   					  ,sysdate
+			   					  ,current_date
 			   					  ,#{boardUpddate}
 			   					  ,#{coordinate}
 			   					  ,0
@@ -114,7 +114,7 @@
 			<set>
 				notice_title = #{noticeTitle},
 				notice_content = #{noticeContent},
-				board_upddate = sysdate,
+				board_upddate = current_date
 			</set>
 		where notice_id = #{noticeId}
 	</update>
