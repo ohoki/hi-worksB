@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +16,12 @@
 			</label>
 			<p class="logo-text">로고 설정</p>
 			<div class="flex-box">
-				<img src="${pageContext.request.contextPath }/resources/img/no-image.jpg" class="image-box" />
+				<c:if test="${companyInfo.realLogoPath eq null }">
+						<img src="${pageContext.request.contextPath }/resources/img/no-image.jpg" alt="기본 프로필 사진" class="image-box">
+					</c:if>
+					<c:if test="${companyInfo.realLogoPath ne null }">
+						<img src="${pageContext.request.contextPath}/images/${companyInfo.realLogoPath }" alt="기본 프로필 사진" class="image-box">
+					</c:if>
 				<label for="logoPath" class="upload-btn">
 	      			<input type="file" accept=".png" name="logoPath" id="logoPath" data-width="400" data-height="100"/>
 	      			<span>Upload Image</span>
@@ -28,13 +34,19 @@
 			<label for="companyUrl"><p>회사URL</p>
 				<span>htttps://</span><input type="text" placeholder="회사 URL" id="companyUrl" name="companyUrl" value="${companyInfo.companyUrl }" required><span>worksB.com</span>
 			</label>
-			<p>직원참여옵션??</p>
 			
 			<button type="button" id="updatebutton">수정하기</button>
 			<input type="hidden" name="companyId" value="${companyInfo.companyId }">
 		</form>
 	</div>
 	<script>
+	$(window).on('load',function() {
+		let message = '${message}';
+		
+		if(message != ''){
+			alert(message);
+		}
+	});
 		// 수정 버튼 눌렀을때
 		$('#updatebutton').on('click', function(e){
 			let objData = serializeObject();
