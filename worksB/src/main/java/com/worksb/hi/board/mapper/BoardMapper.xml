@@ -35,7 +35,7 @@
 							<if test="prjBoardSubject !=null and !prjBoardSubject.equals('')">
 							, #{prjBoardSubject}
 							</if>
-							, sysdate
+							, current_date
 							, #{memberId}
 							<if test="inspYn !=null and !inspYn.equals('')">
 							, #{inspYn}

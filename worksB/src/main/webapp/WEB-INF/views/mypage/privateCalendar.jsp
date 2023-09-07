@@ -120,7 +120,11 @@
 					        <option value="1440">1일 전 미리 알림</option>
 						</select><br>
 						<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberInfo.memberName }" readonly="readonly"><br>
-						<label for="coordinate">장소 : </label><input id="coordinate" name="coordinate" type="text" ><br>
+						<div>
+							<label for="scheAddr">장소 : </label>
+							<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrInsert" name="scheAddr">
+							<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
+						</div>
 						<label for="scheContent">내용 : </label><textarea id="editor1" name="scheContent" ></textarea>
 					</form>
                 </div>
@@ -154,7 +158,11 @@
 				        <option value="1440">1일 전 미리 알림</option>
 					</select><br>
 				<label for="memberId">작성자 : </label><input name="memberId" type="text" value=""><br>
-				<label for="coordinate">장소 : </label><input name="coordinate" type="text" ><br>
+				<div>
+					<label for="scheAddr">장소 : </label>
+					<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrUpdate" name="scheAddr">
+					<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
+				</div>
 				<input id="scheId" name="scheId" type="text" hidden="hidden">
 				<label for="scheContent">내용 : </label><textarea name="scheContent" id="editor2" hidden="true"></textarea>
 			</form>
@@ -499,9 +507,9 @@
 						//버튼클릭이벤트 정지
 						$('#updateBtn').prop("type","button").off("click");
 						$('#scheViewForm input,textarea').prop("readonly", true);
-						$('#scheViewForm input').eq(0).val(result.title);
-						$('#scheViewForm input').eq(1).val(result.start).datetimepicker('destroy');
-						$('#scheViewForm input').eq(2).val(result.end).datetimepicker('destroy');
+						$('#scheViewForm input[name="scheTitle"]').val(result.title);
+						$('#scheViewForm input[name="startDate"]').val(result.start).datetimepicker('destroy');
+						$('#scheViewForm input[name="endDate"]').val(result.end).datetimepicker('destroy');
 						//알람시간 option태그 생성
 						let option
 						if(result.alarmDate === null){
@@ -514,9 +522,15 @@
 				        $(".alarmDate").append(option);
 				        $(".alarmDate option").prop("disabled",true);
 	
-						$('#scheViewForm input').eq(3).val(memName);
-						$('#scheViewForm input').eq(4).val(result.coordinate);
-						
+						$('#scheViewForm input[name="memberId"]').val(memName);
+						//주소
+						if(result.scheAddr!=null){
+							let addrTag = $('#scheViewForm input[name="scheAddr"]')
+							let addrDetailTag = $('#scheViewForm input[name="scheAddrDetail"]')
+							addrTag.val(result.scheAddr).prop("disabled",true);
+							addrDetailTag.val(result.scheAddrDetail).prop("disabled",true);
+						}
+						//내용 보여주기
 						$('.scheSubject').remove();
 						$('.ck-reset_all, .ck-editor__main').css('display', 'none');
 						let divTag = $('<div></div>');
@@ -540,12 +554,9 @@
 		let nowYear = now.getFullYear();
 		let nowMonth = ('0'+(now.getMonth()+1)).substr(-2);
 		let nowDate = ('0'+now.getDate()).substr(-2);
-		let hours = now.getHours();
-		let minutes = now.getMinutes();
+	    let hours = (now.getHours()<10?'0'+now.getHours():now.getHours());
+		let minutes = (now.getMinutes()<10?'0'+now.getMinutes():now.getMinutes());
 		let after = now.getMinutes()+30;
-		if(minutes <10){
-			minutes = '0'+minutes;
-		}
 		let afterhours = hours;
 		if(after>59){
 			after = after-60;
@@ -575,12 +586,12 @@
 			//모달창 띄우기
 	        scheModal.show();
 			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
-			$('#coordinate').prop("required", false);
 			$('#scheForm input').eq(3).prop("readonly",true);
 			$(".alarmDate option").prop("disabled", false);
 			//해당 날짜가져오기
-			$('#datetimepicker1').val(arg.startStr);
-			$('#datetimepicker2').val(arg.endStr);
+    		let time = hours+":"+minutes
+			$('#datetimepicker1').val(arg.startStr+" "+time);
+			$('#datetimepicker2').val(arg.endStr+" "+time);
 			$('.ck-reset_all, .ck-editor__main').css('display', 'block');
 			calendar.unselect();
 		};
@@ -839,11 +850,14 @@
 			});
 			//알람시간 활성화
 			$(".alarmDate option").prop("disabled",false);
-			
+			//주소검색 활성화
+			$('#scheViewForm input[name="scheAddr"]').prop("disabled",false);
+			$('#scheViewForm input[name="scheAddrDetail"]').prop("disabled",false);
+			//ck에디터 띄우기
 			$('.ck-reset_all, .ck-editor__main').css('display','block');
 			editor2.setData($('#editor2').val())
 			$('.scheSubject').remove();
-			
+			//버튼 수정
 			$('#updateBtn').text('수정완료');
 			let $btn = $('<button type="button" class="btn btn-primary" id="deleteBtn">삭제</button>');
 			let scheId = (info.event.id);
