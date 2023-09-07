@@ -49,7 +49,7 @@ ORDER SIBLINGS BY comment_id
 									 (
 									  #{commentId}
 									  ,#{memberId}
-									  ,sysdate
+									  ,current_date
 									  ,#{commentContent}
 									  ,#{boardId}
 									  ,#{boardType}

@@ -360,4 +360,16 @@ public class AdminController {
 //			
 //			return "";
 //		}
+		@PostMapping("/updateManager")
+		@ResponseBody
+		public int updateManager(@RequestBody PrjParticirVO vo) {
+			System.out.println(vo.getMemberId()+" memberId && "+vo.getProjectId());
+			int result1=adminService.deleteManager(vo);
+			int result2=adminService.updateManager(vo);
+			//삭제&&성공 모두 성공시 1을 반환
+			if(result1>0&&result2>0) {
+				return 1;
+			}else 
+				return 0;
+		}
 }

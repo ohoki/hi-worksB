@@ -205,9 +205,7 @@
 		let trIdx=$('#deptTable tbody tr').index(tr)
 		
 		let input=tr.find('input')
-		let oldName=oldDeptName[trIdx];
-		console.log(oldName)
-		
+		let oldName=oldDeptName[trIdx];	
 
 		let deptId=tr.find('td[hidden]').text()
 		let deptName=input.eq(0).val()

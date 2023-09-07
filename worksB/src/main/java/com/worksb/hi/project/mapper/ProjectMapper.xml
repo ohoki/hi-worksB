@@ -616,7 +616,7 @@
 		#{fileId},
 		#{fileName},
 		#{fileType},
-		SYSDATE,
+		current_date,
 		#{convertedSize},
 		#{memberId}
 	)
