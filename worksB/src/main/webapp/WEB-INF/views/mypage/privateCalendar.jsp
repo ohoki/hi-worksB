@@ -69,6 +69,7 @@
 	}
 	.modal-content{
 		height: 600px;
+		overflow: auto;
 	}
 	
 </style>
@@ -578,6 +579,8 @@
 			let nowTimeAfter = nowYear+'-'+nowMonth+'-'+nowDate+' '+afterhours+':'+after;
 			$('#datetimepicker1').val(nowTime);
 			$('#datetimepicker2').val(nowTimeAfter);
+			$('#editor1').val('')
+			editor1.setData('');
 			$('.ck-reset_all, .ck-editor__main').css('display', 'block');
 			
 		};
@@ -592,6 +595,9 @@
     		let time = hours+":"+minutes
 			$('#datetimepicker1').val(arg.startStr+" "+time);
 			$('#datetimepicker2').val(arg.endStr+" "+time);
+			//내용 초기화
+			$('#editor1').val('');
+			editor1.setData('');
 			$('.ck-reset_all, .ck-editor__main').css('display', 'block');
 			calendar.unselect();
 		};
@@ -963,7 +969,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 	//ckeditor 시작
-	for(let i =1; i<9; i++) {
+	for(let i =1; i<3; i++) {
 		CKEDITOR.ClassicEditor.create(document.querySelector('#editor' + i), {
 	        toolbar: {
 	        	 items: [

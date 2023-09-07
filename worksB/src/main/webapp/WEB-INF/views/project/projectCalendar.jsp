@@ -1530,6 +1530,8 @@ function updateProcessivity(e) {
 			
 			$('.board-form input[name="startDate"]').val(arg.startStr+" "+nowTime);
 			$('.board-form input[name="endDate"]').val(arg.endStr+" "+nowTime);
+			//내용 초기화
+			editor7.setData("")
 			$('.modal-footer button[type="submit"]').text("입력")
 			calendar.unselect();
 		};
