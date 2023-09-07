@@ -8,19 +8,20 @@
 	<select id="getCarpoolCount" resultType="int">
 		SELECT count(*)
 		FROM carpool_board
+	   WHERE company_id = #{companyId}
 		<if test="searchkeyword != null and searchkeyword !=''">
 			<choose>
 				<when test="searchtype == 1 ">
-					WHERE board_title like '%' || #{searchkeyword } || '%'
+					AND board_title like '%' || #{searchkeyword } || '%'
 				</when>
 				<when test="searchtype == 2 ">
-					WHERE board_content like '%' || #{searchkeyword } || '%'
+					AND board_content like '%' || #{searchkeyword } || '%'
 				</when>
 				<when test="searchtype == 3 ">
-					WHERE member_name like  '%${searchkeyword }%'
+					AND member_name like  '%${searchkeyword }%'
 				</when>
 				<when test="searchtype == 4 ">
-					WHERE ( board_title like '%${searchkeyword }%' or board_content like '%${searchkeyword }%')
+					AND ( board_title like '%${searchkeyword }%' or board_content like '%${searchkeyword }%')
 				</when>
 			</choose>
 		</if> 
@@ -31,10 +32,9 @@
 		select *
 		from (  select rownum rn, a.*
         		from (select *
-              		  from carpool_board n 
-              		  JOIN member m
+              		  from carpool_board n JOIN member m
               		  on (n.member_id = m.member_id)
-              		  WHERE m.company_id=#{companyId}
+              		  WHERE n.company_id = #{searchVO.companyId}
 					<if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
 					<choose>
 					<when test="searchVO.searchtype == 1 ">
@@ -90,7 +90,6 @@
 								  ,BOARD_CONTENT
 								  ,MEMBER_ID
 								  ,BOARD_REGDATE
-
 								  ,BOARD_HIT
 								  ,CATEGORY
 								  ,DEPARTURE
@@ -115,21 +114,37 @@
 								  ,#{departureDate}
 								  ,#{passenger}
 								  ,#{coordinate}
-								  ,'c3'
+								  ,'C3'
 								  ,#{companyId}
 								  )
 	</insert>
 	<update id="carpoolUpdate" parameterType="CarpoolVO">
-			update Carpool_board
+			update carpool_board
 			<set>
+				<if test="boardTitle !=null and !boardTitle.equals('')">
 				board_title = #{boardTitle},
+				</if>
+				<if test="boardContent !=null and !boardContent.equals('')">
 				board_content = #{boardContent},
+
+				</if>
 				board_upddate = current_date, 
-				category = #{category}
-				departure = #{departure} <!-- 출발지 -->
-				arrival = #{arrival} 	 <!-- 도착지 -->
-				departure_date = #{departureDate} 
+				<if test="category !=null and !category.equals('')">
+				category = #{category},
+				</if>
+				<if test="departure !=null and !departure.equals('')">
+				departure = #{departure}, <!-- 출발지 -->
+				</if>
+				<if test="arrival !=null and !arrival.equals('')">
+				arrival = #{arrival}, 	 <!-- 도착지 -->
+				</if>
+				<if test="departureDate !=null and !departureDate.equals('')">
+				departure_date = #{departureDate}, 
+				</if>
+				<if test="coordinate !=null and !coordinate.equals('')">
+          
 				coordinate = #{coordinate}
+				</if>
 			</set>
 		where board_id = #{boardId}
 	</update>
@@ -188,4 +203,11 @@
 		DELETE car_vote_particir
 		WHERE board_id=#{boardId}
 	</delete>
+	
+	<!-- 조회수 올리기 -->   
+	<update id="carpoolHit" parameterType="int">
+		update carpool_board 
+		   set board_hit = board_hit + 1 
+		 where board_id = #{boardId}
+	</update>
 </mapper>

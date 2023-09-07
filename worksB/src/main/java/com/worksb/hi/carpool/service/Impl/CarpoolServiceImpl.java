@@ -90,4 +90,9 @@ public class CarpoolServiceImpl implements CarpoolService {
 		return carpoolMapper.cancelCarpool(boardId);
 	}
 
+	@Override
+	public void carpoolHit(int boardId) {
+		carpoolMapper.carpoolHit(boardId);
+	}
+
 }

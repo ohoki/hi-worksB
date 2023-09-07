@@ -12,6 +12,7 @@
 			   n.board_id,
 			   n.board_type,
 			   n.parent_id,
+			   n.deleted,
 			   m.member_name
 		  FROM (SELECT comment_id,
 			   		   member_id,
@@ -19,7 +20,8 @@
 			   		   comment_content,
 			   		   board_id,
 			   		   board_type,
-			   		   parent_id
+			   		   parent_id,
+			   		   deleted
 		  		  FROM board_comment
 		  		 WHERE board_type = #{boardType } and board_id = #{boardId }
 		  		 	   ) n LEFT JOIN member m
@@ -43,7 +45,8 @@ ORDER SIBLINGS BY comment_id
 									  comment_content,
 									  board_id,
 									  board_type,
-									  parent_id
+									  parent_id,
+									  deleted
 									  )
 									  values
 									 (
@@ -53,7 +56,8 @@ ORDER SIBLINGS BY comment_id
 									  ,#{commentContent}
 									  ,#{boardId}
 									  ,#{boardType}
-									  ,#{parentId}									  
+									  ,#{parentId}			
+									  ,'N'						  
 									  )
 	</insert>
 	<!-- 수정 -->
@@ -69,7 +73,7 @@ ORDER SIBLINGS BY comment_id
 	<update id="boardCmtDelete">
 		UPDATE board_comment
 			<set>
-				comment_content = '삭제된 댓글 입니다.'
+				deleted = 'Y'
 			</set>
 		WHERE board_type = #{boardType} and comment_id = #{commentId} and board_id = #{boardId }
 	</update>

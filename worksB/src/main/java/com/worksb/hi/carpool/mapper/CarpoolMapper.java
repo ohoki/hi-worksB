@@ -28,6 +28,9 @@ public interface CarpoolMapper {
 	//삭제
 	public int carpoolDelete(int boardId);
 	
+	// 조회수 올리기
+	public int carpoolHit(int boardId);
+	
 	//참여자 숫자 불러오기
 	public int getPCount(int boardId);
 	

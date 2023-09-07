@@ -19,6 +19,7 @@ public class BoardCmtVO {
 	private int boardId; // 게시글 ID
 	private String boardType; // 게시글 타입 (필요시)
 	private String parentId; // 부모 댓글 작성자 ID
+	private String deleted;
 	
 	private String memberName;
 }
