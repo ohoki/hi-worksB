@@ -490,6 +490,40 @@
 	    height: 40px;
 	    border-radius: 10px;
 	}
+	
+	#taskManager-modal, #scheParticr-modal{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.1);
+		font-size: 12px;
+		display: none;
+		left: 0;
+		top: 0;
+		z-index: 20;
+	}
+	.taskManager-modal-title, .scheParticr-modal-title{
+		font-size: 15px;
+		justify-content: space-between;
+		font-weight: var(--weight-bold);
+		padding: 5px 10px;
+	}
+	
+	.taskManager-modal-content, .scheParticr-modal-content{
+		position: absolute;
+		width: 15%;
+		height: 30%;
+		background-color: white;
+		font-size: 12px;
+		padding: 20px 15px;
+		z-index: 10;
+		overflow: auto;
+		overflow-x: hidden;
+		border-radius: 5px;
+	}
+	.particir-visible {
+		display: block !important;
+	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -527,7 +561,7 @@
 				<div>
 					<span>[일정]</span><input type="text" class="board-title-boardTitle">
 				</div>
-				<div>
+				<div class="sche-particir-list">
 					<span class="sche-particir">참석 <span class="sche-particir-count"></span></span>
 					<span class="sche-nonParticir">불참 <span class="sche-nonParticir-count"></span></span>
 				</div>
@@ -583,6 +617,7 @@
 	<div id="prjTask-modal">
 		<div class="prjTask-modal__content">
 			<input type="text" id="prjTaskId" hidden="true">
+			<input type="hidden" value="" name="prjBoardId">
 			<div class="board-header">
 				<div class="board-header-info">
 					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -720,6 +755,29 @@
 	</div>
 	
 	<!-- 업무 수정 모달 -->
+	
+	
+	<!-- 업무 담당자 모달 -->
+	<div id="taskManager-modal">
+		<div class="taskManager-modal-content">
+			<div class="d-flex taskManager-modal-title">
+				<span>담당자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="managers"></div>
+		</div>			
+	</div>
+	
+	<!-- 일정 참여자 모달 -->
+	<div id="scheParticr-modal">
+		<div class="scheParticr-modal-content">
+			<div class="d-flex scheParticr-modal-title">
+				<span></span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="particirs"></div>
+		</div>			
+	</div>
 </body>
 <!-- 상세조회 헤더 버튼 클릭 시 모달 페이지 -->
 <script >
@@ -1179,6 +1237,8 @@
 					success : function(result){
 						console.log(result)
 						console.log(result.highTask[0])
+						
+						$('input[name="prjBoardId"]').val(result.highTask[0].prjBoardId);
 						
 				     	//북마크 여부 조회 
 				     	if(result.markedUserId=="yes"){
@@ -1670,5 +1730,149 @@
 		}).open();
 	});
 	//다음 주소 api 종료
+	
+	
+	// 업무 담당자 리스트
+	$(document).on('click', '.task-manager', function(e){
+		let prjBoardId = $('#prjTaskId').val();
+		let x = e.clientX -500 ;
+		let y = e.clientY;
+		
+		$('.taskManager-modal-content').css('left', x + 'px');
+		$('.taskManager-modal-content').css('top', y + 'px');
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getManager',
+			type : 'GET',
+			data : {'prjBoardId' : prjBoardId},
+			success : function(managers) {
+				let managerDiv = $('#managers');
+				managerDiv.empty();
+				
+				if(managers.length != 0) {
+					//멤버 리스트 태그 만들기
+					for(let i=0; i<managers.length; i++) {
+						//div태그
+						let employeeDiv = document.createElement('div');
+						employeeDiv.classList.add('flex');
+						employeeDiv.classList.add('employee');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(managers[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+managers[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = managers[i].memberName;
+						//히든 인풋 태그 (멤버id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.value = managers[i].memberId;
+						//태그 삽입
+						employeeDiv.append(employeeProfile);
+						employeeDiv.append(span);
+						employeeDiv.append(input);
+						
+						managerDiv.append(employeeDiv);
+					}
+				} else {
+					let noManagerDiv = document.createElement('div');
+					noManagerDiv.classList.add('noManager');
+					noManagerDiv.innerText = '담당자가 존재하지 않습니다.';
+					
+					managerDiv.append(noManagerDiv);
+				}
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		});
+		$('#taskManager-modal').addClass('particir-visible');
+	})
+	
+	$('[id*=modal]').on('click', function() {
+		$('.particir-visible').removeClass('particir-visible');
+	});
+	
+	
+	//일정 참여자
+	
+	$(document).on("click", ".sche-particir-list span", function(e) {
+		let boardId = $('#prjScheId').val();
+		console.log(boardId)
+		let scheSpan = $(e.currentTarget);
+		let x = e.clientX - 300;
+		let y = e.clientY;
+		
+		$('.scheParticr-modal-content').css('left', x + 'px');
+		$('.scheParticr-modal-content').css('top', y + 'px');
+		
+		if(scheSpan.hasClass('sche-particir')) {
+			$('.scheParticr-modal-title').text('참석자');
+			getScheParticirList(boardId, 'A1');
+		}else {
+			$('.scheParticr-modal-title').text('불참자');
+			getScheParticirList(boardId, 'A2');
+		}
+		$('#scheParticr-modal').addClass('particir-visible');
+	});
+	
+	function getScheParticirList(prjBoardId, commonCode) {
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getParticir',
+			type : 'GET',
+			data : {'prjBoardId' : prjBoardId, 'attendance' : commonCode},
+			success : function(particirs) {
+				let particirDiv = $('#particirs');
+				particirDiv.empty();
+				
+				if(particirs.length != 0) {
+					//멤버 리스트 태그 만들기
+					for(let i=0; i<particirs.length; i++) {
+						//div태그
+						let employeeDiv = document.createElement('div');
+						employeeDiv.classList.add('flex');
+						employeeDiv.classList.add('employee');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(particirs[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+particirs[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = particirs[i].memberName;
+						//히든 인풋 태그 (멤버id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.value = particirs[i].memberId;
+						//태그 삽입
+						employeeDiv.append(employeeProfile);
+						employeeDiv.append(span);
+						employeeDiv.append(input);
+						
+						particirDiv.append(employeeDiv);
+					}
+				} else {
+					let noParticirDiv = document.createElement('div');
+					noParticirDiv.classList.add('noManager');
+					noParticirDiv.innerText = '인원이 존재하지 않습니다.';
+					
+					particirDiv.append(noParticirDiv);
+				}
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		});
+	}
+	
 </script>
 </html>
