@@ -324,9 +324,14 @@
 	})
 	
 	//모달 닫기
-	$('[id*=modal]').on('click', function(e) {
+	$('#prjParticir-modal').on('click', function(e) {
 		$(e.currentTarget).removeClass('modal-visible');
 	});
+	
+	
+	/* $('[id*=modal]').on('click', function(e) {
+		$(e.currentTarget).removeClass('modal-visible');
+	}); */
 
 
 </script>

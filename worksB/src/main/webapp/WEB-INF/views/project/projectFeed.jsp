@@ -1795,7 +1795,7 @@
 							}else {
 								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 							}
-							employeeProfile.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+							$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 							//스팬 태그
 							let span = document.createElement('span');
 							span.innerText = managers[i].memberName;
@@ -1870,7 +1870,7 @@
 							}else {
 								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 							}
-							employeeProfile.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+							$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 							//스팬 태그
 							let span = document.createElement('span');
 							span.innerText = particirs[i].memberName;
@@ -1934,7 +1934,7 @@
 								}else {
 									employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 								}
-								employeeProfile.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+								$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 								//스팬 태그
 								let span = document.createElement('span');
 								span.innerText = voteParticir[i].memberName;
@@ -2407,7 +2407,7 @@
 							let boardComment =`
 								<div class="board-comment" data-cmtid="\${comments[i].commentId }">
 									<div class="d-flex">
-										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='\${pageContext.request.contextPath}/resources/img/user.png'">
+										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 										<div>
 											<div style="margin: 5px 0;">
 												<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
@@ -2443,7 +2443,7 @@
 							let boardComment =`
 								<div class="board-comment" data-cmtid="\${comments[i].commentId }">
 									<div class="d-flex">
-										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='\${pageContext.request.contextPath}/resources/img/user.png'">
+										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 										<div>
 											<div style="margin: 5px 0;">
 												<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
@@ -2492,7 +2492,7 @@
 					let boardComment =`
 						<div class="board-comment" data-cmtid="\${comments[i].commentId }">
 							<div class="d-flex">
-								<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='\${pageContext.request.contextPath}/resources/img/user.png'">
+								<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 								<div>
 									<div style="margin: 5px 0;">
 										<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>

@@ -326,7 +326,6 @@
 				
 			}
 		});
-		$('#employees-modal').addClass('modal-visible');
  		$('#employee-modal').addClass('modal-visible');
 	});
 	
@@ -345,9 +344,19 @@
 	
 
 	//구성원검색창 버블링 막기
-	$('.employees_search-input, .employee').on('click', function(e) {
+	$('.employees_search-input').on('click', function(e) {
 		e.stopPropagation();
 	});
+	
+	$(document).on('click', $('div.employee'), function(e) {
+		console.log('gg');
+		e.stopPropagation();
+	} );
+	
+	/* $(document).on('click', '#employees', function(e) {
+		console.log('gg');
+		e.stopPropagation();
+	}); */
 		
 	//구성원검색
 	$('.employees_search-input').on('keyup', (e)=>{

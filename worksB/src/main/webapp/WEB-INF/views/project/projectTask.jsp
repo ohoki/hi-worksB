@@ -2161,7 +2161,7 @@
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
-						employeeProfile.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"')
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"')
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = managers[i].memberName;
