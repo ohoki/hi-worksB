@@ -58,6 +58,7 @@ public class PrivateScheController {
 			hash.put("title", priScheList.get(i).getScheTitle()); //제목
 			hash.put("start", priScheList.get(i).getStartDate()); //시작일자
 			hash.put("end", priScheList.get(i).getEndDate()); //종료일자
+			hash.put("color", "rgba(249, 166, 52, 0.7)");
 			
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -68,8 +69,8 @@ public class PrivateScheController {
 			hash.put("start", tdlList.get(i).getApplyDate());
 			hash.put("end", "");
 			hash.put("allDay", "true");
-			hash.put("color", "#2a9d8f");
-			
+			hash.put("color", "rgba(156, 187, 58, 0.7)");
+
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
 		}
