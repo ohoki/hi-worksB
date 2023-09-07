@@ -371,6 +371,17 @@
 						$(this).parent().remove();
 					});
 					
+					// 승인 거절 버튼
+					let deleteAccp = document.createElement('button');
+					deleteAccp.classList.add('deleteAccp');
+					deleteAccp.innerText = '승인거절';
+					// 프로젝트 참여자 신청 승인 거절하기
+					deleteAccp.addEventListener('click', function() {
+						e.stopPropagation();
+						
+						
+					});
+					
 					//태그 삽입
 					employeeDiv.append(employeeProfile);
 					employeeDiv.append(span);
@@ -400,15 +411,35 @@
 					alert('승인되었습니다.');
 				},
 				error: function(error){
-					alert("삭제에 실패했습니다.");
+					alert("실패했습니다.");
 					console.log(error);
 				}
 				
 			})
-			
+		}
+	}
+	
+	/* // 프로젝트 참여자 승인 취소하기@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	function deleteAccpParticir(projectId, memberId){
+		let check = confirm("승인 거절하시겠습니까?");
+		if(check){
+			$.ajax({
+				url: '${pageContext.request.contextPath}/',
+				type: 'POST',
+				data: {'projectId' : projectId, 'memberId' : memberId},
+				success: function(response){
+					alert('승인 거절되었습니다.');
+				},
+				error: function(error){
+					alert("실패했습니다.");
+					console.log(error);
+				}
+				
+			})
 		}
 		
-	}
+	}; */
+	
 	
 	// 프로젝트 만료 - 관리자
 	$('.projectCls').on('click', function(e){

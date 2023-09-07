@@ -782,7 +782,7 @@
 		
 		input[name=listContent] {
 			display: block;
-			width: 80%;
+			width: 90%;
 			margin: 5px auto;
 			height: 40px;
 			border-radius: 5px;
@@ -1027,6 +1027,18 @@
 		#updateSubTask-modal span, #updateSubTask-modal label,
 		#insertSubTask-modal span, #insertSubTask-modal label{
 			font-size: var(--font-micro);
+		}
+		.deleteSubtask{
+			cursor: pointer;
+		}
+		
+		span[name=updateComment], span[name=deleteComment]{
+			font-size: var(--font-micro);
+			color:var(--color-dark-white);
+		}
+		
+		span[name=updateComment]:hover, span[name=deleteComment]:hover{
+			color:var(--color-dark-grey);
 		}
 	</style>
 </head>
@@ -3099,7 +3111,7 @@
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">글</li>
+		    		<li class="insert-list-item">일반</li>
 		    		<li class="insert-list-item">업무</li>
 		    		<li class="insert-list-item">일정</li>
 		    		<li class="insert-list-item">투표</li>
@@ -3292,7 +3304,7 @@
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">글</li>
+		    		<li class="insert-list-item">일반</li>
 		    		<li class="insert-list-item">업무</li>
 		    		<li class="insert-list-item">일정</li>
 		    		<li class="insert-list-item">투표</li>
@@ -3549,7 +3561,7 @@
 						let voteList = $(vote).find('.board-vote-list');
 						voteList.empty();
 						for(let i=0; i<voteData.voteList.length; i++){
-							voteList.append('<div><input type="text" name="listContent" value="' + voteData.voteList[i].listContent + '"><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>');
+							voteList.append('<div class="d-flex"><input type="text" name="listContent" value="' + voteData.voteList[i].listContent + '"><img class="deleteListContent" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>');
 						}
 						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
 						
@@ -4287,7 +4299,7 @@
 		// 투표 항목 추가하기           
         $('.add-vote-list-btn').on('click', function () {                                        
             $('.board-vote-list').append (                        
-                '<div><input type="text" name="listContent" placeholder="내용을 입력해주세요."><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>'                    
+                '<div class="d-flex"><input type="text" name="listContent" placeholder="내용을 입력해주세요."><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>'                    
             ); // end append                            
         });        
 		// 투표 항목 삭제
@@ -4295,6 +4307,10 @@
 			$(this).parent().remove();
 		})
 		
+		// 하위 업무 작성 삭제
+		$(document).on('click', '.deleteSubtask', function(){
+			$(this).parent().remove();
+		})
 		// 댓글 등록
 		$('.cmtBtn').on('click', function(e){
 			let boardContainer = $(e.currentTarget).closest('.board-container');

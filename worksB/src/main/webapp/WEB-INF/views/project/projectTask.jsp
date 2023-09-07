@@ -240,6 +240,7 @@
 	    color: var(--color-blue);
 	    margin: 10px 40px;
 	    align-items: center;
+	    cursor : pointer;
 	}
 	
 	#task-modal .task-manager .text {
