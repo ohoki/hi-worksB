@@ -45,8 +45,11 @@ public interface ProjectMapper {
 	//프로젝트 승인 대기 조회
 	public List<PrjParticirVO> getCheckParticir(PrjParticirVO prjParticirVO);
 	
-	//프로젝트 참여 승인하기update
+	//프로젝트 참여자 승인update
 	public int updateAccpParticir(PrjParticirVO prjParticirVO);
+	
+	//프로젝트 참여자 승인거절
+	public int deleteAccpParticir(PrjParticirVO prjParticirVO);
 	
 	//프로젝트 만료
 	public int updateProjectCls(ProjectVO projectVO);

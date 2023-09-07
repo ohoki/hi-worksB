@@ -236,13 +236,20 @@ public class ProjectController {
 		return projectService.getCheckParticir(prjParticirVO);
 	}
 	
-	//프로젝트 참여 승인하기
+	//프로젝트 참여자 승인
 	@PostMapping("/updateAccpParticir")
 	@ResponseBody
 	public int updateAccpParticir(PrjParticirVO prjParticirVO) {
 		return projectService.updateAccpParticir(prjParticirVO);
 	}
 	
+	//프로젝트 참여자 승인거절
+	@PostMapping("/deleteAccpParticir")
+	@ResponseBody
+	public int deleteAccpParticir(PrjParticirVO prjParticirVO) {
+		return projectService.deleteAccpParticir(prjParticirVO);
+	}
+		
 	// 프로젝트 만료
 	@PostMapping("/updateProjectCls")
 	@ResponseBody

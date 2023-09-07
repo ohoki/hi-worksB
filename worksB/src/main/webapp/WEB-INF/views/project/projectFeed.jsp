@@ -1037,7 +1037,8 @@
 			color:var(--color-dark-white);
 		}
 		
-		span[name=updateComment]:hover, span[name=deleteComment]:hover{
+		span[name=updateComment]:hover, span[name=deleteComment]:hover
+		span[name=saveUpdate]{
 			color:var(--color-dark-grey);
 		}
 	</style>
