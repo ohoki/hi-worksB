@@ -299,7 +299,7 @@
 				data: {'projectId': prjId, 'particirAccp': 'A2'}
 			})
 			.done(data=>{
-				if(data == 'success') {
+				if(data>0) {
 					alert('참여승인을 기다려 주세요');
 					$(target).text('승인대기');
 					target.className='list-btn yellow';

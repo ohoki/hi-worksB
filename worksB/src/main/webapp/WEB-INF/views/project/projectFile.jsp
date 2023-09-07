@@ -35,7 +35,11 @@
 	
 	td[data-filename] {
 		text-align: center;
-		width: 55%;
+		width: 45%;
+	}
+	
+	td[data-count] {
+		width: 15%;
 	}
 	
 	td[data-filesize] {
@@ -162,6 +166,7 @@
 					<th>용량</th>
 					<th>등록자</th>
 					<th>등록일</th>
+					<th>다운로드수</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -171,6 +176,7 @@
 							<td id="${list.convertedSize }" data-filesize>${list.convertedSize }</td>
 							<td data-member>${list.memberName }</td>
 							<td data-regdate><fmt:formatDate value="${list.fileRegdate }" pattern="YY/MM/dd" type="date"/></td>
+							<td data-count></td>
 							<td hidden><input type="checkbox" id="${list.fileId }"></td>
 							<td hidden>${list.fileSize }</td>
 							<td hidden>${list.realFilePath }</td>

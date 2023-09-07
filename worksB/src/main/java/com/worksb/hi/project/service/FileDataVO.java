@@ -53,6 +53,8 @@ public class FileDataVO {
 	
 	//downloadlist
 	private int companyId;
+	//다운로드리스트테이블의 프라이머리키
+	int downloadId;
 	
 
 }

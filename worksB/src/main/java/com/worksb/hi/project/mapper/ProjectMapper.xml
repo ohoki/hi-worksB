@@ -605,7 +605,12 @@
 		project_id=#{projectId}
 </select>
 <insert id="updateFile" parameterType="FileDataVO">
+	<selectKey keyProperty="downloadId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(download_id), 0) + 1
+			FROM download_file
+	</selectKey>
 	INSERT INTO download_file(
+			download_id,
 			file_id,             
 			file_name, 
 			file_type,   
@@ -613,6 +618,7 @@
 			converted_size,   
 			member_id    
 	)values(
+		#{downloadId},
 		#{fileId},
 		#{fileName},
 		#{fileType},

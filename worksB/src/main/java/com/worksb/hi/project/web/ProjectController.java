@@ -340,12 +340,12 @@ public class ProjectController {
 		vo.setProjectMarkup("A2");
 		projectService.insertParticipant(vo);
 		
-		return "prj/selectFromCompany";
+		return "redirect:/projectFeed?projectId="+projectId;
 	}
 	//프로젝트에 참여하기(ajax로)
 	@PostMapping("/signOnly")
 	@ResponseBody
-	public String signOnly
+	public int signOnly
 	(int projectId,HttpSession session, String particirAccp) {
 		PrjParticirVO vo= new PrjParticirVO();
 		vo.setMemberId(((MemberVO)session.getAttribute("memberInfo")).getMemberId());
@@ -353,9 +353,9 @@ public class ProjectController {
 		vo.setManager("A2");
 		vo.setParticirAccp(particirAccp);
 		vo.setProjectMarkup("A2");
-		int result1=projectService.insertParticipant(vo);
 		
-		return "success";
+		
+		return projectService.insertParticipant(vo);
 	}
 	
 	//파일탭의 검색
