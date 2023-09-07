@@ -22,14 +22,202 @@
 	.d-b {
 		display: block !important;
 	}
-	#calendar-container {
-		width: 70%;
+	
+	.calander-main-box {
+		width: 85%;
 		margin: 0 auto;
 	}
+	
+	.fc .fc-toolbar.fc-header-toolbar {
+	    margin-bottom: 15px;
+	}
+	
+	.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
+	    border-bottom-left-radius: 0px;
+	    border-top-left-radius: 0px;
+	    margin-left: 0;
+	}
+	
+	.fc-prev-button {
+		width: 10px;
+		height: 30px;
+		padding: 0 15px 0 0 !important;
+		color: white !important;
+		background-color: var(--color-dark-red) !important;
+	}
+	
+	.fc-next-button {
+		width: 10px;
+		height: 30px;
+		padding: 0 15px 0 0 !important;
+		color: white !important;
+		background-color: var(--color-dark-red) !important;
+	}
+	
+	.fc-today-button {
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: var(--color-dark-beigie) !important;
+		border: none !important;
+		color: var(--color-dark-grey) !important;
+		font-weight: var(--weight-bold) !important;
+	}
+	
+	.fc .fc-button:disabled {
+	    opacity: 1;
+	}
+	
+	.fc .fc-button-primary {
+	    background-color: var(--color-dark-beigie);
+	    border: none !important;
+	    color: var(--color-dark-grey);
+	    transition: all 0.5s;
+	}
+	
+	.fc .fc-button-primary:hover {
+	    background-color: var(--color-dark-red);
+	}
+	
+	.fc-dayGridMonth-button {
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+	}
+	
+	.fc-timeGridWeek-button {
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+	}
+	
+	.fc .fc-button-primary:focus {
+    	box-shadow: none;
+	}
+
+ 	.fc .fc-button:focus {
+    	box-shadow: none;
+    	outline: none;
+	}
+	
+    .fc .fc-button:active{
+	   	box-shadow: none;
+	}
+    
+    	
+	.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
+    	box-shadow: none;
+    }
+	
+	.fc-scheBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: rgb(249, 166, 52, 0.7) !important;
+		border: none !important;
+		transition: all 0.5s;
+		color: white !important;
+	}
+	
+	.fc-scheBtn-button:hover, .fc-scheBtn-button:focus, .fc-scheBtn-button.active {
+		background-color: rgb(249, 166, 52) !important;
+	}
+	
+	
+	.fc-taskBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: rgb(156, 187, 58, 0.7) !important;
+		border: none !important;
+		transition: all 0.5s;
+		color: white !important;
+	}
+	
+	.fc-taskBtn-button:hover, .fc-taskBtn-button:focus, .fc-taskBtn-button.active {
+		background-color: rgb(156, 187, 58) !important;
+	}
+
+	.fc-viewBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: rgb(0, 175, 185, 0.7) !important;	
+		border: none !important;
+		transition: all 0.5s;
+		color: white !important;
+	}
+	
+	.fc-viewBtn-button:hover, .fc-viewBtn-button:focus, .fc-viewBtn-button:not(:disabled):active, .fc-viewBtn-button.active {
+		background-color: rgb(0, 175, 185) !important;
+	}
+	
+	.fc-toolbar-title {
+		color: var(--color-dark-grey);
+		font-weight: var(--weight-bold);
+		font-size: var(--font-regular) !important;
+	}
+	
+	.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+	    background-color: var(--color-dark-red);
+	    border-color: none;
+	}
+	
+	.fc-col-header-cell {
+		background-color: var(--color-beigie);
+		color: var(--color-dark-grey);
+	}
+	
+	
+	.fc-day-sat {
+		 color:var(--color-blue); 
+	}  
+    
+    .fc-day-sun {
+    	color: var(--color-dark-red);
+    }
+    
+	.fc-event-title-container {
+		cursor: pointer;
+		text-align: center;
+	}
+	
+	.fc .fc-daygrid-day.fc-day-today {
+	    background-color: rgb(253, 252, 220, 0.7);
+	}
+	
+	.fc .fc-daygrid-day-number {
+	    font-size: var(--font-micro);
+	}
+	
+	.fc-daygrid-block-event .fc-event-time, .fc-daygrid-block-event .fc-event-title {
+	    color: var(--color-dark-grey);
+	    font-weight: var(--weight-bold);
+	}
+	
+	
+	
+	
+	
+	
+	
 	.modal-prjSche-visible {
 		display: block !important;
 	}
-	#prjSche-modal, #prjTask-modal{
+	
+	#prjSche-modal, #prjTask-modal, #boardUpdateModal{
 		position: absolute;
 		width: 100%;
 		height: 100%;
@@ -38,8 +226,9 @@
 		display: none;
 		left: 0;
 		top: 0;
-		z-index: 1;
+		z-index: 2;
 	}
+	
 	.prjSche-modal__content, .prjTask-modal__content{
 		position: absolute;
 		right: 0;
@@ -51,6 +240,7 @@
 		padding: 20px 15px;
 		z-index: 10;
 	}
+	
 	.flex {
 		display: flex;
 	}
@@ -470,9 +660,8 @@
 		border: 3px solid var(--color-dark-red);
 	}
 	.sche__search{
-		margin-top : 20px;
-		width : 350px;
-		margin-bottom : 20px;
+		margin : 20px 0;
+		cursor: default;
 	}
 	.board-comment {
 	    padding: 5px 40px;
@@ -490,6 +679,51 @@
 	    height: 40px;
 	    border-radius: 10px;
 	}
+	
+	#taskManager-modal, #scheParticr-modal{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.1);
+		font-size: 12px;
+		display: none;
+		left: 0;
+		top: 0;
+		z-index: 20;
+	}
+	.taskManager-modal-title, .scheParticr-modal-title{
+		font-size: 15px;
+		justify-content: space-between;
+		font-weight: var(--weight-bold);
+		padding: 5px 10px;
+	}
+	
+	.taskManager-modal-content, .scheParticr-modal-content{
+		position: absolute;
+		width: 15%;
+		height: 30%;
+		background-color: white;
+		font-size: 12px;
+		padding: 20px 15px;
+		z-index: 10;
+		overflow: auto;
+		overflow-x: hidden;
+		border-radius: 5px;
+	}
+	.particir-visible {
+		display: block !important;
+
+	.processivity {
+		cursor: pointer;
+	}
+	
+	.processivity-value {
+		transition: all 0.5s;
+	}
+	
+	#prjTask-modal div[data-state] button.active {
+	    background-color: var(--color-dark-red);
+	}
 </style>
 </head>
 <!-- full calendar  -->
@@ -501,13 +735,16 @@
 <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 <!-- 본문 -->
 <body>
-	<div align="center">
-		<input type="text" placeholder="제목과 내용을 검색하세요." class="header__search sche__search">
-	</div>
-	<div id="calendar-container">
-		<div id="calendar">
+	<div class="calander-main-box">
+		<div style="text-align: right;">
+			<input type="text" placeholder="제목과 내용을 검색하세요." class="header__search sche__search">
+		</div>
+		<div id="calendar-container">
+			<div id="calendar">
+			</div>
 		</div>
 	</div>
+	
 	<!-- 일정 상세조회 모달 -->
 	<div id="prjSche-modal">
 		<div class="prjSche-modal__content">
@@ -527,7 +764,7 @@
 				<div>
 					<span>[일정]</span><input type="text" class="board-title-boardTitle">
 				</div>
-				<div>
+				<div class="sche-particir-list">
 					<span class="sche-particir">참석 <span class="sche-particir-count"></span></span>
 					<span class="sche-nonParticir">불참 <span class="sche-nonParticir-count"></span></span>
 				</div>
@@ -581,8 +818,10 @@
 	
 	<!-- 업무 상세조회 모달 -->
 	<div id="prjTask-modal">
+		<input type="hidden" value="" name="prjBoardId">
 		<div class="prjTask-modal__content">
 			<input type="text" id="prjTaskId" hidden="true">
+			<input type="hidden" value="" name="prjBoardId">
 			<div class="board-header">
 				<div class="board-header-info">
 					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile">
@@ -611,6 +850,7 @@
 						<div class="processivity-value"></div>
 					</div>
 					<span data-processivityvalue></span>
+					<input type="hidden" name="processivity">
 				</div>
 			</div>
 			<div class="d-flex" style="margin-right: 40px;">
@@ -720,13 +960,35 @@
 	</div>
 	
 	<!-- 업무 수정 모달 -->
+	
+	
+	<!-- 업무 담당자 모달 -->
+	<div id="taskManager-modal">
+		<div class="taskManager-modal-content">
+			<div class="d-flex taskManager-modal-title">
+				<span>담당자</span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="managers"></div>
+		</div>			
+	</div>
+	
+	<!-- 일정 참여자 모달 -->
+	<div id="scheParticr-modal">
+		<div class="scheParticr-modal-content">
+			<div class="d-flex scheParticr-modal-title">
+				<span></span>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
+			</div>
+			<div id="particirs"></div>
+		</div>			
+	</div>
 </body>
 <!-- 상세조회 헤더 버튼 클릭 시 모달 페이지 -->
 <script >
 	//상세정보 모달페이지 출력
 	$('.board-header-btn').on('click', function(e) {
 		let modal = $(e.currentTarget).parent().parent().parent().parent().find('div[data-boardmodal]');
-		console.log(modal)
 		let modalContent = modal.children('.board-modal-content');
 		let x = e.clientX - 150;
 		let y = e.clientY + 5;
@@ -793,7 +1055,6 @@
 			data: {"prjBoardId" : scheId},
 			dataType:"JSON",
 			success:function(result){
-				console.log(result)
 				$('.board-form input[name="prjBoardId"]').val(result.boardVO.prjBoardId)
 				//제목
 				$('.board-form-title').val(result.boardVO.prjBoardTitle); 
@@ -810,18 +1071,17 @@
 			}
 		});
 	};
+	
 	//일정 삭제하기
 	function deleteSche(){
 		let scheId = $('#prjScheId').val()
 		
-		console.log(scheId);
 		if (confirm("삭제하시겠습니까?") == true){ 
 		   $.ajax({
 			  url : 'deleteSche',
 			  method : 'GET',
 			  data : {"prjBoardId":scheId},
 			  success : function(result){
-				  console.log(result)
 				  if(result==3){
 					  alert("삭제완료")
 				  };
@@ -838,6 +1098,7 @@
 		   console.log("취소되었습니다");
 		}
 	};
+	
 	// 댓글 리스트
 	function getCommentList(boardId, boardType){
 		$.ajax({
@@ -963,7 +1224,6 @@
 		let memberId = '${memberInfo.memberId}';
 		let bookmark = $(e.currentTarget).data('bookmark');
 		let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
-		console.log(data)
 		if(bookmark == 'no') {
 			if(confirm('이 게시글을 북마크 하시겠습니까?')) {
 				$.ajax({
@@ -1000,7 +1260,6 @@
 		}
 	});
 	
-	
 	//일정 검색
 	$('.sche__search').keydown(function (key) {
 		event.stopPropagation();
@@ -1013,14 +1272,13 @@
     function searchTasknSche(){
     	let searchKeyword = $('.sche__search').val();
     	let projectId = ${projectInfo.projectId}
-    	console.log()
+
     	$.ajax({
     		url : 'searchCalendar',
     		method : 'GET',
     		data : {"projectId" : projectId, "searchKeyword" : searchKeyword},
     		dataType : 'JSON',
     		success : function(result){
-    			console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.scheList);
 				calendar.addEventSource(result.taskList);
@@ -1032,7 +1290,95 @@
     		
     	});
     };
+    
+    $('.btn-close').on('click', function(e) {
+    	$('#boardUpdateModal').removeClass('d-b');
+    });
 </script>
+
+<script>
+
+function updateProcessivity(e) {
+	const progressBar = e.currentTarget;
+	const progressBarInner = $(e.currentTarget).children('div');
+	// 클릭 위치
+	// 창 왼쪽부터 클릭한 위치까지 거리 - 프로그레스바 왼쪽 좌표 = 클릭 위치
+	const clickedPosition = event.clientX - progressBar.getBoundingClientRect().left;
+	
+	// 프로그레스 전체 길이
+	const totalWidth = progressBar.offsetWidth;
+	
+	// 진척도 값 계산
+	const selectedProgress = Math.round((clickedPosition / totalWidth) * 100 / 10) * 10;
+
+	// 클릭한 진척도 값으로 프로그레스 채우기
+	progressBarInner.css('width', selectedProgress + "%");
+	
+	// input에 선택 한 값 넣기
+    const hiddenInput = $(progressBar).next().next(); 
+	
+	if (hiddenInput) {
+		hiddenInput.val(selectedProgress);
+
+		// 선택된 값 표시
+		const progressValue = $(progressBar).next();
+		progressValue.text(selectedProgress + "%");
+	}
+};
+
+	//업무 게시글 진행상태 변경
+	$('#prjTask-modal div[data-state] button').on('click', function(e) {
+		let boardContainer = $('#prjTask-modal');
+		let targetBtn = $(e.currentTarget);
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let state = targetBtn.val();
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'state' : state},
+			success : function(result) {
+				//업무
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : prjBoardId},
+					success : function(taskData) {
+		                let stateBtn = boardContainer.find('div[data-state]');
+		                let activeBtn = stateBtn.find('.active');
+		                // 진행상태 버튼 활성화
+		                activeBtn.removeClass('active');
+		                stateBtn.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+				    }, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	
+	//업무 게시글 진척도 변경
+	$('.processivity').on("click", function(e) {
+		updateProcessivity(e);
+		
+		let boardContainer = $('#prjTask-modal');
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let processivity = boardContainer.find('input[name=processivity]').val();		
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+</script>
+
 
 <!-- 캘린더 js -->
 <script>
@@ -1044,7 +1390,6 @@
 		    dataType: 'JSON',
 		    data : {"projectId" : projectId},
 		    success : function(result){
-		    	console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.scheList);
 				calendar.addEventSource(result.taskList);
@@ -1063,7 +1408,6 @@
 		    dataType: 'JSON',
 		    data : {"projectId" : projectId},
 		    success : function(result){
-		    	console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.scheList);
 		    },
@@ -1080,7 +1424,6 @@
 		    dataType: 'JSON',
 		    data : {"projectId" : projectId},
 		    success : function(result){
-		    	console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.taskList);
 		    },
@@ -1089,10 +1432,23 @@
 		    }
 		});
 	}
+	
+	//초기 버튼 설정
+	$(window).on('load', function(e) {
+		$('.fc-viewBtn-button').addClass('active');
+	});
+	
+	//캘린더 조건 버튼
+	$(document).on('click', '.fc-scheBtn-button,.fc-taskBtn-button, .fc-viewBtn-button ', function(e) {
+		$(e.currentTarget).parent().find(".active").removeClass("active");
+		$(e.currentTarget).addClass("active");
+	});
+	
 	var calendar 
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
 		$('input').attr("autocomplete","off");
+
 		//변수선언
 		var calendarEl = document.getElementById('calendar');
 		calendar = new FullCalendar.Calendar(calendarEl, {
@@ -1106,22 +1462,38 @@
 			},
 			customButtons : {
 				scheBtn : {
-					text : '일정필터',
+					text : '일정',
 					click : scheFilter
 				},
 				taskBtn : {
-					text : '업무필터',
+					text : '업무',
 					click : taskFilter
 				},
 				viewBtn : {
-					text : '전체조회',
-					click : renderAll
+					text : '전체',
+					click : renderAll,
+				},
+				today : {
+					text : '월 선택'					
 				}
 			},
 			headerToolbar : {
-				left : 'prev,today,next scheBtn,taskBtn,viewBtn',
+				left : 'prev,today,next dayGridMonth,timeGridWeek',
 				center : 'title',
-				right : 'dayGridMonth,timeGridWeek'
+				right : 'scheBtn,taskBtn,viewBtn'
+			},
+			dayCellContent: function (info) {
+			    var number = document.createElement("a");
+			    number.classList.add("fc-daygrid-day-number");
+			    number.innerHTML = info.dayNumberText.replace("일", '').replace("日","");
+			    if (info.view.type === "dayGridMonth") {
+			      return {
+			        html: number.outerHTML
+			      };
+			    }
+			    return {
+			      domNodes: []
+			    };
 			},
 			locale : "ko",
 			navLinks : false, // can click day/week names to navigate views
@@ -1142,7 +1514,6 @@
 
 		//일정 입력
 		function insertSche(arg){
-			console.log(arg)
 			$('.insert-board-modal-title div').text("일정 입력");
 			$('#boardUpdateModal').addClass("d-b");
 			
@@ -1169,16 +1540,15 @@
 			let memberId = '${memberInfo.memberId}'
 			let boardId = info.event.id
 			if(boardId.substr(0,1)==="t"){
-				console.log(boardId.substr(1))
-				boardId = boardId.substr(1)
+				boardId = boardId.substr(1);
 				$.ajax({
 					url:'getTaskBoardInfo',
 					method : 'GET',
 					data : {"prjBoardId" : boardId},
 					dataType : 'JSON',
 					success : function(result){
-						console.log(result)
-						console.log(result.highTask[0])
+						
+						$('input[name="prjBoardId"]').val(result.highTask[0].prjBoardId);
 						
 				     	//북마크 여부 조회 
 				     	if(result.markedUserId=="yes"){
@@ -1188,7 +1558,8 @@
 							$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
 							$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'no');
 				     	}
-						
+				     	
+						$('#prjTask-modal').find('input[name="prjBoardId"]').val(boardId);					     	
 						$('#prjTask-modal').addClass('modal-prjSche-visible');
 						$('#prjTaskId').val(result.highTask[0].prjBoardId)
 						//프사 확인
@@ -1206,7 +1577,8 @@
 						//업무 번호
 						$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
 						//업무 진행 상황
-						$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).css('background-color', 'var(--color-dark-red)');
+						$('.prjTask-modal__content div[data-state]').children('button').removeClass('active');
+						$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).addClass('active');
 						//업무 날짜 지정
 				        if(result.highTask[0].startDate != null) {
 				        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text(result.highTask[0].startDate);
@@ -1224,6 +1596,7 @@
 				        	$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').remove();
 				        };
 				     	// 상위 업무 담당자
+				     	$('.task-manager').find('span:not(:eq(0))').remove();
 				     	if(result.highManager.length >1) {
 				     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + ' 외 ' + (result.highManager.length-1) + '명</span>');	
 				     	} else if(result.highManager.length == 0) {
@@ -1232,7 +1605,8 @@
 				     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + '</span>');
 				     	};
 				     	//업무 내용
-				     	$('.board-content div').append(result.highTask[0].prjBoardSubject)
+				     	$('.board-content div').children().remove();
+				     	$('.board-content div').append(result.highTask[0].prjBoardSubject);
 				     	// 하위 업무 리스트
 				     	if(result.subTask.length == 0) {
 				     		$('.prjTask-modal__content').find('span[data-subtaskcount]').text("0");
@@ -1242,6 +1616,7 @@
 					     	let subTaskList = $('.prjTask-modal__content').find(".sub-task-list");
 							// 하위 업무 갯수 
 					     	countSpan.text(result.subTask.length);
+					     	subTaskList.find('li').remove();
 					     	// 정보 입력
 					        for (let j = 0; j < result.subTask.length; j++) {
 					        	let subTask = result.subTask[j];
@@ -1277,7 +1652,6 @@
 					data: {"prjBoardId" : boardId},
 					dataType:"JSON",
 					success:function(result){
-						console.log(result)
 						
 				     	//북마크 여부 조회   board-footer   data-bookmark   img
 				     	if(result.markedUserId=="yes"){
@@ -1437,15 +1811,13 @@
 				boardVO = {prjBoardTitle, prjBoardSubject, projectId, memberId, boardType};
 				scheVO = {startDate, endDate, scheAddr, scheAddrDetail, alarmDateCode};
 				boardRequestVO = {boardVO, scheVO}
-				console.log(boardRequestVO)
-				console.log(JSON.stringify(boardRequestVO))
+
 				$.ajax({
 					url : '${pageContext.request.contextPath}/calInsertSche',
 					method : 'POST',
 					data : JSON.stringify(boardRequestVO),
 					contentType : 'application/json',
 					success : function(result){
-						console.log(result);
 						$('div[data-boardmodal]').attr('class','d-none');
 						$('.sche-addr span[class="sche-addr__info"]').remove();
 						//상세조회 모달 끄기
@@ -1670,5 +2042,149 @@
 		}).open();
 	});
 	//다음 주소 api 종료
+	
+	
+	// 업무 담당자 리스트
+	$(document).on('click', '.task-manager', function(e){
+		let prjBoardId = $('#prjTaskId').val();
+		let x = e.clientX -500 ;
+		let y = e.clientY;
+		
+		$('.taskManager-modal-content').css('left', x + 'px');
+		$('.taskManager-modal-content').css('top', y + 'px');
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getManager',
+			type : 'GET',
+			data : {'prjBoardId' : prjBoardId},
+			success : function(managers) {
+				let managerDiv = $('#managers');
+				managerDiv.empty();
+				
+				if(managers.length != 0) {
+					//멤버 리스트 태그 만들기
+					for(let i=0; i<managers.length; i++) {
+						//div태그
+						let employeeDiv = document.createElement('div');
+						employeeDiv.classList.add('flex');
+						employeeDiv.classList.add('employee');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(managers[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+managers[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = managers[i].memberName;
+						//히든 인풋 태그 (멤버id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.value = managers[i].memberId;
+						//태그 삽입
+						employeeDiv.append(employeeProfile);
+						employeeDiv.append(span);
+						employeeDiv.append(input);
+						
+						managerDiv.append(employeeDiv);
+					}
+				} else {
+					let noManagerDiv = document.createElement('div');
+					noManagerDiv.classList.add('noManager');
+					noManagerDiv.innerText = '담당자가 존재하지 않습니다.';
+					
+					managerDiv.append(noManagerDiv);
+				}
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		});
+		$('#taskManager-modal').addClass('particir-visible');
+	})
+	
+	$('[id*=modal]').on('click', function() {
+		$('.particir-visible').removeClass('particir-visible');
+	});
+	
+	
+	//일정 참여자
+	
+	$(document).on("click", ".sche-particir-list span", function(e) {
+		let boardId = $('#prjScheId').val();
+		console.log(boardId)
+		let scheSpan = $(e.currentTarget);
+		let x = e.clientX - 300;
+		let y = e.clientY;
+		
+		$('.scheParticr-modal-content').css('left', x + 'px');
+		$('.scheParticr-modal-content').css('top', y + 'px');
+		
+		if(scheSpan.hasClass('sche-particir')) {
+			$('.scheParticr-modal-title').text('참석자');
+			getScheParticirList(boardId, 'A1');
+		}else {
+			$('.scheParticr-modal-title').text('불참자');
+			getScheParticirList(boardId, 'A2');
+		}
+		$('#scheParticr-modal').addClass('particir-visible');
+	});
+	
+	function getScheParticirList(prjBoardId, commonCode) {
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getParticir',
+			type : 'GET',
+			data : {'prjBoardId' : prjBoardId, 'attendance' : commonCode},
+			success : function(particirs) {
+				let particirDiv = $('#particirs');
+				particirDiv.empty();
+				
+				if(particirs.length != 0) {
+					//멤버 리스트 태그 만들기
+					for(let i=0; i<particirs.length; i++) {
+						//div태그
+						let employeeDiv = document.createElement('div');
+						employeeDiv.classList.add('flex');
+						employeeDiv.classList.add('employee');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(particirs[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+particirs[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = particirs[i].memberName;
+						//히든 인풋 태그 (멤버id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.value = particirs[i].memberId;
+						//태그 삽입
+						employeeDiv.append(employeeProfile);
+						employeeDiv.append(span);
+						employeeDiv.append(input);
+						
+						particirDiv.append(employeeDiv);
+					}
+				} else {
+					let noParticirDiv = document.createElement('div');
+					noParticirDiv.classList.add('noManager');
+					noParticirDiv.innerText = '인원이 존재하지 않습니다.';
+					
+					particirDiv.append(noParticirDiv);
+				}
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		});
+	}
+	
 </script>
 </html>

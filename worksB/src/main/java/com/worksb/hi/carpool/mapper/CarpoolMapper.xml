@@ -126,6 +126,7 @@
 				</if>
 				<if test="boardContent !=null and !boardContent.equals('')">
 				board_content = #{boardContent},
+
 				</if>
 				board_upddate = current_date, 
 				<if test="category !=null and !category.equals('')">
@@ -141,6 +142,7 @@
 				departure_date = #{departureDate}, 
 				</if>
 				<if test="coordinate !=null and !coordinate.equals('')">
+          
 				coordinate = #{coordinate}
 				</if>
 			</set>

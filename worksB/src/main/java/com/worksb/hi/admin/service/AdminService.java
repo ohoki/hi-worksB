@@ -74,4 +74,8 @@ public interface AdminService {
 	
 	//매니저정보가져오기
 	public List<PrjParticirVO> getManager(String memberId,int projectId);
+	//매니저정보 수정하기
+	public int updateManager(PrjParticirVO vo);
+	//기존의 매니저는 삭제하기
+	public int deleteManager(PrjParticirVO vo);
 }

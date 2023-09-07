@@ -40,7 +40,7 @@
 							VALUES(
 									#{commentId},
 									#{memberId},
-									sysdate,
+									current_date,
 									#{commentContent},
 									#{boardType},
 									#{boardId},

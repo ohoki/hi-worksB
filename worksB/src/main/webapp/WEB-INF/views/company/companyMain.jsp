@@ -85,7 +85,19 @@
 		</div>			
 	</div>
 <script>
-
+	
+	//날짜 변환
+	function get_date_str(date)
+	{
+	    var sYear = date.getFullYear();
+	    var sMonth = date.getMonth() + 1;
+	    var sDate = date.getDate();
+	
+	    sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
+	    sDate  = sDate > 9 ? sDate : "0" + sDate;
+	    return sYear + sMonth + sDate;
+	}
+	
 
 	//날씨정보 조회
 	var xhr = new XMLHttpRequest();
@@ -94,13 +106,13 @@
 	queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /**/
 	queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('1000'); /**/
 	queryParams += '&' + encodeURIComponent('dataType') + '=' + encodeURIComponent('JSON'); /**/
-	queryParams += '&' + encodeURIComponent('base_date') + '=' + encodeURIComponent('20230904'); /**/
+	queryParams += '&' + encodeURIComponent('base_date') + '=' + encodeURIComponent(get_date_str(new Date())); /**/
 	queryParams += '&' + encodeURIComponent('base_time') + '=' + encodeURIComponent('0600'); /**/
 	queryParams += '&' + encodeURIComponent('nx') + '=' + encodeURIComponent('35'); /**/
 	queryParams += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent('128'); /**/
 	xhr.open('GET', url + queryParams);
 	xhr.onreadystatechange = function () {
-	    if (this.readyState == 1) {
+	    if (this.readyState == 4) {
 	        console.log('Status: '+this.status+'nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'nBody: '+this.responseText);
 	    }
 	};
