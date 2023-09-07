@@ -186,6 +186,16 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.getManager(memberId,projectId);
 	}
 
+	@Override
+	public int updateManager(PrjParticirVO vo) {
+		return adminMapper.updateManager(vo);
+	}
+
+	@Override
+	public int deleteManager(PrjParticirVO vo) {
+		return adminMapper.deleteManager(vo);
+	}
+
 
 	
 }
