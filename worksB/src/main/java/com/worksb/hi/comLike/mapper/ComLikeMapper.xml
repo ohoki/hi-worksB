@@ -42,7 +42,7 @@
 	<select id="noticeLikeCount" parameterType="int" resultType="int">
     	SELECT COUNT(*) 
     	  FROM com_like
-    	 WHERE board_type = #{boardType} AND board_id = #{noticeId}
+    	 WHERE board_type = #{boardType} AND board_id = #{boardId}
     	 
 	</select>
 </mapper>

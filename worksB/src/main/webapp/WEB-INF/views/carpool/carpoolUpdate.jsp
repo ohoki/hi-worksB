@@ -101,6 +101,32 @@ div h2 {
 	height: 25px;
 }
 
+	/* 카테고리 css */
+.select {
+    padding: 15px 10px;
+}
+.select input[type=radio]{
+    display: none;
+}
+.select input[type=radio]+label{
+    display: inline-block;
+    cursor: pointer;
+    height: 24px;
+    width: 90px;
+    border: 1px solid #333;
+    line-height: 24px;
+    text-align: center;
+    font-weight:bold;
+    font-size:13px;
+}
+.select input[type=radio]+label{
+    background-color: #fff;
+    color: #333;
+}
+.select input[type=radio]:checked+label{
+    background-color: #333;
+    color: #fff;
+}
 </style>
 </head>
 <body>
@@ -115,7 +141,7 @@ div h2 {
 		<h2>카풀 수정</h2>
 	</div>
 	<div class="body">
-		<form action="carpoolUpdate" method="post">
+		<form action="carpoolUpdate" method="post" onsubmit="return check();">
 			<table class="table">
 				<thead>
 					<tr class="main__p">
@@ -135,17 +161,31 @@ div h2 {
 					<tr>
 						<td>
 							<label>출발</label>
-							<input type="text" name="departure" value="${carpoolInfo.departure }">
+							<input type="text" name="departure" value="${carpoolInfo.departure }"><br>
 							<label>도착</label>
-							<input type="text" name="arrival" value="${carpoolInfo.arrival }">
+							<input type="text" name="arrival" value="${carpoolInfo.arrival }"><br>
 							<label>날짜</label>
-							<input type="text" name="departureDate" value="${carpoolInfo.departureDate }">
+							<input type="datetime-local" id="departureDateInput"><br>
+							<input type="hidden" id="departureDate" name="departureDate">
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<input type="hidden" name="category" value="B1" ><!-- 나중에 바꿔야됨 -->
 							<input type="hidden" name="boardId" value="${carpoolInfo.boardId }">
+							<label id="passenger">인원</label>
+							<select id="passelect" name="passenger">
+								<option value="0">0명</option>
+								<option value="1">1명</option>
+								<option value="2">2명</option>
+								<option value="3">3명</option>
+								<option value="4">4명</option>
+								<option value="5">5명</option>
+							</select>
+							<div class="select">
+     							<input type="radio" id="select" name="category" value="B1"><label for="select">태워드립니다</label>
+     							<input type="radio" id="select2" name="category" value="B2"><label for="select2">태워주세요</label>
+							</div>
 						</td>
 					</tr>
 				</tbody>
@@ -155,6 +195,17 @@ div h2 {
 		</form>
 	</div>
 	<script>
+		
+		function check(){
+			/* datetime-local T 지우기 */
+			// 날짜 가져오기
+			let x = document.getElementById("departureDateInput").value;
+			// 거지같은 T 바꾸기
+			x = x.replace("T", " ");
+			departureDate.value = x;
+		}
+		
+	
 	
 	/* ck에디터 */
 	CKEDITOR.ClassicEditor.create(document.querySelector('#editor'), {

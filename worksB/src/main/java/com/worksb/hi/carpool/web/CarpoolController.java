@@ -1,6 +1,8 @@
 package com.worksb.hi.carpool.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.carpool.service.CarpoolService;
 import com.worksb.hi.carpool.service.CarpoolVO;
+import com.worksb.hi.comLike.service.ComLikeService;
+import com.worksb.hi.comLike.service.ComLikeVO;
 import com.worksb.hi.common.PagingVO;
 import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.company.service.CompanyVO;
@@ -25,6 +29,9 @@ public class CarpoolController {
 	@Autowired
 	CarpoolService carpoolService;
 	
+	@Autowired
+    ComLikeService comLikeService;
+	
 	//페이징 전체조회
 	@GetMapping("/carpoolList")
 	public String carpoolList(Model model
@@ -32,6 +39,13 @@ public class CarpoolController {
 						, HttpSession session
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
 						, @RequestParam(value="cntPerPage", defaultValue ="15") Integer cntPerPage) {
+		
+		// 세션의 companyid값 가져오기
+		CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
+		Integer companyIdd = company.getCompanyId();
+		
+		// searchVO에 담아준다
+		searchVO.setCompanyId(companyIdd);
 		
 		int total = carpoolService.carpoolCount(searchVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
@@ -48,18 +62,29 @@ public class CarpoolController {
 	
 	// 단건 조회
 	@GetMapping("/carpoolInfo")
-	public String getCarpoolInfo(@RequestParam("boardId")int boardId, HttpSession session, CarpoolVO carpoolVO,Model model) {
+	public String getCarpoolInfo(@RequestParam("boardId")int boardId, HttpSession session, CarpoolVO carpoolVO,Model model, ComLikeVO comLikeVO) {
 		if(boardId!=0) {
 			carpoolVO.setBoardId(boardId);			
 		}
 		String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
 		
+		// 조회수 증가
+		carpoolService.carpoolHit(boardId);
+		// 게시물 정보 가져오기
 		CarpoolVO findVO = carpoolService.getCarpoolInfo(carpoolVO);
 		model.addAttribute("carpoolInfo", findVO);
+		
+		// 좋아요 갯수 가져오기
+		// 좋아요 갯수 가져오기
+	    comLikeVO.setBoardId(carpoolVO.getBoardId());
+	    comLikeVO.setBoardType("C3");
+	    model.addAttribute("likeCount", comLikeService.countLikes(comLikeVO));
+	    
 		//참여자 숫자 불러오기
 		model.addAttribute("participantsCounting",carpoolService.getPCount(boardId));
 		model.addAttribute("participantList",carpoolService.getApplicantList(boardId));
 		model.addAttribute("memberId",memberId);
+		
 		return "carpool/carpoolInfo";
 	}
 	

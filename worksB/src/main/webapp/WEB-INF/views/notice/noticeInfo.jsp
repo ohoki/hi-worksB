@@ -369,6 +369,7 @@
 		$(document).ready(function(){
 			// 댓글 리스트 출력
 			getcmtList();
+			
 		});
 		
 		
@@ -443,10 +444,10 @@
 				for(let i = 0 , len = list.length || 0; i < len; i++ ){
 					/* 부모/자식 댓글 구분 */
 					
-					if(list[i].commentContent == '삭제된 댓글 입니다.'){
+					if(list[i].deleted == 'Y'){
 						str += "<ul>" + "<li class='cmtName'>" + list[i].memberName + "</li>";
 						str += "<li class='cmtInsert'>" + "<button type='button' id='cmtInsertFormButton' class='cmtInsertFormButton'>" + "답글작성" + "</button>" + "</li>";
-						str += "<li class='cmtContent'>" + list[i].commentContent + "</li>"
+						str += "<li class='cmtContent'>" + '삭제된 댓글 입니다.' + "</li>"
 						/* 밑으론 hidden */
 						str += "<li>" + "<input type='hidden' class='commentId' value='" + list[i].commentId +" '>" + "</li>";
 						str += "<li>" + "<input type='hidden' class='boardType' value='" + list[i].boardType +" '>" + "</li>";
@@ -524,8 +525,6 @@
 	            $("#likeCount").text(response.count);
 	        })
 		 };
-	
-
 
 		// 댓글 삭제 ajax
 		$(document).on('click', '.cmtDelete', function(e){
@@ -572,7 +571,7 @@
 			
 		});
 		/* 삭제 끝 */
-		
+
 		/* 대댓글 작성 */
 		$(document).on('click', '.cmtInsertFormButton', function(e){
 			let commentId = $(this).closest("ul").find(".commentId").val();
