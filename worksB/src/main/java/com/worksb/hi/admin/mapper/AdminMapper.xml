@@ -388,4 +388,14 @@
 				AND p.particir_accp = 'A1'
 				AND m.member_id=#{memberId}
 	</select>
+	<update id="updateManager" parameterType="PrjParticirVO">
+		UPDATE prj_particir SET manager='A1' 
+		WHERE  member_id=#{memberId}
+		AND project_id=#{projectId}
+	</update>
+	<update id="deleteManager" parameterType="PrjParticirVO">
+		UPDATE prj_particir SET manager='A2'
+		WHERE manager='A1'
+		AND project_id=#{projectId}
+	</update>
 </mapper>

@@ -186,7 +186,7 @@
 			<tbody>
 					<c:forEach items="${list }" var="list">
 						<tr>
-							<td><input value="${list.projectName }" class="input" data-pjid="${list.projectId }" data-dpid="${list.deptId }"></td>
+							<td><input value="${list.projectName }" class="input" data-pjid="${list.projectId }" data-dpid="${list.deptId }"><button id="changeName">변경하기</button></td>
 							<td class="manager" data-pjid="${list.projectId }">${list.memberId }</td>
 							<td class="participants" data-pjid="${list.projectId }">${list.mnumber }</td>
 							<td>${list.boardcount }</td>
@@ -236,31 +236,29 @@
 		location.href="${pageContext.request.contextPath }/admin/projectlist?nowPage="+p
 	}
 	
-	$('#prj-list .input').on("keyup",function(event){
-		let target=event.target;//엔터이벤터가 발생한 인풋박스
-		let projectName=target.value//인풋박스의 값
-		let projectId=$(target).data('pjid');
-		let deptId=$(target).data('dpid')
+	$('#changeName').on("click",function(event){
+		let projectName=$('#prj-list .input').val()//인풋박스의 값
+		let projectId=$('#prj-list .input').data('pjid');
+		let deptId=$('#prj-list .input').data('dpid')
 		
-		if (event.keyCode === 13) {
-	    	$.ajax({
-	    			url:"${pageContext.request.contextPath }/admin/updatePrjName",
-	    			method:'POST',
-	    			data:JSON.stringify(
-	    					{"projectName":projectName,
-	    					"projectId":projectId,
-	    					"deptId":deptId}),
-	    			contentType:'application/json'
-	    	})
-	    	.done(data=>{
-					if(data!=0||data!=null){
-						alert('업데이트에 성공하였습니다')
-					}
-				})
-				.fail(reject=>{
-					console.log(reject)
-				})
-		}
+    	$.ajax({
+    			url:"${pageContext.request.contextPath }/admin/updatePrjName",
+    			method:'POST',
+    			data:JSON.stringify(
+    					{"projectName":projectName,
+    					"projectId":projectId,
+    					"deptId":deptId}),
+    			contentType:'application/json'
+    	})
+    	.done(data=>{
+				if(data!=0||data!=null){
+					alert('업데이트에 성공하였습니다')
+				}
+			})
+			.fail(reject=>{
+				console.log(reject)
+			})
+
 	})
 	
 	//모달 닫기
@@ -271,6 +269,8 @@
 	// 프로젝트 참여자 리스트
 	$('#prj-list .participants').on('click', function(e){
 		let projectId=$(this).data('pjid');
+		let clicked=$(this);
+		console.log(clicked)
 		
 		let x = e.clientX - 320;
 		let y = e.clientY;
@@ -302,64 +302,17 @@
 					}
 					//스팬 태그
 					let span = document.createElement('span');
-					span.innerText = particir[i].memberName;
-					//히든 인풋 태그 (멤버id값)
-					let input = document.createElement('input');
-					input.setAttribute('type', 'hidden');
-					input.value = particir[i].memberId;
-					//태그 삽입
-					employeeDiv.append(employeeProfile);
-					employeeDiv.append(span);
-					employeeDiv.append(input);
-					
-					particirDiv.append(employeeDiv);
-				}
-			},
-			error : function(reject){
-				console.log(reject);
-			}
-		})
-		$('#prjParticir-modal').addClass('modal-visible');
-	})
-	
-	
-	// 매니저
-	$('#prj-list .manager').on('click', function(e){
-		let name=$(this).text();
-		let projectId=$(this).data('pjid');
-		
-		let x = e.clientX - 320;
-		let y = e.clientY;
-		
-		$('.prjParticir-modal-content').css('left', x + 'px');
-		$('.prjParticir-modal-content').css('top', y + 'px');
-		
-		$.ajax({
-			url : '${pageContext.request.contextPath }/admin/getManager',
-			type : 'GET',
-			data : {'memberId': name,
-					'projectId':projectId},
-			success : function(particir){
-				let particirDiv = $('#prjParticir');
-				particirDiv.empty();
-				
-				for(let i=0; i<particir.length; i++) {
-					//div태그
-					let employeeDiv = document.createElement('div');
-					employeeDiv.classList.add('flex');
-					employeeDiv.classList.add('employee');
-					//이미지 태그
-					let employeeProfile = document.createElement('img');
-					employeeProfile.setAttribute('alt', '회원사진');
-					employeeProfile.classList.add('employee-img');
-					if(particir[i].realProfilePath != null) {
-						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
-					}else {
-						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					if(particir[i].manager=='A2'){
+						span.innerText = particir[i].memberName;						
+					}else{
+						span.innerText = particir[i].memberName+'(관리자)';
 					}
-					//스팬 태그
-					let span = document.createElement('span');
-					span.innerText = particir[i].memberName;
+					//매니저버튼태그
+					let mBtn=document.createElement('button');
+					if(particir[i].manager=='A2'){
+						let mBtnText=document.createTextNode('관리자변경');
+						mBtn.appendChild(mBtnText);
+					}
 					//히든 인풋 태그 (멤버id값)
 					let input = document.createElement('input');
 					input.setAttribute('type', 'hidden');
@@ -367,9 +320,41 @@
 					//태그 삽입
 					employeeDiv.append(employeeProfile);
 					employeeDiv.append(span);
+					employeeDiv.append(mBtn)
 					employeeDiv.append(input);
 					
 					particirDiv.append(employeeDiv);
+					
+					//관리자변경을 누르면 관리자변경
+					$(mBtn).on('click',function(e){
+						if(confirm('관리자를 변경하시겠습니까?')){
+							let mBtn=$(this);
+							let memberId=mBtn.next().val();
+							console.log(memberId)
+
+							//관리자변경
+							$.ajax({
+								url:'${pageContext.request.contextPath }/admin/updateManager',
+								type:'POST',
+								contentType:'application/json',
+								data:JSON.stringify({'memberId':memberId,
+										'projectId':projectId}),
+								success:function(response){
+									if(response>0){
+										alert('관리자가 변경되었습니다')
+										clicked.prev().text(memberId);
+										$('#prjParticir-modal').removeClass('modal-visible');
+									}else{
+										alert('실패하였습니다')
+									}
+								},
+								error:function(error){
+									console.log(error);
+								}
+							})
+						}
+						e.stopPropagation()
+					})
 				}
 			},
 			error : function(reject){
@@ -378,5 +363,7 @@
 		})
 		$('#prjParticir-modal').addClass('modal-visible');
 	})
+	
+
 </script>
 </html>

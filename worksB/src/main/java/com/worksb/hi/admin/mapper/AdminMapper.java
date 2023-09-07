@@ -77,4 +77,8 @@ public interface AdminMapper {
 	public List<String> getDeptName(ProjectVO vo);
 	//매니저정보가져오기
 	public List<PrjParticirVO> getManager(@Param("memberId")String memberId,@Param("projectId")int projectId);
+	//매니저정보 수정하기
+	public int updateManager(PrjParticirVO vo);
+	//기존의 매니저는 삭제하기
+	public int deleteManager(PrjParticirVO vo);
 }
