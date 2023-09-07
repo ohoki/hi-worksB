@@ -17,12 +17,11 @@
 		<!-- 회사 로고 -->
 		<div>
 			<a href="${pageContext.request.contextPath}/start"><img src="${pageContext.request.contextPath}/images/${companyInfo.realLogoPath }" alt="회사 로고"
-				class="header__logo"></a>
+				class="header__logo" onerror="this.src='${pageContext.request.contextPath}/resources/img/no-image.jpg'"></a>
 		</div>
 		<!-- 검색창 -->
 		<div>
 			<input type="text" id="searchInput" placeholder="검색" value="${searchVO.searchkeyword}" name="searchkeyword" class="header__search">
-<!-- 			<button type="button" onclick="sendDataToController()">검색</button> -->
 		</div>
 		<!-- 상단 메뉴들 -->
 		<div class="header__icon">
@@ -38,7 +37,7 @@
 			</c:if>
 			<c:if test="${memberInfo.realProfilePath ne null }">
 			<a href="#" data-type="profile"> <img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진"
-				class="header__profile">
+				class="header__profile" onerror="this.src='${pageContext.request.contextPath }/resources/img/user.png'">
 			</a>
 			</c:if>
 			<div class="status"></div>
@@ -50,7 +49,7 @@
 							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="modal-logo">
 						</c:if>
 						<c:if test="${memberInfo.realProfilePath ne null }">
-							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="modal-logo">
+							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="modal-logo" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 						</c:if>
 						<div>${memberInfo.memberName }</div>
 					</div>
@@ -76,7 +75,7 @@
 							<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="my-profile-logo">
 						</c:if>
 						<c:if test="${memberInfo.realProfilePath ne null }">
-							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="my-profile-logo">
+							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="my-profile-logo" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 						</c:if>	
 						<div class="my-profile-modal__name">${memberInfo.memberName }</div>
 						<ul>
@@ -104,32 +103,7 @@
 					</ul>
 				</div>			
 			</div>
-			<!-- 알림 모달 -->
-			<div id="alarm-modal">
-				<div class="alarm-modal__content">
-					<div class="flex alarm__title">
-						<span>알림</span>
-						<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor">
-					</div>
-					<div class="flex alarm__subtitle">
-						<div >
-							<span class="alarm__subtitle__item cursor">미확인</span>
-							<span class="alarm__subtitle__item cursor">전체</span>
-						</div>
-						<div class="alarm__subtitle__item cursor">모두읽음</div>
-					</div>
-					<input type="text" class="alarm_search-input" placeholder="검색">
-					<ul class="flex alarm-category">
-						<li class="category-list cursor">전체</li>
-						<li class="category-list cursor">프로젝트</li>
-						<li class="category-list cursor">사내게시판</li>
-						<li class="category-list cursor">개인일정</li>
-					</ul>
-					<div class="flex">
-						알림내역
-					</div>
-				</div>			
-			</div>
+			
 			<!-- 구성원 모달 -->
 			<div id="employees-modal">
 				<div class="employees-modal__content">
@@ -226,6 +200,8 @@
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
+						
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = members[i].memberName;
@@ -271,9 +247,9 @@
 	});
 	
 	//여백 누르면 모달페이지 종료
-	$('[id*=modal]').on('click', function() {
-		$('.modal-visible').removeClass('modal-visible');
-	})
+	$('[id$=modal]').on('click', function(e) {
+		$(e.currentTarget).removeClass('modal-visible');
+	});
 	
 	$('.my-profile__btn').on('click', function() {
 		location.href='${pageContext.request.contextPath}/member/updateForm';
@@ -330,6 +306,9 @@
 				}else {
 					img.attr('src', '${pageContext.request.contextPath }/resources/img/user.png');
 				}
+				
+				img.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+				
 				//정보
 				$('.employee-modal__name').text(member.memberName);
 				$('#e-id').text(member.memberId);
@@ -347,6 +326,7 @@
 				
 			}
 		});
+		$('#employees-modal').addClass('modal-visible');
  		$('#employee-modal').addClass('modal-visible');
 	});
 	
@@ -365,7 +345,7 @@
 	
 
 	//구성원검색창 버블링 막기
-	$('.employees_search-input').on('click', function(e) {
+	$('.employees_search-input, .employee').on('click', function(e) {
 		e.stopPropagation();
 	});
 		
@@ -395,6 +375,7 @@
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = members[i].memberName;
