@@ -48,13 +48,22 @@
 }
 
 .form__btn {
-	width: 100%;
-	height: 70px;
-	background-color: rgb(174, 213, 245);
+	width: 50%;
+	height: 50px;
+	background-color: var(--color-dark-beigie);
 	border-radius: 5px;
-	color: var(--color-white);
+	color: var(--color-dark-grey);
 	font-weight: var(--weight-bold);
-	font-size: var(--font-regular);
+	font-size: var(--font-small);
+	transition: all 0.5s;
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+
+.form__btn:hover {
+	background-color: var(--color-dark-red);
+	color: var(--color-white);
 }
 
 .link {

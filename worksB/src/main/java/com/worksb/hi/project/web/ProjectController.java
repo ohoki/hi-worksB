@@ -722,7 +722,7 @@ public class ProjectController {
 				hash.put("start", strStartDate); //시작일자
 				String strEndDate = simpleDateFormat.format(scheList.get(i).getEndDate()); 
 				hash.put("end", strEndDate); //종료일자
-				hash.put("color", "rgba(249, 166, 52, 0.7)");
+				hash.put("color", "rgba(249, 166, 52, 0.4)");
 				
 				jsonObj = new JSONObject(hash);
 				scheArr.add(jsonObj);
@@ -736,7 +736,7 @@ public class ProjectController {
 				String strEndDate = simpleDateFormat.format(taskList.get(i).getEndDate()); 
 				hash.put("end", strEndDate); //종료일자
 				hash.put("allDay", "true");
-				hash.put("color", "rgba(156, 187, 58, 0.7)");
+				hash.put("color", "rgba(156, 187, 58, 0.4)");
 				
 				jsonObj = new JSONObject(hash);
 				taskArr.add(jsonObj);

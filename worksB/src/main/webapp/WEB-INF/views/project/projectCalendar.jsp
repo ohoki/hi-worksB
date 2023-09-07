@@ -712,7 +712,8 @@
 	}
 	.particir-visible {
 		display: block !important;
-
+	}
+	
 	.processivity {
 		cursor: pointer;
 	}
