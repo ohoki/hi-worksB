@@ -10,7 +10,8 @@
 				, sche_title
 				, sche_content
 				, sche_regdate
-				, coordinate
+				, sche_addr
+				, sche_addr_detail
 				, start_date
 				, end_date
 				, member_id
@@ -27,7 +28,8 @@
 				, sche_title
 				, sche_content
 				, sche_regdate
-				, coordinate
+				, sche_addr
+				, sche_addr_detail
 				, start_date
 				, end_date
 				, member_id
@@ -47,7 +49,8 @@
 								, sche_title
 								, sche_content
 								, sche_regdate
-								, coordinate
+								, sche_addr
+								, sche_addr_detail
 								, start_date
 								, end_date
 								, member_id
@@ -57,12 +60,13 @@
 								#{scheId}
 								, #{scheTitle}
 								, #{scheContent}
-								, sysdate
-								, #{coordinate}
-								, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS')
-								, TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
+								, current_date
+								, #{scheAddr}
+								, #{scheAddrDetail}
+								, #{startDate}
+								, #{endDate}
 								, #{memberId}
-								, TO_DATE(#{alarmDate}, 'YYYY-MM-DD HH24:MI:SS')
+								, #{alarmDate}
 								)
 	</insert>
 	<update id="updatePsche" parameterType="PrivateScheVO">
@@ -75,17 +79,20 @@
 				sche_content = #{scheContent},
 			</if>
 			<!-- Nullable이기 때문에 != null만 체크해줘도 된다!/사용자가 지우고 싶은 경우에 공백('')을 보내기 때문에 공백일 경우를 허용해줘야함! -->
-			<if test="coordinate != null">
-				coordinate = #{coordinate},
+			<if test="scheAddr != null">
+				sche_addr = #{scheAddr},
+			</if>
+			<if test="scheAddrDetail != null">
+				sche_addr_detail = #{scheAddrDetail},
 			</if>
 			<if test="startDate != null and !startDate.equals('')">
-				start_date = TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS'),
+				start_date = #{startDate},
 			</if>
 			<if test="endDate != null and !endDate.equals('')">
-				end_date = TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS'),
+				end_date = #{endDate},
 			</if>
 			<if test="alarmDate != null and !alarmDate.equals('')">
-				alarm_date = TO_DATE(#{alarmDate}, 'YYYY-MM-DD HH24:MI:SS'),
+				alarm_date = #{alarmDate}, 
 			</if>
 		</set>
 		WHERE sche_id = #{scheId}

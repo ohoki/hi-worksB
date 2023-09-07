@@ -38,7 +38,7 @@
 								   )
 			VALUES (#{listId}
 					, #{listTitle}
-					, sysdate
+					, current_date
 					, #{memberId}
 					, #{applyDate}
 					)

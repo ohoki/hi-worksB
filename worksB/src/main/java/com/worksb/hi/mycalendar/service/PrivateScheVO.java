@@ -1,5 +1,7 @@
 package com.worksb.hi.mycalendar.service;
 
+import java.util.Date;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -24,12 +26,19 @@ public class PrivateScheVO {
 	@JsonProperty(value = "title")
 	private String scheTitle;
 	private String ScheContent;
-	private String scheRegdate;
-	private String coordinate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	private Date scheRegdate;
+	private String scheAddr;
+	private String scheAddrDetail;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	@JsonProperty(value = "start")
-	private String startDate;
+	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	@JsonProperty(value = "end")
-	private String endDate;
+	private Date endDate;
 	private String memberId;
 	private String alarmDate;
 }

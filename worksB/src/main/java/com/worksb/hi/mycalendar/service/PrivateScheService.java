@@ -6,7 +6,7 @@ import java.util.Map;
 public interface PrivateScheService {
 	
 	//단건조회
-	public PrivateScheVO selectPsche(PrivateScheVO privateScheVO);
+	public PrivateScheVO selectPsche(int scheId);
 	
 	//전체조회
 	public List<PrivateScheVO> selectAllPsche(String memberId);
