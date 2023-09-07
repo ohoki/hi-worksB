@@ -24,11 +24,12 @@
 	}
 	
 	.calander-main-box {
-		width: 90%;
+		width: 85%;
 		margin: 0 auto;
 	}
 	
-	#calendar-container {
+	.fc .fc-toolbar.fc-header-toolbar {
+	    margin-bottom: 15px;
 	}
 	
 	.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
@@ -41,12 +42,16 @@
 		width: 10px;
 		height: 30px;
 		padding: 0 15px 0 0 !important;
+		color: white !important;
+		background-color: var(--color-dark-red) !important;
 	}
 	
 	.fc-next-button {
 		width: 10px;
 		height: 30px;
 		padding: 0 15px 0 0 !important;
+		color: white !important;
+		background-color: var(--color-dark-red) !important;
 	}
 	
 	.fc-today-button {
@@ -55,14 +60,26 @@
 		line-height: 15px;
 		padding: 0 !important;
 		font-size: var(--font-micro) !important;
-		background-color: var(--color-dark-red) !important;
-		border: 1px solid var(--color-dark-red) !important;
+		background-color: var(--color-dark-beigie) !important;
+		border: none !important;
+		color: var(--color-dark-grey) !important;
+		font-weight: var(--weight-bold) !important;
 	}
 	
 	.fc .fc-button:disabled {
 	    opacity: 1;
 	}
 	
+	.fc .fc-button-primary {
+	    background-color: var(--color-dark-beigie);
+	    border: none !important;
+	    color: var(--color-dark-grey);
+	    transition: all 0.5s;
+	}
+	
+	.fc .fc-button-primary:hover {
+	    background-color: var(--color-dark-red);
+	}
 	
 	.fc-dayGridMonth-button {
 		width: 70px;
@@ -107,9 +124,10 @@
 		background-color: rgb(249, 166, 52, 0.7) !important;
 		border: none !important;
 		transition: all 0.5s;
+		color: white !important;
 	}
 	
-	.fc-scheBtn-button:hover, .fc-scheBtn-button:focus {
+	.fc-scheBtn-button:hover, .fc-scheBtn-button:focus, .fc-scheBtn-button.active {
 		background-color: rgb(249, 166, 52) !important;
 	}
 	
@@ -123,12 +141,13 @@
 		background-color: rgb(156, 187, 58, 0.7) !important;
 		border: none !important;
 		transition: all 0.5s;
+		color: white !important;
 	}
 	
-	.fc-taskBtn-button:hover, .fc-taskBtn-button:focus {
+	.fc-taskBtn-button:hover, .fc-taskBtn-button:focus, .fc-taskBtn-button.active {
 		background-color: rgb(156, 187, 58) !important;
 	}
-	
+
 	.fc-viewBtn-button {
 		width: 70px;
 		height: 32px;
@@ -138,9 +157,10 @@
 		background-color: rgb(0, 175, 185, 0.7) !important;	
 		border: none !important;
 		transition: all 0.5s;
+		color: white !important;
 	}
 	
-	.fc-viewBtn-button:hover, .fc-viewBtn-button:focus, .fc-viewBtn-button:not(:disabled):active {
+	.fc-viewBtn-button:hover, .fc-viewBtn-button:focus, .fc-viewBtn-button:not(:disabled):active, .fc-viewBtn-button.active {
 		background-color: rgb(0, 175, 185) !important;
 	}
 	
@@ -151,11 +171,41 @@
 	}
 	
 	.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
-	    background-color: var(--color-dark-beigie);
-	    border-color: var(--color-dark-beigie);
-	    color: var(--color-dark-grey);
+	    background-color: var(--color-dark-red);
+	    border-color: none;
 	}
 	
+	.fc-col-header-cell {
+		background-color: var(--color-beigie);
+		color: var(--color-dark-grey);
+	}
+	
+	
+	.fc-day-sat {
+		 color:var(--color-blue); 
+	}  
+    
+    .fc-day-sun {
+    	color: var(--color-dark-red);
+    }
+    
+	.fc-event-title-container {
+		cursor: pointer;
+		text-align: center;
+	}
+	
+	.fc .fc-daygrid-day.fc-day-today {
+	    background-color: rgb(253, 252, 220, 0.7);
+	}
+	
+	.fc .fc-daygrid-day-number {
+	    font-size: var(--font-micro);
+	}
+	
+	.fc-daygrid-block-event .fc-event-time, .fc-daygrid-block-event .fc-event-title {
+	    color: var(--color-dark-grey);
+	    font-weight: var(--weight-bold);
+	}
 	
 	
 	
@@ -176,7 +226,7 @@
 		display: none;
 		left: 0;
 		top: 0;
-		z-index: 1;
+		z-index: 2;
 	}
 	
 	.prjSche-modal__content, .prjTask-modal__content{
@@ -611,6 +661,7 @@
 	}
 	.sche__search{
 		margin : 20px 0;
+		cursor: default;
 	}
 	.board-comment {
 	    padding: 5px 40px;
@@ -631,6 +682,10 @@
 	
 	.processivity {
 		cursor: pointer;
+	}
+	
+	.processivity-value {
+		transition: all 0.5s;
 	}
 	
 	#prjTask-modal div[data-state] button.active {
@@ -877,7 +932,6 @@
 	//상세정보 모달페이지 출력
 	$('.board-header-btn').on('click', function(e) {
 		let modal = $(e.currentTarget).parent().parent().parent().parent().find('div[data-boardmodal]');
-		console.log(modal);
 		let modalContent = modal.children('.board-modal-content');
 		let x = e.clientX - 150;
 		let y = e.clientY + 5;
@@ -944,7 +998,6 @@
 			data: {"prjBoardId" : scheId},
 			dataType:"JSON",
 			success:function(result){
-				console.log(result)
 				$('.board-form input[name="prjBoardId"]').val(result.boardVO.prjBoardId)
 				//제목
 				$('.board-form-title').val(result.boardVO.prjBoardTitle); 
@@ -966,14 +1019,12 @@
 	function deleteSche(){
 		let scheId = $('#prjScheId').val()
 		
-		console.log(scheId);
 		if (confirm("삭제하시겠습니까?") == true){ 
 		   $.ajax({
 			  url : 'deleteSche',
 			  method : 'GET',
 			  data : {"prjBoardId":scheId},
 			  success : function(result){
-				  console.log(result)
 				  if(result==3){
 					  alert("삭제완료")
 				  };
@@ -1116,7 +1167,6 @@
 		let memberId = '${memberInfo.memberId}';
 		let bookmark = $(e.currentTarget).data('bookmark');
 		let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
-		console.log(data)
 		if(bookmark == 'no') {
 			if(confirm('이 게시글을 북마크 하시겠습니까?')) {
 				$.ajax({
@@ -1165,14 +1215,13 @@
     function searchTasknSche(){
     	let searchKeyword = $('.sche__search').val();
     	let projectId = ${projectInfo.projectId}
-    	console.log()
+
     	$.ajax({
     		url : 'searchCalendar',
     		method : 'GET',
     		data : {"projectId" : projectId, "searchKeyword" : searchKeyword},
     		dataType : 'JSON',
     		success : function(result){
-    			console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.scheList);
 				calendar.addEventSource(result.taskList);
@@ -1284,7 +1333,6 @@ function updateProcessivity(e) {
 		    dataType: 'JSON',
 		    data : {"projectId" : projectId},
 		    success : function(result){
-		    	console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.scheList);
 				calendar.addEventSource(result.taskList);
@@ -1303,7 +1351,6 @@ function updateProcessivity(e) {
 		    dataType: 'JSON',
 		    data : {"projectId" : projectId},
 		    success : function(result){
-		    	console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.scheList);
 		    },
@@ -1320,7 +1367,6 @@ function updateProcessivity(e) {
 		    dataType: 'JSON',
 		    data : {"projectId" : projectId},
 		    success : function(result){
-		    	console.log(result)
 				calendar.removeAllEvents();
 				calendar.addEventSource(result.taskList);
 		    },
@@ -1329,10 +1375,23 @@ function updateProcessivity(e) {
 		    }
 		});
 	}
+	
+	//초기 버튼 설정
+	$(window).on('load', function(e) {
+		$('.fc-viewBtn-button').addClass('active');
+	});
+	
+	//캘린더 조건 버튼
+	$(document).on('click', '.fc-scheBtn-button,.fc-taskBtn-button, .fc-viewBtn-button ', function(e) {
+		$(e.currentTarget).parent().find(".active").removeClass("active");
+		$(e.currentTarget).addClass("active");
+	});
+	
 	var calendar 
 	//풀캘린더 불러오기
 	document.addEventListener('DOMContentLoaded', function() {
 		$('input').attr("autocomplete","off");
+
 		//변수선언
 		var calendarEl = document.getElementById('calendar');
 		calendar = new FullCalendar.Calendar(calendarEl, {
@@ -1355,13 +1414,29 @@ function updateProcessivity(e) {
 				},
 				viewBtn : {
 					text : '전체',
-					click : renderAll
+					click : renderAll,
+				},
+				today : {
+					text : '월 선택'					
 				}
 			},
 			headerToolbar : {
 				left : 'prev,today,next dayGridMonth,timeGridWeek',
 				center : 'title',
 				right : 'scheBtn,taskBtn,viewBtn'
+			},
+			dayCellContent: function (info) {
+			    var number = document.createElement("a");
+			    number.classList.add("fc-daygrid-day-number");
+			    number.innerHTML = info.dayNumberText.replace("일", '').replace("日","");
+			    if (info.view.type === "dayGridMonth") {
+			      return {
+			        html: number.outerHTML
+			      };
+			    }
+			    return {
+			      domNodes: []
+			    };
 			},
 			locale : "ko",
 			navLinks : false, // can click day/week names to navigate views
@@ -1382,7 +1457,6 @@ function updateProcessivity(e) {
 
 		//일정 입력
 		function insertSche(arg){
-			console.log(arg)
 			$('.insert-board-modal-title div').text("일정 입력");
 			$('#boardUpdateModal').addClass("d-b");
 			
@@ -1444,6 +1518,7 @@ function updateProcessivity(e) {
 						//업무 번호
 						$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
 						//업무 진행 상황
+						$('.prjTask-modal__content div[data-state]').children('button').removeClass('active');
 						$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).addClass('active');
 						//업무 날짜 지정
 				        if(result.highTask[0].startDate != null) {
@@ -1462,6 +1537,7 @@ function updateProcessivity(e) {
 				        	$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').remove();
 				        };
 				     	// 상위 업무 담당자
+				     	$('.task-manager').find('span:not(:eq(0))').remove();
 				     	if(result.highManager.length >1) {
 				     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + ' 외 ' + (result.highManager.length-1) + '명</span>');	
 				     	} else if(result.highManager.length == 0) {
@@ -1470,7 +1546,8 @@ function updateProcessivity(e) {
 				     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + '</span>');
 				     	};
 				     	//업무 내용
-				     	$('.board-content div').append(result.highTask[0].prjBoardSubject)
+				     	$('.board-content div').children().remove();
+				     	$('.board-content div').append(result.highTask[0].prjBoardSubject);
 				     	// 하위 업무 리스트
 				     	if(result.subTask.length == 0) {
 				     		$('.prjTask-modal__content').find('span[data-subtaskcount]').text("0");
@@ -1480,6 +1557,7 @@ function updateProcessivity(e) {
 					     	let subTaskList = $('.prjTask-modal__content').find(".sub-task-list");
 							// 하위 업무 갯수 
 					     	countSpan.text(result.subTask.length);
+					     	subTaskList.find('li').remove();
 					     	// 정보 입력
 					        for (let j = 0; j < result.subTask.length; j++) {
 					        	let subTask = result.subTask[j];
@@ -1515,7 +1593,6 @@ function updateProcessivity(e) {
 					data: {"prjBoardId" : boardId},
 					dataType:"JSON",
 					success:function(result){
-						console.log(result)
 						
 				     	//북마크 여부 조회   board-footer   data-bookmark   img
 				     	if(result.markedUserId=="yes"){
@@ -1675,15 +1752,13 @@ function updateProcessivity(e) {
 				boardVO = {prjBoardTitle, prjBoardSubject, projectId, memberId, boardType};
 				scheVO = {startDate, endDate, scheAddr, scheAddrDetail, alarmDateCode};
 				boardRequestVO = {boardVO, scheVO}
-				console.log(boardRequestVO)
-				console.log(JSON.stringify(boardRequestVO))
+
 				$.ajax({
 					url : '${pageContext.request.contextPath}/calInsertSche',
 					method : 'POST',
 					data : JSON.stringify(boardRequestVO),
 					contentType : 'application/json',
 					success : function(result){
-						console.log(result);
 						$('div[data-boardmodal]').attr('class','d-none');
 						$('.sche-addr span[class="sche-addr__info"]').remove();
 						//상세조회 모달 끄기
