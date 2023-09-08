@@ -9,6 +9,54 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <title>Insert title here</title>
 <style>
+.carpool-board-box {
+	width: 60%;
+	margin: 60px auto 0; 
+	color: var(--color-dark-grey);
+	font-size: var(--font-micro);
+}
+
+.insert {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px 20px;
+}
+
+.insert h2 {
+	margin: 0;
+	font-size: var(--font-regular);
+	font-weight: var(--weight-bold);
+	color: var(--color-green);
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th,td {
+	border: 1px solid var(--color-dark-beigie);
+}
+
+th {
+	height: 40px;
+}
+
+.table-title ,.table-writer, .table-hit, .table-reg {
+	width: 15%;
+	text-align: center;
+	background-color: var(--color-beigie);
+}
+
+
+
+
+
+
+
+
+
 body {
 	margin: 0 auto;
 	font-size: small;
@@ -260,15 +308,18 @@ div h2 {
 </style>
 </head>
 <body>
-	<div class="top">
-		<h2>카풀게시판</h2>
-	</div>
-	<div class="body">
+	<div class="carpool-board-box">
+		<div class="insert">
+			<h2>
+				<img class="notice-icon" src="${pageContext.request.contextPath }/resources/icon/car-solid.svg" alt="카풀 아이콘">
+				같이 타요
+			</h2>
+		</div>
 		<form action="carpoolInfo" method="post">
 			<table class="table">
 				<thead>
 					<tr class="main__p">
-						<th class="table__title">
+						<th class="table-title">
 						<c:choose>
 							<c:when test="${carpoolInfo.category eq 'B1' }">
 								[태워드립니다] 

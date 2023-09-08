@@ -171,8 +171,6 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 	let projectId = $(e.currentTarget).closest('.project-list-item').data('prjid');
 	let data = { 'projectMarkup': 'A2', 'projectId': projectId, 'memberId' : '${memberInfo.memberId}' };
 	
-	console.log(data, projectId);
-	if(confirm('즐겨찾기를 해제하시겠습니까?')) {
 		$.ajax({
 			url:'${pageContext.request.contextPath }/updateStar',
 			type:'POST',
@@ -193,7 +191,7 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 							let projectList = `
 								<li class="d-flex project-list-item" data-prjid="\${prjLists[i].projectId}">
 									<div class="d-flex">
-										<img class="icon" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-bookmark> 
+										<img class="icon" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg" data-bookmark> 
 										<a href="${pageContext.request.contextPath}/projectFeed?projectId=\${prjLists[i].projectId}">\${prjLists[i].projectName}</a>
 									</div>
 									<div class="d-flex">
@@ -214,7 +212,7 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 				console.log(reject);
 			}
 		});	
-	}
+
 });
 	
 	//즐겨찾기 관련 정보를 DB에 연동

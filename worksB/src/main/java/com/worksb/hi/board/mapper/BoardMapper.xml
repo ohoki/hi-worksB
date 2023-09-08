@@ -24,9 +24,6 @@
 							</if>
 							, board_type
 							, project_id
-							<if test="coordinate !=null">
-							, coordinate
-							</if>
 						)
 					VALUES
 						(
@@ -42,9 +39,6 @@
 							</if>
 							, #{boardType}
 							, #{projectId}
-							<if test="coordinate !=null">
-							, #{coordinate}
-							</if>		
 						)
 	</insert>
 	
@@ -256,7 +250,6 @@
 				p.pin_yn,                
 				p.board_type,           
 				p.project_id,                 
-				p.coordinate,
                 t.high_task_id,
 				t.start_date,
 				t.end_date,
@@ -348,7 +341,6 @@
 				p.pin_yn,                
 				p.board_type,           
 				p.project_id,                 
-				p.coordinate,
                 t.high_task_id,
 				t.start_date,
 				t.end_date,
@@ -801,7 +793,6 @@
 			   , pin_yn  
 			   , board_type 
 			   , project_id  
-			   , coordinate 
 		FROM prj_board
 		WHERE prj_board_id = #{prjBoardId}
 	</select>
