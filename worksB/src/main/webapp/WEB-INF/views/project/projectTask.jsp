@@ -110,6 +110,7 @@
 		display: none;
 		left: 0;
 		top: 0;
+		z-index: 0;
 	
 	}
 	
@@ -719,7 +720,7 @@
 		display: none;
 		left: 0;
 		top: 0;
-		z-index: 200;
+		z-index: 1;
 	}
 	.taskManager-modal-title{
 		font-size: 15px;
@@ -1335,6 +1336,8 @@
 				} else {
 					profileImg.attr('src', '${pageContext.request.contextPath}/images/' + highTask.realProfilePath);
 				}
+				
+				profileImg.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 				//작성일자
 				taskInfo.find('span[data-regdate]').text(highTask.prjBoardRegdate);
 				//제목
@@ -1464,7 +1467,7 @@
 						let boardComment =`
 							<div class="board-comment" data-cmtid="\${comments[i].commentId }">
 								<div class="d-flex">
-									<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profileImg">
+									<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profileImg" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 									<div>
 										<div style="margin: 5px 0;">
 											<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
@@ -2021,7 +2024,7 @@
 			type : 'GET',
 			data : {'memberId': memberId, 'prjBoardId' : boardId},
 			success : function(bookmark){
-				console.log(bookmark)
+
 				let bookmarkSpan = $('#task-modal').find('span[name="bookmark-icon"]')
 				bookmarkSpan.empty();
 				if(bookmark != 0 ){
@@ -2130,7 +2133,7 @@
 	$(document).on('click', '.task-manager', function(e){
 		let boardContainer = $('#task-modal');
 		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
-		let x = e.clientX -500 ;
+		let x = e.clientX + 10;
 		let y = e.clientY;
 		
 		$('.taskManager-modal-content').css('left', x + 'px');
@@ -2160,6 +2163,7 @@
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"')
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = managers[i].memberName;

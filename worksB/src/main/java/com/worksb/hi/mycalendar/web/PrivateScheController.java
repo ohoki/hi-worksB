@@ -55,11 +55,9 @@ public class PrivateScheController {
 		for(int i=0;i<priScheList.size();i++) {
 			hash.put("id", priScheList.get(i).getScheId());//단건조회용 sche_id 입력
 			hash.put("title", priScheList.get(i).getScheTitle()); //제목
-
 			String strStartDate = simpleDateFormat.format(priScheList.get(i).getStartDate());
 			hash.put("start", strStartDate); //시작일자
 			String strEndDate = simpleDateFormat.format(priScheList.get(i).getEndDate()); 
-      
 			hash.put("end", strEndDate); //종료일자
 			hash.put("color", "rgba(249, 166, 52, 0.7)");
 

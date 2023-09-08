@@ -285,13 +285,6 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 		})
 		$('#prjParticir-modal').addClass('modal-visible');
 	})
-	
-	//모달 닫기
-	$('[id*=modal]').on('click', function() {
-		$('.modal-visible').removeClass('modal-visible');
-	});
-
-
 </script>
 </body>
 </html>
