@@ -176,7 +176,7 @@
 							<td id="${list.convertedSize }" data-filesize>${list.convertedSize }</td>
 							<td data-member>${list.memberName }</td>
 							<td data-regdate><fmt:formatDate value="${list.fileRegdate }" pattern="YY/MM/dd" type="date"/></td>
-							<td data-count></td>
+							<td data-count>${list.count }</td>
 							<td hidden><input type="checkbox" id="${list.fileId }"></td>
 							<td hidden>${list.fileSize }</td>
 							<td hidden>${list.realFilePath }</td>
