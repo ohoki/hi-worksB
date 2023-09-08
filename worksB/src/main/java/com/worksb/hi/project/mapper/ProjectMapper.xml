@@ -207,13 +207,20 @@
 			AND p.particir_accp = 'A2'
 	</select>
 	
-	<!-- 프로젝트 참여 승인하기 -->
+	<!-- 프로젝트 참여자 승인 -->
 	<update id="updateAccpParticir" parameterType="PrjParticirVO">
 		UPDATE	prj_particir
 		SET		particir_accp = 'A1'
 		WHERE	member_id = #{memberId}
 			AND	project_id = #{projectId}
 	</update>
+	
+	<!-- 프로젝트 참여자 승인거절 -->
+	<delete id="deleteAccpParticir" parameterType="PrjParticirVO">
+		DELETE	prj_particir
+		WHERE	member_id = #{memberId}
+			AND	project_id = #{projectId}
+	</delete>
 	
 	<!-- 프로젝트 만료 -->
 	<update id="updateProjectCls" parameterType="ProjectVO">

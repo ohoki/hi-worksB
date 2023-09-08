@@ -553,17 +553,23 @@
 			max-height: 550px;
 		}
 		
-		.insert-board-area::-webkit-scrollbar, .pin-board::-webkit-scrollbar, .bookmark-board-contets::-webkit-scrollbar {
+		.insert-board-area::-webkit-scrollbar, .pin-board::-webkit-scrollbar,
+		.bookmark-board-contets::-webkit-scrollbar,
+		.particir-board-contents::-webkit-scrollbar {
 		    width: 10px;
 		  }
-		  .insert-board-area::-webkit-scrollbar-thumb, .pin-board::-webkit-scrollbar-thumb, .bookmark-board-contets::-webkit-scrollbar-thumb {
+		  .insert-board-area::-webkit-scrollbar-thumb, .pin-board::-webkit-scrollbar-thumb,
+		  .bookmark-board-contets::-webkit-scrollbar-thumb, 
+		  .particir-board-contents::-webkit-scrollbar-thumb{
 		    background-color: #2f3542;
 		    border-radius: 10px;
 		    background-clip: padding-box;
 		    border: 2px solid transparent;
 		    background-color: var(--color-dark-beigie);
 		  }
-		  .insert-board-area::-webkit-scrollbar-track, .pin-board::-webkit-scrollbar-track, .bookmark-board-contet::-webkit-scrollbar-track {
+		  .insert-board-area::-webkit-scrollbar-track, .pin-board::-webkit-scrollbar-track,
+		  .bookmark-board-contet::-webkit-scrollbar-track,
+		  .particir-board-contents::-webkit-scrollbar-track {
 		    background-color: grey;
 		    border-radius: 10px;
 		    box-shadow: inset 0px 0px 5px white;
@@ -783,7 +789,7 @@
 		
 		input[name=listContent] {
 			display: block;
-			width: 80%;
+			width: 90%;
 			margin: 5px auto;
 			height: 40px;
 			border-radius: 5px;
@@ -829,10 +835,17 @@
 			position: fixed;
 			width: 360px;
 		    margin: 0 auto;
-		    top: 220px;
+		    top: 500px;
 		}
 		
-		.bookmark-board-title {
+		.particir-board{
+			position: fixed;
+			width: 360px;
+		    margin: 0 auto;
+		    top: 160px;
+		}
+		
+		.bookmark-board-title, .particir-board-title{
 			display: flex;
 			align-items: center;
 			justify-content: flex-start;
@@ -850,6 +863,15 @@
 		   	padding: 20px 0;
 		   	min-height: 250px;
 		   	max-height: 350px;
+		}
+		.particir-board-contents {
+			border: 1px solid var(--color-beigie);
+		    border-radius: 20px;
+		    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+		   	overflow: auto;
+		   	overflow-x: hidden;
+		   	padding: 20px 0;
+		   	height: 240px;
 		}
 		
 		.bookmark-board-contets ul {
@@ -1028,6 +1050,20 @@
 		#updateSubTask-modal span, #updateSubTask-modal label,
 		#insertSubTask-modal span, #insertSubTask-modal label{
 			font-size: var(--font-micro);
+		}
+		.deleteSubtask{
+			cursor: pointer;
+		}
+		
+		span[name=updateComment], span[name=deleteComment]{
+			font-size: var(--font-micro);
+			color:var(--color-dark-white);
+		}
+		
+		span[name=updateComment]:hover, span[name=deleteComment]:hover,
+		span[name=saveUpdate]{
+			font-size: var(--font-micro);
+			color:var(--color-dark-grey);
 		}
 	</style>
 </head>
@@ -1452,6 +1488,7 @@
 			</c:forEach>
 		</div>	
 		<!-- 게시글 조회 끝 -->
+		<!-- 북마크 -->
 		<div style="width: 25%;">
 			<div class="bookmark-board">
 				<div class="bookmark-board-title">북마크</div>
@@ -1472,6 +1509,20 @@
 								</li>						
 							</c:forEach>						
 						</c:if>
+					</ul>
+				</div>
+			</div>
+			<!-- 프로젝트 참여자 -->
+			<div class="particir-board">
+				<div class="particir-board-title">프로젝트 참여자</div>
+				<div class="particir-board-contents">
+					<ul>
+						<c:forEach items="${particirList }" var="particir">
+							<li class="employee">
+								<img class="employee-img" src="${pageContext.request.contextPath }/images/${particir.realProfilePath}" alt="회원 프로필 사진" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+								<span>${particir.memberName }</span>									
+							</li>						
+						</c:forEach>						
 					</ul>
 				</div>
 			</div>
@@ -3102,7 +3153,7 @@
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">글</li>
+		    		<li class="insert-list-item">일반</li>
 		    		<li class="insert-list-item">업무</li>
 		    		<li class="insert-list-item">일정</li>
 		    		<li class="insert-list-item">투표</li>
@@ -3295,7 +3346,7 @@
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">글</li>
+		    		<li class="insert-list-item">일반</li>
 		    		<li class="insert-list-item">업무</li>
 		    		<li class="insert-list-item">일정</li>
 		    		<li class="insert-list-item">투표</li>
@@ -3552,7 +3603,7 @@
 						let voteList = $(vote).find('.board-vote-list');
 						voteList.empty();
 						for(let i=0; i<voteData.voteList.length; i++){
-							voteList.append('<div><input type="text" name="listContent" value="' + voteData.voteList[i].listContent + '"><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>');
+							voteList.append('<div class="d-flex"><input type="text" name="listContent" value="' + voteData.voteList[i].listContent + '"><img class="deleteListContent" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>');
 						}
 						$('.modal-footer').append('<input type="hidden" name="prjBoardId" value="' + prjBoardId + '">')
 						
@@ -4034,7 +4085,7 @@
 			
 			visibleDiv.removeClass('d-b');
 			
-			if(targetText == '글') {
+			if(targetText == '일반') {
 				$(board).addClass('d-b');
 			}else if(targetText == '업무') {
 				$(task).addClass('d-b');
@@ -4290,7 +4341,7 @@
 		// 투표 항목 추가하기           
         $('.add-vote-list-btn').on('click', function () {                                        
             $('.board-vote-list').append (                        
-                '<div><input type="text" name="listContent" placeholder="내용을 입력해주세요."><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>'                    
+                '<div class="d-flex"><input type="text" name="listContent" placeholder="내용을 입력해주세요."><img class="deleteListContent cursor" alt="삭제" src="${pageContext.request.contextPath}/resources/icon/red-xmark-solid.svg"></div>'                    
             ); // end append                            
         });        
 		// 투표 항목 삭제
@@ -4298,6 +4349,10 @@
 			$(this).parent().remove();
 		})
 		
+		// 하위 업무 작성 삭제
+		$(document).on('click', '.deleteSubtask', function(){
+			$(this).parent().remove();
+		})
 		// 댓글 등록
 		$('.cmtBtn').on('click', function(e){
 			let boardContainer = $(e.currentTarget).closest('.board-container');
@@ -4325,8 +4380,6 @@
 				}
 			})
 		})
-		
-
 		
 	</script>
 	<!-- 게시글 작성 종료 -->

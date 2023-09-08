@@ -153,7 +153,7 @@
 		FROM	(project p
 			JOIN	prj_particir pp
 			ON p.project_id = pp.project_id) LEFT JOIN a ON a.project_id = p.project_id
-		WHERE pp.member_id= #{memberId}
+		WHERE pp.member_id= #{memberId} AND pp.project_markup = 'A1'
 		ORDER BY p.project_id DESC
 	</select>
 	
