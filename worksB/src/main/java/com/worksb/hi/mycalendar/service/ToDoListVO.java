@@ -1,5 +1,11 @@
 package com.worksb.hi.mycalendar.service;
 
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -14,7 +20,9 @@ public class ToDoListVO {
 	private String listTitle;
 	private String listRegdate;
 	private String memberId;
-	private String applyDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date applyDate;
 	
 //	CONTENT NOT NULL VARCHAR2(100) 
 //	SUCCESS NOT NULL VARCHAR2(5)   

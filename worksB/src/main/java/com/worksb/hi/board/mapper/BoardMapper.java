@@ -145,6 +145,8 @@ public interface BoardMapper {
     public ScheVO searchScheCalendar(int prjBoardId);
     //프로젝트 캘린더 업무 검색조회
     public TaskVO searchTaskCalendar(int prjBoardId);
+    //프로젝트 하위업무 캘린더 조회
+    public TaskVO searchLowerTaskCalendar(int prjBoardId);
 	//일정 수정
 	public int updateSche(ScheVO scheVO);
 	//일정 삭제

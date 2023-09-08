@@ -20,14 +20,19 @@
 	사회
 	<div id="socialNews">
 	</div>
+	<br>
+	정치
+	<div id="politicNews">
+	</div>
 </body>
 <script>
-	var news = ${news}
-    var economic = ${economicNews}
-    let social = ${socialNews}
+	let news = ${news}
+    let economic = ${economicNews}
+    let socialNews = ${socialNews}
+    let politicNews = ${politicNews}
     
-	function newsLoad(newsItem){
-		let mainContainer = $('#newsMain')		
+	function NewsLoad(news, newsItem){
+		let mainContainer = $(news)		
         for(let i=1;i<6;i++){
         	let title = newsItem.items[i].title
         	let link = newsItem.items[i].link
@@ -36,7 +41,7 @@
         	//뉴스 구획
         	let divTag = $('<div></div>')
         	divTag.attr('id','news-'+i)
-        	let aTag = $('<a></a>')
+        	let aTag = $('<a target="_black"></a>')
         	aTag.attr('href',link)
         	
         	//뉴스 제목
@@ -48,53 +53,10 @@
             
         }
 	}
-	function economyNewsLoad(newsItem){
-		let mainContainer = $('#economyNews')		
-        for(let i=1;i<6;i++){
-        	let title = newsItem.items[i].title
-        	let link = newsItem.items[i].link
-        	let sub = newsItem.items[i].description
-        	
-        	//뉴스 구획
-        	let divTag = $('<div></div>')
-        	divTag.attr('id','news-'+i)
-        	let aTag = $('<a></a>')
-        	aTag.attr('href',link)
-        	
-        	//뉴스 제목
-        	let divTitle = $('<div></div>')
-        	divTitle.attr('class','newsTitle').append(title)
-        	divTag.append(divTitle)
-        	aTag.append(divTag)
-            mainContainer.append(aTag)
-            
-        }
-	}
-	function socialNewsLoad(newsItem){
-		let mainContainer = $('#socialNews')		
-        for(let i=1;i<6;i++){
-        	let title = newsItem.items[i].title
-        	let link = newsItem.items[i].link
-        	let sub = newsItem.items[i].description
-        	
-        	//뉴스 구획
-        	let divTag = $('<div></div>')
-        	divTag.attr('id','news-'+i)
-        	let aTag = $('<a></a>')
-        	aTag.attr('href',link)
-        	
-        	//뉴스 제목
-        	let divTitle = $('<div></div>')
-        	divTitle.attr('class','newsTitle').append(title)
-        	divTag.append(divTitle)
-        	aTag.append(divTag)
-            mainContainer.append(aTag)
-            
-        }
-	}
-    
-    newsLoad(news);
-    economyNewsLoad(economic);
-    socialNewsLoad(social);
+
+    NewsLoad('#newsMain', news);
+    NewsLoad('#economyNews', economic);
+    NewsLoad('#socialNews', socialNews);
+    NewsLoad('#politicNews', politicNews);
 </script>
 </html>

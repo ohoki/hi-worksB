@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.mycalendar.mapper.PrivateScheMapper;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
@@ -37,17 +38,22 @@ public class PrivateScheServiceImpl implements PrivateScheService {
 			return -1;
 		}
 	}
-
+	//일정수정
 	@Override
 	public int updatePsche(PrivateScheVO privateScheVO) {
 		int result = privateScheMapper.updatePsche(privateScheVO);
 		return result;
 	}
-
+	//일정삭제
 	@Override
 	public int deletePsche(int scheId) {
 		int result = privateScheMapper.deletePsche(scheId);
 		return result;
+	}
+	//개인이 맡은 업무게시글번호 조회
+	@Override
+	public List<BoardVO> searchMyTask(String memberId) {
+		return privateScheMapper.searchMyTask(memberId);
 	}
 
 }
