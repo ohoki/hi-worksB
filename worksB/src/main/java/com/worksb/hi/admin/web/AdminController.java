@@ -235,7 +235,7 @@ public class AdminController {
 			
 			model.addAttribute("deptList", deptList);
 			model.addAttribute("jobList", jobList);
-			return "adminPage/memberManagement";
+			return "admin/memberManagement";
 		}
 		
 		// 구성원 정보 단건조회

@@ -375,6 +375,7 @@
 		
 		// 댓글 수정 / 성공은 했는데 한 페이지에서 새로고침 없이 또 수정하면 중복수정됨 / 시간남을때 수정 필수
 		$(document).on('click', '.cmtUpdate', function(e){
+			e.stopPropagation();
 			let commentId = $(this).closest("ul").find(".commentId").val();
 			let boardType = $(this).closest("ul").find(".boardType").val();
 			let boardId = $(this).closest("ul").find(".boardId").val();
@@ -404,7 +405,8 @@
 			document.body.style.overflow = "auto"; // 스크롤바 보이기
 			});
 			
-			$('#cmtUpdateButton').click(function(){
+			$('#cmtUpdateButton').click(function(e){
+				e.stopPropagation();
 				let newCommentContent = $("textarea[name='newCommentContent']").val();
 				console.log('작성된댓글내용');
 				console.log(newCommentContent);
@@ -443,7 +445,6 @@
 			$.get("boardCmtList",{boardId : ${noticeInfo.noticeId}, boardType : 'C2'},function(list) {
 				for(let i = 0 , len = list.length || 0; i < len; i++ ){
 					/* 부모/자식 댓글 구분 */
-					
 					if(list[i].deleted == 'Y'){
 						str += "<ul>" + "<li class='cmtName'>" + list[i].memberName + "</li>";
 						str += "<li class='cmtInsert'>" + "<button type='button' id='cmtInsertFormButton' class='cmtInsertFormButton'>" + "답글작성" + "</button>" + "</li>";
@@ -493,7 +494,8 @@
 		
 		
 		// 댓글 등록 ajax
-		document.getElementById('insertButton').addEventListener('click', function(){
+		document.getElementById('insertButton').addEventListener('click', function(e){
+			e.stopPropagation();
 			let commentContent = $("textarea[name='commentContent']");
 			
 			console.log(commentContent);
@@ -528,6 +530,7 @@
 
 		// 댓글 삭제 ajax
 		$(document).on('click', '.cmtDelete', function(e){
+			e.stopPropagation();
 			
 			let commentId = $(this).closest("ul").find(".commentId").val();
 			let boardType = $(this).closest("ul").find(".boardType").val();
@@ -574,6 +577,7 @@
 
 		/* 대댓글 작성 */
 		$(document).on('click', '.cmtInsertFormButton', function(e){
+			e.stopPropagation();
 			let commentId = $(this).closest("ul").find(".commentId").val();
 			let boardType = $(this).closest("ul").find(".boardType").val();
 			let boardId = $(this).closest("ul").find(".boardId").val();
@@ -597,7 +601,7 @@
 			});
 			
 			$(document).on('click', '#insertButtonc', function(e){
-				
+				e.stopPropagation();
 				let commentContentc = $("textarea[name='commentContentc']").val();
 				$.post("boardCmtInsert", {boardId : ${noticeInfo.noticeId},
 										  boardType : '${noticeInfo.boardType}',
