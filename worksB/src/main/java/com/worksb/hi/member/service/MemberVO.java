@@ -38,6 +38,7 @@ public class MemberVO {
 	private String empStatus;
 	private String conStatus;
 	private Integer companyId;
+	private String companyName;
 	private int loginFail;
 	private String loginLock;
 	private String mailKey;

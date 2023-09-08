@@ -297,7 +297,7 @@ div h2 {
 		// 날짜 가져오기
 		let x = document.getElementById("departureDateInput").value;
 
-		// 거지같은 T 바꾸기
+		// datetime-local의 T 제거
 		x = x.replace("T", " ");
 		departureDate.value = x;
 
@@ -370,7 +370,9 @@ div h2 {
 		  		document.body.style.overflow = "auto"; // 스크롤바 보이기
 		  		
 		  			// 값 넣기
-		  			if(departureInput.value == null || departureInput.value == " " ){
+		  			console.log(departureInput.value);
+		  		
+		  			if(departureInput.value == null || departureInput.value.trim() === "" ){
 		  				departureInput.value = result[0].address.address_name;
 		  				console.log(departureInput.value);
 		  			} else if(departureInput.value != null){
@@ -422,9 +424,9 @@ div h2 {
 	}
 	
 
-		const modal = document.getElementById("modal");
-		const openModalBtn = document.getElementById("departureButton");
-		const closeModalBtn = document.getElementById("close-modal");
+		let modal = document.getElementById("modal");
+		let openModalBtn = document.getElementById("departureButton");
+		let closeModalBtn = document.getElementById("close-modal");
 		// 모달창 열기
 		openModalBtn.addEventListener("click", () => {
 		  modal.style.display = "block";
