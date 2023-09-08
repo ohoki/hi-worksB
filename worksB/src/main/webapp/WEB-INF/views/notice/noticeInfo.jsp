@@ -47,7 +47,7 @@
 	.table-title ,.table-writer, .table-hit, .table-reg {
 		width: 15%;
 		text-align: center;
-		background-color: var(--color-beigie);
+		background-color: var(--color-dark-beigie);
 	}
 	
 	.title-content, .hit-content, .writer-content, .reg-content {
@@ -117,6 +117,33 @@
 		font-weight: var(--weight-bold);
 	}
 	
+	#commentContent {
+		width: 97%;
+		resize: none;
+		height: 99px;
+		border-color: var(--color-dark-white);
+		overflow: scroll;
+		overflow-x: hidden;
+		color: var(--color-dark-grey);
+		padding: 15px;
+	}
+	
+	.cmtList {
+		display: flex;
+		justify-content: space-between;
+		align-items:center;
+		font-weight: var(--weight-bold);
+		text-align: left;
+	}
+	
+	#insertButton {
+		width: 70px;
+		height: 30px;
+		color: var(--color-dark-grey);
+		background-color: var(--color-dark-beigie);
+		border-radius: 5px;
+		font-weight: var(--weight-bold);
+	}
 </style>
 </head>
 <body>
@@ -134,7 +161,6 @@
 			공지사항
 			</h2>
 		</div>
-	
 		<form action="noticeInfo" method="post">
 			<table class="table">
 				<thead>
@@ -186,7 +212,12 @@
 				    	<span id="likeCount">
 				    		${likeCount}
 				    	</span>
-				    	좋아요
+				    	<c:if test="${checkLike eq true }">
+				    		좋아요 취소
+				    	</c:if>
+						<c:if test="${checkLike eq false}">
+				    		좋아요
+				    	</c:if>				    	
 				    </span>
 				</div>
 				<div class="buttons">
@@ -201,16 +232,22 @@
 		<!-- ajax로 댓글 생성하는 공간 -->
 		<div class="boardCmtList">
 			<!-- 댓글 생성되는 곳 -->
+			<ul>
+				<li>
+					<div></div>
+					
+				</li>
+			</ul>
 		</div>
 		
 		<!-- 댓글 작성 폼 -->
 		<form id="cmtInsert" method="post">
 			<div class="cmtList">
 				<p class="cmtList__cmtInsert">댓글 작성 | ${memberInfo.memberName }</p>
-				<div id="cmtInsert__text">
-					<textarea id="commentContent" name="commentContent" placeholder="댓글을 입력하세요"></textarea>
-					<button type="button" id="insertButton">작성</button>
-				</div>
+				<button type="button" id="insertButton">작성</button>
+			</div>	
+			<div id="cmtInsert__text">
+				<textarea id="commentContent" name="commentContent" placeholder="댓글을 입력하세요"></textarea>
 			</div>
 		</form>
 		<!-- 대댓글 작성 폼 -->

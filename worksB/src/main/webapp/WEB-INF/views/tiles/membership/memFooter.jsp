@@ -11,8 +11,8 @@
 	<footer class="index-footer">
 		<div class="index-footer__box">
 			<div>
-				<span class="strong">상호</span> <span> : worksB</span> <span
-					class="strong">대표자</span> <span> : 최영호</span>
+				<span class="strong">상호</span> <span> : worksB</span> 
+				<span class="strong">제작자</span> <span> : 김정현,최영호,김이진,유주현,이동민</span>
 			</div>
 			<div>
 				<span class="strong">사업자등록번호</span> <span> : 000-00-00000</span> <span

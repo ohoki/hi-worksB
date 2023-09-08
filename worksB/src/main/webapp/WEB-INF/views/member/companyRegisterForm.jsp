@@ -156,6 +156,7 @@
 			type: 'POST',
 			data: {'companyUrl' : $('#companyUrl').val()},
 			success : function(message) {
+				console.log(message);
 				if(message == '사용가능') {
 					$('#companyRegisterForm').submit();
 				} else {
