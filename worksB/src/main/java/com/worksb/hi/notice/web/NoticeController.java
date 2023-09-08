@@ -43,7 +43,7 @@ public class NoticeController {
 	public String noticeList(Model model
 						, SearchVO searchVO
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
-						, @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage, HttpSession session) {
+						, @RequestParam(value="cntPerPage", defaultValue ="15") Integer cntPerPage, HttpSession session) {
 		
 	    // 세션의 companyid값 가져오기
 		CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");

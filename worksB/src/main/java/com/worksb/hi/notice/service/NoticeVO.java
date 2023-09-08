@@ -15,9 +15,9 @@ public class NoticeVO {
 	private String noticeTitle;
 	private String noticeContent;
 	private String memberId;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date boardRegdate;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date boardUpddate;
 	private String coordinate;
 	private int boardHit;

@@ -118,7 +118,7 @@
 						<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="image-box">
 					</c:if>
 					<c:if test="${memberInfo.realProfilePath ne null }">
-						<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="image-box">
+						<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="image-box" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 					</c:if>
 				</div>	      			
 				<div class="profile-content">

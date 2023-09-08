@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>구성원 관리</title>
 <style>
+	/* thead에 css입히실때 65줄이랑 버튼 누르면 표 생성하는 295줄 둘다 class붙여야돼요! */
 	body {
 		font-size:medium;
 	}
@@ -52,6 +53,7 @@
 	  text-decoration: none;
 	  cursor: pointer;
 	}
+	/* 모달끝 */
 </style>
 </head>
 <body>
@@ -65,8 +67,8 @@
 				<th>이름</th>
 				<th>전화번호</th>
 				<th>등급</th>
-				<th>부서번호</th>
-				<th>직급번호</th>
+				<th>부서명</th>
+				<th>직급</th>
 				<th>근무 상태</th>
 				<th>관리</th>
 			</tr>
@@ -74,8 +76,7 @@
 				<th>아이디</th>
 				<th>이름</th>
 				<th>전화번호</th>
-				<th>등급</th>
-				<th>회사 번호</th>
+				<th>회사명</th>
 				<th>관리</th>
 			</tr>
 		</thead>
@@ -83,6 +84,10 @@
 		<tbody class="taskList taskLists">
 		</tbody>
 	</table>
+	<!-- 데이터 없을때 출력하는 텍스트의 공간 -->
+	<div class="noData">
+		<!-- 데이터 없을때 출력되는 공간 -->
+	</div>
 	<div  id="memberUpdateModal">
 		<form class="updateMember" method="post">
 			<div>
@@ -91,13 +96,14 @@
 				<label>이메일</label>
 				<input data-memberId type="text" readonly="readonly"><br>
 				<label>회사 번호</label>
-				<input data-companyId type="text"readonly="readonly"><br>
+				<input data-companyName type="text"readonly="readonly"><br>
 				<br>
 				<label>이름 </label>
 				<input data-memberName type="text" name="memberName"><br>
 
 				<label>휴대폰 번호 </label>
 				<input data-memberPhone type="text" name="memberphone"><br>
+				<input data-companyId type="hidden" name="companyId" readonly="readonly">
 				<p>
 					<span>부서</span>
 					<label for="deptId">
@@ -160,6 +166,8 @@
 							taskList[i].empStatus == '접속종료';
 						}
 						
+						console.log( ${taskList[i].memberId.val });
+						
 						let hightaskList =`
 							<tr data-id="\${taskList[i].memberId }" class="highmember memberTr">
 								<td>\${taskList[i].memberId }</td>
@@ -172,10 +180,12 @@
 								<td><input type="button" value="관리"></td>
 							</tr>`;
 							$(".taskList").append(hightaskList);
+							
 						} 
 					},
 					error : function(reject){
 						console.log(reject);
+						
 					}
 			})
 		};
@@ -200,12 +210,13 @@
 					
 					memberInfo.find('input[data-memberId]').val(memberData.memberId);
 					memberInfo.find('input[data-companyId]').val(memberData.companyId);
+					memberInfo.find('input[data-companyName]').val(memberData.companyName);
 					memberInfo.find('input[data-memberName]').val(memberData.memberName);
 					memberInfo.find('select[data-deptId]').val(memberData.deptId);
 					memberInfo.find('select[data-jobId]').val(memberData.jobId);
 					memberInfo.find('input[data-memberPhone]').val(memberData.memberPhone);
 					memberInfo.find('select[data-memberGrade]').val(memberData.gradeId);
-					
+		
 					// 모달창 열기
 					memberUpdateModal.style.display = "block";
 					document.body.style.overflow = "hidden"; // 스크롤바 제거
@@ -229,6 +240,7 @@
 			let memberPhone = memberInfo.find('input[data-memberPhone]').val();
 			let memberGrade = memberInfo.find('select[data-memberGrade]').val();
 			let companyId = memberInfo.find('input[data-companyId]').val();
+			let companyName = memberInfo.find('input[data-companyName]').val();
 			let jobId = memberInfo.find('select[data-jobId]').val();
 			let deptId = memberInfo.find('select[data-deptId]').val();
 			console.log(memberName);
@@ -236,6 +248,10 @@
 			console.log(memberGrade);
 			console.log(jobId);
 			console.log(deptId);
+			console.log('회사id')
+			console.log(companyId);
+			console.log('회사 이름')
+			console.log(companyName);
 			
 			$.post("${pageContext.request.contextPath}/admin/memberAdminUpdate", 
 				{memberId : memberId,
@@ -299,10 +315,9 @@
 					<th>이름</th>
 					<th>전화번호</th>
 					<th>등급</th>
-					<th>부서번호</th>
-					<th>직급번호</th>
+					<th>부서명</th>
+					<th>직급</th>
 					<th>근무 상태</th>
-					<th>접속 여부</th>
 					<th>관리</th>
 				</tr>`;
 							
@@ -310,7 +325,9 @@
 			$('.memberMenuTwo').empty(); // 두번째 thead 삭제
 			$('.taskList').empty(); // 구성원 목록 삭제
 			$('.taskLists').empty(); // 승인대기 목록 삭제
-			$('#tableHead').append(firstMenu);	// 첫번째 thead등록 나중에 하자
+			$('.noData').empty();
+			
+			$('#tableHead').append(firstMenu);	// 첫번째 thead등록
 			getmemberList(); // 구성원 목록 가져오기
 		});
 		
@@ -320,8 +337,7 @@
 					<th>아이디</th>
 					<th>이름</th>
 					<th>전화번호</th>
-					<th>등급</th>
-					<th>회사 번호</th>
+					<th>회사명</th>
 					<th>관리</th>
 				</tr>`;
 			
@@ -329,6 +345,8 @@
 			$('.memberMenuTwo').empty(); // 두번째 thead 삭제
 			$('.taskList').empty(); // 구성원 목록 삭제
 			$('.taskLists').empty(); // 승인대기 목록 삭제
+			$('.noData').empty();
+			
 			$('#tableHead').append(secondMenu);// 두번째 thead 넣기
 			acceptMemberForm();		// 승인대기 목록 넣기
 		});
@@ -341,18 +359,26 @@
 				type : 'GET',
 				data : {companyId : '${memberInfo.companyId}'},
 				success : function(taskLists){
-					for(let i=0; i<taskLists.length; i++){
+					if(taskLists.length == 0){
 						let hightaskList =`
-							<tr data-id="\${taskLists[i].memberId }" class="highmember memberTrs">
-								<td>\${taskLists[i].memberId }</td>
-								<td>\${taskLists[i].memberName }</td>
-								<td>\${taskLists[i].memberPhone }</td>
-								<td>\${taskLists[i].gradeName }</td>
-								<td>\${taskLists[i].companyId }</td>
-								<td><input type="button" class="acceptButton" value="수락"></td>
-							</tr>`;
-						$(".taskLists").append(hightaskList);
+									<h2>가입 대기중인 인원이 없습니다.</h2>`;
+							$('.memberMenuTwo').empty();
+							$(".noData").append(hightaskList);
+						
+					} else {
+						for(let i=0; i<taskLists.length; i++){
+							let hightaskList =`
+								<tr data-id="\${taskLists[i].memberId }" class="highmember memberTrs">
+									<td>\${taskLists[i].memberId }</td>
+									<td>\${taskLists[i].memberName }</td>
+									<td>\${taskLists[i].memberPhone }</td>
+									<td>\${taskLists[i].companyName }</td>
+									<td><input type="button" class="acceptButton" value="수락"></td>
+								</tr>`;
+							$(".taskLists").append(hightaskList);
+						}
 					}
+					
 				}, 
 				error : function(reject){
 					console.log(reject);
@@ -363,14 +389,32 @@
 		/* 가입 신청 승인 ajax */
 		$(document).on("click", ".acceptButton", function(e){
 			e.stopPropagation();
+			
 			if(confirm("신청을 수락하시겠습니까?") == true){
 				let trData = $(this).closest("tr");
 				let memberIdData = trData.data('id');
 				console.log(memberIdData);
 				
-				$.get("memberAccpUpdate", {memberId : 'memberIdData'}, 
+				$.get("memberAccpUpdate", {memberId : memberIdData, companyAccp : "A1"}, 
 					function(data){
 						console.log("승인 성공")
+						let secondMenu =`
+				<tr class="memberMenuTwo">
+					<th>아이디</th>
+					<th>이름</th>
+					<th>전화번호</th>
+					<th>회사명</th>
+					<th>관리</th>
+				</tr>`;
+			
+				$('.memberMenuOne').empty(); // 첫번째 thead 삭제
+				$('.memberMenuTwo').empty(); // 두번째 thead 삭제
+				$('.taskList').empty(); // 구성원 목록 삭제
+				$('.taskLists').empty(); // 승인대기 목록 삭제
+				
+				$('#tableHead').append(secondMenu);// 두번째 thead 넣기
+				acceptMemberForm();		// 승인대기 목록 넣기
+						
 				})
 			}else {
 				console.log("취소")

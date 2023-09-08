@@ -214,6 +214,7 @@
 			$('#newPw').focus();
 			return false;
 		}
+		
 		//비밀번호 변경
 		$.ajax({
 			url : '${pageContext.request.contextPath}/updateMember',
@@ -233,6 +234,10 @@
 				console.log(reject);
 			}
 		});
+	});
+	
+	$('#searchPw-modal button[type="reset"]').on('click', function(e) {
+		$('#searchPw-modal').removeClass('d-b');
 	});
 	
 </script>

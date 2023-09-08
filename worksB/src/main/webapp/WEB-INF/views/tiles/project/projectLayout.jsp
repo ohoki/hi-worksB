@@ -26,10 +26,28 @@
 	#main{
 		width: 90%;
 		height: 93vh;
-		overflow: scroll;
+		overflow: auto;
 		overflow-x: hidden;
-		background-color: white;
 	}
+	
+	#main::-webkit-scrollbar {
+  		width: 15px;	
+	}
+	
+  	#main::-webkit-scrollbar-thumb {
+	    background-color: #2f3542;
+	    border-radius: 10px;
+	    background-clip: padding-box;
+	    border: 2px solid transparent;
+	    background-color: var(--color-light-red);
+  	}
+  	
+  	#main::-webkit-scrollbar-track {
+	    background-color: grey;
+	    border-radius: 10px;
+	    box-shadow: inset 0px 0px 5px white;
+	    background-color: var(--color-dark-beigie);
+  	}
 	body {
 		height: 100vh;
 		overflow: hidden;

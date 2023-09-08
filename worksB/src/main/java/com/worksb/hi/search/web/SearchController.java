@@ -1,5 +1,7 @@
 package com.worksb.hi.search.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,8 @@ public class SearchController {
 			) {
 		String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
 		int companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
-		
+		List<SearchingVO> prjList=service.getAllPrj(memberId,companyId,searchKeyword);
+
 		if(boardType.equals("1")) {
 			m.addAttribute("prjList",service.getAllPrj(memberId,companyId,searchKeyword));
 			m.addAttribute("searchkeyword",searchKeyword);

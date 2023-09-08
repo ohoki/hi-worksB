@@ -18,18 +18,13 @@
 			<div class="main-box-content-left">
 				<ul>
 					<li class="content-left-item">
-						<h2>내 프로젝트</h2>		
+						<h2>즐겨찾기 프로젝트</h2>		
 						<div class="project-list">
 							<ul>
-								<c:forEach items="${projectList}" var="project">
+								<c:forEach items="${projectList}" var="project" begin="0" end="9">
 									<li class="d-flex project-list-item" data-prjid="${project.projectId}">
 										<div class="d-flex">
-											<c:if test="${project.projectMarkup eq 'A2'}">
-												<img class="icon" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg" data-bookmark="no">	
-											</c:if>
-											<c:if test="${project.projectMarkup eq 'A1'}">
-												<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg" data-bookmark="yes">	
-											</c:if>
+											<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg" data-bookmark="yes">	
 											<a href="${pageContext.request.contextPath}/projectFeed?projectId=${project.projectId}">${project.projectName}</a>
 										</div>
 										<div class="d-flex">
@@ -59,7 +54,7 @@
 						<h2>공지사항</h2>
 						<div class="notice-list">
 							<ul>
-								<c:forEach items="${noticeList}" var="notice">
+								<c:forEach items="${noticeList}" var="notice" varStatus="loop" begin="0" end="9">
 									<li class="d-flex notice-list-item">
 										<div class="d-flex">
 											<img class="icon" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/clipboard-check-solid.svg"> 
@@ -172,9 +167,7 @@
 //----------메모장
 
 //즐겨찾기
-//즐겨해제
-
-/* $(document).on('click', 'img[data-bookmark]', function(e) {
+$(document).on('click', 'img[data-bookmark]', function(e) {
 	let projectId = $(e.currentTarget).closest('.project-list-item').data('prjid');
 	let data = { 'projectMarkup': 'A2', 'projectId': projectId, 'memberId' : '${memberInfo.memberId}' };
 	
@@ -222,37 +215,7 @@
 			}
 		});	
 	}
-}); */
-
-	//즐겨찾기
-	let bookMark = $('img[data-bookmark]');
-	
-	bookMark.on('click', function(e) {
-		let data = $(e.currentTarget).data('bookmark');
-		let projectId = $(e.currentTarget).closest('.project-list-item').data('prjid');
-		//즐찾 등록/해제
-		if(data == 'yes') {
-			let result = updateStar('A2', projectId);
-			
-			if(result == 'bookmark-updated') {
-				alert('즐겨찾기가 해제되었습니다.');
-				$(e.currentTarget).data('bookmark', 'no');
-				$(e.currentTarget).attr('src', '${pageContext.request.contextPath }/resources/icon/emptyStar.svg');
-			} else {
-				alert('즐겨찾기 갱신에 실패했습니다.');
-			}
-		} else if(data == 'no') {
-			let result = updateStar('A1', projectId);
-			
-			if(result == 'bookmark-updated') {
-				alert('즐겨찾기에 추가되었습니다.');
-				$(e.currentTarget).data('bookmark', 'yes');
-				$(e.currentTarget).attr('src', '${pageContext.request.contextPath }/resources/icon/star-solid.svg');
-			} else {
-				alert('즐겨찾기 갱신에 실패했습니다.');
-			}
-		}
-	});
+});
 	
 	//즐겨찾기 관련 정보를 DB에 연동
 	function updateStar(markup, projectId){
@@ -322,13 +285,6 @@
 		})
 		$('#prjParticir-modal').addClass('modal-visible');
 	})
-	
-	//모달 닫기
-	$('[id*=modal]').on('click', function() {
-		$('.modal-visible').removeClass('modal-visible');
-	});
-
-
 </script>
 </body>
 </html>

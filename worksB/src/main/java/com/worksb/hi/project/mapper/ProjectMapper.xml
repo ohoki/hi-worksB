@@ -207,13 +207,20 @@
 			AND p.particir_accp = 'A2'
 	</select>
 	
-	<!-- 프로젝트 참여 승인하기 -->
+	<!-- 프로젝트 참여자 승인 -->
 	<update id="updateAccpParticir" parameterType="PrjParticirVO">
 		UPDATE	prj_particir
 		SET		particir_accp = 'A1'
 		WHERE	member_id = #{memberId}
 			AND	project_id = #{projectId}
 	</update>
+	
+	<!-- 프로젝트 참여자 승인거절 -->
+	<delete id="deleteAccpParticir" parameterType="PrjParticirVO">
+		DELETE	prj_particir
+		WHERE	member_id = #{memberId}
+			AND	project_id = #{projectId}
+	</delete>
 	
 	<!-- 프로젝트 만료 -->
 	<update id="updateProjectCls" parameterType="ProjectVO">
@@ -393,7 +400,8 @@
 	FROM (
 	    SELECT rownum rn, a.*
 	    FROM (
-	        SELECT
+              SELECT
+                DISTINCT(f.file_id),
 	            f.board_type,
 	            f.file_name,
 	            f.file_path,
@@ -402,15 +410,17 @@
 	            f.file_size,
 	            f.board_id,
 	            f.real_file_path,
-	            f.file_id,
 	            f.project_id,
 	            f.member_id,
-	            m.member_name
+	            m.member_name,
+                (SELECT COUNT(file_id) FROM download_file WHERE file_id=f.file_id) count
 	        FROM file_data f
+	        
 	        JOIN (
 	            SELECT member_name, member_id
 	            FROM member
-	        ) m ON m.member_id = f.member_id
+	        ) m 
+	        ON m.member_id = f.member_id
 	        WHERE f.project_id = #{vo.projectId}
 	        <if test="searchVO.searchkeyword != null and searchVO.searchkeyword !=''">
 	            <choose>
@@ -446,6 +456,7 @@
 	    SELECT rownum rn, a.*
 	    FROM (
 	        SELECT
+	            DISTINCT(f.file_id),
 	            f.board_type,
 	            f.file_name,
 	            f.file_path,
@@ -454,10 +465,10 @@
 	            f.file_size,
 	            f.board_id,
 	            f.real_file_path,
-	            f.file_id,
 	            f.project_id,
 	            f.member_id,
-	            m.member_name
+	            m.member_name,
+	            (SELECT COUNT(file_id) FROM download_file WHERE file_id=f.file_id) count
 	        FROM file_data f
 	        
 	        LEFT JOIN (
@@ -605,7 +616,12 @@
 		project_id=#{projectId}
 </select>
 <insert id="updateFile" parameterType="FileDataVO">
+	<selectKey keyProperty="downloadId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(download_id), 0) + 1
+			FROM download_file
+	</selectKey>
 	INSERT INTO download_file(
+			download_id,
 			file_id,             
 			file_name, 
 			file_type,   
@@ -613,6 +629,7 @@
 			converted_size,   
 			member_id    
 	)values(
+		#{downloadId},
 		#{fileId},
 		#{fileName},
 		#{fileType},

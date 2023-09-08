@@ -58,8 +58,10 @@ public interface AdminService {
 	public List<ProjectVO>getPrjName(int deptId);
 	//해당 부서번호에 해당하는 프로젝트아이디를 불러오기
 	public int[] getPrjId(int deptId);
-	//부서이름변경시 프로젝트이름의 부서이름까지 변경
+	//부서이름변경
 	public int updateProjectName(Map<String,String>pjIdAndName);
+	//파일업로드권한 변경
+	public int updateFileAccess(ProjectVO vo);
 	
 	//직급insert
 	public int insertRole(JobVO vo);

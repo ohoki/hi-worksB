@@ -83,7 +83,6 @@
 			}
 			//비밀번호 길이 확인
 			if(memberPw.length < 6 || memberPw.length > 12) {
-				alert('비밀번호는 6~12자 사이로 입력해주세요.');
 				$('#memberPw').val('');
 				$('#pwCheck').val('');
 				$('#memberPw').focus();
@@ -91,7 +90,6 @@
 			}
 			//특수 문자 확인
 			if(special_pattern.test(memberPw) != true){
-			    alert('비밀번호에 특수문자를 넣어주세요.');
 			    $('#memberPw').val('');
 				$('#pwCheck').val('');
 				$('#memberPw').focus();
@@ -99,7 +97,9 @@
 			}
 			
 			if(memberPw != pwCheck) { //비밀번호가 같지 않으면
-				alert('비밀번호를 확인해 주세요.');
+				$('#memberPw').attr('placeholder', '비밀번호가 일치하지 않습니다.');
+				$('#memberPw').val('');
+				$('#pwCheck').val('');
 				$('#memberPw').focus();
 				return false;
 			}

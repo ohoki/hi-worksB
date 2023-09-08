@@ -190,7 +190,9 @@
 					<option value="A2" selected>진행중</option>
 					<option value="A1">만료</option>
 				</select>
-				<button onclick="location.href='${pageContext.request.contextPath }/projectInsert'">프로젝트 생성</button>
+				<c:if test="${memberInfo.memberGrade ne 'H3'}">
+					<button onclick="location.href='${pageContext.request.contextPath }/projectInsert'">프로젝트 생성</button>
+				</c:if>
 			</div>
 		</div>
 		<!-- 프로젝트리스트 전체(particirAccp가 Y,N,null로 나뉨) -->
@@ -299,7 +301,7 @@
 				data: {'projectId': prjId, 'particirAccp': 'A2'}
 			})
 			.done(data=>{
-				if(data == 'success') {
+				if(data>0) {
 					alert('참여승인을 기다려 주세요');
 					$(target).text('승인대기');
 					target.className='list-btn yellow';

@@ -9,255 +9,114 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <title>Insert title here</title>
 <style>
-	body {
-		margin: 0 auto;
-		font-size: small;
+	.notice-board-box {
+		width: 60%;
+		margin: 60px auto 0; 
+		color: var(--color-dark-grey);
+		font-size: var(--font-micro);
 	}
 	
-	.body {
-		width: 800px;
-		margin: 0 auto;
-	}
-	
-	.top {
-		margin-bottom: 80px;
-	}
-	
-	.table {
-		width: 800px;
-	}
-	
-	.table__title{
-		font-size: small;
-		text-align: left;
-		height: 40px;
-		background-color: rgba(225, 239, 251);
-		padding-left: 15px;
-		border-radius: 3px;
-	}
-	
-	.contents {
-		width: 800px;
-		height: 30px;
-	}
-	
-	.main {
-		padding-bottom: 20px;
-	}
-	
-	.main__p {
-		font-size: larger;
-		font-weight: bolder;
-	}
-	
-	.writer {
-		width: 90px;
-		float: left;
-		height: 70px;
+	.insert {
 		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20px 20px;
+	}
+	
+	.insert h2 {
+		margin: 0;
+		font-size: var(--font-regular);
+		font-weight: var(--weight-bold);
+		color: var(--color-green);
+	}
+	
+	
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	
+	th,td {
+		border: 1px solid var(--color-dark-beigie);
+	}
+	
+	th {
+		height: 40px;
+	}
+	
+	.table-title ,.table-writer, .table-hit, .table-reg {
+		width: 15%;
+		text-align: center;
+		background-color: var(--color-beigie);
+	}
+	
+	.title-content, .hit-content, .writer-content, .reg-content {
+		width: 35%;
+		text-align: left;
+		padding: 0 20px;
+		font-weight: var(--weight-semi-bold);
+	}
+					
+	.table-content {
+		height: 500px;
+		overflow: auto;
+		overflow-x : hidden;
+		padding: 10px 20px;
+		vertical-align: top;
+	}
+	
+	.table-content::-webkit-scrollbar {
+		width: 10px;
+	}
+	
+	.table-content::-webkit-scrollbar-thumb {
+		background-color: #2f3542;
+		border-radius: 10px;
+		background-clip: padding-box;
+		border: 2px solid transparent;
+		background-color: var(--color-dark-beigie);
+	}
+	
+	.table-content::-webkit-scrollbar-track {
+		background-color: grey;
+		border-radius: 10px;
+		box-shadow: inset 0px 0px 5px white;
+		background-color: var(--color-dark-beigie);
+	}
+
+ 	.table-footer {
+ 		display: flex;
+ 		justify-content: flex-start;
+ 		margin: 10px 0;
+ 	}
+
+	#likeButton {
+		background-color: transparent;
+	}	
+	
+	.like-btn {
+		width: 20px;
+		height: 20px;
+		margin-right: 10px;
+	}
+	
+	#likeCount {
+		font-weight: var(--weight-bold);
+	}
+	
+	.d-flex {
+		display: flex;
+		justify-content: space-between;
 		align-items: center;
 	}
 	
-	.writer__p {
-		
+	.buttons button[type=button] {
+		background-color: transparent;
+		color: var(--color-dark-red);
+		margin: 0 10px;
+		font-weight: var(--weight-bold);
 	}
 	
-	div h2 {
-		text-align: center;
-	}
-	
-	.date {
-		width: 700px;
-		float: right;
-		height: 20px;
-	}
-	
-	.date__date {
-		text-align: right;
-	}
-	
-	.content {
-		float: left;
-		width: 800px;
-		padding: 2px;
-		border-bottom: 1px solid rgb(174, 213, 245);
-		border-top: 1px solid rgb(174, 213, 245);
-		
-	}
-	
-	.buttonss {
-		width: 800px;
-		height: 50px;
-		border-bottom: 1px solid rgb(174, 213, 245);
-		margin-bottom: 10px;
-	}
-	
-	.button1 {
-		float: left;
-		margin-top: 5px;
-		color: black;
-	}
-	
-	.buttons {
-		float: right;
-		width: 103px;
-		margin-top: 5px;
-	}
-	
-	.buttons :first-child {
-		float: left;
-		margin-right: 3px;
-	}
-	
-	.buttonss__button {
-		background-color: rgb(174, 213, 245);
-	    border-radius: 5px;
-	    color: white;
-	    width: 50px;
-	    height: 30px;
-	    font-weight: bold;
-	}
-	
-	#likeButton {
-		color: black;
-	}
-	
-	/* 부모댓글 css */
-	.cmtName {
-		float: left;
-		width: 400px
-	}
-	
-	.cmtInsert {
-		float:right;
-		margin-left: 5px;
-	}
-	
-	.cmtDate {
-		float: right;
-		
-	}
-	
-	.cmtContent {
-		width: 800px;
-		height: 80px;
-		float: left;
-	}
-	
-	/* 자식댓글 css */
-	.cmtNamec {
-		float: left;
-		width: 400px;
-		margin-left: 50px;
-	}
-	
-	.cmtInsertc {
-		float:right;
-		margin-left: 5px;
-	}
-	
-	.cmtDatec {
-		float: right;
-		
-	}
-	
-	.cmtContentc {
-		width: 750px;
-		height: 80px;
-		float: left;
-		margin-left: 50px;
-	}
-	
-	button {
-		color: black;
-	}
-	
-	.cmtList__cmtInsert {
-		float: left;
-	}
-	
-	#commentContent {
-		resize: none;
-		width: 800px;
-		height: 80px;
-		margin-bottom: 20px;
-	}
-	/* 대댓글 Content */
-	.commentId {
-		margin-left: 80px;
-	}
-	
-	
-	/* 대댓글 작성폼 */
-	#cmtList__cmtInsertc {
-		
-	}
-	
-	/* 댓글 수정 모달 */
-	#UpdateFromModal {
-	  position: fixed;
-	  z-index: 1;
-	  left: 0;
-	  top: 0;
-	  width: 100%;
-	  height: 100%;
-	  overflow: auto;
-	  background-color: rgba(0, 0, 0, 0.4);
-	  display: none;
-	}
-	.UpdateContent {
-	  background-color: #fefefe;
-	  margin: 15% auto;
-	  padding: 20px;
-	  border: 1px solid #888;
-	  width: 80%;
-	}
-	.closeUpdate {
-	  color: #aaa;
-	  float: right;
-	  font-size: 28px;
-	  font-weight: bold;
-	}
-	.closeUpdate:hover,
-	.closeUpdate:focus {
-	  color: black;
-	  text-decoration: none;
-	  cursor: pointer;
-	}
-	/* 댓글 모달 끝 */
-	
-	/* 대댓글 모달 */
-	#replyInsert {
-	  position: fixed;
-	  z-index: 1;
-	  left: 0;
-	  top: 0;
-	  width: 100%;
-	  height: 100%;
-	  overflow: auto;
-	  background-color: rgba(0, 0, 0, 0.4);
-	  display: none;
-	}
-	.replyInsertForm {
-	  background-color: #fefefe;
-	  margin: 15% auto;
-	  padding: 20px;
-	  border: 1px solid #888;
-	  width: 80%;
-	}
-	.closeReply {
-	  color: #aaa;
-	  float: right;
-	  font-size: 28px;
-	  font-weight: bold;
-	}
-	.closeReply:hover,
-	.closeReply:focus {
-	  color: black;
-	  text-decoration: none;
-	  cursor: pointer;
-	}
-	/* 대댓글 모달 끝 */
 </style>
 </head>
 <body>
@@ -268,61 +127,77 @@
 	<!-- 사진 업로드를 위한 ckfinder -->
 	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<!-- ckeditor 끝 -->
-	<div class="top">
-		<h2>공지사항</h2>
-	</div>
-	<div class="body">
+	<div class="notice-board-box">
+		<div class="insert">
+			<h2>
+				<img class="notice-icon" src="${pageContext.request.contextPath }/resources/icon/clipboard-regular.svg" alt="게시글 아이콘">
+			공지사항
+			</h2>
+		</div>
+	
 		<form action="noticeInfo" method="post">
 			<table class="table">
 				<thead>
 					<tr class="main__p">
-						<th class="table__title">
+						<th class="table-title">
+							제목
+						</th>
+						<th class="title-content">
 							${noticeInfo.noticeTitle }
+						</th>
+						<th class="table-hit">
+							조회수
+						</th>
+						<th class="hit-content">
+							${noticeInfo.boardHit }
+						</th>
+					</tr>
+					<tr>
+						<th class="table-writer">
+							작성자
+						</th>
+						<th class="writer-content">
+							${noticeInfo.memberName}
+						</th>
+						<th class="table-reg">
+							작성시간
+						</th>
+						<th class="reg-content">
+							<fmt:formatDate value="${noticeInfo.boardRegdate}" pattern="yyyy-MM-dd hh:mm"/>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>
-							<div class="contents">
-								<div class="writer">
-									<p class="writer__p">${noticeInfo.memberName}<!-- 작성자 넣는칸 --></p>
-								</div>
-								<div class="date">
-									<p class="date__date">조회수 ${noticeInfo.boardHit } | <fmt:formatDate value="${noticeInfo.boardRegdate}" pattern="yyyy/MM/dd HH:mm:ss"/></p>
-								</div>
-								<div class="date">
-									<p class="date__date"><fmt:formatDate value="${notice.boardUpddate }" pattern="yyyy/MM/dd" /></p>
-								</div>
-							</div>
-							<div class="content">
-								<p class="content__text">
-									${noticeInfo.noticeContent }
-								</p>
-							</div>
-							<div>
-							    <!-- 좋아요 수 표시 -->
-							    좋아요 <span id="likeCount">${likeCount}</span>
-							
-							    <!-- 좋아요 버튼 -->
-							    <button id="likeButton" type="button" onclick="toggleLike('${noticeInfo.noticeId}', '${memberInfo.memberId}')">좋아요</button>
-							</div>
+						<td class="table-content" colspan="4">
+							${noticeInfo.noticeContent }
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			<div class="table-footer d-flex">
+				<div class="d-flex">
+					 <!-- 좋아요 버튼 -->
+				    <button id="likeButton" type="button" onclick="toggleLike('${noticeInfo.noticeId}', '${memberInfo.memberId}')">
+				    	<img class="like-btn" src="${pageContext.request.contextPath }/resources/icon/heart-solid.svg">
+				    </button>
+			    	<!-- 좋아요 수 표시 -->
+			    	<span id="like">
+				    	<span id="likeCount">
+				    		${likeCount}
+				    	</span>
+				    	좋아요
+				    </span>
+				</div>
+				<div class="buttons">
+					<c:if test="${memberInfo.memberId eq noticeInfo.memberId}">
+						<button type="button" class="buttonss__button" onclick="location.href='noticeUpdate?noticeId=${noticeInfo.noticeId}'">수정</button>
+						<button type="button" class="buttonss__button" onclick="location.href='noticeDelete?noticeId=${noticeInfo.noticeId}'">삭제</button>
+					</c:if>
+					<button type="button" class="buttonss__button" onclick="location.href='noticeList'">목록</button>
+				</div>
+			</div>
 		</form>
-		<div class="buttonss">
-			<div class="button1">
-				<button type="button" class="buttonss__button" onclick="location.href='noticeList'">목록</button>
-			</div>
-			<div class="buttons">
-				<c:if test="${memberInfo.memberId eq noticeInfo.memberId}">
-					<button type="button" class="buttonss__button" onclick="location.href='noticeUpdate?noticeId=${noticeInfo.noticeId}'">수정</button>
-					<button type="button" class="buttonss__button" onclick="location.href='noticeDelete?noticeId=${noticeInfo.noticeId}'">삭제</button>
-				</c:if>
-			</div>
-		</div>
 		<!-- ajax로 댓글 생성하는 공간 -->
 		<div class="boardCmtList">
 			<!-- 댓글 생성되는 곳 -->
@@ -364,17 +239,17 @@
 			</form>
 		</div>
 	</div>
+
 	<script>
-		
 		$(document).ready(function(){
 			// 댓글 리스트 출력
 			getcmtList();
 			
 		});
 		
-		
 		// 댓글 수정 / 성공은 했는데 한 페이지에서 새로고침 없이 또 수정하면 중복수정됨 / 시간남을때 수정 필수
 		$(document).on('click', '.cmtUpdate', function(e){
+			e.stopPropagation();
 			let commentId = $(this).closest("ul").find(".commentId").val();
 			let boardType = $(this).closest("ul").find(".boardType").val();
 			let boardId = $(this).closest("ul").find(".boardId").val();
@@ -404,7 +279,8 @@
 			document.body.style.overflow = "auto"; // 스크롤바 보이기
 			});
 			
-			$('#cmtUpdateButton').click(function(){
+			$('#cmtUpdateButton').click(function(e){
+				e.stopPropagation();
 				let newCommentContent = $("textarea[name='newCommentContent']").val();
 				console.log('작성된댓글내용');
 				console.log(newCommentContent);
@@ -443,7 +319,6 @@
 			$.get("boardCmtList",{boardId : ${noticeInfo.noticeId}, boardType : 'C2'},function(list) {
 				for(let i = 0 , len = list.length || 0; i < len; i++ ){
 					/* 부모/자식 댓글 구분 */
-					
 					if(list[i].deleted == 'Y'){
 						str += "<ul>" + "<li class='cmtName'>" + list[i].memberName + "</li>";
 						str += "<li class='cmtInsert'>" + "<button type='button' id='cmtInsertFormButton' class='cmtInsertFormButton'>" + "답글작성" + "</button>" + "</li>";
@@ -493,7 +368,8 @@
 		
 		
 		// 댓글 등록 ajax
-		document.getElementById('insertButton').addEventListener('click', function(){
+		document.getElementById('insertButton').addEventListener('click', function(e){
+			e.stopPropagation();
 			let commentContent = $("textarea[name='commentContent']");
 			
 			console.log(commentContent);
@@ -515,19 +391,26 @@
 	        // 서버로 비동기 요청을 보냄
 	        $.get("like", { boardType: 'C2', boardId: boardId, memberId: memberId }, function (response) {
 	            // 서버로부터 받은 값에 따라 동작을 결정함
+	            $('#likeCount').remove();
+	            $('#like').empty();
+	            
+	            let likeCount = `<span id="likeCount"> \${response.count} </span>`;
+	            
 	            if (response.result == 'liked') {
 	                // 좋아요 상태일 경우 
-	                $("#likeButton").text("좋아요 취소");
+	                $("#like").text("좋아요 취소");
 	            } else if (response.result == "unliked") {
 	                // 좋아요 해제 상태일 경우
-	                $("#likeButton").text("좋아요");
+	                $("#like").text("좋아요");
 	            }
-	            $("#likeCount").text(response.count);
+	            
+	            $('#like').prepend(likeCount);
 	        })
 		 };
-
+		 
 		// 댓글 삭제 ajax
 		$(document).on('click', '.cmtDelete', function(e){
+			e.stopPropagation();
 			
 			let commentId = $(this).closest("ul").find(".commentId").val();
 			let boardType = $(this).closest("ul").find(".boardType").val();
@@ -574,6 +457,7 @@
 
 		/* 대댓글 작성 */
 		$(document).on('click', '.cmtInsertFormButton', function(e){
+			e.stopPropagation();
 			let commentId = $(this).closest("ul").find(".commentId").val();
 			let boardType = $(this).closest("ul").find(".boardType").val();
 			let boardId = $(this).closest("ul").find(".boardId").val();
@@ -597,7 +481,7 @@
 			});
 			
 			$(document).on('click', '#insertButtonc', function(e){
-				
+				e.stopPropagation();
 				let commentContentc = $("textarea[name='commentContentc']").val();
 				$.post("boardCmtInsert", {boardId : ${noticeInfo.noticeId},
 										  boardType : '${noticeInfo.boardType}',

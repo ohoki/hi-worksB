@@ -77,6 +77,7 @@ public interface BoardMapper {
 	
 	
 	
+	
 	// 일반게시글 삭제
 	public int deleteBoard(BoardVO boardVO);
 	
