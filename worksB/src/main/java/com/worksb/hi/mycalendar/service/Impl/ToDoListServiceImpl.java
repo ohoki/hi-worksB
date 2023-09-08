@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.worksb.hi.mycalendar.mapper.ToDoListMapper;
+import com.worksb.hi.mycalendar.service.PrivateScheVO;
 import com.worksb.hi.mycalendar.service.ToDoListService;
 import com.worksb.hi.mycalendar.service.ToDoListVO;
 
@@ -21,8 +22,8 @@ public class ToDoListServiceImpl implements ToDoListService {
 	}
 
 	@Override
-	public List<ToDoListVO> selectAllTdl(String memberId) {
-		return toDoListMapper.selectAllTdl(memberId);
+	public List<ToDoListVO> selectAllTdl(PrivateScheVO privateScheVO) {
+		return toDoListMapper.selectAllTdl(privateScheVO);
 	}
 
 	@Override

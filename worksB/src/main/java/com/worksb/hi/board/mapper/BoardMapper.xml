@@ -24,9 +24,6 @@
 							</if>
 							, board_type
 							, project_id
-							<if test="coordinate !=null">
-							, coordinate
-							</if>
 						)
 					VALUES
 						(
@@ -41,10 +38,7 @@
 							, #{inspYn}
 							</if>
 							, #{boardType}
-							, #{projectId}
-							<if test="coordinate !=null">
-							, #{coordinate}
-							</if>		
+							, #{projectId}	
 						)
 	</insert>
 	
@@ -152,9 +146,6 @@
 								<if test="scheAddrDetail !=null and !scheAddrDetail.equals('')">
 									, sche_addr_detail
 								</if>
-								<if test="alarmDateCode !=null and !alarmDateCode.equals('')">
-									, alarm_date_code
-								</if>
 							)
 						VALUES
 							(
@@ -170,9 +161,6 @@
 								<if test="scheAddrDetail !=null and !scheAddrDetail.equals('')">
 									, #{scheAddrDetail}
 								</if>
-								<if test="alarmDateCode !=null and !alarmDateCode.equals('')">
-									, #{alarmDateCode}
-								</if>	
 							)
 	</insert>
 	
@@ -188,9 +176,6 @@
 		SELECT	s.start_date,
 		        s.end_date,
 		        s.prj_board_id,
-		        s.alarm_date,
-		        s.alarm_date_code,
-		        find_subcode(s.alarm_date_code) AS alarm_date_code_literal,
 		        s.sche_addr,
 		        s.sche_addr_detail,
 		        p.attendance_yes,
@@ -256,7 +241,6 @@
 				p.pin_yn,                
 				p.board_type,           
 				p.project_id,                 
-				p.coordinate,
                 t.high_task_id,
 				t.start_date,
 				t.end_date,
@@ -348,7 +332,6 @@
 				p.pin_yn,                
 				p.board_type,           
 				p.project_id,                 
-				p.coordinate,
                 t.high_task_id,
 				t.start_date,
 				t.end_date,
@@ -750,9 +733,7 @@
 			<if test="scheAddrDetail !=null and !scheAddrDetail.equals('')">
 				, sche_addr_detail = #{scheAddrDetail}
 			</if>
-			<if test="alarmDateCode !=null and !alarmDateCode.equals('')">
-				, alarm_date_code = #{alarmDateCode}
-			</if>		
+	
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
@@ -801,7 +782,6 @@
 			   , pin_yn  
 			   , board_type 
 			   , project_id  
-			   , coordinate 
 		FROM prj_board
 		WHERE prj_board_id = #{prjBoardId}
 	</select>
@@ -820,8 +800,7 @@
 		FROM	prj_board
 		WHERE	project_id = #{projectId}
 		<if test="searchKeyword !=null and searchKeyword !=''">
-			AND (prj_board_title LIKE '%' || #{searchKeyword} || '%'
-			OR prj_board_subject LIKE '%' || #{searchKeyword} || '%')
+			AND prj_board_title LIKE '%' || #{searchKeyword} || '%'
 		</if>
 	</select>
 	<!-- 프로젝트 일정 캘린더 검색조회 -->

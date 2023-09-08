@@ -91,7 +91,6 @@
 				p.pin_yn,                
 				p.board_type,           
 				p.project_id,                 
-				p.coordinate,
 				m.member_name,
 				m.real_profile_path
 		FROM 	prj_board p

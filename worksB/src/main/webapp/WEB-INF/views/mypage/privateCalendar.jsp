@@ -472,15 +472,7 @@
 						<input name="scheTitle" type="text" placeholder="제목을 입력하세요."> <br><hr>
 						<input name="startDate" type="text" id="datetimepicker1" autocomplete="off">---
 						<input name="endDate" type="text" id="datetimepicker2"  autocomplete="off">
-						<label for="alarmDate">알람시간 : </label>
-						<select class="alarmDate" name="alarmDate">
-					        <option value="">없음</option>
-					        <option value="10">10분 전 미리 알림</option>
-					        <option value="30">30분 전 미리 알림</option>
-					        <option value="60">1시간 전 미리 알림</option>
-					        <option value="120">2시간 전 미리 알림</option>
-					        <option value="1440">1일 전 미리 알림</option>
-						</select><br>
+						<br>
 						<label for="memberId">작성자 : </label><input id="memberId" name="memberId" type="text" value="${memberInfo.memberName }" readonly="readonly"><br>
 						<div>
 							<label for="scheAddr">장소 : </label>
@@ -510,15 +502,7 @@
 				<input name="scheTitle" type="text"> <br><hr>
 				<input name="startDate" type="text" id="datetimepicker3"  autocomplete="off">---
 				<input name="endDate" type="text" id="datetimepicker4"  autocomplete="off"><br>
-				<label for="alarmDate">알람시간 : </label>
-					<select class="alarmDate" name="alarmDate">
-				        <option value="">없음</option>
-				        <option value="10">10분 전 미리 알림</option>
-				        <option value="30">30분 전 미리 알림</option>
-				        <option value="60">1시간 전 미리 알림</option>
-				        <option value="120">2시간 전 미리 알림</option>
-				        <option value="1440">1일 전 미리 알림</option>
-					</select><br>
+				<br>
 				<label for="memberId">작성자 : </label><input name="memberId" type="text" value=""><br>
 				<div>
 					<label for="scheAddr">장소 : </label>
@@ -712,26 +696,21 @@
     //프로젝트 캘린더 일정/업무 검색
     function searchTasknSche(){
     	let searchKeyword = $('.sche__search').val();
-    	let projectId = '${projectInfo.projectId}';
-		let memberId = '${memberInfo.memberId}';
-    	
 		//검색구문 만들어 넣기!!진행!
-    	/* $.ajax({
-    		url : 'searchCalendar',
+    	$.ajax({
+    		url : 'searchPrivateCalendar',
     		method : 'GET',
-    		data : {"projectId" : projectId, "searchKeyword" : searchKeyword},
+    		data : {"searchKeyword" : searchKeyword},
     		dataType : 'JSON',
     		success : function(result){
 				calendar.removeAllEvents();
-				calendar.addEventSource(result.scheList);
-				calendar.addEventSource(result.taskList);
-    			
+				calendar.addEventSource(result);
     		},
     		error : function(err){
     			console.log(err)
     		}
     		
-    	}); */
+    	});
     };
 	
 	
@@ -868,7 +847,6 @@
 	//모달 폼 리셋
 	$('#selectModal, #scheModal').on('hidden.bs.modal', function (e) {
 		$(this).find('form')[0].reset();
-        $(".alarmDate option:eq(0)").prop("selected", true);
 	});
 	
 	$('#tdlModal').on('hidden.bs.modal', function (e) {
@@ -908,7 +886,7 @@
 	    timepicker:false
 	});
 	
-	//일정입력/수정 시 알람시간 부여
+	/* //일정입력/수정 시 알람시간 부여
     $(".alarmDate").change(function(e) {
     	let selectedAlarm = $(this).val(); // 선택한 알람 시간 옵션 가져오기
     	let startDate;
@@ -947,7 +925,7 @@
 	        $(".alarmDate").append(option);
         }
         
-    });
+    }); */
 	//var today = new Date();
 	//var month = ('0'+(today.getMonth()+1)).substr(-2);
 	//var day = ('0'+today.getDate()).substr(-2);
@@ -1276,17 +1254,6 @@
 						$('#scheViewForm input[name="scheTitle"]').val(result.title);
 						$('#scheViewForm input[name="startDate"]').val(result.start).datetimepicker('destroy');
 						$('#scheViewForm input[name="endDate"]').val(result.end).datetimepicker('destroy');
-						//알람시간 option태그 생성
-						let option
-						if(result.alarmDate === null){
-							let none = "없음";
-							option = $(`<option selected hidden value="">`+none+`</option>`);
-						}else{
-							let none = result.alarmDate;
-							option = $(`<option selected hidden value=`+none+`>`+none+`</option>`);
-						}
-				        $(".alarmDate").append(option);
-				        $(".alarmDate option").prop("disabled",true);
 	
 						$('#scheViewForm input[name="memberId"]').val(memName);
 						//주소
@@ -1339,7 +1306,6 @@
 			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
 			$('#coordinate').prop("required", false);
 			$('#scheForm input').eq(3).prop("readonly",true);
-			$(".alarmDate option").prop("disabled", false);
 
 			let nowTimeAfter = nowYear+'-'+nowMonth+'-'+nowDate+' '+afterhours+':'+after;
 			$('#datetimepicker1').val(nowTime);
@@ -1355,7 +1321,6 @@
 	        scheModal.show();
 			$('#scheForm input,textarea').prop("required", true).prop("readonly", false);
 			$('#scheForm input').eq(3).prop("readonly",true);
-			$(".alarmDate option").prop("disabled", false);
 			//해당 날짜가져오기
     		let time = hours+":"+minutes
 			$('#datetimepicker1').val(arg.startStr+" "+time);
@@ -1619,8 +1584,6 @@
 			    step: 30,
 			    lang:'kr'
 			});
-			//알람시간 활성화
-			$(".alarmDate option").prop("disabled",false);
 			//주소검색 활성화
 			$('#scheViewForm input[name="scheAddr"]').prop("disabled",false);
 			$('#scheViewForm input[name="scheAddrDetail"]').prop("disabled",false);

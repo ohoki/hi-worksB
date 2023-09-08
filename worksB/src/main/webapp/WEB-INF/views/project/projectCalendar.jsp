@@ -689,17 +689,13 @@
 		display: none;
 		left: 0;
 		top: 0;
-		z-index: 4;
+		z-index: 20;
 	}
 	.taskManager-modal-title, .scheParticr-modal-title{
 		font-size: 15px;
 		justify-content: space-between;
 		font-weight: var(--weight-bold);
 		padding: 5px 10px;
-	}
-	
-	#employee-modal {
-		z-index: 5;
 	}
 	
 	.taskManager-modal-content, .scheParticr-modal-content{
@@ -716,8 +712,7 @@
 	}
 	.particir-visible {
 		display: block !important;
-	}
-	
+
 	.processivity {
 		cursor: pointer;
 	}
@@ -728,14 +723,6 @@
 	/*오류 : css안입혀짐  */
 	div[data-state] button.active{
 		background-color: var(--color-dark-red) !important;
-	}
-	
-	.sche-particir-count {
-		color: var(--color-green) !important;
-	}
-	
-	.sche-nonParticir-count {
-		color: var(--color-dark-red) !important;
 	}
 </style>
 </head>
@@ -949,13 +936,6 @@
 								<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddr" name="scheAddr">
 								<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
 							</div>
-							<select name="alarmDateCode">
-								<option value="" selected>알림 설정</option>
-								<option value="L1">10분 전 미리 알림</option>
-								<option value="L2">1시간 전 미리 알림</option>
-								<option value="L3">1일 전 미리 알림</option>
-								<option value="L4">7일 전 미리 알림</option>
-							</select>
 						</div>
 						<textarea name="prjBoardSubject" placeholder="내용을 입력하세요." id="editor7"></textarea>
 					</div>
@@ -1131,7 +1111,7 @@
 						let boardComment =`
 							<div class="board-comment" data-cmtid="\${comments[i].commentId }">
 								<div class="d-flex">
-									<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profileImg" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+									<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profileImg" onerror="this.src='${pageContext.request.contextPath}/resources/img/no-image.jpg'">
 									<div>
 										<div style="margin: 5px 0;">
 											<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
@@ -1588,7 +1568,6 @@
 						if(result.realProfilePath!==null){
 							let profilePath = "${pageContext.request.contextPath}/images/"+realPath
 							$('.profile').attr("src", profilePath)
-							$('.profile').attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						}
 						//작성일자
 						$('.board-headder-info__regDate').val(result.highTask[0].prjBoardRegdate)
@@ -1695,7 +1674,6 @@
 						if(result.realProfilePath!==null){
 							let profilePath = "${pageContext.request.contextPath}/images/"+realPath;
 							$('.profile').attr("src", profilePath);
-							$('.prifile').attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						}
 						//제목 확인
 						$('.board-title-boardTitle').val(result.boardVO.prjBoardTitle);
@@ -2079,7 +2057,7 @@
 	// 업무 담당자 리스트
 	$(document).on('click', '.task-manager', function(e){
 		let prjBoardId = $('#prjTaskId').val();
-		let x = e.clientX + 10 ;
+		let x = e.clientX -500 ;
 		let y = e.clientY;
 		
 		$('.taskManager-modal-content').css('left', x + 'px');
@@ -2109,7 +2087,6 @@
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
-						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = managers[i].memberName;
@@ -2138,6 +2115,11 @@
 		});
 		$('#taskManager-modal').addClass('particir-visible');
 	})
+	
+	$('[id*=modal]').on('click', function() {
+		$('.particir-visible').removeClass('particir-visible');
+	});
+	
 	
 	//일정 참여자
 	
@@ -2186,7 +2168,6 @@
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
-						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = particirs[i].memberName;
@@ -2215,12 +2196,5 @@
 		});
 	}
 	
-	$(document).on('click', '.employee', function(e) {
-		$(e.currentTarget).stopPropagation();
-	});
-	
-	$(document).on('click', '#taskManager-modal, #scheParticr-modal', function(e) {
-		$(e.currentTarget).removeClass('particir-visible');
-	});
 </script>
 </html>

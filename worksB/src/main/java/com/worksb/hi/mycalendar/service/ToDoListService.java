@@ -8,7 +8,7 @@ public interface ToDoListService {
 	public ToDoListVO selectTdl(int listId);
 	
 	//LIST 전체조회
-	public List<ToDoListVO> selectAllTdl(String memberId);
+	public List<ToDoListVO> selectAllTdl(PrivateScheVO privateScheVO);
 	
 	//LIST 입력
 	public int insertTdl(ToDoListVO toDoListVO);

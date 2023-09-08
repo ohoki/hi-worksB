@@ -40,5 +40,7 @@ public class PrivateScheVO {
 	@JsonProperty(value = "end")
 	private Date endDate;
 	private String memberId;
-	private String alarmDate;
+	
+	//개인 캘린더용 키워드 검색단어
+	private String searchKeyword;
 }
