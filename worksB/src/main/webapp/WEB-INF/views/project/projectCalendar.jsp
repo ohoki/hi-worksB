@@ -689,13 +689,17 @@
 		display: none;
 		left: 0;
 		top: 0;
-		z-index: 20;
+		z-index: 4;
 	}
 	.taskManager-modal-title, .scheParticr-modal-title{
 		font-size: 15px;
 		justify-content: space-between;
 		font-weight: var(--weight-bold);
 		padding: 5px 10px;
+	}
+	
+	#employee-modal {
+		z-index: 5;
 	}
 	
 	.taskManager-modal-content, .scheParticr-modal-content{
@@ -724,6 +728,14 @@
 	
 	#prjTask-modal div[data-state] button.active {
 	    background-color: var(--color-dark-red);
+	}
+	
+	.sche-particir-count {
+		color: var(--color-green) !important;
+	}
+	
+	.sche-nonParticir-count {
+		color: var(--color-dark-red) !important;
 	}
 </style>
 </head>
@@ -2050,7 +2062,7 @@ function updateProcessivity(e) {
 	// 업무 담당자 리스트
 	$(document).on('click', '.task-manager', function(e){
 		let prjBoardId = $('#prjTaskId').val();
-		let x = e.clientX -500 ;
+		let x = e.clientX + 10 ;
 		let y = e.clientY;
 		
 		$('.taskManager-modal-content').css('left', x + 'px');
@@ -2080,7 +2092,7 @@ function updateProcessivity(e) {
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
-						employeeProfile.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = managers[i].memberName;
@@ -2109,11 +2121,6 @@ function updateProcessivity(e) {
 		});
 		$('#taskManager-modal').addClass('particir-visible');
 	})
-	
-	$('[id*=modal]').on('click', function() {
-		$('.particir-visible').removeClass('particir-visible');
-	});
-	
 	
 	//일정 참여자
 	
@@ -2162,7 +2169,7 @@ function updateProcessivity(e) {
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
-						employeeProfile.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = particirs[i].memberName;
@@ -2191,5 +2198,12 @@ function updateProcessivity(e) {
 		});
 	}
 	
+	$(document).on('click', '.employee', function(e) {
+		$(e.currentTarget).stopPropagation();
+	});
+	
+	$(document).on('click', '#taskManager-modal, #scheParticr-modal', function(e) {
+		$(e.currentTarget).removeClass('particir-visible');
+	});
 </script>
 </html>

@@ -110,6 +110,7 @@
 		display: none;
 		left: 0;
 		top: 0;
+		z-index: 0;
 	
 	}
 	
@@ -240,6 +241,7 @@
 	    color: var(--color-blue);
 	    margin: 10px 40px;
 	    align-items: center;
+	    cursor: pointer;
 	}
 	
 	#task-modal .task-manager .text {
@@ -718,7 +720,7 @@
 		display: none;
 		left: 0;
 		top: 0;
-		z-index: 200;
+		z-index: 1;
 	}
 	.taskManager-modal-title{
 		font-size: 15px;
@@ -2131,7 +2133,7 @@
 	$(document).on('click', '.task-manager', function(e){
 		let boardContainer = $('#task-modal');
 		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
-		let x = e.clientX -500 ;
+		let x = e.clientX + 10;
 		let y = e.clientY;
 		
 		$('.taskManager-modal-content').css('left', x + 'px');

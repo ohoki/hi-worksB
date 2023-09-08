@@ -132,7 +132,6 @@
 						</ul>
 						<form name="chatForm" action="${pageContext.request.contextPath}/sendRequest" method="POST">
 							<input type="hidden" name="roomName" id="roomNameField" value="">
-							<button type="submit" class="chat__btn" onclick="sendRequest()">채팅하기</button>
 						</form>
 					</div>	
 				</div>			
@@ -246,11 +245,6 @@
 		}
 	});
 	
-	//여백 누르면 모달페이지 종료
-	$('[id$=modal]').on('click', function(e) {
-		$(e.currentTarget).removeClass('modal-visible');
-	});
-	
 	$('.my-profile__btn').on('click', function() {
 		location.href='${pageContext.request.contextPath}/member/updateForm';
 	})
@@ -348,15 +342,10 @@
 		e.stopPropagation();
 	});
 	
-	$(document).on('click', $('div.employee'), function(e) {
+	$('#employees .employee').on('click', function(e) {
 		console.log('gg');
 		e.stopPropagation();
 	} );
-	
-	/* $(document).on('click', '#employees', function(e) {
-		console.log('gg');
-		e.stopPropagation();
-	}); */
 		
 	//구성원검색
 	$('.employees_search-input').on('keyup', (e)=>{
@@ -426,6 +415,10 @@
 			});
     	}
 		});
-
+	
+		//여백 누르면 모달페이지 종료
+		$(document).on('click', '#employees-modal, #my-profile-modal, #employee-modal, #prjParticir-modal, #profile-modal, #status-modal', function(e) {
+			$(e.currentTarget).removeClass('modal-visible');
+		});
 </script>
 </html>

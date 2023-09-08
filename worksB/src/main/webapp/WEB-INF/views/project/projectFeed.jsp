@@ -155,6 +155,7 @@
 			margin: 30px 40px;
 			font-size: var(--font-micro);
 			color: var(--color-dark-grey);	
+			min-height: 200px;
 		}
 		
 		.board-footer {
@@ -2182,7 +2183,6 @@
 	
 	<!-- 게시글 출력 SCRIPT -->
 	<script >
-	// 게시글 조회
 	$(window).on('DOMContentLoaded', function() {
 		let boardList = $('[data-list="board"]');
 		
