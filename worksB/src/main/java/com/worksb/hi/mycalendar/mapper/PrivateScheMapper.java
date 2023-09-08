@@ -1,8 +1,8 @@
 package com.worksb.hi.mycalendar.mapper;
 
 import java.util.List;
-import java.util.Map;
 
+import com.worksb.hi.board.service.BoardVO;
 import com.worksb.hi.mycalendar.service.PrivateScheVO;
 
 public interface PrivateScheMapper {
@@ -21,5 +21,8 @@ public interface PrivateScheMapper {
 	
 	//일정삭제
 	public int deletePsche(int scheId);
+	
+	//개인이 맡은 프로젝트 업무게시글 조회
+	public List<BoardVO> searchMyTask(String memberId);
 	
 }

@@ -12,6 +12,207 @@
 <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
 <link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
 <style>
+	a{
+		text-decoration: none;
+		color : var(--color-dark-beige);
+	}
+	.dis-none {
+		display: none;
+	}
+	.d-b {
+		display: block !important;
+	}
+	
+	.calander-main-box {
+		width: 85%;
+		margin: 0 auto;
+	}
+	
+	.fc .fc-toolbar.fc-header-toolbar {
+	    margin-bottom: 15px;
+	}
+	
+	.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
+	    border-bottom-left-radius: 0px;
+	    border-top-left-radius: 0px;
+	    margin-left: 0;
+	}
+	
+	.fc-prev-button {
+		width: 10px;
+		height: 30px;
+		padding: 0 15px 0 0 !important;
+		color: white !important;
+		background-color: var(--color-dark-red) !important;
+	}
+	
+	.fc-next-button {
+		width: 10px;
+		height: 30px;
+		padding: 0 15px 0 0 !important;
+		color: white !important;
+		background-color: var(--color-dark-red) !important;
+	}
+	
+	.fc-today-button {
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: var(--color-dark-beigie) !important;
+		border: none !important;
+		color: var(--color-dark-grey) !important;
+		font-weight: var(--weight-bold) !important;
+	}
+	
+	.fc .fc-button:disabled {
+	    opacity: 1;
+	}
+
+	.fc .fc-button-primary:hover {
+	    background-color: var(--color-dark-red);
+	}
+	.fc-dayGridMonth-button {
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+	}
+	
+	.fc-timeGridWeek-button, .fc-tdlBtn-button, .fc-myCustomButton-button{
+		width: 70px;
+		height: 30px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+	}
+	
+	.fc .fc-button-primary:focus {
+    	box-shadow: none;
+	}
+
+ 	.fc .fc-button:focus {
+    	box-shadow: none;
+    	outline: none;
+	}
+	
+    .fc .fc-button:active{
+	   	box-shadow: none;
+	}
+    .fc .fc-button-primary {
+	    background-color: rgb(254 217 183 / 71%);
+	    border: none !important;
+	    color: var(--color-dark-grey);
+	    transition: all 0.5s;
+	}
+	.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
+    	box-shadow: none;
+    }
+	.fc-scheBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-image: linear-gradient(to right, rgba(249, 166, 52, 0.7), rgba(156, 187, 58, 0.7));
+		border: none !important;
+		transition: all 0.5s;
+		color: white !important;
+	}
+	
+	.fc-scheBtn-button:hover, .fc-scheBtn-button:focus, .fc-scheBtn-button.active {
+		background-color: rgb(249, 166, 52) !important;
+	}
+	.fc-allBtn-button {
+		width: 70px;
+	    height: 32px;
+	    line-height: 15px;
+	    padding: 0 !important;
+	    font-size: var(--font-micro) !important;
+	    background-color: rgb(0, 175, 185, 0.7) !important;
+	    border: none !important;
+	    transition: all 0.5s;
+	    color: white !important;
+	}
+	.fc-allBtn-button:hover, .fc-allBtn-button:focus, .fc-allBtn-button.active {
+		background-color: rgb(0, 175, 185) !important;
+	}
+	.fc-taskBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: rgb(28 215 31 / 60%) !important;
+		border: none !important;
+		transition: all 0.5s;
+		color: white !important;
+	}
+	
+	.fc-taskBtn-button:hover, .fc-taskBtn-button:focus, .fc-taskBtn-button.active {
+		background-color: rgb(28 215 31 ) !important;
+	}
+
+	.fc-viewBtn-button {
+		width: 70px;
+		height: 32px;
+		line-height: 15px;
+		padding: 0 !important;
+		font-size: var(--font-micro) !important;
+		background-color: rgb(0, 175, 185, 0.7) !important;	
+		border: none !important;
+		transition: all 0.5s;
+		color: white !important;
+	}
+	
+	.fc-viewBtn-button:hover, .fc-viewBtn-button:focus, .fc-viewBtn-button:not(:disabled):active, .fc-viewBtn-button.active {
+		background-color: rgb(0, 175, 185) !important;
+	}
+	
+	.fc-toolbar-title {
+		color: var(--color-dark-grey);
+		font-weight: var(--weight-bold);
+		font-size: var(--font-regular) !important;
+	}
+	
+	.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+	    background-color: var(--color-dark-red);
+	    border-color: none;
+	}
+	
+	.fc-col-header-cell {
+		background-color: var(--color-beigie);
+		color: var(--color-dark-grey);
+	}
+	
+	
+	.fc-day-sat {
+		 color:var(--color-blue); 
+	}  
+    
+    .fc-day-sun {
+    	color: var(--color-dark-red);
+    }
+    
+	.fc-event-title-container {
+		cursor: pointer;
+		text-align: center;
+	}
+	
+	.fc .fc-daygrid-day.fc-day-today {
+	    background-color: rgb(253, 252, 220, 0.7);
+	}
+	
+	.fc .fc-daygrid-day-number {
+	    font-size: var(--font-micro);
+	}
+	
+	.fc-daygrid-block-event .fc-event-time, .fc-daygrid-block-event .fc-event-title {
+	    color: var(--color-dark-grey);
+	    font-weight: var(--weight-bold);
+	}
 	#calendar-container {
 		width: 70%;
 		margin: 0 auto;
@@ -19,10 +220,6 @@
 	
 	.scheBtn {
 		color: black;
-	}
-	a{
-		text-decoration: none;
-		color : var(--color-dark-beige);
 	}
 	.div_hidden{
 		display: none;
@@ -33,22 +230,7 @@
 	.tdlLineDeleteBtn-hidden{
 		display: none;
 	}
-	.fc .fc-button-primary{
-		background-color: #e76f51;
-		border-color : white;
-	}
-	.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
-    background-color: #ef3608;
-    border-color: white;
-	}
-	.fc .fc-button-primary:disabled {
-    background-color: #efa491;
-    border-color: white;
-	}
-	.fc .fc-button-primary:hover {
-    background-color: #ff4719;
-    border-color: #ff4719;
-	}
+
 	.sche__search{
 		margin-top : 20px;
 		width : 350px;
@@ -70,6 +252,185 @@
 	.modal-content{
 		height: 600px;
 		overflow: auto;
+	}
+	
+	.modal-prjSche-visible {
+    	display: block !important;
+	}
+	#prjTask-modal{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.1);
+			font-size: 12px;
+			display: none;
+			left: 0;
+			top: 0;
+			z-index: 2;
+	}
+	.prjTask-modal__content{
+	    position: absolute;
+	    right: 0;
+	    top: 62px;
+	    height: 100%;
+	    width: 40%;
+	    background-color: white;
+	    font-size: 17px;
+	    padding: 20px 15px;
+	    z-index: 10;
+	}
+	.board-header {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    padding: 20px 40px;
+	}
+	.board-header-info {
+	    display: flex;
+	    align-items: center;
+	}
+	.board-title div[data-hightaskid] {
+	    font-size: var(--font-micro);
+	    padding: 5px;
+	    border: 1px solid var(--color-dark-red);
+	    border-radius: 5px;
+	    color: var(--color-dark-red);
+	}
+	.board-title span {
+	    color: var(--color-blue);
+	}
+	.sche-date {
+	    font-weight: var(--weight-bold);
+	    font-size: 15px;
+	    color: var(--color-dark-red);
+	    margin: 10px 40px;
+	}
+	.sche-date .text, .task-manager .text {
+	    font-size: 15px;
+	    color: var(--color-dark-grey);
+	}
+	.d-flex {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	}
+	div[data-processivity] {
+	    display: flex;
+	    align-items: center;
+	    color: var(--color-green);
+	}
+	.processivity {
+	    width: 150px;
+	    height: 7px;
+	    border-radius:2px;
+	    background-color: var(--color-light-white);
+	    margin-right: 10px;
+	}
+	
+	.processivity-value {
+	    width: 1%;
+	    height: 7px;
+	    border-radius:2px;
+	    background-color: var(--color-green);
+	}
+	
+	.sub-task-lists {
+	    margin: 0 40px 30px 40px;
+	}
+	
+	.sub-task-lists-title {
+	    margin: 10px 0;
+	    font-size: var(--font-micro);
+	    font-weight: var(--weight-bold);
+	    color: var(--color-dark-grey);
+	}
+	
+	.sub-task-item {
+	    display: flex;
+	    align-items: center;
+	    padding: 5px 10px;
+	    background-color: rgba(240, 240, 240, 0.2);
+	    justify-content: flex-start;
+	    margin: 5px 0;
+	    border-radius: 5px;
+	    text-align: center;
+	}
+	
+	.sub-state {
+	    width: 50px;
+	    height: 7px;
+	    background-color: var(--color-blue);
+	    padding: 10px;
+	    border-radius: 5px;
+	    color: white;
+	    font-weight: var(--weight-bold);
+	    font-size: var(--font-micro);
+	    line-height: 7px;
+	    margin-right: 20px;
+	}
+	.task-manager{
+	    display: flex;
+	    font-weight: var(--weight-bold);
+	    font-size: 13px;
+	    color: var(--color-blue);
+	    margin: 10px 40px;
+	    align-items: center;
+	}
+	
+	.task-manager span {
+	    margin-right: 10px;
+	    cursor: pointer;
+	}
+	div[data-prioriy] {
+	    font-size: var(--font-micro);
+	    color: var(--color-green);
+	    font-weight: var(--weight-bold);
+	}
+	div[data-state] {
+	    margin: 0 40px;
+	    text-align: left;
+	}
+	
+	div[data-state] button{
+	    width: 50px;
+	    height: 10px;
+	    background-color: var(--color-dark-beigie);
+	    padding: 10px;
+	    border-radius: 5px;
+	    color: white;
+	    font-weight: var(--weight-bold);
+	    line-height: 10px;
+	}
+	.board-content{
+	    margin: 30px 40px;
+	    font-size: var(--font-micro);
+	    color: var(--color-dark-grey);	
+	}	
+	.board-footer-info {
+	    margin-left: 10px;
+	}
+	.board-footer-icon:hover {
+	    color: var(--color-dark-red);
+	    cursor: pointer;
+	}
+	.board-footer-icon {
+	    margin-right: 10px;
+	}
+	.board-footer {
+	    display: flex;
+	    justify-content: space-between;
+	    margin: 10px 40px;
+	    font-size: var(--font-micro);
+	}
+	.board-content{
+	    margin: 30px 40px;
+	    font-size: var(--font-micro);
+	    color: var(--color-dark-grey);	
+	}	
+	.fc .fc-popover {
+	    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 6px;
+	    position: absolute;
+	    z-index: 2;
 	}
 	
 </style>
@@ -226,6 +587,90 @@
 	    </div>
 	  </div>
 	</div>
+	<!-- 개인 업무 조회 모달 -->
+	<!-- 업무 상세조회 모달 -->
+	<div id="prjTask-modal">
+		<input type="hidden" value="" name="prjBoardId">
+		<div class="prjTask-modal__content">
+			<input type="text" id="prjTaskId" hidden="true">
+			<input type="hidden" value="" name="prjBoardId">
+			<div class="board-header">
+				<div class="board-header-info">
+					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile"
+							onerror="this.src='${pageContext.request.contextPath}/resources/img/no-image.jpg'">
+					<div class="board-headder-info__memberName"></div>
+					<input type="text" class="board-headder-info__regDate">
+				</div>
+				<div>
+					<!-- <img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg"> -->
+				</div>
+			</div>
+			<div class="board-title">
+				<div>
+					<span>[업무]</span><input type="text" class="board-title-boardTitle">
+				</div>
+				<div data-hightaskid></div>
+			</div>
+			<div class="sche-date d-flex">
+				<div>
+					<span class="text">기간 : </span>
+					<span data-start></span>
+					<span> ~ </span>
+					<span data-end></span>
+				</div>
+				<div data-processivity>
+					<div class="processivity">
+						<div class="processivity-value"></div>
+					</div>
+					<span data-processivityvalue></span>
+					<input type="hidden" name="processivity">
+				</div>
+			</div>
+			<div class="d-flex" style="margin-right: 40px;">
+				<div class="task-manager"> 
+					<span class="text">담당자 : </span>
+				</div>
+				<div data-prioriy></div>
+			</div>
+			<div data-state>
+				<button type="button" value="G1">요청</button>
+				<button type="button" value="G2">진행</button>
+				<button type="button" value="G3">피드백</button>
+				<button type="button" value="G4">완료</button>
+				<button type="button" value="G5">보류</button>
+			</div>
+			<div class="board-content">
+				<div>
+				</div>
+			</div>
+			<div class="sub-task-lists">
+				<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+				<div class="sub-task-list">
+				</div>
+			</div>
+			<div class="board-footer">
+				<div>
+					<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
+					<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘"
+							src="/hi/resources/icon/bookmark-regular.svg"> 북마크</span>
+				</div>
+				<div>
+					<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
+					<span class="board-footer-info">좋아요 <span name="likeCount"></span></span>
+				</div>
+			</div>
+			<!-- 댓글 구현 -->
+			<div name="board-comment-box">
+			</div>
+		</div>
+		<!-- board 버튼 클릭 시 모달 -->
+		<div class="d-none" data-boardmodal>
+			<div class="board-modal-content">
+				<p data-type="update">게시글 수정</p>
+				<p data-type="delete">게시글 삭제</p>
+			</div>			
+		</div>
+	</div>
 </body>
 <script>
 	//입력성공시 메세지
@@ -240,6 +685,185 @@
 	var scheModal = new bootstrap.Modal(document.getElementById('scheModal'))
 	var selectModal = new bootstrap.Modal(document.getElementById('selectModal'))
 	var tdlModal = new bootstrap.Modal(document.getElementById('tdlModal'))
+	
+	//업무조회 모달끄기
+	$('#prjTask-modal').on('click', function(e) {
+	    if ($(e.target).is('#prjTask-modal')) {
+	        $('#prjTask-modal').removeClass('modal-prjSche-visible');
+	        //버튼 초기화
+	        $('.prjTask-modal__content div[data-state]').children('button').css('background-color', '');
+	        //작성자 초기화
+	        $('.d-flex').find('.task-manager .text').next().remove();
+	        $('.prjTask-modal__content').find('span[data-subtaskcount]').text("")
+	        $('.prjTask-modal__content').find(".sub-task-list").children().remove();
+	        //내용 초기화
+	        $('.board-content div').children().remove();
+	    }
+	});
+	//검색
+	//일정 검색
+	$('.sche__search').keydown(function (key) {
+		event.stopPropagation();
+        if(key.keyCode == 13){//키가 13이면 실행 (엔터는 13)
+            searchTasknSche();
+            $('.sche__search').val("");
+        }
+    });
+    //프로젝트 캘린더 일정/업무 검색
+    function searchTasknSche(){
+    	let searchKeyword = $('.sche__search').val();
+    	let projectId = ${projectInfo.projectId}
+		let memberId = ${memberInfo.memberId}
+    	
+		//검색구문 만들어 넣기!!진행!
+    	/* $.ajax({
+    		url : 'searchCalendar',
+    		method : 'GET',
+    		data : {"projectId" : projectId, "searchKeyword" : searchKeyword},
+    		dataType : 'JSON',
+    		success : function(result){
+				calendar.removeAllEvents();
+				calendar.addEventSource(result.scheList);
+				calendar.addEventSource(result.taskList);
+    			
+    		},
+    		error : function(err){
+    			console.log(err)
+    		}
+    		
+    	}); */
+    };
+	
+	
+	//업무 게시글 진척도 변경
+	$('.processivity').on("click", function(e) {
+		updateProcessivity(e);
+		
+		let boardContainer = $('#prjTask-modal');
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let processivity = boardContainer.find('input[name=processivity]').val();		
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
+			success:function(result){
+				
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	//업무 게시글 진행상태 변경
+	$('.prjTask-modal__content div[data-state] button').on('click', function(e) {
+		let boardContainer = $('#prjTask-modal');
+		let targetBtn = $(e.currentTarget);
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let state = targetBtn.val();
+		
+		$.ajax({
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			type:'POST',
+			data: {'prjBoardId' : prjBoardId, 'state' : state},
+			success : function(result) {
+				//업무
+				$.ajax({
+					url : '${pageContext.request.contextPath}/getTaskInfo',
+					type : 'GET',
+					data : {'prjBoardId' : prjBoardId},
+					success : function(taskData) {
+		                let stateBtn = boardContainer.find('div[data-state]');
+		                let activeBtn = stateBtn.find('.active');
+		                // 진행상태 버튼 활성화
+		                activeBtn.removeClass('active');
+		                stateBtn.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+				    }, error : function(reject) {
+						console.log(reject);
+					}
+				});
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})
+	});
+	function updateProcessivity(e) {
+		const progressBar = e.currentTarget;
+		const progressBarInner = $(e.currentTarget).children('div');
+		// 클릭 위치
+		// 창 왼쪽부터 클릭한 위치까지 거리 - 프로그레스바 왼쪽 좌표 = 클릭 위치
+		const clickedPosition = event.clientX - progressBar.getBoundingClientRect().left;
+		
+		// 프로그레스 전체 길이
+		const totalWidth = progressBar.offsetWidth;
+		
+		// 진척도 값 계산
+		const selectedProgress = Math.round((clickedPosition / totalWidth) * 100 / 10) * 10;
+	
+		// 클릭한 진척도 값으로 프로그레스 채우기
+		progressBarInner.css('width', selectedProgress + "%");
+		
+		// input에 선택 한 값 넣기
+	    const hiddenInput = $(progressBar).next().next(); 
+		
+		if (hiddenInput) {
+			hiddenInput.val(selectedProgress);
+	
+			// 선택된 값 표시
+			const progressValue = $(progressBar).next();
+			progressValue.text(selectedProgress + "%");
+		}
+	};
+	// 댓글 리스트
+	function getCommentList(boardId, boardType){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/projectCmtList',
+			type : 'GET',
+			data : {'boardId' : boardId, 'boardType': boardType},
+			success : function(comments){
+				let boardCommentBox = $('.prjTask-modal__content').find('div[name="board-comment-box"]');
+				let scheBoardCommentBox = $('.prjSche-modal__content').find('div[name="board-comment-box"]');
+				boardCommentBox.empty();
+				scheBoardCommentBox.empty();
+				
+				if(comments.length != 0) {
+					for(let i =0; i<comments.length; i++) {
+						let boardComment =`
+							<div class="board-comment" data-cmtid="\${comments[i].commentId }">
+								<div class="d-flex">
+									<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profileImg">
+									<div>
+										<div style="margin: 5px 0;">
+											<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
+											<span>\${comments[i].commentRegdate }</span>
+										</div>
+										<div style="margin: 5px 0;">
+											\${comments[i].commentContent }
+										</div>
+									</div>								
+								</div>
+							</div>`;
+							
+						boardCommentBox.prepend(boardComment);
+						scheBoardCommentBox.prepend(boardComment);
+					}
+					let moreComment=`
+						<div name="moreComment" class="cursor" style="margin-bottom: 5px; padding: 5px 40px; color: var(--color-dark-grey);">
+							댓글
+						</div>`;
+						
+					boardCommentBox.prepend(moreComment);
+					scheBoardCommentBox.prepend(moreComment);
+				} 
+				// 댓글 수
+				$('.board-footer').find('span[name="commentCount"]').text(comments.length);
+				
+			}, error : function(reject) {
+				console.log(reject);
+			}
+		});
+	};
 	
 	//모달 폼 리셋
 	$('#selectModal, #scheModal').on('hidden.bs.modal', function (e) {
@@ -354,7 +978,9 @@
 	
 	//개인일정 입력시 memberId값 부여
 	let memberId = `${memberInfo.memberId}`
-
+	
+	//todoLIst 진행도 자동 계산(진행)
+	
 	
 	
 	var calendar 
@@ -381,22 +1007,22 @@
 					click : toDoListInsert
 				},
 				scheBtn : {
-					text : '일정필터',
-					click : function(){
-						//일정필터 
-					}
+					text : '일정/업무',
+					click : loadscheTask
 				},
 				taskBtn : {
-					text : '업무필터',
-					click : function(){
-						//업무필터
-					}
+					text : 'TDL',
+					click : loadTdlView
+				},
+				allBtn : {
+					text : '전체조회',
+					click : loadPriSche
 				}
 			},
 			headerToolbar : {
-				left : 'prev,today,next scheBtn,taskBtn',
+				left : 'prev,today,next dayGridMonth,timeGridWeek',
 				center : 'title',
-				right : 'tdlBtn,myCustomButton dayGridMonth,timeGridWeek'
+				right : 'tdlBtn,myCustomButton scheBtn,taskBtn,allBtn'
 			},
 			locale : "ko",
 			timeZone : 'local',
@@ -426,12 +1052,43 @@
 				  alert( "Request failed: " + textStatus );
 			});
 		};
+		//일정/업무 조회
+		function loadscheTask(){
+			$.ajax({
+				  url: "${pageContext.request.contextPath}/scheTaskView",
+				  method: "GET",
+				  dataType: "json"
+			}).done(function(data){
+				console.log(data)
+				calendar.removeAllEvents();
+				calendar.addEventSource(data);
+				calendar.getEventSources()
+			}).fail(function( jqXHR, textStatus ) {
+				  alert( "Request failed: " + textStatus );
+			});
+		};
+		//tdl조회 
+		function loadTdlView(){
+			$.ajax({
+				  url: "${pageContext.request.contextPath}/tdlView",
+				  method: "GET",
+				  dataType: "json"
+			}).done(function(data){
+				console.log(data)
+				calendar.removeAllEvents();
+				calendar.addEventSource(data);
+				calendar.getEventSources()
+			}).fail(function( jqXHR, textStatus ) {
+				  alert( "Request failed: " + textStatus );
+			});
+		};
 		
 		//이벤트 클릭시 상세보기
 		function eventClickHandler(info){
 			let scheId = info.event.id
 	    	let memName = `${memberInfo.memberName}`
     		let t = "t"
+    		let w = "W"
     		//todoList일 경우
 	    	if(scheId.substr(0,1)===t){
 	    		let listId = scheId.substr(1)
@@ -456,7 +1113,7 @@
     					//ITEM항목 생성
 	    				for(let i = 0; i<result.item.length;i++){
 							let divTag = $('<div></div>')
-							let chkBoxTag = $('<input>').attr("type", "checkbox").prop("disabled",true);
+							let chkBoxTag = $('<input>').attr("type", "checkbox");
 							if(result.item[i].success==="A1"){
 								chkBoxTag.prop("checked",true);
 							}
@@ -491,7 +1148,115 @@
 	    				alert("조회오류");
 	    			}
 	    		});
-	    	}else if(scheId.substr(0,1)!==t){
+	    	}else if(scheId.substr(0,1)===w){
+		    		let memberId = '${memberInfo.memberId}'
+					let boardId = scheId.substr(1);
+		    		console.log(boardId)
+					$.ajax({
+						url:'getTaskBoardInfo',
+						method : 'GET',
+						data : {"prjBoardId" : boardId},
+						dataType : 'JSON',
+						success : function(result){
+							console.log(result)
+							$('input[name="prjBoardId"]').val(result.highTask[0].prjBoardId);
+							
+					     	//북마크 여부 조회 
+					     	if(result.markedUserId=="yes"){
+								$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+								$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'yes');
+					     	}else if(result.markedUserId=="no"||result.markedUserId===null){
+								$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
+								$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'no');
+					     	}
+					     	
+							$('#prjTask-modal').find('input[name="prjBoardId"]').val(boardId);					     	
+							$('#prjTask-modal').addClass('modal-prjSche-visible');
+							$('#prjTaskId').val(result.highTask[0].prjBoardId)
+							//프사 확인
+							let realPath = result.highTask[0].realProfilePath
+							if(result.realProfilePath!==null){
+								let profilePath = "${pageContext.request.contextPath}/images/"+realPath
+								$('.profile').attr("src", profilePath)
+							}
+							//작성일자
+							$('.board-headder-info__regDate').val(result.highTask[0].prjBoardRegdate)
+							//작성자
+							$('.board-headder-info__memberName').text(result.highTask[0].memberName)
+							//업무 제목
+							$('.board-title-boardTitle').val(result.highTask[0].prjBoardTitle)
+							//업무 번호
+							$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
+							//업무 진행 상황
+							$('.prjTask-modal__content div[data-state]').children('button').removeClass('active');
+							$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).addClass('active');
+							//업무 날짜 지정
+					        if(result.highTask[0].startDate != null) {
+					        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text(result.highTask[0].startDate);
+					        	$('.prjTask-modal__content .sche-date').find('span[data-end]').text(result.highTask[0].endDate);	
+					        }else {
+					        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text("하위업무");
+					        	$('.prjTask-modal__content .sche-date').find('span[data-end]').text(result.highTask[0].endDate);
+					        };
+					        //업무 진행도
+					        $('.prjTask-modal__content .sche-date').find('.processivity-value').css('width', result.highTask[0].processivity + "%");
+					        $('.prjTask-modal__content .sche-date').find('span[data-processivityvalue]').text(result.highTask[0].processivity + "%");	
+					        //업무 우선순위
+		             		if(result.highTask[0].priorityName != null) {
+		             			$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').text('우선순위 : ' + result.highTask[0].priorityName);
+					        }else {
+					        	$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').remove();
+					        };
+					     	// 상위 업무 담당자
+					     	$('.task-manager').find('span:not(:eq(0))').remove();
+					     	if(result.highManager.length >1) {
+					     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + ' 외 ' + (result.highManager.length-1) + '명</span>');	
+					     	} else if(result.highManager.length == 0) {
+					     		$('.d-flex').find('.task-manager').append('<span>없음</span>');
+					     	} else {
+					     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + '</span>');
+					     	};
+					     	//업무 내용
+					     	$('.board-content div').children().remove();
+					     	$('.board-content div').append(result.highTask[0].prjBoardSubject);
+					     	// 하위 업무 리스트
+					     	if(result.subTask.length == 0) {
+					     		$('.prjTask-modal__content').find('span[data-subtaskcount]').text("0");
+					     		return;
+					     	}else{
+						     	let countSpan = $('.prjTask-modal__content').find('span[data-subtaskcount]');
+						     	let subTaskList = $('.prjTask-modal__content').find(".sub-task-list");
+								// 하위 업무 갯수 
+						     	countSpan.text(result.subTask.length);
+						     	subTaskList.find('li').remove();
+						     	// 정보 입력
+						        for (let j = 0; j < result.subTask.length; j++) {
+						        	let subTask = result.subTask[j];
+									let li = $('<li class="sub-task-item">');
+						        	let subState = $('<span class="sub-state">');
+						        	let subTitle = $('<span class="sub-title">');
+								
+						        	subState.text(subTask.stateName);
+						        	subTitle.text(subTask.prjBoardTitle);
+						        	
+									li.append(subState);
+									li.append(subTitle);
+									
+									subTaskList.append(li);
+						        }
+					     	}
+					     	//댓글조회
+					     	getCommentList(result.highTask[0].prjBoardId, 'C8')
+
+					     	//좋아요 조회
+					     	getPrjLike(memberId, boardId)
+					     	
+						},
+						error : function(error){
+							console.log(error)
+						}
+					});
+				}else if(scheId.substr(0,1)!==t||scheId.substr(0,1)!==w){
 	    		//개인일정일 경우
 				let data = { "scheId" : scheId};
 				$.ajax({

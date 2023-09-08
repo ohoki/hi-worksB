@@ -1,7 +1,8 @@
 package com.worksb.hi.mycalendar.service;
 
 import java.util.List;
-import java.util.Map;
+
+import com.worksb.hi.board.service.BoardVO;
 
 public interface PrivateScheService {
 	
@@ -19,4 +20,7 @@ public interface PrivateScheService {
 	
 	//일정삭제
 	public int deletePsche(int scheId);
+	
+	//개인이 맡은 프로젝트 업무게시글 조회
+	public List<BoardVO> searchMyTask(String memberId);
 }

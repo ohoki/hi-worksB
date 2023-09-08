@@ -834,7 +834,7 @@
 		WHERE b.prj_board_id = s.prj_board_id
 	          AND b.prj_board_id = #{prjBoardId}
 	</select>
-	<!-- 프로젝트 업무 캘린더 검색조회 -->
+	<!-- 프로젝트 상위업무 캘린더 검색조회 -->
 	<select id="searchTaskCalendar" resultType="TaskVO">
 		SELECT b.prj_board_id
 			   , b.prj_board_title
@@ -848,7 +848,25 @@
 		        AND t.start_date IS NOT NULL
 		        AND t.end_date IS NOT NULL
 	</select>
-
+	<!-- 프로젝트 하위업무 캘린더 검색조회 -->
+	<select id="searchLowerTaskCalendar" resultType="TaskVO">
+		SELECT b.prj_board_id
+			   , b.prj_board_title
+			   , t.high_task_id
+			   , NVL(t.start_date, (select start_date
+                                    from prj_task
+                                    WHERE task_id=(
+                                    select high_task_id
+                                    from prj_task
+                                    WHERE prj_board_id = #{prjBoardId}))) AS "START_DATE"
+			   , t.end_date
+		FROM prj_board b, prj_task t
+		WHERE b.prj_board_id = t.prj_board_id
+                AND b.prj_board_id = #{prjBoardId}
+		        AND t.high_task_id IS NOT NULL
+		        AND t.end_date IS NOT NULL
+	</select>
+	
 <!-- 	 검색관련부분(참여자리스트) -->
 	<select id="searchingTaskManagerList" resultType="AllTaskBoardVO">
 		SELECT 

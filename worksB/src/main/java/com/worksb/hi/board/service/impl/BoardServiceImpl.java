@@ -348,6 +348,11 @@ public class BoardServiceImpl implements BoardService {
 	public TaskVO searchTaskCal(int prjBoardId) {
 		return boardMapper.searchTaskCalendar(prjBoardId);
 	}
+	//프로젝트 하위업무 캘린더 조회
+	@Override
+	public TaskVO searchLowerTaskCalendar(int prjBoardId) {
+		return boardMapper.searchLowerTaskCalendar(prjBoardId);
+	}
 	//프로젝트 캘린더 북마크 여부 조회
 	@Override
 	public List<BoardVO> findMarkedUserId(int prjBoardId) {
@@ -363,6 +368,8 @@ public class BoardServiceImpl implements BoardService {
 	public List<AllTaskBoardVO> searchingList(String title) {
 		return boardMapper.searchingList(title);
 	}
+
+	
 
 
 	

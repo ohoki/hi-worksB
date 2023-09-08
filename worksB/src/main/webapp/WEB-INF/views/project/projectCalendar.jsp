@@ -332,6 +332,7 @@
 		margin: 20px auto;
 		text-align: center;
 	}
+	
 	.sche-btns button {
 		width: 70px;
 		height: 35px;
@@ -343,7 +344,7 @@
 		transition: all 0.3s;
 	}
 	
-	.sche-btns button:hover {
+	.sche-btns button:hover, .sche-btns button.active {
 		background-color: var(--color-dark-red);
 	}
 	
@@ -351,10 +352,9 @@
 		background-color: #def4c6 !important;
 	}
 	
-	.btn-green:hover {
+	.btn-green:hover, .btn-green.active {
 		background-color: var(--color-green) !important;
 	}
-	
 	.sche-particir, .sche-nonParticir {
 		font-size: var(--font-micro);
 		padding: 0 10px;
@@ -725,9 +725,9 @@
 	.processivity-value {
 		transition: all 0.5s;
 	}
-	
-	#prjTask-modal div[data-state] button.active {
-	    background-color: var(--color-dark-red);
+	/*오류 : css안입혀짐  */
+	div[data-state] button.active{
+		background-color: var(--color-dark-red) !important;
 	}
 	
 	.sche-particir-count {
@@ -764,7 +764,8 @@
 			<input type="text" id="prjScheId" hidden="true">
 			<div class="board-header">
 				<div class="board-header-info">
-					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile"
+							onerror="this.src='${pageContext.request.contextPath}/resources/img/no-image.jpg'">
 					<div class="board-headder-info__memberName"></div>
 					<input type="text" class="board-headder-info__regDate">
 				</div>
@@ -837,7 +838,8 @@
 			<input type="hidden" value="" name="prjBoardId">
 			<div class="board-header">
 				<div class="board-header-info">
-					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile">
+					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile"
+							onerror="this.src='${pageContext.request.contextPath}/resources/img/no-image.jpg'">
 					<div class="board-headder-info__memberName"></div>
 					<input type="text" class="board-headder-info__regDate">
 				</div>
@@ -1123,7 +1125,7 @@
 				let scheBoardCommentBox = $('.prjSche-modal__content').find('div[name="board-comment-box"]');
 				boardCommentBox.empty();
 				scheBoardCommentBox.empty();
-				
+
 				if(comments.length != 0) {
 					for(let i =0; i<comments.length; i++) {
 						let boardComment =`
@@ -1311,36 +1313,36 @@
 
 <script>
 
-function updateProcessivity(e) {
-	const progressBar = e.currentTarget;
-	const progressBarInner = $(e.currentTarget).children('div');
-	// 클릭 위치
-	// 창 왼쪽부터 클릭한 위치까지 거리 - 프로그레스바 왼쪽 좌표 = 클릭 위치
-	const clickedPosition = event.clientX - progressBar.getBoundingClientRect().left;
+	function updateProcessivity(e) {
+		const progressBar = e.currentTarget;
+		const progressBarInner = $(e.currentTarget).children('div');
+		// 클릭 위치
+		// 창 왼쪽부터 클릭한 위치까지 거리 - 프로그레스바 왼쪽 좌표 = 클릭 위치
+		const clickedPosition = event.clientX - progressBar.getBoundingClientRect().left;
+		
+		// 프로그레스 전체 길이
+		const totalWidth = progressBar.offsetWidth;
+		
+		// 진척도 값 계산
+		const selectedProgress = Math.round((clickedPosition / totalWidth) * 100 / 10) * 10;
 	
-	// 프로그레스 전체 길이
-	const totalWidth = progressBar.offsetWidth;
+		// 클릭한 진척도 값으로 프로그레스 채우기
+		progressBarInner.css('width', selectedProgress + "%");
+		
+		// input에 선택 한 값 넣기
+	    const hiddenInput = $(progressBar).next().next(); 
+		
+		if (hiddenInput) {
+			hiddenInput.val(selectedProgress);
 	
-	// 진척도 값 계산
-	const selectedProgress = Math.round((clickedPosition / totalWidth) * 100 / 10) * 10;
-
-	// 클릭한 진척도 값으로 프로그레스 채우기
-	progressBarInner.css('width', selectedProgress + "%");
-	
-	// input에 선택 한 값 넣기
-    const hiddenInput = $(progressBar).next().next(); 
-	
-	if (hiddenInput) {
-		hiddenInput.val(selectedProgress);
-
-		// 선택된 값 표시
-		const progressValue = $(progressBar).next();
-		progressValue.text(selectedProgress + "%");
-	}
-};
+			// 선택된 값 표시
+			const progressValue = $(progressBar).next();
+			progressValue.text(selectedProgress + "%");
+		}
+	};
 
 	//업무 게시글 진행상태 변경
-	$('#prjTask-modal div[data-state] button').on('click', function(e) {
+	$('.prjTask-modal__content div[data-state] button').on('click', function(e) {
 		let boardContainer = $('#prjTask-modal');
 		let targetBtn = $(e.currentTarget);
 		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
@@ -1385,6 +1387,9 @@ function updateProcessivity(e) {
 			url: '${pageContext.request.contextPath}/updateTaskInfo',
 			type:'POST',
 			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
+			success:function(result){
+				
+			},
 			error : function(reject) {
 				console.log(reject);
 			}
@@ -1554,6 +1559,7 @@ function updateProcessivity(e) {
 		function eventClickHandler(info){
 			let memberId = '${memberInfo.memberId}'
 			let boardId = info.event.id
+			//업무일 경우
 			if(boardId.substr(0,1)==="t"){
 				boardId = boardId.substr(1);
 				$.ajax({
@@ -1562,7 +1568,7 @@ function updateProcessivity(e) {
 					data : {"prjBoardId" : boardId},
 					dataType : 'JSON',
 					success : function(result){
-						
+						console.log(result)
 						$('input[name="prjBoardId"]').val(result.highTask[0].prjBoardId);
 						
 				     	//북마크 여부 조회 
@@ -1661,6 +1667,7 @@ function updateProcessivity(e) {
 					}
 				});
 			}else if(boardId.substr(0,1)!=="t"){
+				//일정일 경우
 				$('.board-content div').children().remove();
 				$.ajax({
 					url:'getScheBoardInfo',
@@ -1668,7 +1675,7 @@ function updateProcessivity(e) {
 					data: {"prjBoardId" : boardId},
 					dataType:"JSON",
 					success:function(result){
-						
+						console.log(result)
 				     	//북마크 여부 조회   board-footer   data-bookmark   img
 				     	if(result.markedUserId=="yes"){
 							$('.prjSche-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
@@ -1709,6 +1716,14 @@ function updateProcessivity(e) {
 		                	$('.sche-addr').empty();
 		                }
 						$('.board-content div').append(result.boardVO.prjBoardSubject);
+		                //일정 참여 여부
+   						let attendBtn = $('#prjSche-modal__content sche-btns').find('button[name="attend"]');
+						let nonAttendBtn = $('#prjSche-modal__content sche-btns').find('button[name="nonAttend"]');
+		                if(result.scheVO.myAttendance == 'A1') {
+		                	attendBtn.attr('class', 'btn-green active');
+		                } else if(result.scheVO.myAttendance == 'A2'){
+		                	nonAttendBtn.attr('class', 'active');
+		                }
 						//댓글 조회
 				     	getCommentList(result.boardVO.prjBoardId, 'C6')
 						//좋아요 조회

@@ -109,6 +109,7 @@ public class MyPageController {
         
         String economic = result.getBody();
         model.addAttribute("economicNews", economic);
+        
         //사회
         URI socialUri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com")
@@ -135,6 +136,33 @@ public class MyPageController {
         
         String social = result.getBody();
         model.addAttribute("socialNews", social);
+        
+        //정치
+        URI politicUri = UriComponentsBuilder
+                .fromUriString("https://openapi.naver.com")
+                .path("/v1/search/news.json")
+                .queryParam("query","정치")
+                .queryParam("display", 10)
+                .queryParam("start", 1)
+                .queryParam("sort", "sim")
+                .encode(Charset.forName("UTF-8"))
+                .build()
+                .toUri();
+
+
+        restTemplate = new RestTemplate();
+		
+        // 헤더 추가 위해
+        req = RequestEntity
+                .get(politicUri)
+                .header("X-Naver-Client-Id", "4uDJD6ylZk6VbUxwYvjw")
+                .header("X-Naver-Client-Secret", "5tuE1sO5JD")
+                .build();
+
+        result = restTemplate.exchange(req, String.class);
+        
+        String politic = result.getBody();
+        model.addAttribute("politicNews", politic);
         
         return "mypage/news";
     }
