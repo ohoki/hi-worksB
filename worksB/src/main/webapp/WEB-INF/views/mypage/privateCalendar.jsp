@@ -712,8 +712,8 @@
     //프로젝트 캘린더 일정/업무 검색
     function searchTasknSche(){
     	let searchKeyword = $('.sche__search').val();
-    	let projectId = ${projectInfo.projectId}
-		let memberId = ${memberInfo.memberId}
+    	let projectId = '${projectInfo.projectId}';
+		let memberId = '${memberInfo.memberId}';
     	
 		//검색구문 만들어 넣기!!진행!
     	/* $.ajax({
