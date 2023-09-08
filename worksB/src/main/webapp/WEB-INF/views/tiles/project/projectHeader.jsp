@@ -212,7 +212,6 @@
 			<li><a href="${pageContext.request.contextPath }/projectTask?projectId=${projectInfo.projectId}">업무</a></li>
 			<li><a href="${pageContext.request.contextPath}/projectCalendar?projectId=${projectInfo.projectId}">캘린더</a></li>
 			<li onclick="location.href='${pageContext.request.contextPath }/filetab?projectId=${projectInfo.projectId}&fileAccess=${projectInfo.fileAccess }'">파일</li>
-			<img class="icon particir-icon" name="prjParticirList" data-id="${projectInfo.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 			<c:if test="${particirInfo.manager eq 'A1'}">
 				<button type="button" id="accpList" class="particir-check-btn" data-id="${projectInfo.projectId}">참여신청자</button>
 			</c:if>
@@ -533,63 +532,5 @@
 		}
 	});
 	
-	// 프로젝트 참여자 리스트
-	$('img[name="prjParticirList"]').on('click', function(e){
-		let projectId = $(this).data('id');
-		
-		let x = e.clientX + 200;
-		let y = e.clientY;
-		
-		$('.prjParticir-modal-content').css('left', x + 'px');
-		$('.prjParticir-modal-content').css('top', y + 'px');
-		
-		$.ajax({
-			url : '${pageContext.request.contextPath }/particirList',
-			type : 'GET',
-			data : {'projectId': projectId},
-			success : function(particir){
-				let particirDiv = $('#prjParticir');
-				particirDiv.empty();
-				
-				for(let i=0; i<particir.length; i++) {
-					//div태그
-					let employeeDiv = document.createElement('div');
-					employeeDiv.classList.add('flex');
-					employeeDiv.classList.add('employee');
-					//이미지 태그
-					let employeeProfile = document.createElement('img');
-					employeeProfile.setAttribute('alt', '회원사진');
-					employeeProfile.classList.add('employee-img');
-					if(particir[i].realProfilePath != null) {
-						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
-					}else {
-						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
-					}
-					//스팬 태그
-					let span = document.createElement('span');
-					span.innerText = particir[i].memberName;
-					//히든 인풋 태그 (멤버id값)
-					let input = document.createElement('input');
-					input.setAttribute('type', 'hidden');
-					input.value = particir[i].memberId;
-					//태그 삽입
-					employeeDiv.append(employeeProfile);
-					employeeDiv.append(span);
-					employeeDiv.append(input);
-					
-					particirDiv.append(employeeDiv);
-				}
-			},
-			error : function(reject){
-				console.log(reject);
-			}
-		})
-		$('#prjParticir-modal').addClass('modal-visible');
-	})
-	
-	//모달 닫기
-	$('#prjParticir-modal').on('click', function() {
-		$('.modal-visible').removeClass('modal-visible');
-	});
 </script>
 </html>

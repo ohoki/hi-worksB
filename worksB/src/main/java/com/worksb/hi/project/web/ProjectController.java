@@ -213,12 +213,14 @@ public class ProjectController {
         		}
         	}
         }
+        List<PrjParticirVO> particirList = projectService.getParticirList(projectId);
         
         model.addAttribute("bookmarkList", bookmarkListByMember);
         model.addAttribute("pinBoardInfo", pinBoard);
         model.addAttribute("particirInfo", particirInfo);
         model.addAttribute("projectInfo", projectInfo);
         model.addAttribute("boards", boards);
+        model.addAttribute("particirList", particirList);
         return "project/projectFeed";
     }
 	

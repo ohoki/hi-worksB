@@ -18,7 +18,7 @@
 			<div class="main-box-content-left">
 				<ul>
 					<li class="content-left-item">
-						<h2>내 프로젝트</h2>		
+						<h2>즐겨찾기 프로젝트</h2>		
 						<div class="project-list">
 							<ul>
 								<c:forEach items="${projectList}" var="project" begin="0" end="9">
@@ -66,7 +66,7 @@
 						</div>
 					</li>
 				</ul>
-		`	</div>
+			</div>
 		</div>
 	</div>
 	<!-- 프로젝트 참여자 모달 -->
@@ -216,36 +216,6 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 		});	
 	}
 });
-
-	/* //즐겨찾기
-	let bookMark = $('img[data-bookmark]');
-	
-	bookMark.on('click', function(e) {
-		let data = $(e.currentTarget).data('bookmark');
-		let projectId = $(e.currentTarget).closest('.project-list-item').data('prjid');
-		//즐찾 등록/해제
-		if(data == 'yes') {
-			let result = updateStar('A2', projectId);
-			
-			if(result == 'bookmark-updated') {
-				alert('즐겨찾기가 해제되었습니다.');
-				$(e.currentTarget).data('bookmark', 'no');
-				$(e.currentTarget).attr('src', '${pageContext.request.contextPath }/resources/icon/emptyStar.svg');
-			} else {
-				alert('즐겨찾기 갱신에 실패했습니다.');
-			}
-		} else if(data == 'no') {
-			let result = updateStar('A1', projectId);
-			
-			if(result == 'bookmark-updated') {
-				alert('즐겨찾기에 추가되었습니다.');
-				$(e.currentTarget).data('bookmark', 'yes');
-				$(e.currentTarget).attr('src', '${pageContext.request.contextPath }/resources/icon/star-solid.svg');
-			} else {
-				alert('즐겨찾기 갱신에 실패했습니다.');
-			}
-		}
-	}); */
 	
 	//즐겨찾기 관련 정보를 DB에 연동
 	function updateStar(markup, projectId){

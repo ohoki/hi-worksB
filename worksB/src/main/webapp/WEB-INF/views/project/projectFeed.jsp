@@ -552,17 +552,23 @@
 			max-height: 550px;
 		}
 		
-		.insert-board-area::-webkit-scrollbar, .pin-board::-webkit-scrollbar, .bookmark-board-contets::-webkit-scrollbar {
+		.insert-board-area::-webkit-scrollbar, .pin-board::-webkit-scrollbar,
+		.bookmark-board-contets::-webkit-scrollbar,
+		.particir-board-contents::-webkit-scrollbar {
 		    width: 10px;
 		  }
-		  .insert-board-area::-webkit-scrollbar-thumb, .pin-board::-webkit-scrollbar-thumb, .bookmark-board-contets::-webkit-scrollbar-thumb {
+		  .insert-board-area::-webkit-scrollbar-thumb, .pin-board::-webkit-scrollbar-thumb,
+		  .bookmark-board-contets::-webkit-scrollbar-thumb, 
+		  .particir-board-contents::-webkit-scrollbar-thumb{
 		    background-color: #2f3542;
 		    border-radius: 10px;
 		    background-clip: padding-box;
 		    border: 2px solid transparent;
 		    background-color: var(--color-dark-beigie);
 		  }
-		  .insert-board-area::-webkit-scrollbar-track, .pin-board::-webkit-scrollbar-track, .bookmark-board-contet::-webkit-scrollbar-track {
+		  .insert-board-area::-webkit-scrollbar-track, .pin-board::-webkit-scrollbar-track,
+		  .bookmark-board-contet::-webkit-scrollbar-track,
+		  .particir-board-contents::-webkit-scrollbar-track {
 		    background-color: grey;
 		    border-radius: 10px;
 		    box-shadow: inset 0px 0px 5px white;
@@ -828,10 +834,17 @@
 			position: fixed;
 			width: 360px;
 		    margin: 0 auto;
-		    top: 220px;
+		    top: 500px;
 		}
 		
-		.bookmark-board-title {
+		.particir-board{
+			position: fixed;
+			width: 360px;
+		    margin: 0 auto;
+		    top: 160px;
+		}
+		
+		.bookmark-board-title, .particir-board-title{
 			display: flex;
 			align-items: center;
 			justify-content: flex-start;
@@ -849,6 +862,15 @@
 		   	padding: 20px 0;
 		   	min-height: 250px;
 		   	max-height: 350px;
+		}
+		.particir-board-contents {
+			border: 1px solid var(--color-beigie);
+		    border-radius: 20px;
+		    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+		   	overflow: auto;
+		   	overflow-x: hidden;
+		   	padding: 20px 0;
+		   	height: 240px;
 		}
 		
 		.bookmark-board-contets ul {
@@ -1037,8 +1059,9 @@
 			color:var(--color-dark-white);
 		}
 		
-		span[name=updateComment]:hover, span[name=deleteComment]:hover
+		span[name=updateComment]:hover, span[name=deleteComment]:hover,
 		span[name=saveUpdate]{
+			font-size: var(--font-micro);
 			color:var(--color-dark-grey);
 		}
 	</style>
@@ -1464,6 +1487,7 @@
 			</c:forEach>
 		</div>	
 		<!-- 게시글 조회 끝 -->
+		<!-- 북마크 -->
 		<div style="width: 25%;">
 			<div class="bookmark-board">
 				<div class="bookmark-board-title">북마크</div>
@@ -1484,6 +1508,20 @@
 								</li>						
 							</c:forEach>						
 						</c:if>
+					</ul>
+				</div>
+			</div>
+			<!-- 프로젝트 참여자 -->
+			<div class="particir-board">
+				<div class="particir-board-title">프로젝트 참여자</div>
+				<div class="particir-board-contents">
+					<ul>
+						<c:forEach items="${particirList }" var="particir">
+							<li class="employee">
+								<img class="employee-img" src="${pageContext.request.contextPath }/images/${particir.realProfilePath}" alt="회원 프로필 사진" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+								<span>${particir.memberName }</span>									
+							</li>						
+						</c:forEach>						
 					</ul>
 				</div>
 			</div>
@@ -4044,7 +4082,7 @@
 			
 			visibleDiv.removeClass('d-b');
 			
-			if(targetText == '글') {
+			if(targetText == '일반') {
 				$(board).addClass('d-b');
 			}else if(targetText == '업무') {
 				$(task).addClass('d-b');
@@ -4339,8 +4377,6 @@
 				}
 			})
 		})
-		
-
 		
 	</script>
 	<!-- 게시글 작성 종료 -->
