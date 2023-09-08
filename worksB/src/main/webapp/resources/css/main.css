@@ -85,6 +85,7 @@ body {
 	display: none;
 	left: 0;
 	top: 0;
+	z-index: 2;
 }
 
 .profile-modal__content {
@@ -137,6 +138,11 @@ body {
 	text-align: center;
 	padding: 30px 0 15px 0;
 	z-index: 10;
+}
+
+.employee__content {
+	height: 50%;
+	
 }
 
 .my-profile-logo {
@@ -226,7 +232,7 @@ body {
 	border-radius: 5px;
 }
 
-.alarm-modal__content, .employees-modal__content {
+.employees-modal__content {
 	position: absolute;
 	right: 0;
 	top: 62px;
@@ -236,7 +242,29 @@ body {
 	font-size: 12px;
 	padding: 20px 15px;
 	z-index: 10;
+	overflow: auto;
+	overflow-x: hidden; 
 }
+
+.employees-modal__content::-webkit-scrollbar {
+    width: 10px;
+ }
+ 
+.employees-modal__content::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  background-color: var(--color-dark-beigie);
+}
+
+.employees-modal__content::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+  background-color: var(--color-dark-beigie);
+}
+
 
 .alarm__title, .employees__title {
 	font-size: 15px;

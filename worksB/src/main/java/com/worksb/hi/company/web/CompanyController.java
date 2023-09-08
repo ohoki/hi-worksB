@@ -47,27 +47,13 @@ public class CompanyController {
 		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
 		String message = null;
 		
-		if(dbCompany != null) {
-			message = "이미 존재하는 회사 url 입니다. 다시 입력해 주세요.";
-			model.addAttribute("message", message);
-			
-			return "member/companyRegisterForm";
-		} 
-		
 		String originalName = logo.getOriginalFilename();	
-		System.out.println(originalName+"originalName");
 		String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-		System.out.println(fileName+"fileName");
 		String folderPath = makeFolder();
-		System.out.println(folderPath+"folderPath");
 		String uuid = UUID.randomUUID().toString();
-		System.out.println(uuid+"uuid");
 		String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
-		System.out.println(uploadFileName+"uploadFileName");
 		String saveName = uploadPath + File.separator + uploadFileName;
-		System.out.println(saveName+"saveName");
 		Path savePath = Paths.get(saveName);
-		System.out.println(savePath+"savePath");
 		
 		try {
 			logo.transferTo(savePath);
@@ -91,6 +77,23 @@ public class CompanyController {
 		
 		return "redirect:/start";
 	}//insertCompnay
+	
+	//회사 url 조회
+	@PostMapping("/searchCompany")
+	@ResponseBody
+	public String searchCompnay(CompanyVO companyVO) {
+		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
+		String message = null;
+		
+		if(dbCompany == null) {
+			message = "이미 사용중인 url 입니다. 다시 입력해주세요.";
+		} else {
+			message = "사용가능";
+		}
+		
+		return message;
+	}
+		
 	
 	//폴더생성
 	public String makeFolder() {

@@ -66,6 +66,10 @@
 		align-items: center;
 		margin-bottom: 5px;
 	}
+	
+	.active::placeholder {
+		color : var(--color-dark-red);
+	}
 </style>
 </head>
 <body>
@@ -90,7 +94,7 @@
 			<label for="companyUrl"><p>회사URL</p>
 				<span>htttps://</span><input type="text" placeholder="회사 URL" name="companyUrl" id="companyUrl" required><span>worksB.com</span>
 			</label>
-			<button type="submit">등록하기</button>
+			<button type="button" id="companyRegiBtn">등록하기</button>
 		</form>
 	</div>
 </body>
@@ -143,6 +147,29 @@
 		}else {
 			$('form').unbind('submit');
 		}
+	});
+	
+	//회사 url 비교
+	$('#companyRegiBtn').on('click', function(e) {
+		$.ajax({
+			url: '${pageContext.request.contextPath}/searchCompany',
+			type: 'POST',
+			data: {'companyUrl' : $('#companyUrl').val()},
+			success : function(message) {
+				if(message == '사용가능') {
+					$('#companyRegisterForm').submit();
+				} else {
+					$('#companyUrl').val('');
+					$('#companyUrl').attr('placeholder', '이미 사용중인 url주소 입니다. 다시 입력해주세요.');
+					$('#companyUrl').addClass('active');
+					$('#companyUrl').focus();
+					return false;
+				}
+			},
+			error : function(reject) {
+				console.log(reject);
+			}
+		})	
 	});
 </script>
 </html>

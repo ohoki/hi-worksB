@@ -155,6 +155,7 @@
 			margin: 30px 40px;
 			font-size: var(--font-micro);
 			color: var(--color-dark-grey);	
+			min-height: 200px;
 		}
 		
 		.board-footer {
@@ -1087,7 +1088,7 @@
 									<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 								</c:if>
 								<c:if test="${board.realProfilePath ne null }">
-									<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
+									<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 								</c:if>
 								<div class="board-headder-info__memberName">${board.memberName } </div>
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
@@ -1130,7 +1131,7 @@
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<c:if test="${memberInfo.realProfilePath ne null }">
-								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 							</c:if>
 								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
@@ -1159,7 +1160,7 @@
 									<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 								</c:if>
 								<c:if test="${board.realProfilePath ne null }">
-									<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
+									<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 								</c:if>
 								<div class="board-headder-info__memberName">${board.memberName } </div>
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
@@ -1224,7 +1225,7 @@
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<c:if test="${memberInfo.realProfilePath ne null }">
-								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 							</c:if>
 								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
@@ -1253,7 +1254,7 @@
 									<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 								</c:if>
 								<c:if test="${board.realProfilePath ne null }">
-									<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
+									<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 								</c:if>
 								<div class="board-headder-info__memberName">${board.memberName } </div>
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
@@ -1319,7 +1320,7 @@
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<c:if test="${memberInfo.realProfilePath ne null }">
-								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 							</c:if>
 								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
@@ -1348,7 +1349,7 @@
 									<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 								</c:if>
 								<c:if test="${board.realProfilePath ne null }">
-									<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile">
+									<img src="${pageContext.request.contextPath}/images/${board.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 								</c:if>
 								<div class="board-headder-info__memberName">${board.memberName } </div>
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
@@ -1429,7 +1430,7 @@
 								<img src="${pageContext.request.contextPath }/resources/img/user.png" alt="기본 프로필 사진" class="profile">
 							</c:if>
 							<c:if test="${memberInfo.realProfilePath ne null }">
-								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile">
+								<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 							</c:if>
 								<input type="text" class="cmtContent" placeholder="댓글을 입력해주세요."><button type="button" class="cmtBtn">등록</button>
 						</div>
@@ -1795,6 +1796,7 @@
 							}else {
 								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 							}
+							$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 							//스팬 태그
 							let span = document.createElement('span');
 							span.innerText = managers[i].memberName;
@@ -1869,6 +1871,7 @@
 							}else {
 								employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 							}
+							$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 							//스팬 태그
 							let span = document.createElement('span');
 							span.innerText = particirs[i].memberName;
@@ -1932,6 +1935,7 @@
 								}else {
 									employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 								}
+								$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 								//스팬 태그
 								let span = document.createElement('span');
 								span.innerText = voteParticir[i].memberName;
@@ -2179,7 +2183,6 @@
 	
 	<!-- 게시글 출력 SCRIPT -->
 	<script >
-	// 게시글 조회
 	$(window).on('DOMContentLoaded', function() {
 		let boardList = $('[data-list="board"]');
 		
@@ -2404,7 +2407,7 @@
 							let boardComment =`
 								<div class="board-comment" data-cmtid="\${comments[i].commentId }">
 									<div class="d-flex">
-										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 										<div>
 											<div style="margin: 5px 0;">
 												<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
@@ -2440,7 +2443,7 @@
 							let boardComment =`
 								<div class="board-comment" data-cmtid="\${comments[i].commentId }">
 									<div class="d-flex">
-										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+										<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 										<div>
 											<div style="margin: 5px 0;">
 												<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
@@ -2489,7 +2492,7 @@
 					let boardComment =`
 						<div class="board-comment" data-cmtid="\${comments[i].commentId }">
 							<div class="d-flex">
-								<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile">
+								<img src="${pageContext.request.contextPath}/images/\${comments[i].realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 								<div>
 									<div style="margin: 5px 0;">
 										<span style="font-weight: var(--weight-bold);">\${comments[i].memberName }</span>
@@ -2559,7 +2562,7 @@
 			success : function(comments){
 				let commentUpdate = `
 						<div class="d-flex">
-							<img src="${pageContext.request.contextPath}/images/\${comments.realProfilePath }" alt="회원 프로필 사진" class="profile">
+							<img src="${pageContext.request.contextPath}/images/\${comments.realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='\${pageContext.request.contextPath}/resources/img/user.png'">
 							<div>
 								<input type="text" name="commentContent" value="\${comments.commentContent}">
 							</div>								
