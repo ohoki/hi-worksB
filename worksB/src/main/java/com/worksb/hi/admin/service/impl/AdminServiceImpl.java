@@ -196,6 +196,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.deleteManager(vo);
 	}
 
+	@Override
+	public int updateFileAccess(ProjectVO vo) {
+		return adminMapper.updateFileAccess(vo);
+	}
+
 
 	
 }

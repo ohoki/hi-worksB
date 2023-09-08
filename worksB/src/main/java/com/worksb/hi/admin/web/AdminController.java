@@ -337,7 +337,13 @@ public class AdminController {
 			
 			Map<String,String>pjIdAndName=new HashMap<>();
 			pjIdAndName.put(Integer.toString(vo.getProjectId()), vo.getProjectName());
-			return adminService.updateProjectName(pjIdAndName);
+			//프로젝트이름변경
+			int result1=adminService.updateProjectName(pjIdAndName);
+			int result2=adminService.updateFileAccess(vo);
+			if(result1>0&&result2>0) {
+				return 1;
+			}
+			return 0;
 		}
 		
 		@GetMapping("/getParticirList")

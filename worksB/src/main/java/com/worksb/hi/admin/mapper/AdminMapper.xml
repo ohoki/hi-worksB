@@ -404,4 +404,9 @@
 		WHERE manager='A1'
 		AND project_id=#{projectId}
 	</update>
+	
+	<update id="updateFileAccess" parameterType="ProjectVO">
+		UPDATE project SET file_access=#{fileAccess}
+		WHERE project_id=#{projectId}
+	</update>
 </mapper>

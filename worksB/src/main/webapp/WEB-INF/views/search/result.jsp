@@ -36,9 +36,24 @@
 	<p id="prj-list"></p>
 	<div style="border:solid black 1px;">
 		<c:forEach items="${prjList }" var="list">
-			<ul style="border:dotted black 1px;" onclick="moveToPrj(${list.projectId})">
-				<li>${list.boardType } 제목: ${list.prjBoardTitle }</li>
-				<li>${list.memberName } <fmt:formatDate value="${list.prjBoardRegdate }" pattern="YY/MM/dd" type="date"/> 프로젝트이름:${list.projectName }</li>
+			<ul style="border:dotted black 1px;" onclick="moveToPrj(${list.projectId},'${list.boardType }',${list.prjBoardId })">
+				<c:choose>
+					<c:when test="${list.boardType eq 'C5'}">
+						<li>게시글</li>
+					</c:when>
+					<c:when test="${list.boardType eq 'C6'}">
+						<li>일정</li>
+					</c:when>					
+					<c:when test="${list.boardType eq 'C7'}">
+						<li>투표</li>
+					</c:when>					
+					<c:when test="${list.boardType eq 'C8'}">
+						<li>업무</li>
+					</c:when>
+				</c:choose>
+				<li>제목: ${list.prjBoardTitle }</li>
+				<li>${list.memberName } <fmt:formatDate value="${list.prjBoardRegdate }" pattern="YY/MM/dd" type="date"/> </li>
+				<li>프로젝트명:${list.projectName }</li>
 			</ul>
 		</c:forEach>
 		<div id="pick-date">
@@ -108,8 +123,10 @@
 		$('#carpool-list').text('--카풀게시판')
 	}
 	//클릭 시 개별 프로젝트로 이동
-	function moveToPrj(prjId){
-		location.href="${pageContext.request.contextPath}"+"/projectFeed?projectId="+prjId
+	function moveToPrj(prjId,boardType,boardId){
+		location.href="${pageContext.request.contextPath}"+"/projectFeed?projectId="+prjId+"#"+boardType+boardId;
+		console.log(boardType)
+		console.log(boardId)
 	}
 	//클릭 시 개별 공지로 이동
 	function moveToNotice(noticeId){
