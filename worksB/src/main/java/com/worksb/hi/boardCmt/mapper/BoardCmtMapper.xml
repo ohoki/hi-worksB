@@ -13,7 +13,8 @@
 			   n.board_type,
 			   n.parent_id,
 			   n.deleted,
-			   m.member_name
+			   m.member_name,
+			   m.real_profile_path
 		  FROM (SELECT comment_id,
 			   		   member_id,
 			   		   comment_regdate,

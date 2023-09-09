@@ -79,13 +79,13 @@ public class CompanyController {
 	}//insertCompnay
 	
 	//회사 url 조회
-	@PostMapping("/searchCompany")
+	@PostMapping(value= "/searchCompany" , produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String searchCompnay(CompanyVO companyVO) {
 		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
 		String message = null;
 		
-		if(dbCompany == null) {
+		if(dbCompany != null) {
 			message = "이미 사용중인 url 입니다. 다시 입력해주세요.";
 		} else {
 			message = "사용가능";
