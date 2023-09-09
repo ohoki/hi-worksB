@@ -2245,16 +2245,30 @@
 					type : 'GET',
 					data : {'prjBoardId': boardList[i].dataset.id, 'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}' },
 					success : function(sche) {
+						let DateBox = $(boardList[i]).find('div.sche-date');
 						let startDate = $(boardList[i]).find('span[data-start]');
 						let endDate = $(boardList[i]).find('span[data-end]');
+						let scheBtns = $(boardList[i]).find('.sche-btns button');
 						let addrSpan = $(boardList[i]).find('.sche-addr');
 						let attendYesCount = $(boardList[i]).find('.sche-particir-count');
 						let attendNoCount = $(boardList[i]).find('.sche-nonParticir-count');
 						let attendBtn = $(boardList[i]).find('button[name="attend"]');
 						let nonAttendBtn = $(boardList[i]).find('button[name="nonAttend"]');
+						let overDate = `<span>(기간종료)</span>`;
+						let currentTime = new Date();
+						let endTime = new Date(sche.endDate);
 						
-						startDate.text(sche.startDate);
-		                endDate.text(sche.endDate);
+						//날짜 확인
+						if(endTime < currentTime) {
+							DateBox.css('color', 'var(--color-dark-white)');
+							startDate.text(sche.startDate);
+			                endDate.text(sche.endDate);
+			                DateBox.append(overDate);
+			                scheBtns.prop('disabled', true);
+						} else {
+							startDate.text(sche.startDate);
+			                endDate.text(sche.endDate);
+						}
 		                //장소 설정 여부
 		                if(sche.scheAddr != null) {
 		                	sche.scheAddrDetail = sche.scheAddrDetail != null ? sche.scheAddrDetail : '';
@@ -2286,16 +2300,19 @@
 					type : 'GET',
 					data : {'prjBoardId': boardList[i].dataset.id, 'prjParticirId': '${particirInfo.prjParticirId }'},
 					success : function(voteData) {
+						let DateBox = $(boardList[i]).find('div.sche-date');
 						let endDate = $(boardList[i]).find('span[data-end]');
+						let voteBtns = $(boardList[i]).find('.vote-btn button');
 						let compnoVote = $(boardList[i]).find('.compnoVote');
 						let anonyVote = $(boardList[i]).find('.anonyVote');
 						let voteList = $(boardList[i]).find('.vote-lists ul');
 						let voteParticirCount = $(boardList[i]).find('.vote-particir-count');
 						let attendBtn = $(boardList[i]).find('button[name="voteAttend"]');
 						let nonAttendBtn = $(boardList[i]).find('button[name="voteNonAttend"]');
+						let overDate = `<span>(기간종료)</span>`;
+						let currentTime = new Date();
+						let endTime = new Date(voteData.voteInfo[0].endDate);
 						
-						// 종료일
-						endDate.text(voteData.voteInfo[0].endDate);
 						// 복수 투표 여부
 						if (voteData.voteInfo[0].compnoVote == 'A1') {
 							compnoVote.text('복수 투표');
@@ -2339,6 +2356,16 @@
 								$('#' + boardList[i].dataset.id + '-' + voteData.voteListMine[j].listId).prop('checked',true);
 								voteList.find('.vote-list input').prop('disabled', true);
 							}
+						}
+						//날짜 확인
+						if(endTime < currentTime) {
+							DateBox.css('color', 'var(--color-dark-white)');
+							endDate.text(voteData.voteInfo[0].endDate);
+			                DateBox.append(overDate);
+			                voteList.find('input').prop('disabled', true);
+			                voteBtns.prop('disabled', true);
+						} else {
+							endDate.text(voteData.voteInfo[0].endDate);
 						}
 					}, error : function(reject) {
 						console.log(reject);
@@ -2710,57 +2737,6 @@
 			}
 		})
 	};
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
 	
 	//북마크
 	$('span[data-bookmark]').on('click', function(e) {
@@ -3859,12 +3835,10 @@
 			//업무 담당자 리스트
 			let prjManager =[];
 			$('#insertSubTask-modal .board-taskManager').find('span:not(:eq(0))').each(function(index, item){
-				console.log($(item));
 		        let prjParticirId = $(item).attr('name');
 		        prjManager.push({prjParticirId});
 		    });
 			
-			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			$.ajax({
 				url:'${pageContext.request.contextPath}/taskInsert',
 				type:'POST',

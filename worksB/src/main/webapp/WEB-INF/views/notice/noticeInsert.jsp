@@ -40,6 +40,7 @@
 		margin-bottom: 15px;
 		border-bottom: 1px solid var(--color-dark-beigie);
 		height: 40px;
+		color: var(--color-dark-grey);
 	}
 	
 	.notice-footer {
