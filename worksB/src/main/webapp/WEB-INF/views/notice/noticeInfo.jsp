@@ -175,7 +175,7 @@
 		background-color: white;
 	}
 	
-	.cmt-update span:hover {
+	.cmt-update span:hover, .reply-update span:hover {
 		color: black;
 	}
 	
@@ -183,6 +183,17 @@
 		width: 15px; 
 		height:15px;
 		margin-right: 20px;
+	}
+	
+	.reply {
+		margin-top: 30px; 
+		text-align: right; 
+		padding-right: 10px;
+		cursor: pointer;
+	}
+	
+	.reply:hover {
+		color: black;
 	}
 	
 	.d-flex {
@@ -308,61 +319,34 @@
 		// 댓글 수정 / 성공은 했는데 한 페이지에서 새로고침 없이 또 수정하면 중복수정됨 / 시간남을때 수정 필수
 		$(document).on('click', '.cmt-update .update', function(e){
 			e.stopPropagation();
+			let updateBtn = $(e.currentTarget);
 			let commentId = $(this).closest(".cmtList-item").find(".commentId").val();
 			let boardType = $(this).closest(".cmtList-item").find(".boardType").val();
 			let boardId = $(this).closest(".cmtList-item").find(".boardId").val();
 			let cmtContentBox = $(this).closest(".cmtList-item").find(".cmt-content");
 			let cmtContent = $(this).closest(".cmtList-item").find(".cmt-content").val();
 			
-			cmtContentBox.prop('disabled', false);
-			cmtContentBox.focus();
-			
-			
-			
-			let UpdateFromModal = document.getElementById("UpdateFromModal");
-			let UpdateContent = document.getElementsByClassName("UpdateContent");
-			let closeUpdate = document.getElementById("closeUpdate");
-			
-			// 모달창 열기
-			UpdateFromModal.style.display = "block";
-			document.body.style.overflow = "hidden"; // 스크롤바 제거
-			
-			// 모달창 닫기
-			closeUpdate.addEventListener("click", () => {
-			UpdateFromModal.style.display = "none";
-			document.body.style.overflow = "auto"; // 스크롤바 보이기
-			});
-			
-			$('#cmtUpdateButton').click(function(e){
-				e.stopPropagation();
-				let newCommentContent = $("textarea[name='newCommentContent']").val();
-				console.log('작성된댓글내용');
-				console.log(newCommentContent);
+			if(updateBtn.text() == '수정') {
+				cmtContentBox.prop('disabled', false);
+				cmtContentBox.focus();
+				updateBtn.text('수정완료');
+			} else if(updateBtn.text() == '수정완료') {
+				let newCommentContent = cmtContent;
+				
 				$.post("boardCmtUpdate", {commentId : commentId ,
-										  boardType : 'C2' ,
-										  boardId : ${noticeInfo.noticeId} ,
-										  commentContent : newCommentContent
-			}, function(response){
-				if(response.success){
-					$('newCommentContent').val("");
-					alert("댓글 수정이 완료되었습니다.");
-					UpdateFromModal.style.display = "none";
-					document.body.style.overflow = "auto";
-					console.log("성공했을때 나오는 텍스트")
-					console.log(newCommentContent);
-					getcmtList();
-					
-				} else {
-					$('newCommentContent').val(' ');
-					alert("댓글을 수정했습니다.")
-					UpdateFromModal.style.display = "none";
-					document.body.style.overflow = "auto";
-					console.log("실패했을때 나오는 텍스트!")
-					console.log(newCommentContent);
-					getcmtList();
-				};
-			})
-			})
+					  boardType : 'C2' ,
+					  boardId : '${noticeInfo.noticeId}' ,
+					  commentContent : newCommentContent}
+				, function(response){
+					if(response == 1){
+						alert("댓글 수정이 완료되었습니다.");
+						getcmtList();
+					} else {
+						alert("댓글을 수정에 실패했습니다.");
+						getcmtList();
+					};
+				});
+			}
 		});
 		/* 댓글 수정 끝 */
 		
@@ -391,11 +375,11 @@
 												<span>\${list[i].memberName}</span>
 												<span>\${list[i].commentRegdate}</span>
 											</div>
-											<textarea class="cmt-content" rows='2'>\${list[i].commentContent}</textarea>
+											<textarea class="cmt-content" rows='2'>삭제 된 댓글입니다.</textarea>
 										</div>								
 									</div>
 									<div>
-				                    	<div style="margin-top: 30px; text-align: right; padding-right: 10px;">
+				                    	<div class="reply">
 											답글
 										</div>
 									</div>
@@ -424,7 +408,7 @@
 						                       		<span class="cursor update" style="margin-right: 10px;">수정</span>
 						                       		<span class="cursor delete">삭제</span>
 						                    	</div>
-						                    	<div style="margin-top: 30px; text-align: right; padding-right: 10px;">
+						                    	<div class="reply">
 													답글
 												</div>
 											</div>
@@ -454,9 +438,6 @@
 						                       		<span class="cursor update" style="margin-right: 10px;">수정</span>
 						                       		<span class="cursor delete">삭제</span>
 						                    	</div>
-						                    	<div style="margin-top: 30px; text-align: right; padding-right: 10px;">
-													답글
-												</div>
 											</div>
 										</div>
 									</li>`;
@@ -517,8 +498,6 @@
 		 
 		// 댓글 삭제 ajax
 		$(document).on('click', '.cmt-update .delete', function(e){
-			e.stopPropagation();
-			
 			if(confirm('댓글을 삭제하시겠습니까?')) {
 				let commentId = $(this).closest(".cmtList-item").find(".commentId").val();
 				let boardType = $(this).closest(".cmtList-item").find(".boardType").val();
@@ -532,7 +511,6 @@
 					$.post("boardCmtDelete", {boardId : ${noticeInfo.noticeId} ,
 										   boardType : '${noticeInfo.boardType}',
 										   commentId : commentId }, 
-										   
 						function(response){		  
 							getcmtList();
 					})
@@ -550,49 +528,52 @@
 		/* 삭제 끝 */
 
 		/* 대댓글 작성 */
-		$(document).on('click', '.cmtInsertFormButton', function(e){
-			e.stopPropagation();
-			let commentId = $(this).closest("ul").find(".commentId").val();
-			let boardType = $(this).closest("ul").find(".boardType").val();
-			let boardId = $(this).closest("ul").find(".boardId").val();
-			console.log(commentId);
-			console.log(boardType);
-			console.log(boardId);
+		$(document).on('click', '.reply', function(e){
+			let commentId = $(this).closest(".cmtList-item").find(".commentId").val();
 			
-			let replyInsert = document.getElementById("replyInsert");
-			let replyInsertForm = document.getElementsByClassName("replyInsertForm");
-			let closeReply = document.getElementById("closeReply");
-			let myParent = $(this).closest("ul").find(".commentParent").val();
-			
-			// 모달창 열기
-			replyInsert.style.display = "block";
-			document.body.style.overflow = "hidden"; // 스크롤바 제거
-			
-			// 모달창 닫기
-			closeReply.addEventListener("click", () => {
-			replyInsert.style.display = "none";
-			document.body.style.overflow = "auto"; // 스크롤바 보이기
-			});
-			
-			$(document).on('click', '#insertButtonc', function(e){
-				e.stopPropagation();
-				let commentContentc = $("textarea[name='commentContentc']").val();
-				$.post("boardCmtInsert", {boardId : ${noticeInfo.noticeId},
+			let replyForm = `		
+				<li>
+					<div class="d-flex cmtList-item">
+						<input type='hidden' class='commentParent' value='\${commentId}'>
+						<div class="d-flex" style="flex-grow:1;">
+							<img src="${pageContext.request.contextPath}/resources/icon/arrow-list.PNG" class="cmt-plus-arrow">
+							<img src="${pageContext.request.contextPath}/images/${meberInfo.realProfilePath}" alt="${memberInfo.memberName}" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+							<div style="flex-grow:1;">
+								<div class="cmt-title">
+									<span>${memberInfo.memberName}</span>
+								</div>
+								<textarea class="cmt-content" rows='2'></textarea>
+							</div>								
+						</div>
+						<div>
+							<div class="reply-update">
+	                       		<span class="cursor reply-insert" style="margin-right: 10px;">등록</span>
+	                       		<span class="cursor reply-cancel">취소</span>
+	                    	</div>
+						</div>
+					</div>
+				</li>`;
+				
+				$(this).closest(".cmtList-item").parent().after(replyForm);
+				$(this).closest(".cmtList-item").parent().next().find('.cmt-content').focus();
+		});
+		
+		$(document).on('click', '.reply-update span', function(e){
+			if($(e.currentTarget).hasClass('reply-insert')) {
+				let commentContent = $(this).closest(".cmtList-item").find('.cmt-content').val();
+				let commentId = $(this).closest(".cmtList-item").find(".commentParent").val();
+				
+				$.post("boardCmtInsert", {boardId : '${noticeInfo.noticeId}',
 										  boardType : '${noticeInfo.boardType}',
 										  memberId : '${memberInfo.memberId}',
-										  commentContent : commentContentc,
+										  commentContent : commentContent,
 										  parentId : commentId 
 					},function(response){
-						$('.commentContentc').text('');
-						console.log("댓글 등록 성공!");
 						getcmtList();
-						
-						replyInsert.style.display = "none";
-						document.body.style.overflow = "auto"; // 스크롤바 보이기
-						
-					});
-			});
-			
+				});
+			} else {
+				$(this).closest(".cmtList-item").parent().remove();
+			}
 		});
 		/* 대댓글 작성 끝 */
 		
