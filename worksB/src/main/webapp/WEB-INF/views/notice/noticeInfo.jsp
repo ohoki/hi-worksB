@@ -30,6 +30,10 @@
 		color: var(--color-green);
 	}
 	
+	.notice-icon {
+		width: 20px;
+		height: 20px;
+	}
 	
 	table {
 		width: 100%;
@@ -283,10 +287,10 @@
 				</div>
 				<div class="buttons">
 					<c:if test="${memberInfo.memberId eq noticeInfo.memberId}">
-						<button type="button" class="buttonss__button" onclick="location.href='noticeUpdate?noticeId=${noticeInfo.noticeId}'">수정</button>
-						<button type="button" class="buttonss__button" onclick="location.href='noticeDelete?noticeId=${noticeInfo.noticeId}'">삭제</button>
+						<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/admin/noticeUpdate?noticeId=${noticeInfo.noticeId}'">수정</button>
+						<button type="button" class="buttonss__button" onclick="deleteNotice()">삭제</button>
 					</c:if>
-					<button type="button" class="buttonss__button" onclick="location.href='noticeList'">목록</button>
+					<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/member/noticeList'">목록</button>
 				</div>
 			</div>
 		</form>
@@ -316,6 +320,13 @@
 			
 		});
 		
+		//공지 삭제
+		function deleteNotice() {
+			if(confirm('정말로 삭제하시겠습니까?')) {
+				location.href='${pageContext.request.contextPath}/admin/noticeDelete?noticeId=${noticeInfo.noticeId}';
+			}	
+		}
+		
 		// 댓글 수정 / 성공은 했는데 한 페이지에서 새로고침 없이 또 수정하면 중복수정됨 / 시간남을때 수정 필수
 		$(document).on('click', '.cmt-update .update', function(e){
 			e.stopPropagation();
@@ -333,12 +344,12 @@
 			} else if(updateBtn.text() == '수정완료') {
 				let newCommentContent = cmtContent;
 				
-				$.post("boardCmtUpdate", {commentId : commentId ,
+				$.post("${pageContext.request.contextPath}/member/boardCmtUpdate", {commentId : commentId ,
 					  boardType : 'C2' ,
 					  boardId : '${noticeInfo.noticeId}' ,
 					  commentContent : newCommentContent}
 				, function(response){
-					if(response == 1){
+					if(response){
 						alert("댓글 수정이 완료되었습니다.");
 						getcmtList();
 					} else {
@@ -355,7 +366,7 @@
 			let cmt = $(".boardCmtList ul");
 			//초기화
 			cmt.children().remove();				
-			$.get("boardCmtList",{boardId : ${noticeInfo.noticeId}, boardType : 'C2'},function(list) {
+			$.get("${pageContext.request.contextPath}/member/boardCmtList",{boardId : ${noticeInfo.noticeId}, boardType : 'C2'},function(list) {
 				for(let i = 0 , len = list.length || 0; i < len; i++ ){
 					let cmtListItem;
 					
@@ -461,7 +472,7 @@
 			
 			let commentContent = $("textarea[name='commentContent']");
 			
-	    	$.post("boardCmtInsert", {boardId : ${noticeInfo.noticeId} , 
+	    	$.post("${pageContext.request.contextPath}/member/boardCmtInsert", {boardId : ${noticeInfo.noticeId} , 
 	    							  boardType : 'C2', 
 	    							  memberId : '${memberInfo.memberId}' ,
 	    							  commentContent : commentContent.val() ,
@@ -477,7 +488,7 @@
 		 // 좋아요 버튼 클릭 시 호출되는 함수
 	    function toggleLike(boardId, memberId) {
 	        // 서버로 비동기 요청을 보냄
-	        $.get("like", { boardType: 'C2', boardId: boardId, memberId: memberId }, function (response) {
+	        $.get("${pageContext.request.contextPath}/member/like", { boardType: 'C2', boardId: boardId, memberId: memberId }, function (response) {
 	            // 서버로부터 받은 값에 따라 동작을 결정함
 	            $('#likeCount').remove();
 	            $('#like').empty();
@@ -507,16 +518,14 @@
 				let myParent = $(this).closest(".cmtList-item").find(".commentParent").val();
 				
 				if ( myParent == 0 && findParent > 0 ){
-					console.log("삭제하면 안되는 댓글")
-					$.post("boardCmtDelete", {boardId : ${noticeInfo.noticeId} ,
+					$.post("${pageContext.request.contextPath}/member/boardCmtDelete", {boardId : ${noticeInfo.noticeId} ,
 										   boardType : '${noticeInfo.boardType}',
 										   commentId : commentId }, 
 						function(response){		  
 							getcmtList();
 					})
 				} else {
-					console.log("삭제해도 되는 댓글!");
-					$.post("realCmtDelete", {boardId : ${noticeInfo.noticeId} ,
+					$.post("${pageContext.request.contextPath}/member/realCmtDelete", {boardId : ${noticeInfo.noticeId} ,
 						   					 boardType : '${noticeInfo.boardType}',
 						   					 commentId : commentId }, 
 						function(response){
