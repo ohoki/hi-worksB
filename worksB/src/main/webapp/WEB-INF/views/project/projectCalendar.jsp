@@ -206,18 +206,23 @@
 	    color: var(--color-dark-grey);
 	    font-weight: var(--weight-bold);
 	}
-	
-	
-	
-	
-	
-	
+	.flex {
+		display: flex;
+	}
+	.d-flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 	
 	.modal-prjSche-visible {
 		display: block !important;
 	}
+	.modal-task-visible {
+		display: block !important;
+	}
 	
-	#prjSche-modal, #prjTask-modal, #boardUpdateModal{
+	#prjSche-modal, #task-modal, #boardUpdateModal{
 		position: absolute;
 		width: 100%;
 		height: 100%;
@@ -229,7 +234,7 @@
 		z-index: 2;
 	}
 	
-	.prjSche-modal__content, .prjTask-modal__content{
+	.prjSche-modal__content, .task-modal__content{
 		position: absolute;
 		right: 0;
 		top: 62px;
@@ -239,21 +244,222 @@
 		font-size: 17px;
 		padding: 20px 15px;
 		z-index: 10;
+		overflow: scroll;
+		overflow-x:hidden;
 	}
 	
-	.flex {
+
+	#task-modal .board-header {
 		display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    padding: 10px 40px;
+	}
+	#task-modal .board-header {
+		display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    padding: 10px 40px;
+	}
+	
+	#task-modal .board-header-info {
+		display: flex;
+    	align-items: center;
+	}
+	
+	#task-modal .profileImg {
+		width: 40px;
+	    height: 40px;
+	    border-radius: 10px;
+	}
+	
+	
+	#task-modal .board-headder-info__memberName {
+		margin: 0 20px;
+   		font-weight: var(--weight-bold);		
+	}
+	
+	#task-modal .board-title {
+		font-size: var(--font-small);
+	    font-weight: var(--weight-bold);
+	    padding: 5px;
+	    margin: 0 40px;
+	    border-bottom: 1px solid var(--color-dark-beigie);
+	    color: var(--color-dark-grey);
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	}
+		
+	#task-modal .board-title span {
+	    color: var(--color-blue);
+	}	
+	
+	#task-modal .board-title span[data-title] {
+		color: var(--color-dark-grey);
 	}
 	
 	.board-title div[data-hightaskid] {
-		font-size: var(--font-micro);
-		padding: 5px;
-		border: 1px solid var(--color-dark-red);
-		border-radius: 5px;
-		color: var(--color-dark-red);
+	    font-size: var(--font-micro);
+	    padding: 5px;
+	    border: 1px solid var(--color-dark-red);
+	    border-radius: 5px;
+	    color: var(--color-dark-red);
 	}
+	
+	#task-modal div[data-processivity] {
+	    display: flex;
+	    align-items: center;
+	    color: var(--color-green);
+	}
+	
+	#task-modal .processivity {
+	    width: 150px;
+	    height: 7px;
+	    border-radius: 2px;
+	    background-color: var(--color-light-white);
+	    margin-right: 10px;
+	}
+	
+	#task-modal .processivity-value {
+	    width: 1%;
+	    height: 7px;
+	    border-radius: 2px;
+	    background-color: var(--color-green);
+	}	
+	
+	#task-modal .sche-date {
+	    font-weight: var(--weight-bold);
+	    font-size: 15px;
+	    color: var(--color-dark-red);
+	    margin: 10px 40px;
+	}
+	
+	#task-modal div[data-state] {
+	    margin: 0 40px;
+	    text-align: left;
+	}
+	
+	#task-modal div[data-state] button {
+	    width: 50px;
+	    height: 10px;
+	    background-color: var(--color-dark-beigie);
+	    padding: 10px;
+	    border-radius: 5px;
+	    color: white;
+	    font-weight: var(--weight-bold);
+	    line-height: 10px;
+	}
+	
+	#task-modal div[data-state] button.active {
+	    background-color: var(--color-dark-red);
+	}
+	
+	#task-modal .board-content  {
+		margin: 30px 40px;
+	    font-size: var(--font-micro);
+	    color: var(--color-dark-grey);
+	}
+	
+	.task-modal__content{
+		position: absolute;
+		right: 0;
+		top: 62px;
+		width: 40%;
+		height: 90vh;
+		background-color: white;
+		font-size: 17px;
+		padding: 20px 15px;
+		z-index: 10;
+		overflow: scroll;
+		overflow-x:hidden;
+	}
+	
+	#task-modal .task-manager {
+	    display: flex;
+	    font-weight: var(--weight-bold);
+	    font-size: 13px;
+	    color: var(--color-blue);
+	    margin: 10px 40px;
+	    align-items: center;
+	    cursor : pointer;
+	}
+	
+	#task-modal .task-manager .text {
+	    font-size: 15px;
+	    color: var(--color-dark-grey);
+	}
+	
+	#task-modal div[data-priority] {
+	    font-size: var(--font-micro);
+	    color: var(--color-green);
+	    font-weight: var(--weight-bold);
+	}
+	
+	#task-modal .sub-task-lists {
+	    margin: 0 40px 30px 40px;
+	}
+	
+	#task-modal .sub-task-lists-title {
+	    margin: 10px 0;
+	    font-size: var(--font-micro);
+	    font-weight: var(--weight-bold);
+	    color: var(--color-dark-grey);
+	}
+	
+	#task-modal .sub-task-item {
+	    display: flex;
+	    align-items: center;
+	    padding: 5px 10px;
+	    background-color: rgba(240, 240, 240, 0.2);
+	    justify-content: flex-start;
+	    margin: 5px 0;
+	    border-radius: 5px;
+	    text-align: center;
+	    border: 1px solid transparent;
+	}
+
+	#task-modal .sub-state {
+	    width: 50px;
+	    height: 7px;
+	    background-color: var(--color-blue);
+	    padding: 10px;
+	    border-radius: 5px;
+	    color: white;
+	    font-weight: var(--weight-bold);
+	    font-size: var(--font-micro);
+	    line-height: 7px;
+	    margin-right: 20px;
+	}
+
+	.board-footer {
+	    display: flex;
+	    justify-content: space-between;
+	    margin: 10px 40px;
+	    font-size: var(--font-micro);
+	}
+	
+	.board-footer-icon {
+	    margin-right: 10px;
+	}
+
 	.board-footer-info {
-		margin-left: 10px;
+	    margin-left: 10px;
+	}
+
+	.d-flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	
+	#task-modal .board-comment {
+	    padding: 5px 40px;
+	    border-top: 1px solid var(--color-dark-beigie);
+	    display: flex;
+	    align-items: center;
+	    justify-content: space-between;
+	    color: var(--color-dark-grey);
 	}
 	.board-footer-icon:hover {
 		color: var(--color-dark-red);
@@ -261,12 +467,6 @@
 	}
 	.board-footer-icon {
 		margin-right: 10px;
-	}
-	.board-footer {
-		display: flex;
-		justify-content: space-between;
-		margin: 10px 40px;
-		font-size: var(--font-micro);
 	}
 	.board-content{
 		margin: 30px 40px;
@@ -303,7 +503,50 @@
 		margin: 0 20px;
 		font-weight: var(--weight-bold);
 	}		
-	.sche-date {
+
+ 	div[data-boardmodal] {
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		font-size: 12px;
+		left: 0;
+		top: 0;
+		background-color: rgba(0,0,0,0.1);
+		z-index: 11;
+	}
+	.board-modal-content {
+		position: absolute;
+		width: 6%;
+		height: 7%;
+		right: 4%;
+		top: 4%;
+		background-color: white;
+		border: 1px solid var(--color-dark-beigie);
+		border-radius: 10px;
+		padding: 5px 15px;
+		z-index: 12;
+	}
+	.board-modal-content p{
+		margin-bottom: 5px;
+		padding: 5px;
+		color: var(--color-dark-grey);
+		cursor: pointer;
+	}
+	.board-modal-content p:hover {
+		background-color: var(--color-beigie);
+	}
+	.board-header-btn {
+		cursor: pointer;
+		padding-left: 10px;
+	}
+	
+	
+	/* 일정 수정 모달  */
+	
+	.modal {
+		left: 0;
+	}
+		.sche-date {
 		font-weight: var(--weight-bold);
 		font-size: 15px;
 		color: var(--color-dark-red);
@@ -382,135 +625,6 @@
 		font-size: var(--font-micro);
 		color: var(--color-green);
 		font-weight: var(--weight-bold);
-	}
-	
-	div[data-state] {
-		margin: 0 40px;
-		text-align: left;
-	}
-	
-	div[data-state] button{
-		width: 50px;
-		height: 10px;
-		background-color: var(--color-dark-beigie);
-		padding: 10px;
-		border-radius: 5px;
-		color: white;
-		font-weight: var(--weight-bold);
-		line-height: 10px;
-	}
-	
-	div[data-processivity] {
-		display: flex;
-		align-items: center;
-		color: var(--color-green);
-	}
-	
-	.processivity {
-		width: 150px;
-		height: 7px;
-		border-radius:2px;
-		background-color: var(--color-light-white);
-		margin-right: 10px;
-	}
-	
-	.processivity-value {
-		width: 1%;
-		height: 7px;
-		border-radius:2px;
-		background-color: var(--color-green);
-	}
-	
-	.sub-task-lists {
-		margin: 0 40px 30px 40px;
-	}
-	
-	.sub-task-lists-title {
-		margin: 10px 0;
-		font-size: var(--font-micro);
-		font-weight: var(--weight-bold);
-		color: var(--color-dark-grey);
-	}
-	
-	.sub-task-item {
-		display: flex;
-		align-items: center;
-		padding: 5px 10px;
-		background-color: rgba(240, 240, 240, 0.2);
-		justify-content: flex-start;
-		margin: 5px 0;
-		border-radius: 5px;
-		text-align: center;
-	}
-	
-	.sub-state {
-		width: 50px;
-		height: 7px;
-		background-color: var(--color-blue);
-		padding: 10px;
-		border-radius: 5px;
-		color: white;
-		font-weight: var(--weight-bold);
-		font-size: var(--font-micro);
-		line-height: 7px;
-		margin-right: 20px;
-	}
-	.task-manager{
-		display: flex;
-		font-weight: var(--weight-bold);
-		font-size: 13px;
-		color: var(--color-blue);
-		margin: 10px 40px;
-		align-items: center;
-	}
-	
-	.task-manager span {
-		margin-right: 10px;
-		cursor: pointer;
-	}
-	.d-flex {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
- 	div[data-boardmodal] {
-		position: fixed;
-		width: 100vw;
-		height: 100vh;
-		font-size: 12px;
-		left: 0;
-		top: 0;
-		background-color: rgba(0,0,0,0.1);
-		z-index: 11;
-	}
-	.board-modal-content {
-		position: absolute;
-		width: 6%;
-		height: 7%;
-		right: 4%;
-		top: 4%;
-		background-color: white;
-		border: 1px solid var(--color-dark-beigie);
-		border-radius: 10px;
-		padding: 5px 15px;
-		z-index: 12;
-	}
-	.board-modal-content p{
-		margin-bottom: 5px;
-		padding: 5px;
-		color: var(--color-dark-grey);
-		cursor: pointer;
-	}
-	.board-modal-content p:hover {
-		background-color: var(--color-beigie);
-	}
-	.board-header-btn {
-		cursor: pointer;
-		padding-left: 10px;
-	}
-	/* 일정 수정 모달  */
-	.modal {
-		left: 0;
 	}
 	.insert-board-modal {
 		border: 1px solid var(--color-dark-beigie);
@@ -800,8 +914,8 @@
 					<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>
 				</div>
 				<div>
-					<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
-					<span class="board-footer-info">좋아요 <span name="likeCount"></span></span>
+					<span class="board-footer-info">댓글 <span data-commentCount></span></span>
+					<span class="board-footer-info">좋아요 <span data-likeCount></span></span>
 				</div>
 			</div>
 			<!-- 댓글 -->
@@ -818,31 +932,29 @@
 	</div>
 	
 	<!-- 업무 상세조회 모달 -->
-	<div id="prjTask-modal">
-		<input type="hidden" value="" name="prjBoardId">
-		<div class="prjTask-modal__content">
-			<input type="text" id="prjTaskId" hidden="true">
-			<input type="hidden" value="" name="prjBoardId">
+	<div id="task-modal" data-tasktype="">
+		<input type="hidden" id="prjTaskId" value="" name="prjBoardId">
+		<div class="task-modal__content">
 			<div class="board-header">
+			<input type="hidden" value="" name="prjBoardId">
 				<div class="board-header-info">
-					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile"
-							onerror="this.src='${pageContext.request.contextPath}/resources/img/no-image.jpg'">
-					<div class="board-headder-info__memberName"></div>
-					<input type="text" class="board-headder-info__regDate">
+					<img class="profileImg"alt="" src="">
+					<div class="board-headder-info__memberName" data-memberName></div>
+					<span data-regdate></span>
 				</div>
-				<div>
-					<!-- <img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg"> -->
+				<div name="boardMenu">
 				</div>
 			</div>
 			<div class="board-title">
 				<div>
-					<span>[업무]</span><input type="text" class="board-title-boardTitle">
+					<span>[업무]</span>
+					<span data-title></span>
 				</div>
 				<div data-hightaskid></div>
 			</div>
 			<div class="sche-date d-flex">
 				<div>
-					<span class="text">기간 : </span>
+					<span class="text" style="color: var(--color-dark-grey);">기간 : </span>
 					<span data-start></span>
 					<span> ~ </span>
 					<span data-end></span>
@@ -855,49 +967,42 @@
 					<input type="hidden" name="processivity">
 				</div>
 			</div>
-			<div class="d-flex" style="margin-right: 40px;">
-				<div class="task-manager"> 
-					<span class="text">담당자 : </span>
+				<div class="d-flex" style="margin-right: 40px;">
+					<div class="task-manager"> 
+						<span class="text">담당자 : </span>
+					</div>
+					<div data-priority></div>
 				</div>
-				<div data-prioriy></div>
-			</div>
-			<div data-state>
-				<button type="button" value="G1">요청</button>
-				<button type="button" value="G2">진행</button>
-				<button type="button" value="G3">피드백</button>
-				<button type="button" value="G4">완료</button>
-				<button type="button" value="G5">보류</button>
-			</div>
-			<div class="board-content">
-				<div>
+				<div data-state>
+					<button type="button" value="G1">요청</button>
+					<button type="button" value="G2">진행</button>
+					<button type="button" value="G3">피드백</button>
+					<button type="button" value="G4">완료</button>
+					<button type="button" value="G5">보류</button>
 				</div>
-			</div>
-			<div class="sub-task-lists">
-				<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
-				<div class="sub-task-list">
-				</div>
-			</div>
-			<div class="board-footer">
-				<div>
-					<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
-					<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘"
-							src="/hi/resources/icon/bookmark-regular.svg"> 북마크</span>
-				</div>
-				<div>
-					<span class="board-footer-info">댓글 <span name="commentCount"></span></span>
-					<span class="board-footer-info">좋아요 <span name="likeCount"></span></span>
-				</div>
-			</div>
-			<!-- 댓글 구현 -->
-			<div name="board-comment-box">
+				<div class="board-content"><div>
 			</div>
 		</div>
-		<!-- board 버튼 클릭 시 모달 -->
-		<div class="d-none" data-boardmodal>
-			<div class="board-modal-content">
-				<p data-type="update">게시글 수정</p>
-				<p data-type="delete">게시글 삭제</p>
-			</div>			
+		<div class="sub-task-lists">
+			<div class="d-flex">
+				<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+			</div>
+			<div class="sub-task-list">
+			</div>
+		</div>
+		<div class="board-footer">
+			<div >
+				<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
+				<span class="board-footer-icon" data-bookmark="no" name="bookmark-icon"> 북마크</span>
+			</div>
+				<div>
+					<span class="board-footer-info">댓글 <span data-commentCount></span></span>
+					<span class="board-footer-info">좋아요 <span data-likeCount></span></span>
+				</div>
+			</div>
+			<!-- 댓글창 -->
+			<div name="board-comment-box">
+			</div>
 		</div>
 	</div>
 	
@@ -1029,7 +1134,11 @@
 			};
 		};
 	});
-	
+	//업무 모달
+	$('#task-modal').on('click', function(e) {
+	    if ($(e.target).is('#task-modal')) {
+	    }
+	});
 	// 일정 수정 폼
     function updateSche(e){
 		//일정수정
@@ -1101,7 +1210,7 @@
 			type : 'GET',
 			data : {'boardId' : boardId, 'boardType': boardType},
 			success : function(comments){
-				let boardCommentBox = $('.prjTask-modal__content').find('div[name="board-comment-box"]');
+				let boardCommentBox = $('.task-modal__content').find('div[name="board-comment-box"]');
 				let scheBoardCommentBox = $('.prjSche-modal__content').find('div[name="board-comment-box"]');
 				boardCommentBox.empty();
 				scheBoardCommentBox.empty();
@@ -1145,25 +1254,17 @@
 	};
 	
 	// 좋아요 등록/해제
-	$('span[name="prjLike"]').on('click', function(e){
-		let boardIdInputTag = $(e.currentTarget).parent().parent().parent().find('input[hidden="true"]').eq(0)
-		let boardId = boardIdInputTag.val()
-		let boardType;
-		if(boardIdInputTag.attr('id')==="prjTaskId"){
-			boardType = "C8";
-		}else if(boardIdInputTag.attr('id')==="prjScheId"){
-			boardType = "C6";
-		}
-		let memberId = '${memberInfo.memberId}';
+	function likeBoard(memberId, boardId, boardType){
 		$.ajax({
 			url : '${pageContext.request.contextPath}/likeBoard',
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
 			success : function(like){
+				console.log(like)
 				// 게시글 좋아요 수
 				getPrjLike(memberId, boardId);
 				
-				let likeSpan = $('span[name="prjLike"] span');
+				let likeSpan = $('#task-modal').find('span[name="prjLike"] span');
 				likeSpan.empty();
 				// 좋아요 상태 표시
 				if(like.checkLike == 'like'){
@@ -1176,7 +1277,7 @@
 				console.log(reject)
 			}
 		})
-	})
+	}
 	
 	
 	// 좋아요 정보
@@ -1187,16 +1288,25 @@
 			data : {'memberId': memberId, 'boardId' : boardId},
 			success : function(likeInfo){
 				// 게시글 좋아요 수
-				$('span[name="likeCount"]').text(likeInfo.boardLike.length);
+				$('#task-modal').find('span[data-likeCount]').text(likeInfo.boardLike.length);
+				$('#prjSche-modal').find('span[data-likeCount]').text(likeInfo.boardLike.length);
 				
 				// 좋아요 여부
-				let likeSpan = $('span[name="prjLike"] span');
+				let likeSpan = $('#task-modal').find('span[name="prjLike"] span');
 				likeSpan.empty();
-				
+				let scheLikeSpan = $('#prjSche-modal').find('span[name="prjLike"] span');
+				scheLikeSpan.empty();
+				//업무
 				if(likeInfo.memberLike != null) {
 					likeSpan.append("좋아요 해제");
 				} else {
 					likeSpan.append("좋아요");
+				}
+				//일정
+				if(scheLikeSpan.memberLike != null) {
+					scheLikeSpan.append("좋아요 해제");
+				} else {
+					scheLikeSpan.append("좋아요");
 				}
 			},
 			error : function(reject){
@@ -1204,6 +1314,57 @@
 			}
 		})
 	};
+	// 북마크 정보
+	function getBookmarkInfo(memberId, boardId){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/getBookmarkInfo',
+			type : 'GET',
+			data : {'memberId': memberId, 'prjBoardId' : boardId},
+			success : function(bookmark){
+
+				let bookmarkSpan = $('#task-modal').find('span[name="bookmark-icon"]')
+				bookmarkSpan.empty();
+				if(bookmark != 0 ){
+					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크`;
+					bookmarkSpan.prepend(bookmarkImg);
+					
+				}else{
+					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크`;
+					bookmarkSpan.prepend(bookmarkImg);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+	}
+	
+	// 북마크 등록/해제
+	function bookmarkBoard(memberId, projectId, boardId, boardType){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/bookmarkBoard',
+			type : 'GET',
+			data : {'memberId': memberId, 'projectId': projectId, 'prjBoardId' : boardId, 'boardType': boardType},
+			success : function(bookmark){
+				console.log(bookmark)
+				getBookmarkInfo(memberId, boardId);
+				
+				let bookmarkSpan = $('#task-modal').find('span[name="bookmark-icon"]')
+				bookmarkSpan.empty();
+				
+				if(bookmark.checkBookmark == 'bookmark'){
+					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크`;
+					bookmarkSpan.prepend(bookmarkImg);
+				}else{
+					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크`;
+					bookmarkSpan.prepend(bookmarkImg);
+				}
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+	}
 	
 	//북마크 기능
 	$('span[data-bookmark]').on('click', function(e) {
@@ -1322,12 +1483,13 @@
 	};
 
 	//업무 게시글 진행상태 변경
-	$('.prjTask-modal__content div[data-state] button').on('click', function(e) {
-		let boardContainer = $('#prjTask-modal');
+	$('#task-modal div[data-state] button').on('click', function(e) {
+		let boardContainer = $('#task-modal');
 		let targetBtn = $(e.currentTarget);
 		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
 		let state = targetBtn.val();
 		
+		console.log(prjBoardId);
 		$.ajax({
 			url: '${pageContext.request.contextPath}/updateTaskInfo',
 			type:'POST',
@@ -1344,6 +1506,8 @@
 		                // 진행상태 버튼 활성화
 		                activeBtn.removeClass('active');
 		                stateBtn.children('button[value=' + taskData.highTask[0].state + ']' ).addClass('active');
+		                
+		                getTaskListInfo();
 				    }, error : function(reject) {
 						console.log(reject);
 					}
@@ -1359,7 +1523,7 @@
 	$('.processivity').on("click", function(e) {
 		updateProcessivity(e);
 		
-		let boardContainer = $('#prjTask-modal');
+		let boardContainer = $('#task-modal');
 		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
 		let processivity = boardContainer.find('input[name=processivity]').val();		
 		
@@ -1367,8 +1531,8 @@
 			url: '${pageContext.request.contextPath}/updateTaskInfo',
 			type:'POST',
 			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
-			success:function(result){
-				
+			success : function(result) {
+				getTaskListInfo();
 			},
 			error : function(reject) {
 				console.log(reject);
@@ -1547,101 +1711,140 @@
 					method : 'GET',
 					data : {"prjBoardId" : boardId},
 					dataType : 'JSON',
-					success : function(result){
-						console.log(result)
-						$('input[name="prjBoardId"]').val(result.highTask[0].prjBoardId);
+					success : function(taskData){
+						let prjBoardId = boardId
+						let taskInfo = $('#task-modal');
+						$(taskInfo).addClass('modal-task-visible');
+						// 클릭한 업무 업무
+						let highTask = taskData.highTask[0];
+						// 업무 담당자 리스트
+						let highManagers = taskData.highManager;
+						// 하위 업무리스트
+						let subTasks = taskData.subTask;
 						
-				     	//북마크 여부 조회 
-				     	if(result.markedUserId=="yes"){
-							$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
-							$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'yes');
-				     	}else if(result.markedUserId=="no"||result.markedUserId===null){
-							$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
-							$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'no');
-				     	}
-				     	
-						$('#prjTask-modal').find('input[name="prjBoardId"]').val(boardId);					     	
-						$('#prjTask-modal').addClass('modal-prjSche-visible');
-						$('#prjTaskId').val(result.highTask[0].prjBoardId)
-						//프사 확인
-						let realPath = result.highTask[0].realProfilePath
-						if(result.realProfilePath!==null){
-							let profilePath = "${pageContext.request.contextPath}/images/"+realPath
-							$('.profile').attr("src", profilePath)
+						//초기화
+						taskInfo.find('.board-content').children().remove();
+						taskInfo.find('div[data-state]').children('button').removeClass('active');
+						taskInfo.find('.processivity-value').css('width', "0%");
+						
+						$('#task-modal').data('tasktype', 'high');	
+						
+						taskInfo.find('input[name="prjBoardId"]').val(prjBoardId);
+						
+						// 클릭한 업무 정보
+						//이름
+						taskInfo.find('div[data-memberName]').text(highTask.memberName);
+						//프로필
+						let profileImg = taskInfo.find('.profileImg');
+						if (highTask.realProfilePath == null) {
+							profileImg.attr('src', '${pageContext.request.contextPath }/resources/img/user.png');
+						} else {
+							profileImg.attr('src', '${pageContext.request.contextPath}/images/' + highTask.realProfilePath);
 						}
+						
+						profileImg.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						//작성일자
-						$('.board-headder-info__regDate').val(result.highTask[0].prjBoardRegdate)
-						//작성자
-						$('.board-headder-info__memberName').text(result.highTask[0].memberName)
-						//업무 제목
-						$('.board-title-boardTitle').val(result.highTask[0].prjBoardTitle)
-						//업무 번호
-						$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
-						//업무 진행 상황
-						$('.prjTask-modal__content div[data-state]').children('button').removeClass('active');
-						$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).addClass('active');
-						//업무 날짜 지정
-				        if(result.highTask[0].startDate != null) {
-				        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text(result.highTask[0].startDate);
-				        	$('.prjTask-modal__content .sche-date').find('span[data-end]').text(result.highTask[0].endDate);	
+						taskInfo.find('span[data-regdate]').text(highTask.prjBoardRegdate);
+						//제목
+						taskInfo.find('span[data-title]').text(highTask.prjBoardTitle);
+						//업무번호
+						taskInfo.find('div[data-hightaskid]').text('업무 번호 ' + highTask.taskId);
+						// 기간
+				        if(taskData.highTask[0].startDate != null) {
+				        	taskInfo.find('span[data-start]').text(highTask.startDate);
+							taskInfo.find('span[data-end]').text(highTask.endDate);
 				        }else {
-				        	startDate.parent().remove();
-				        };
-				        //업무 진행도
-				        $('.prjTask-modal__content .sche-date').find('.processivity-value').css('width', result.highTask[0].processivity + "%");
-				        $('.prjTask-modal__content .sche-date').find('span[data-processivityvalue]').text(result.highTask[0].processivity + "%");	
-				        //업무 우선순위
-	             		if(result.highTask[0].priorityName != null) {
-	             			$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').text('우선순위 : ' + result.highTask[0].priorityName);
+				        	taskInfo.find('span[data-start]').parent().remove();
+				        }
+						//우선순위
+						 if(highTask.priorityName != null) {
+							 taskInfo.find('div[data-priority]').text('우선순위 : ' + highTask.priorityName);
 				        }else {
-				        	$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').remove();
-				        };
-				     	// 상위 업무 담당자
-				     	$('.task-manager').find('span:not(:eq(0))').remove();
-				     	if(result.highManager.length >1) {
-				     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + ' 외 ' + (result.highManager.length-1) + '명</span>');	
-				     	} else if(result.highManager.length == 0) {
-				     		$('.d-flex').find('.task-manager').append('<span>없음</span>');
+				        	taskInfo.find('div[data-priority]').remove();
+				        }
+						// 진행상태 버튼 활성화
+		                taskInfo.find('div[data-state]').children('button[value=' + highTask.state + ']' ).addClass('active');
+		                //진척도
+		                if( highTask.processivity == null) {
+		                	highTask.processivity = 0;
+		                }
+		                
+		                taskInfo.find('.processivity-value').css('width', highTask.processivity + "%");
+		                taskInfo.find('span[data-processivityvalue]').text(highTask.processivity + "%");
+		                
+						//내용
+						if(highTask.prjBoardSubject != null) {
+							taskInfo.find('.board-content').prepend(highTask.prjBoardSubject);	
+						}
+						
+						// 업무 담당자 
+						let manager = taskInfo.find('.task-manager');
+						manager.children('span:not(:eq(0))').empty();
+						
+						if(highManagers.length >1) {
+							manager.append('<span>' + highManagers[0].memberName + ' 외 ' + (highManagers.length-1) + '명</span>');	
+				     	} else if(highManagers.length == 0) {
+				     		manager.append('<span>없음</span>');
 				     	} else {
-				     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + '</span>');
-				     	};
-				     	//업무 내용
-				     	$('.board-content div').children().remove();
-				     	$('.board-content div').append(result.highTask[0].prjBoardSubject);
-				     	// 하위 업무 리스트
-				     	if(result.subTask.length == 0) {
-				     		$('.prjTask-modal__content').find('span[data-subtaskcount]').text("0");
-				     		return;
-				     	}else{
-					     	let countSpan = $('.prjTask-modal__content').find('span[data-subtaskcount]');
-					     	let subTaskList = $('.prjTask-modal__content').find(".sub-task-list");
-							// 하위 업무 갯수 
-					     	countSpan.text(result.subTask.length);
-					     	subTaskList.find('li').remove();
-					     	// 정보 입력
-					        for (let j = 0; j < result.subTask.length; j++) {
-					        	let subTask = result.subTask[j];
-								let li = $('<li class="sub-task-item">');
-					        	let subState = $('<span class="sub-state">');
-					        	let subTitle = $('<span class="sub-title">');
-							
-					        	subState.text(subTask.stateName);
-					        	subTitle.text(subTask.prjBoardTitle);
-					        	
-								li.append(subState);
-								li.append(subTitle);
-								
-								subTaskList.append(li);
-					        }
-				     	}
-				     	//댓글조회
-				     	getCommentList(result.highTask[0].prjBoardId, 'C8')
-
-				     	//좋아요 조회
-				     	getPrjLike(memberId, boardId)
+				     		manager.append('<span>' + highManagers[0].memberName + '</span>');
+				     	} 
+						
+						// 하위 업무 리스트
+			     		taskInfo.find('span[data-subtaskcount]').empty();
+			     		taskInfo.find('.sub-task-list').empty();
 				     	
-					},
-					error : function(error){
+				     	let countSpan = taskInfo.find('span[data-subtaskcount]');
+				     	let subTaskList = taskInfo.find(".sub-task-list");
+						// 하위 업무 갯수 
+						if(subTasks.length != 0){
+				     		countSpan.text(subTasks.length);
+						}
+				     	// 정보 입력
+				        for (let j = 0; j < subTasks.length; j++) {
+				        	let subTask = subTasks[j];
+							let li = $('<li class="sub-task-item">');
+				        	let subState = $('<span class="sub-state">');
+				        	let subTitle = $('<span class="sub-title">');
+						
+				        	subState.text(subTask.stateName);
+				        	subTitle.text(subTask.prjBoardTitle);
+				        	
+							li.append(subState);
+							li.append(subTitle);
+							
+							subTaskList.append(li);
+				        }
+				     	
+				     	// 메뉴
+				     	$('.update-task-btn').attr('data-id', prjBoardId);
+				     	$('.delete-task-btn').attr('data-id', prjBoardId);
+				     	
+				     	// 작성자만 메뉴 버튼 활성화
+				     	let boardMemberId = highTask.memberId;
+				     	let memberId = '${memberInfo.memberId}'
+				     	let menu = `\${boardMemberId == memberId ? 
+			        			`<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">` 
+			        			: ''}`;
+		        			
+				     	$('div[name="boardMenu"]').empty();
+				     	$('div[name="boardMenu"]').append(menu);
+						
+				     	//댓글 정보		     	
+				     	getCommentList(prjBoardId, 'C8');
+				     	
+						// 좋아요 여부 / 좋아요 전체 수
+						getPrjLike('${memberInfo.memberId}', prjBoardId);
+						
+						// 좋아요 등록/해제
+						$('span[name="prjLike"]').on('click', function() {
+						    likeBoard('${memberInfo.memberId}', prjBoardId, 'C8');
+						});
+						
+						// 북마크 정보
+						getBookmarkInfo('${memberInfo.memberId}', prjBoardId);
+						
+
+					},error : function(error){
 						console.log(error)
 					}
 				});
@@ -1705,7 +1908,12 @@
 						//댓글 조회
 				     	getCommentList(result.boardVO.prjBoardId, 'C6')
 						//좋아요 조회
-				     	getPrjLike(memberId, boardId)
+				     	getPrjLike('${memberInfo.memberId}', boardId)
+						// 좋아요 등록/해제
+						$('span[name="prjLike"]').on('click', function() {
+						    likeBoard('${memberInfo.memberId}', boardId, 'C6');
+						    $('span[name="prjLike"]').off()
+						});
 					},
 					error:function(error){
 						console.log(error)
@@ -1892,20 +2100,24 @@
 		        $('.board-title-boardTitle').val("");
 		        $('.sche-addr__info').remove();
 		        $('.board-content div').children().remove();
+			    $('span[name="prjLike"]').off()
 		    }
 		});
 		//업무조회 모달끄기
-		$('#prjTask-modal').on('click', function(e) {
-		    if ($(e.target).is('#prjTask-modal')) {
-		        $('#prjTask-modal').removeClass('modal-prjSche-visible');
-		        //버튼 초기화
+		$('#task-modal').on('click', function(e) {
+		    if ($(e.target).is('#task-modal')) {
+		        $('#task-modal').removeClass('modal-task-visible');
+		        /* //버튼 초기화
 		        $('.prjTask-modal__content div[data-state]').children('button').css('background-color', '');
 		        //작성자 초기화
 		        $('.d-flex').find('.task-manager .text').next().remove();
 		        $('.prjTask-modal__content').find('span[data-subtaskcount]').text("")
 		        $('.prjTask-modal__content').find(".sub-task-list").children().remove();
-		        //내용 초기화
-		        $('.board-content div').children().remove();
+		        //내용 초기화 
+		        $('.board-content div').children().remove();*/
+		        $('#task-modal').find('input').val('')
+		        $('#task-modal').find('span[name="prjLike"]').val('')
+			    $('span[name="prjLike"]').off()
 		    }
 		});
 		
@@ -2053,11 +2265,11 @@
 	});
 	//다음 주소 api 종료
 	
-	
 	// 업무 담당자 리스트
 	$(document).on('click', '.task-manager', function(e){
-		let prjBoardId = $('#prjTaskId').val();
-		let x = e.clientX -500 ;
+		let boardContainer = $('#task-modal');
+		let prjBoardId = boardContainer.find('input[name="prjBoardId"]').val();
+		let x = e.clientX + 10;
 		let y = e.clientY;
 		
 		$('.taskManager-modal-content').css('left', x + 'px');
@@ -2087,6 +2299,7 @@
 						}else {
 							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 						}
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"')
 						//스팬 태그
 						let span = document.createElement('span');
 						span.innerText = managers[i].memberName;
@@ -2113,7 +2326,7 @@
 				console.log(reject);
 			}
 		});
-		$('#taskManager-modal').addClass('particir-visible');
+		$('#taskManager-modal').addClass('modal-task-visible');
 	})
 	
 	$('[id*=modal]').on('click', function() {

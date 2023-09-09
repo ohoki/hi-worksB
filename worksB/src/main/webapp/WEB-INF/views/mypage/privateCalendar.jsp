@@ -698,7 +698,7 @@
     	let searchKeyword = $('.sche__search').val();
 		//검색구문 만들어 넣기!!진행!
     	$.ajax({
-    		url : 'searchPrivateCalendar',
+    		url : '${pageContext.request.contextPath}/searchPrivateCalendar',
     		method : 'GET',
     		data : {"searchKeyword" : searchKeyword},
     		dataType : 'JSON',
@@ -794,6 +794,7 @@
 			progressValue.text(selectedProgress + "%");
 		}
 	};
+	
 	// 댓글 리스트
 	function getCommentList(boardId, boardType){
 		$.ajax({
@@ -953,12 +954,49 @@
             $(this).parent().remove(); // 클릭한 요소만 삭제
 	    }
 	});
-	
 	//개인일정 입력시 memberId값 부여
 	let memberId = `${memberInfo.memberId}`
 	
 	//todoLIst 진행도 자동 계산(진행)
-	
+	$('.tdlList-view').on('click', 'input[type="checkbox"]', function(e) {
+		let target = e.target
+		console.log(target)
+		let tdlItemId = target.parentNode.getAttribute('id').substr(6)
+		console.log(tdlItemId)
+		let success = null;
+		if($(target).is(':checked')){
+			success = "A1"
+			console.log(success)
+		}else{
+			success = "A2"
+			console.log(success)
+		}
+		let data = {'itemId' : tdlItemId, 'success' : success}
+		$.ajax({
+			url:'${pageContext.request.contextPath}/updateTdlItem',
+			method:'POST',
+			data:JSON.stringify(data),
+			contentType : 'application/json',
+			success:function(result){
+				console.log(result)
+				//진행도 설정
+				let optionLength = $('.tdlList-view input[type="checkbox"]').length
+				let checkedNum = 0;
+				$('.tdlList-view input[type="checkbox"]').each(function(index, element){
+					let checked = $(element).prop("checked");
+					if(checked){
+						checkedNum += 1;
+					}
+				})
+				let bar = (checkedNum/optionLength)*100;
+				let percent = Math.floor(bar)
+				$('.progress-bar__line').css('width',percent+'%').text(percent+'%')
+			},
+			error:function(err){
+				console.log(err)
+			}
+		});
+	});
 	
 	
 	var calendar 
@@ -1127,114 +1165,115 @@
 	    			}
 	    		});
 	    	}else if(scheId.substr(0,1)===w){
-		    		let memberId = '${memberInfo.memberId}'
-					let boardId = scheId.substr(1);
-		    		console.log(boardId)
-					$.ajax({
-						url:'getTaskBoardInfo',
-						method : 'GET',
-						data : {"prjBoardId" : boardId},
-						dataType : 'JSON',
-						success : function(result){
-							console.log(result)
-							$('input[name="prjBoardId"]').val(result.highTask[0].prjBoardId);
-							
-					     	//북마크 여부 조회 
-					     	if(result.markedUserId=="yes"){
-								$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
-								$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'yes');
-					     	}else if(result.markedUserId=="no"||result.markedUserId===null){
-								$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
-								$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'no');
-					     	}
-					     	
-							$('#prjTask-modal').find('input[name="prjBoardId"]').val(boardId);					     	
-							$('#prjTask-modal').addClass('modal-prjSche-visible');
-							$('#prjTaskId').val(result.highTask[0].prjBoardId)
-							//프사 확인
-							let realPath = result.highTask[0].realProfilePath
-							if(result.realProfilePath!==null){
-								let profilePath = "${pageContext.request.contextPath}/images/"+realPath
-								$('.profile').attr("src", profilePath)
-							}
-							//작성일자
-							$('.board-headder-info__regDate').val(result.highTask[0].prjBoardRegdate)
-							//작성자
-							$('.board-headder-info__memberName').text(result.highTask[0].memberName)
-							//업무 제목
-							$('.board-title-boardTitle').val(result.highTask[0].prjBoardTitle)
-							//업무 번호
-							$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
-							//업무 진행 상황
-							$('.prjTask-modal__content div[data-state]').children('button').removeClass('active');
-							$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).addClass('active');
-							//업무 날짜 지정
-					        if(result.highTask[0].startDate != null) {
-					        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text(result.highTask[0].startDate);
-					        	$('.prjTask-modal__content .sche-date').find('span[data-end]').text(result.highTask[0].endDate);	
-					        }else {
-					        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text("하위업무");
-					        	$('.prjTask-modal__content .sche-date').find('span[data-end]').text(result.highTask[0].endDate);
-					        };
-					        //업무 진행도
-					        $('.prjTask-modal__content .sche-date').find('.processivity-value').css('width', result.highTask[0].processivity + "%");
-					        $('.prjTask-modal__content .sche-date').find('span[data-processivityvalue]').text(result.highTask[0].processivity + "%");	
-					        //업무 우선순위
-		             		if(result.highTask[0].priorityName != null) {
-		             			$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').text('우선순위 : ' + result.highTask[0].priorityName);
-					        }else {
-					        	$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').remove();
-					        };
-					     	// 상위 업무 담당자
-					     	$('.task-manager').find('span:not(:eq(0))').remove();
-					     	if(result.highManager.length >1) {
-					     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + ' 외 ' + (result.highManager.length-1) + '명</span>');	
-					     	} else if(result.highManager.length == 0) {
-					     		$('.d-flex').find('.task-manager').append('<span>없음</span>');
-					     	} else {
-					     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + '</span>');
-					     	};
-					     	//업무 내용
-					     	$('.board-content div').children().remove();
-					     	$('.board-content div').append(result.highTask[0].prjBoardSubject);
-					     	// 하위 업무 리스트
-					     	if(result.subTask.length == 0) {
-					     		$('.prjTask-modal__content').find('span[data-subtaskcount]').text("0");
-					     		return;
-					     	}else{
-						     	let countSpan = $('.prjTask-modal__content').find('span[data-subtaskcount]');
-						     	let subTaskList = $('.prjTask-modal__content').find(".sub-task-list");
-								// 하위 업무 갯수 
-						     	countSpan.text(result.subTask.length);
-						     	subTaskList.find('li').remove();
-						     	// 정보 입력
-						        for (let j = 0; j < result.subTask.length; j++) {
-						        	let subTask = result.subTask[j];
-									let li = $('<li class="sub-task-item">');
-						        	let subState = $('<span class="sub-state">');
-						        	let subTitle = $('<span class="sub-title">');
-								
-						        	subState.text(subTask.stateName);
-						        	subTitle.text(subTask.prjBoardTitle);
-						        	
-									li.append(subState);
-									li.append(subTitle);
-									
-									subTaskList.append(li);
-						        }
-					     	}
-					     	//댓글조회
-					     	getCommentList(result.highTask[0].prjBoardId, 'C8')
-
-					     	//좋아요 조회
-					     	getPrjLike(memberId, boardId)
-					     	
-						},
-						error : function(error){
-							console.log(error)
+    			//업무일 경우
+	    		let memberId = '${memberInfo.memberId}'
+				let boardId = scheId.substr(1);
+	    		console.log(boardId)
+				$.ajax({
+					url:'${pageContext.request.contextPath}/getTaskBoardInfo',
+					method : 'GET',
+					data : {"prjBoardId" : boardId},
+					dataType : 'JSON',
+					success : function(result){
+						console.log(result)
+						$('input[name="prjBoardId"]').val(result.highTask[0].prjBoardId);
+						
+				     	//북마크 여부 조회 
+				     	if(result.markedUserId=="yes"){
+							$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+							$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'yes');
+				     	}else if(result.markedUserId=="no"||result.markedUserId===null){
+							$('.prjTask-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
+							$('.prjTask-modal__content span[data-bookmark]').data('bookmark', 'no');
+				     	}
+				     	
+						$('#prjTask-modal').find('input[name="prjBoardId"]').val(boardId);					     	
+						$('#prjTask-modal').addClass('modal-prjSche-visible');
+						$('#prjTaskId').val(result.highTask[0].prjBoardId)
+						//프사 확인
+						let realPath = result.highTask[0].realProfilePath
+						if(result.realProfilePath!==null){
+							let profilePath = "${pageContext.request.contextPath}/images/"+realPath
+							$('.profile').attr("src", profilePath)
 						}
-					});
-				}else if(scheId.substr(0,1)!==t||scheId.substr(0,1)!==w){
+						//작성일자
+						$('.board-headder-info__regDate').val(result.highTask[0].prjBoardRegdate)
+						//작성자
+						$('.board-headder-info__memberName').text(result.highTask[0].memberName)
+						//업무 제목
+						$('.board-title-boardTitle').val(result.highTask[0].prjBoardTitle)
+						//업무 번호
+						$('.board-title div[data-hightaskid]').text('업무 번호 ' + result.highTask[0].taskId)
+						//업무 진행 상황
+						$('.prjTask-modal__content div[data-state]').children('button').removeClass('active');
+						$('.prjTask-modal__content div[data-state]').children('button[value=' + result.highTask[0].state + ']' ).addClass('active');
+						//업무 날짜 지정
+				        if(result.highTask[0].startDate != null) {
+				        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text(result.highTask[0].startDate);
+				        	$('.prjTask-modal__content .sche-date').find('span[data-end]').text(result.highTask[0].endDate);	
+				        }else {
+				        	$('.prjTask-modal__content .sche-date').find('span[data-start]').text("하위업무");
+				        	$('.prjTask-modal__content .sche-date').find('span[data-end]').text(result.highTask[0].endDate);
+				        };
+				        //업무 진행도
+				        $('.prjTask-modal__content .sche-date').find('.processivity-value').css('width', result.highTask[0].processivity + "%");
+				        $('.prjTask-modal__content .sche-date').find('span[data-processivityvalue]').text(result.highTask[0].processivity + "%");	
+				        //업무 우선순위
+	             		if(result.highTask[0].priorityName != null) {
+	             			$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').text('우선순위 : ' + result.highTask[0].priorityName);
+				        }else {
+				        	$('.prjTask-modal__content .d-flex').find('div[data-prioriy]').remove();
+				        };
+				     	// 상위 업무 담당자
+				     	$('.task-manager').find('span:not(:eq(0))').remove();
+				     	if(result.highManager.length >1) {
+				     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + ' 외 ' + (result.highManager.length-1) + '명</span>');	
+				     	} else if(result.highManager.length == 0) {
+				     		$('.d-flex').find('.task-manager').append('<span>없음</span>');
+				     	} else {
+				     		$('.d-flex').find('.task-manager').append('<span>' + result.highManager[0].memberName + '</span>');
+				     	};
+				     	//업무 내용
+				     	$('.board-content div').children().remove();
+				     	$('.board-content div').append(result.highTask[0].prjBoardSubject);
+				     	// 하위 업무 리스트
+				     	if(result.subTask.length == 0) {
+				     		$('.prjTask-modal__content').find('span[data-subtaskcount]').text("0");
+				     		return;
+				     	}else{
+					     	let countSpan = $('.prjTask-modal__content').find('span[data-subtaskcount]');
+					     	let subTaskList = $('.prjTask-modal__content').find(".sub-task-list");
+							// 하위 업무 갯수 
+					     	countSpan.text(result.subTask.length);
+					     	subTaskList.find('li').remove();
+					     	// 정보 입력
+					        for (let j = 0; j < result.subTask.length; j++) {
+					        	let subTask = result.subTask[j];
+								let li = $('<li class="sub-task-item">');
+					        	let subState = $('<span class="sub-state">');
+					        	let subTitle = $('<span class="sub-title">');
+							
+					        	subState.text(subTask.stateName);
+					        	subTitle.text(subTask.prjBoardTitle);
+					        	
+								li.append(subState);
+								li.append(subTitle);
+								
+								subTaskList.append(li);
+					        }
+				     	}
+				     	//댓글조회
+				     	getCommentList(result.highTask[0].prjBoardId, 'C8')
+
+				     	//좋아요 조회
+				     	getPrjLike(memberId, boardId)
+				     	
+					},
+					error : function(error){
+						console.log(error)
+					}
+				});
+			}else if(scheId.substr(0,1)!==t||scheId.substr(0,1)!==w){
 	    		//개인일정일 경우
 				let data = { "scheId" : scheId};
 				$.ajax({

@@ -377,7 +377,6 @@ public class PrivateScheController {
 	}
 	
 	//todoList 단건조회
-	@SuppressWarnings("unchecked")
 	@GetMapping("selectTdl")
 	@ResponseBody
 	public Map<String, List<ToDoListVO>> viewTodoList(int listId) {
@@ -466,6 +465,19 @@ public class PrivateScheController {
 		return resultMsg;
 	}
 	
-	//todoList ITEM 삭제
+	//todoList ITEM 성공여부 업데이트
+	@PostMapping("updateTdlItem")
+	@ResponseBody
+	public String updateTdlItem(@RequestBody ToDoListVO vo) {
+		System.out.println(vo);
+		int result = toDoListService.updateItem(vo);
+		String resultMsg;
+		if(result==1) {
+			resultMsg = "success";
+		}else {
+			resultMsg = "fail";
+		}
+		return resultMsg;
+	}
 	
 }

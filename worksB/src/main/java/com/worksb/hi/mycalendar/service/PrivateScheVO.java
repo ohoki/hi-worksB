@@ -27,16 +27,16 @@ public class PrivateScheVO {
 	private String scheTitle;
 	private String ScheContent;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private Date scheRegdate;
 	private String scheAddr;
 	private String scheAddrDetail;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	@JsonProperty(value = "start")
 	private Date startDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	@JsonProperty(value = "end")
 	private Date endDate;
 	private String memberId;
