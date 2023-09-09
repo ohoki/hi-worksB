@@ -29,7 +29,7 @@
 										</div>
 										<div class="d-flex">
 											${project.particirNumber }
-											<img class="icon particir-icon" name="prjParticirList" data-id="${project.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
+											<img class="icon particir-icon" name="prjParticirList" data-id="${project.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg" >
 										</div>
 									</li>
 								</c:forEach>
@@ -262,6 +262,8 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 					}else {
 						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 					}
+					$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+					
 					//스팬 태그
 					let span = document.createElement('span');
 					span.innerText = particir[i].memberName;
