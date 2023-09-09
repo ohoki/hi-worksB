@@ -29,6 +29,10 @@
 	font-weight: var(--weight-bold);
 	color: var(--color-green);
 }
+.carpool-icon {
+	width: 20px;
+	height: 20px;
+}
 
 table {
 	width: 100%;
@@ -39,272 +43,197 @@ th,td {
 	border: 1px solid var(--color-dark-beigie);
 }
 
-th {
+th, tfoot td {
 	height: 40px;
 }
 
-.table-title ,.table-writer, .table-hit, .table-reg {
+.table-title ,.table-writer, .table-hit, .table-reg,
+.table-departure, .table-passenger, .table-arrival, .table-departureDate {
 	width: 15%;
 	text-align: center;
-	background-color: var(--color-beigie);
+	background-color: var(--color-dark-beigie);
 }
 
-
-
-
-
-
-
-
-
-body {
-	margin: 0 auto;
-	font-size: small;
-}
-
-.body {
-	width: 800px;
-	margin: 0 auto;
-}
-
-.top {
-	margin-bottom: 80px;
-}
-
-.table {
-	width: 800px;
-}
-
-.table__title{
-	font-size: small;
+.title-content, .hit-content, .writer-content, .reg-content,
+.departure-content, .passenger-content, .arrival-content, .departureDate-content {
+	width: 35%;
 	text-align: left;
-	height: 40px;
-	background-color: rgba(225, 239, 251);
-	padding-left: 15px;
-	border-radius: 3px;
+	padding: 0 20px;
+	font-weight: var(--weight-semi-bold);
 }
 
-.contents {
-	width: 800px;
+.table-content {
+	margin: 0 auto;
+	height: 350px;
+	overflow: auto;
+	overflow-x : hidden;
+	padding: 10px 20px;
+	vertical-align: top;
+}
+.carBtn {
+	width: 85px;
 	height: 30px;
+	background-color: var(--color-dark-beigie);
+	border-radius: 5px;
+	color: var(--color-dark-grey);
+	font-weight: var(--weight-bold);
 }
 
-.main {
-	padding-bottom: 20px;
+.carBtn:hover {
+	background-color: var(--color-white);
+	color: var(--color-dark-red);
+	border: 1px solid var(--color-dark-red);
+}
+.carBtn-td{
+	margin: 0 auto;
 }
 
-.main__p {
-	font-size: larger;
-	font-weight: bolder;
-}
-
-.writer {
-	width: 90px;
-	float: left;
-	height: 70px;
-	display: flex;
-	align-items: center;
-}
-
-.writer__p {
-	
-}
-
-div h2 {
-	text-align: center;
-}
-
-.date {
-	width: 700px;
-	float: right;
-	height: 20px;
-}
-
-.date__date {
-	text-align: right;
-}
-
-.content {
-	float: left;
-	width: 800px;
-	padding: 2px;
-	border-bottom: 1px solid rgb(174, 213, 245);
-	border-top: 1px solid rgb(174, 213, 245);
-	
-}
-
-.buttonss {
-	width: 800px;
-	height: 50px;
-	border-bottom: 1px solid rgb(174, 213, 245);
-}
-
-.button1 {
-	float: left;
-	margin-top: 5px;
-	color: black;
-}
-
-.buttons {
-	float: right;
-	width: 103px;
-	margin-top: 5px;
-}
-
-.buttons :first-child {
-	float: left;
-	margin-right: 3px;
-}
-
-.buttonss__button {
-	background-color: rgb(174, 213, 245);
-    border-radius: 5px;
-    color: white;
-    width: 50px;
-    height: 30px;
-    font-weight: bold;
-}
-/* #employee-modal{ */
-/* 	display:hidden; */
-/* } */
-
-/* 부모댓글 css */
-	.cmtName {
-		float: left;
-		width: 400px
+.table-content::-webkit-scrollbar {
+		width: 10px;
 	}
 	
-	.cmtInsert {
-		float:right;
-		margin-left: 5px;
+	.table-content::-webkit-scrollbar-thumb {
+		background-color: #2f3542;
+		border-radius: 10px;
+		background-clip: padding-box;
+		border: 2px solid transparent;
+		background-color: var(--color-dark-beigie);
 	}
 	
-	.cmtDate {
-		float: right;
-		
+	.table-content::-webkit-scrollbar-track {
+		background-color: grey;
+		border-radius: 10px;
+		box-shadow: inset 0px 0px 5px white;
+		background-color: var(--color-dark-beigie);
+	}
+
+ 	.table-footer {
+ 		display: flex;
+ 		justify-content: flex-start;
+ 		margin: 10px 0;
+ 	}
+
+	#likeButton {
+		background-color: transparent;
+	}	
+	
+	.like-btn {
+		width: 20px;
+		height: 20px;
+		margin-right: 10px;
 	}
 	
-	.cmtContent {
-		width: 800px;
-		height: 80px;
-		float: left;
+	#likeCount {
+		font-weight: var(--weight-bold);
 	}
 	
-	/* 자식댓글 css */
-	.cmtNamec {
-		float: left;
-		width: 400px;
-		margin-left: 50px;
-	}
-	
-	.cmtInsertc {
-		float:right;
-		margin-left: 5px;
-	}
-	
-	.cmtDatec {
-		float: right;
-		
-	}
-	
-	.cmtContentc {
-		width: 750px;
-		height: 80px;
-		float: left;
-		margin-left: 50px;
-	}
-	
-	button {
-		color: black;
-	}
-	
-	.cmtList__cmtInsert {
-		float: left;
+	.buttons button[type=button] {
+		background-color: transparent;
+		color: var(--color-dark-red);
+		margin: 0 10px;
+		font-weight: var(--weight-bold);
 	}
 	
 	#commentContent {
+		width: 97%;
 		resize: none;
-		width: 800px;
-		height: 80px;
-		margin-bottom: 20px;
-	}
-	/* 대댓글 Content */
-	.commentId {
-		margin-left: 80px;
-	}
-	
-	
-	/* 대댓글 작성폼 */
-	#cmtList__cmtInsertc {
-		
+		height: 99px;
+		border-color: var(--color-dark-white);
+		overflow: scroll;
+		overflow-x: hidden;
+		color: var(--color-dark-grey);
+		padding: 15px;
 	}
 	
-	/* 댓글 수정 모달 */
-	#UpdateFromModal {
-	  position: fixed;
-	  z-index: 1;
-	  left: 0;
-	  top: 0;
-	  width: 100%;
-	  height: 100%;
-	  overflow: auto;
-	  background-color: rgba(0, 0, 0, 0.4);
-	  display: none;
+	.cmtList {
+		display: flex;
+		justify-content: space-between;
+		align-items:center;
+		font-weight: var(--weight-bold);
+		text-align: left;
 	}
-	.UpdateContent {
-	  background-color: #fefefe;
-	  margin: 15% auto;
-	  padding: 20px;
-	  border: 1px solid #888;
-	  width: 80%;
-	}
-	.closeUpdate {
-	  color: #aaa;
-	  float: right;
-	  font-size: 28px;
-	  font-weight: bold;
-	}
-	.closeUpdate:hover,
-	.closeUpdate:focus {
-	  color: black;
-	  text-decoration: none;
-	  cursor: pointer;
-	}
-	/* 댓글 모달 끝 */
 	
-	/* 대댓글 모달 */
-	#replyInsert {
-	  position: fixed;
-	  z-index: 1;
-	  left: 0;
-	  top: 0;
-	  width: 100%;
-	  height: 100%;
-	  overflow: auto;
-	  background-color: rgba(0, 0, 0, 0.4);
-	  display: none;
+	.cmtList-item {
+		padding: 10px 20px;
+		border: 1px solid var(--color-dark-beigie);
 	}
-	.replyInsertForm {
-	  background-color: #fefefe;
-	  margin: 15% auto;
-	  padding: 20px;
-	  border: 1px solid #888;
-	  width: 700px;
-	  height: 200px;
+	
+	#insertButton {
+		width: 70px;
+		height: 30px;
+		color: var(--color-dark-grey);
+		background-color: var(--color-dark-beigie);
+		border-radius: 5px;
+		font-weight: var(--weight-bold);
 	}
-	.closeReply {
-	  color: #aaa;
-	  float: right;
-	  font-size: 28px;
-	  font-weight: bold;
+	
+	.profile {
+		width: 50px;
+		height: 50px;
+		border-radius: 5px;
+		margin-right: 20px;
 	}
-	.closeReply:hover,
-	.closeReply:focus {
-	  color: black;
-	  text-decoration: none;
-	  cursor: pointer;
+	
+	.boardCmtList {
+		margin: 30px 0;
 	}
-	/* 대댓글 모달 끝 */
+	
+	.boardCmtList h2 {
+		margin: 20px 0;
+		font-size: var(--font-micro);
+	}
+	
+	.cmt-title {
+		font-weight: var(--weight-bold);
+		margin-bottom: 10px;
+	}
+	
+	.cmt-content {
+		width: 100%;
+		display: block;
+		word-break:break-all;
+		resize: none;
+		border: none;
+		outline: none;
+		background-color: white;
+	}
+	
+	.cmt-update span:hover, .reply-update span:hover {
+		color: black;
+	}
+	
+	.cmt-plus-arrow {
+		width: 15px; 
+		height:15px;
+		margin-right: 20px;
+	}
+	
+	.reply {
+		margin-top: 30px; 
+		text-align: right; 
+		padding-right: 10px;
+		cursor: pointer;
+	}
+	
+	.reply:hover {
+		color: black;
+	}
+	
+	.d-flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	
+	.cursor {
+		cursor: pointer;
+	}
+
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -320,6 +249,9 @@ div h2 {
 				<thead>
 					<tr class="main__p">
 						<th class="table-title">
+							제목
+						</th>
+						<th class="title-content">
 						<c:choose>
 							<c:when test="${carpoolInfo.category eq 'B1' }">
 								[태워드립니다] 
@@ -330,80 +262,125 @@ div h2 {
 						</c:choose>
 							${carpoolInfo.boardTitle }
 						</th>
+						<th class="table-hit">
+							조회수
+						</th>
+						<th class="hit-content">
+							${carpoolInfo.boardHit }
+						</th>
+					</tr>
+					<tr>
+						<th class="table-writer">
+							작성자
+						</th>
+						<th class="writer-content">
+							${carpoolInfo.memberName}
+						</th>
+						<th class="table-reg">
+							작성시간
+						</th>
+						<th class="reg-content">
+							<fmt:formatDate value="${carpoolInfo.boardRegdate}" pattern="yyyy-MM-dd hh:mm"/>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>
-							<div class="contents">
-								<div class="writer">
-									<p class="writer__p">${carpoolInfo.memberName}</p>
-								</div>
-								<div class="date">
-									<p class="date__date">조회수 ${carpoolInfo.boardHit } | <fmt:formatDate value="${carpoolInfo.boardRegdate}" pattern="yyyy/MM/dd HH:mm:ss"/></p>
-								</div>
-								<div class="date">
-									<p class="date__date"><fmt:formatDate value="${carpoolInfo.boardUpddate }" pattern="yyyy/MM/dd" /></p>
+						<td class="table-content" colspan="4">
+							${carpoolInfo.boardContent }
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<div class="carBtn-td">
+								<button class="carBtn" onclick="participate('${carpoolInfo.boardId}',${carpoolInfo.passenger },${ participantsCounting},'${carpoolInfo.memberId }','${memberId }')">참여하기</button>
+								<button class="carBtn" onclick="cancel('${carpoolInfo.boardId}','${memberId}')">취소하기</button>
+							</div>
+							<div>
+								<div id="participants">
+								<c:forEach items="${ participantList}" var="list">
+									<p class="m-info" data-id="${list.memberId }">${list.memberName }</p>
+								</c:forEach>
 								</div>
 							</div>
-							<div class="content">
-								<p class="content__text">
-									${carpoolInfo.boardContent }
-								</p>
-								<p>
-									출발 : ${carpoolInfo.departure } 
-								</p>
-								<p>
-									도착 : ${carpoolInfo.arrival } 
-								</p>
-								<p>탑승 인원 수 : ${carpoolInfo.passenger }</p>
-								<p>출발 시간 : <fmt:formatDate value="${carpoolInfo.departureDate }" pattern="yyyy/MM/dd HH:mm"/></p>
-							</div>	
-							<div>
-							    <!-- 좋아요 수 표시 -->
-							    좋아요 <span id="likeCount">${likeCount}</span>
-							    <!-- 좋아요 버튼 -->
-							    <button id="likeButton" type="button" onclick="toggleLike('${carpoolInfo.boardId}', '${memberInfo.memberId}')">좋아요</button>
-							</div>						
 						</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td class="table-departure">
+							출발
+						</td>
+						<td class="departure-content">
+							${carpoolInfo.departure } 
+						</td>
+						<td class="table-passenger">
+							탑승 인원수
+						</td>
+						<td class="passenger-content">
+							${carpoolInfo.passenger } 
+						</td>
+					</tr>
+					<tr>
+						<td class="table-arrival">
+							도착
+						</td>
+						<td class="arrival-content">
+							${carpoolInfo.arrival } 
+						</td>
+						<td class="table-departureDate">
+							출발 시간
+						</td>
+						<td class="departureDate-content">
+							<fmt:formatDate value="${carpoolInfo.departureDate }" pattern="yyyy/MM/dd HH:mm"/>
+						</td>
+					</tr>
+				</tfoot>
 			</table>
+			<div class="table-footer d-flex">
+				<div class="d-flex">
+					 <!-- 좋아요 버튼 -->
+				    <button id="likeButton" type="button" onclick="toggleLike('${carpoolInfo.boardId}', '${memberInfo.memberId}')">
+				    	<img class="like-btn" src="${pageContext.request.contextPath }/resources/icon/heart-solid.svg">
+				    </button>
+			    	<!-- 좋아요 수 표시 -->
+			    	<span id="like">
+				    	<span id="likeCount">
+				    		${likeCount}
+				    	</span>
+				    	<c:if test="${checkLike eq true }">
+				    		좋아요 취소
+				    	</c:if>
+						<c:if test="${checkLike eq false}">
+				    		좋아요
+				    	</c:if>				    	
+				    </span>
+				</div>
+				<div class="buttons">
+					<c:if test="${memberInfo.memberId eq carpoolInfo.memberId}">
+						<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/carpoolUpdate?boardId=${carpoolInfo.boardId}'">수정</button>
+						<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/carpoolDelete?boardId=${carpoolInfo.boardId}'">삭제</button>
+					</c:if>
+					<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/carpoolList'">목록</button>
+				</div>
+			</div>
 		</form>
-		<div>
-			<button onclick="participate('${carpoolInfo.boardId}',${carpoolInfo.passenger },${ participantsCounting},'${carpoolInfo.memberId }','${memberId }')">참여하기</button>
-			<button onclick="cancel('${carpoolInfo.boardId}','${memberId}')">취소하기</button>
-			<div id="participants">
-				<c:forEach items="${ participantList}" var="list">
-					<p class="m-info" data-id="${list.memberId }">${list.memberName }</p>
-				</c:forEach>
-			</div>
-		</div>
-		<div class="buttonss">
-			<div class="button1">
-				<button type="button" class="buttonss__button" onclick="location.href='carpoolList'">목록</button>
-			</div>
-			<div class="buttons">
-				<c:if test="${memberInfo.memberId eq carpoolInfo.memberId}">
-				<button type="button" class="buttonss__button" onclick="location.href='carpoolUpdate?boardId=${carpoolInfo.boardId}'">수정</button>
-				<button type="button" class="buttonss__button" onclick="location.href='carpoolDelete?boardId=${carpoolInfo.boardId}'">삭제</button>
-				</c:if>
-			</div>
-		</div>
-		<!-- 아래로부터 댓글 공간 -->
+		
 		<!-- ajax로 댓글 생성하는 공간 -->
 		<div class="boardCmtList">
-			<!-- 댓글 생성되는 곳 -->
+			<h2>댓글</h2>
+			<ul>
+			</ul>
 		</div>
 		
 		<!-- 댓글 작성 폼 -->
 		<form id="cmtInsert" method="post">
 			<div class="cmtList">
 				<p class="cmtList__cmtInsert">댓글 작성 | ${memberInfo.memberName }</p>
-				<div id="cmtInsert__text">
-					<textarea id="commentContent" name="commentContent" placeholder="댓글을 입력하세요"></textarea>
-					<button type="button" id="insertButton">작성</button>
-				</div>
+				<button type="button" id="insertButton">작성</button>
+			</div>
+			<div id="cmtInsert__text">
+				<textarea id="commentContent" name="commentContent" placeholder="댓글을 입력하세요"></textarea>
 			</div>
 		</form>
 		<!-- 대댓글 작성 폼 -->
@@ -667,16 +644,22 @@ div h2 {
 	 // 좋아요 버튼 클릭 시 호출되는 함수
 	    function toggleLike(boardId, memberId) {
 	        // 서버로 비동기 요청을 보냄
-	        $.get("like", { boardType: 'C3', boardId: boardId, memberId: memberId }, function (response) {
+	        $.get("${pageContext.request.contextPath}/member/like", { boardType: 'C3', boardId: boardId, memberId: memberId }, function (response) {
 	            // 서버로부터 받은 값에 따라 동작을 결정함
+	            $('#likeCount').remove();
+	            $('#like').empty();
+	            
+				let likeCount = `<span id="likeCount"> \${response.count} </span>`;
+	            
 	            if (response.result == 'liked') {
 	                // 좋아요 상태일 경우 
-	                $("#likeButton").text("좋아요 취소");
+	                $("#like").text("좋아요 취소");
 	            } else if (response.result == "unliked") {
 	                // 좋아요 해제 상태일 경우
-	                $("#likeButton").text("좋아요");
+	                $("#like").text("좋아요");
 	            }
-	            $("#likeCount").text(response.count);
+	            
+	            $('#like').prepend(likeCount);
 	        })
 		 };
 

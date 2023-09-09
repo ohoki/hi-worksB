@@ -85,6 +85,9 @@ public class CarpoolController {
 		model.addAttribute("participantList",carpoolService.getApplicantList(boardId));
 		model.addAttribute("memberId",memberId);
 		
+		//좋아요
+	    model.addAttribute("checkLike",comLikeService.checkLiked(comLikeVO));
+		
 		return "carpool/carpoolInfo";
 	}
 	

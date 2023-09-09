@@ -33,7 +33,7 @@
 }
 
 .insert__button:hover {
-	background-color: var(--color-white);;
+	background-color: var(--color-white);
 	color: var(--color-dark-red);
 	border: 1px solid var(--color-dark-red);
 }
@@ -49,7 +49,6 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 	font-size: var(--font-micro);
-	min-height: 500px;
 }
 
 td, th {
@@ -107,88 +106,26 @@ td {
 	transition: all 0.5s;
 }
 
-/* .table__title {
-	height: 20px;
-	margin-top: 0;
-	margin-bottom: 0;
+.table__ftr th:nth-child(1) {
+	width: 6%
 }
 
-table :first-child {
-	padding: 0px;
-	width: 60px;
-	height: 40px;
+.table__ftr th:nth-child(3) {
+	width: 12%
 }
 
-table :nth-child(2) {
-	padding: 0px;
-	width: 500px;
+.table__ftr th:nth-child(4) {
+	width: 12%
 }
 
-table :nth-child(3) {
-	padding: 0px;
+.table__ftr th:nth-child(5) {
+	width: 6%
 }
 
-table :nth-child(4) {
-	padding: 0px;
+.table__ftr th:nth-child(6) {
+	width: 6%
 }
 
-table :nth-child(5) {
-	padding: 0px;
-}
-
-table :nth-child(6) {
-	padding: 0px;
-}
-
-table :nth-child(2) :nth-child(2) {
-	text-align: left;
-}
-
-form {
-	margin: 0 auto;
-	width: 300px;
-}
-
-.search {
-	height: 110px;
-	background-color: rgba(225, 239, 251);
-	width: 800px;
-	margin: 0 auto;
-}
-
-.search__search {
-	margin: 0 auto;
-	margin-top: 20px;
-	width: 315px;
-	height: 0px;
-	display: flex;
-	justify-content: center;
-}
-
-.search__select {
-	height: 28px;
-}
-
-.search__input {
-	padding: 0px;
-	height: 26px;
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
-}
-
-.search__submit {
-	margin: 0px;
-	height: 28px;
-	width: 48px;
-	border: 1px solid black;
-	color: black;
-	border-radius: 2px;
-}
-
-.paging{
-	padding-top: 15px;
-}
- */
 </style>
 <body>
 	<div class="carpool-box">
@@ -200,45 +137,46 @@ form {
 			<button type="button" class="insert__button"
 				onclick="location.href='carpoolInsert'">게시물 작성</button>
 		</div>
-		<table class="table">
-			<thead>
-				<tr class="table__ftr">
-					<th>번호</th>
-					<th>내용</th>
-					<th>글쓴이</th>
-					<th>작성일</th>
-					<th>좋아요</th>
-					<th>조회</th>
-				</tr>
-			<tbody>
-				<c:forEach items="${carpoolList}" var="carpool">
-					<tr onclick="location.href='carpoolInfo?boardId=${carpool.boardId}'">
-						<td>${carpool.boardId }</td>
-						<td>
-							<p class="table__title">
-							<c:choose>
-								<c:when test="${carpool.category eq 'B1' }">
-									[태워드립니다] 
-								</c:when>
-								<c:otherwise>
-									[태워주세요] 
-								</c:otherwise>
-							</c:choose>
-						${carpool.boardTitle }</p><br>
-							<P class="table__title">${carpool.departure } &#10142; ${carpool.arrival }</p>
-						</td>
-						<td>${carpool.memberName} </td>
-						<td><fmt:formatDate value="${carpool.boardRegdate }"
-								pattern="yyyy/MM/dd" /></td>
-						<td>
-							<!-- 좋아요 -->0
-						</td>
-						<td>${carpool.boardHit}</td>
+		<div style="min-height: 500px;">
+			<table class="table">
+				<thead>
+					<tr class="table__ftr">
+						<th>번호</th>
+						<th>내용</th>
+						<th>글쓴이</th>
+						<th>작성일</th>
+						<th>좋아요</th>
+						<th>조회</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	
+				<tbody>
+					<c:forEach items="${carpoolList}" var="carpool">
+						<tr onclick="location.href='carpoolInfo?boardId=${carpool.boardId}'">
+							<td>${carpool.boardId }</td>
+							<td>
+								<p class="table__title">
+								<c:choose>
+									<c:when test="${carpool.category eq 'B1' }">
+										[태워드립니다] 
+									</c:when>
+									<c:otherwise>
+										[태워주세요] 
+									</c:otherwise>
+								</c:choose>
+							${carpool.boardTitle }</p><br>
+								<P class="table__title">${carpool.departure } &#10142; ${carpool.arrival }</p>
+							</td>
+							<td>${carpool.memberName} </td>
+							<td><fmt:formatDate value="${carpool.boardRegdate }"
+									pattern="yyyy/MM/dd" /></td>
+							<td>
+								<!-- 좋아요 -->0
+							</td>
+							<td>${carpool.boardHit}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
 		<!-- search -->
 		<div class="search">
 			<!-- 페이징 -->
