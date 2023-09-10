@@ -180,7 +180,7 @@ form {
 					<td><fmt:formatDate value="${carpool.boardRegdate }"
 							pattern="yyyy/MM/dd" /></td>
 					<td>
-						<!-- 좋아요 -->0
+						0
 					</td>
 					<td>${carpool.boardHit}</td>
 				</tr>

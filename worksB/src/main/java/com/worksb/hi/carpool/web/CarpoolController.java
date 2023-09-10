@@ -1,5 +1,6 @@
 package com.worksb.hi.carpool.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,16 @@ public class CarpoolController {
 		int companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		
 		List<CarpoolVO> carpoolList = carpoolService.getCarpoolList(pagingVO,searchVO,companyId);
-		
+			
+		/*
+		 * // 각 게시글의 좋아요 갯수를 가져와서 모델에 추가 List<Integer> likeCounts = new ArrayList<>();
+		 * for (CarpoolVO carpool : carpoolList) { ComLikeVO comLikeVO = new
+		 * ComLikeVO(); comLikeVO.setBoardId(carpool.getBoardId());
+		 * comLikeVO.setBoardType("C3"); int likeCount =
+		 * comLikeService.countLikes(comLikeVO); likeCounts.add(likeCount); }
+		 * 
+		 * model.addAttribute("likeCounts", likeCounts); // 좋아요 갯수 리스트를 모델에 추가
+		 */		
 		model.addAttribute("carpoolList", carpoolList);
 		model.addAttribute("paging", pagingVO);
 		

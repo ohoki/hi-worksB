@@ -55,7 +55,6 @@ public class NoticeController {
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		
 		List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO, searchVO); //추가된 부분
-		//List<NoticeVO> noticeList = noticeService.getNoticeList(pagingVO,searchVO);
 		
 		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("paging", pagingVO);
