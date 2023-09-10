@@ -55,14 +55,14 @@ public class BoardController {
 	
 	// 이진
 	// 게시글 등록 폼
-    @GetMapping("/boardInsert")
+    @GetMapping("/member/boardInsert")
 	public String BoardInsertForm(@RequestParam int projectId, HttpSession session, Model model) {
 		model.addAttribute("projectId", projectId);
 		return "project/boardInsert";
 	}
     
     // 업무글 등록
-    @RequestMapping("taskInsert")
+    @RequestMapping("/member/taskInsert")
     @ResponseBody
     public int taskInsert(@RequestBody BoardRequestVO brVO) {
     	
@@ -129,7 +129,7 @@ public class BoardController {
     }
     
 	//게시글 등록 - 게시글, 일정, 투표
-	@PostMapping("/boardInsert")
+	@PostMapping("/member/boardInsert")
 	public String boardInsertProcess(BoardVO boardVO, VoteVO voteVO, ScheVO scheVO, HttpSession session) {
 		
 		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
@@ -162,19 +162,19 @@ public class BoardController {
         	boardService.insertVote(voteVO);
         }
         
-		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+		return "redirect:/member/projectFeed?projectId=" + boardVO.getProjectId();
 	}
 	
 	
 	// 일정 조회
-	@GetMapping("getScheInfo")
+	@GetMapping("/member/getScheInfo")
 	@ResponseBody
 	public ScheVO getScheInfo(ScheVO scheVO) {
 		return boardService.getScheInfo(scheVO); 
 	}
 	
 	// 일정 수정용 조회
-	@GetMapping("getSche")
+	@GetMapping("/member/getSche")
 	@ResponseBody
 	public Map<String, Object> getScheBoard(ScheVO scheVO){
 		Map<String, Object> resultMap = new HashMap<>();
@@ -190,7 +190,7 @@ public class BoardController {
         return resultMap;
 	}
 	// 투표 조회
-	@GetMapping("getVoteInfo")
+	@GetMapping("/member/getVoteInfo")
 	@ResponseBody
 	public Map<String, Object> getVoteInfo(VoteVO voteVO) {
 		
@@ -215,7 +215,7 @@ public class BoardController {
 	}
 	
 	// 업무 상세 조회
-	@GetMapping("getTaskInfo")
+	@GetMapping("/member/getTaskInfo")
 	@ResponseBody
 	public Map<String, Object> getTaskInfo(@RequestParam("prjBoardId") int prjBoardId) {
 	    Map<String, Object> resultMap = new HashMap<>();
@@ -260,7 +260,7 @@ public class BoardController {
 	}
 	
 	// 프로젝트 업무탭 - 전체 업무 조회
-	@GetMapping("/projectTask")
+	@GetMapping("/member/projectTask")
 	public String projectTask(@RequestParam int projectId, Model model, HttpSession session) {
 		// 프로젝트 정보
 		ProjectVO projectInfo = projectService.getProjectInfo(projectId);
@@ -280,7 +280,7 @@ public class BoardController {
 	}
 	
 	// 프로젝트 업무탭 - 상위업무 리스트
-	@GetMapping("/getHightaskList")
+	@GetMapping("/member/getHightaskList")
 	@ResponseBody
 	public List<AllTaskBoardVO> getHightaskList(@RequestParam int projectId) {
 		// 상위 업무 리스트
@@ -290,7 +290,7 @@ public class BoardController {
 	
 
 	//상위,하위 업무 수정
-	@PostMapping("/updateTask")
+	@PostMapping("/member/updateTask")
 	@ResponseBody
 	public int updateTask(@RequestBody BoardRequestVO brVO) {
     	// 게시글 수정
@@ -319,28 +319,28 @@ public class BoardController {
 	}
 
 	// 업무 삭제
-	@PostMapping("/deleteTask")
+	@PostMapping("/member/deleteTask")
 	@ResponseBody
 	public int deleteTask(TaskVO taskVO){
     	return boardService.deleteTask(taskVO); 
 	}
 	//프로젝트 일정 수정
-	@PostMapping("updateFeedSche")
+	@PostMapping("/member/updateFeedSche")
 	public String updateFeedSche(ScheVO scheVO, BoardVO boardVO) {
 		boardService.updateBoard(boardVO);
 		boardService.updateSche(scheVO);
-		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+		return "redirect:/member/projectFeed?projectId=" + boardVO.getProjectId();
 	}
 	
 	// 투표 삭제
-	@PostMapping("/deleteVote")
+	@PostMapping("/member/deleteVote")
 	@ResponseBody
 	public int deleteVote(VoteVO voteVO) {
 		return boardService.deleteVote(voteVO);
 	}
 	
 	// 투표 수정
-	@PostMapping("/updateVote")
+	@PostMapping("/member/updateVote")
 	public String updateVote(VoteVO voteVO, int projectId) {
 			
         	voteVO.setAnonyVote(voteVO.getAnonyVote() == null ? "A2" : voteVO.getAnonyVote());
@@ -354,32 +354,32 @@ public class BoardController {
 				voteVO.setListContent(listContentArr[i]);
 				boardService.insertVoteList(voteVO);
 			}
-			return "redirect:/projectFeed?projectId=" + projectId;
+			return "redirect:/member/projectFeed?projectId=" + projectId;
 		}
 	
 	// 투표 인원수
-	@GetMapping("/countVoteParticir")
+	@GetMapping("/member/countVoteParticir")
 	@ResponseBody
 	public int countVoteParticir(VoteVO voteVO) {
 		return boardService.countVoteParticir(voteVO);
 	}
 	
 	// 일반글 수정
-	@PostMapping("/updateBoard")
+	@PostMapping("/member/updateBoard")
 	public String updateBoard(BoardVO boardVO) {
 		boardService.updateBoard(boardVO);
-		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+		return "redirect:/member/projectFeed?projectId=" + boardVO.getProjectId();
 	}
 	
 	// 게시글 정보
-	@GetMapping("/getBoardInfo")
+	@GetMapping("/member/getBoardInfo")
 	@ResponseBody
 	public BoardVO getBoardInfo(int prjBoardId) {
 		return boardService.getBoardInfo(prjBoardId);
 	}
 	
 	// 일반글 삭제
-	@PostMapping("/deleteBoard")
+	@PostMapping("/member/deleteBoard")
 	@ResponseBody
 	public int deleteBoard(BoardVO boardVO) {
 		// 댓글 삭제
@@ -395,7 +395,7 @@ public class BoardController {
 	}
 	
 	// 게시글 좋아요 등록/해제
-	@GetMapping("/likeBoard")
+	@GetMapping("/member/likeBoard")
 	@ResponseBody
 	public  Map<String, Object> like(BoardVO boardVO){
 		Map<String, Object> resultMap = new HashMap<>();
@@ -412,7 +412,7 @@ public class BoardController {
 	}
 	
 	// 좋아요 여부 / 좋아요 전체 수
-	@GetMapping("/getPrjLike")
+	@GetMapping("/member/getPrjLike")
 	@ResponseBody
 	public Map<String, Object> getPrjLike(BoardVO boardVO) {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -426,7 +426,7 @@ public class BoardController {
 		return resultMap;
 	}
 	// 북마크 등록/해제
-	@GetMapping("/bookmarkBoard")
+	@GetMapping("/member/bookmarkBoard")
 	@ResponseBody
 	public  Map<String, Object> bookmarkBoard(BoardVO boardVO){
 		Map<String, Object> resultMap = new HashMap<>();
@@ -443,7 +443,7 @@ public class BoardController {
 	}
 	
 	// 북마크 조회
-	@GetMapping("/getBookmarkInfo")
+	@GetMapping("/member/getBookmarkInfo")
 	@ResponseBody
 	public BoardVO getBookmarkInfo(BoardVO boardVO) {
 		return boardService.getBookmarkInfo(boardVO);
@@ -451,15 +451,15 @@ public class BoardController {
 	
 	
 	//상단 고정 여부 수정
-	@PostMapping("/updatePin")
+	@PostMapping("/member/updatePin")
 	public String updatePin(BoardVO boardVO) {
 		boardService.updatePin(boardVO);
 		
-		return "redirect:/projectFeed?projectId=" + boardVO.getProjectId();
+		return "redirect:/member/projectFeed?projectId=" + boardVO.getProjectId();
 	}
 	
 	// 북마크 등록
-	@RequestMapping("/insertBookmark")
+	@RequestMapping("/member/insertBookmark")
 	@ResponseBody
 	public int insertBookmark(BoardVO boardVO) {
 		boardService.insertBookmark(boardVO);
@@ -467,7 +467,7 @@ public class BoardController {
 	}
 	
 	// 북마크 삭제
-	@RequestMapping("/deleteBookmark")
+	@RequestMapping("/member/deleteBookmark")
 	@ResponseBody
 	public int deleteBookmark(BoardVO boardVO) {
 		boardService.deleteBookmark(boardVO);
@@ -476,63 +476,63 @@ public class BoardController {
 	
 
 	// 일정 참가,미참
-	@RequestMapping("/sheParticipate")
+	@RequestMapping("/member/sheParticipate")
 	@ResponseBody
 	public int sheParticipate(ScheParticirVO spVO) {
 		return boardService.sheParticipate(spVO);
 	}
 	
 	// 투표 삭제 및 등록
-	@PostMapping("/votePaticir")
+	@PostMapping("/member/votePaticir")
 	@ResponseBody
 	public int votePaticir(@RequestBody List<VoteVO> voteParticir) {
 		return boardService.voteInsert(voteParticir);
 	};
 	
 	// 투표 취소
-	@PostMapping("/votePaticirDelete")
+	@PostMapping("/member/votePaticirDelete")
 	@ResponseBody
 	public void votePaticirDelete(VoteVO voteVO) {
 		boardService.votePaticirDelete(voteVO);
 	}
 	
 	//게시글 별 매니저 리스트 출력
-    @GetMapping("/getManager")
+    @GetMapping("/member/getManager")
     @ResponseBody
     public List<AllTaskBoardVO> getManager(AllTaskBoardVO allTaskBoardVO) {
 		return boardService.getManager(allTaskBoardVO);
 	} 
 	
 	//게시글 별 일정 참여자 리스트 출력
-    @GetMapping("getParticir")
+    @GetMapping("/member/getParticir")
     @ResponseBody
     public List<ScheParticirVO> getParticir(ScheParticirVO particir) {
 		return boardService.getParticir(particir);
 	} 
     
     //게시글 별 투표 참여자 리스트 출력
-    @GetMapping("getVoteParticir")
+    @GetMapping("/member/getVoteParticir")
     @ResponseBody
     public List<VoteVO> getVoteParticir(VoteVO particir) {
 		return boardService.getVoteParticir(particir);
 	} 
 	
     //업무 정보 변경
-    @PostMapping("/updateTaskInfo")
+    @PostMapping("/member/updateTaskInfo")
     @ResponseBody
     public int updateTaskInfo(AllTaskBoardVO taskVO) {
     	return boardService.updateTaskInfo(taskVO);
     }
 	
     //북마크 정보 가져오기
-    @PostMapping("/getBookmarkByMe")
+    @PostMapping("/member/getBookmarkByMe")
     @ResponseBody
     public List<BoardVO> getBookmarkByMe(ProjectVO projectInfo) {
     	return boardService.getBookmarkList(projectInfo);
     }
     
     //상단 고정 정보 가져오기
-    @PostMapping("/getPinBoard")
+    @PostMapping("/member/getPinBoard")
     @ResponseBody
     public List<BoardVO> getPinBoard(ProjectVO projectInfo) {
     	return projectService.getPinBoardList(projectInfo);

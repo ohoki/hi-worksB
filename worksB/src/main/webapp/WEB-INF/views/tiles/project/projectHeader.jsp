@@ -209,8 +209,8 @@
     </div>
     <div>
 		<ul class="project__nav">
-			<li><a href="${pageContext.request.contextPath }/projectFeed?projectId=${projectInfo.projectId}">피드</a></li>
-			<li><a href="${pageContext.request.contextPath }/projectTask?projectId=${projectInfo.projectId}">업무</a></li>
+			<li><a href="${pageContext.request.contextPath }/member/projectFeed?projectId=${projectInfo.projectId}">피드</a></li>
+			<li><a href="${pageContext.request.contextPath }/member/projectTask?projectId=${projectInfo.projectId}">업무</a></li>
 			<li><a href="${pageContext.request.contextPath}/projectCalendar?projectId=${projectInfo.projectId}">캘린더</a></li>
 			<li onclick="location.href='${pageContext.request.contextPath }/filetab?projectId=${projectInfo.projectId}&fileAccess=${projectInfo.fileAccess }'">파일</li>
 			<c:if test="${particirInfo.manager eq 'A1'}">
@@ -226,7 +226,7 @@
 			<div class="modal-body">
 				<ul id="menuList">
 					<c:if test="${particirInfo.manager eq 'A1'}">
-						<li onclick="location.href='member/projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
+						<li onclick="location.href='${pageContext.request.contextPath }/member/projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
 					</c:if>
 					<c:if test="${particirInfo.manager eq 'A1'}">
 						<li class="projectCls">프로젝트 만료</li>	
@@ -378,7 +378,7 @@
 		
 		let projectId = $(this).data('id');
 		$.ajax({
-			url : '${pageContext.request.contextPath }/getCheckParticir',
+			url : '${pageContext.request.contextPath }/member/getCheckParticir',
 			type : 'GET',
 			data : {'projectId' : projectId },
 			success : function(particir){
@@ -457,7 +457,7 @@
 		let check = confirm("승인하시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/updateAccpParticir',
+				url: '${pageContext.request.contextPath}/member/updateAccpParticir',
 				type: 'POST',
 				data: {'projectId' : projectId, 'memberId' : memberId},
 				success: function(response){
@@ -477,7 +477,7 @@
 		let check = confirm("승인 거절하시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/deleteAccpParticir',
+				url: '${pageContext.request.contextPath}/member/deleteAccpParticir',
 				type: 'POST',
 				data: {'projectId' : projectId, 'memberId' : memberId},
 				success: function(response){
@@ -499,7 +499,7 @@
 		let check = confirm("프로젝트를 만료하시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/updateProjectCls',
+				url: '${pageContext.request.contextPath}/member/updateProjectCls',
 				type: 'POST',
 				data: {'projectId' : '${projectInfo.projectId}'},
 				success: function(response){
@@ -519,7 +519,7 @@
 		let check = confirm("프로젝트를 나가시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/deleteParticir',
+				url: '${pageContext.request.contextPath}/member/deleteParticir',
 				type: 'POST',
 				data: {'projectId' : '${projectInfo.projectId}', 'memberId' : '${memberInfo.memberId}'},
 				success: function(response){
