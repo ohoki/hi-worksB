@@ -343,7 +343,7 @@
 					employeeDiv.classList.add('employee');
 					//이미지 태그
 					let employeeProfile = document.createElement('img');
-					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.setAttribute('alt', particir[i].memberName);
 					employeeProfile.classList.add('employee-img');
 					if(particir[i].realProfilePath != null) {
 						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
@@ -351,7 +351,7 @@
 						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 					}
 					$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
-					
+
 					//스팬 태그
 					let span = document.createElement('span');
 					span.innerText = particir[i].memberName;

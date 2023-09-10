@@ -49,7 +49,7 @@
 		.pin-board {
 			clear: both;
 		    width : 70%;
-		    height: 300px;
+		    max-height: 300px;
 		    margin: 30px auto;
 		    overflow: auto;
 		    overflow-x: hidden;
@@ -509,7 +509,7 @@
 			color: var(--color-dark-grey);
 		}
 		
-		.update-board-modal-title {
+		.update-board-modal-title, .insert-board-modal-title {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -536,7 +536,7 @@
 		    border-bottom: 2px solid var(--color-dark-beigie);
 		}
 		
-		.insert-list-item:hover {
+		.insert-list-item:hover, .insert-list-item.active {
 			border-bottom: 2px solid var(--color-dark-red);
 		}
 		
@@ -1095,10 +1095,10 @@
 		<div style="width: 65%;">
 			<button type="button" class="board-insert-btn" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
 			<!-- 상단 고정 게시글 -->
-			<c:if test="${pinBoardInfo.size() ne 0 }">
-				<div class="pin-board">
-					<div class="pin-board-title">상단고정</div>
-					<ul>
+			<div class="pin-board">
+				<div class="pin-board-title">상단고정</div>
+				<ul>
+					<c:if test="${pinBoardInfo.size() ne 0 }">
 						<c:forEach items="${pinBoardInfo }" var="pinBoard">
 							<li>
 								<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
@@ -1109,9 +1109,12 @@
 								</a>	
 							</li>						
 						</c:forEach>
-					</ul>
-				</div>			
-			</c:if>
+					</c:if>
+					<c:if test="${pinBoardInfo.size() eq 0 }">
+						<span style="font-size: var(--font-micro);">상단고정 된 게시글이 없습니다.</span>
+					</c:if>
+				</ul>
+			</div>			
 			<!-- 게시글 조회 -->
 			<div class="all-board-title" style="clear: both;">전체</div>
 			<c:forEach items="${boards }" var="board">
@@ -1573,7 +1576,7 @@
 				<input type="hidden" name="highPrjBoardId" value="">
 				<input type="hidden" name="highTaskId" value="">
 				<div class="update-board-modal-title">
-		    		<div>게시물 수정</div>		
+		    		<div>업무 수정</div>		
 		    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -1620,15 +1623,15 @@
 	<div id="insertSubTask-modal">
 		<!-- 모달페이지 띄우기 위함 -->
 		<form>
-			<input type="hidden" class="modal-dialog d-none">
-			<input type="hidden" class="modal-content d-none">
-			<input type="hidden" name="highPrjBoardId" value="">
-			<input type="hidden" name="highTaskId" value="">
-			<div class="update-board-modal-title">
-	    		<div>게시물 수정</div>		
-	    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	    	</div>
 			<div class="insertSubTask-modal-content">
+				<input type="hidden" class="modal-dialog d-none">
+				<input type="hidden" class="modal-content d-none">
+				<input type="hidden" name="highPrjBoardId" value="">
+				<input type="hidden" name="highTaskId" value="">
+				<div class="insert-board-modal-title">
+		    		<div>업무 추가</div>		
+		    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		    	</div>
 				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
 				<div class="board-state">
 					<input type="radio" class="btn-check" name="state" value="G1" id="option16" autocomplete="off" checked>
@@ -1803,16 +1806,6 @@
 				}
 			})
 		});
-			
-		
-			
-			
-			
-			
-			
-			
-		
-		
 		
 		//업무 담당자
 		$(document).on('click', '.task-manager span', function(e) {
@@ -2044,6 +2037,11 @@
 			$(e.currentTarget).removeClass('d-b');
 		});
 		
+		$('#insertSubTask-modal button[type="reset"]').on('click', function() {
+			$('#insertSubTask-modal').css('display', 'none');
+			$('.modal-backdrop').css('display', 'none');
+		});
+		
 		function updatePinBoard(boardId, pinYn) {
 			$('div[data-boardmodal]').removeClass('d-b');
 			$.ajax({
@@ -2245,16 +2243,30 @@
 					type : 'GET',
 					data : {'prjBoardId': boardList[i].dataset.id, 'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}' },
 					success : function(sche) {
+						let DateBox = $(boardList[i]).find('div.sche-date');
 						let startDate = $(boardList[i]).find('span[data-start]');
 						let endDate = $(boardList[i]).find('span[data-end]');
+						let scheBtns = $(boardList[i]).find('.sche-btns button');
 						let addrSpan = $(boardList[i]).find('.sche-addr');
 						let attendYesCount = $(boardList[i]).find('.sche-particir-count');
 						let attendNoCount = $(boardList[i]).find('.sche-nonParticir-count');
 						let attendBtn = $(boardList[i]).find('button[name="attend"]');
 						let nonAttendBtn = $(boardList[i]).find('button[name="nonAttend"]');
+						let overDate = `<span>(기간종료)</span>`;
+						let currentTime = new Date();
+						let endTime = new Date(sche.endDate);
 						
-						startDate.text(sche.startDate);
-		                endDate.text(sche.endDate);
+						//날짜 확인
+						if(endTime < currentTime) {
+							DateBox.css('color', 'var(--color-dark-white)');
+							startDate.text(sche.startDate);
+			                endDate.text(sche.endDate);
+			                DateBox.append(overDate);
+			                scheBtns.prop('disabled', true);
+						} else {
+							startDate.text(sche.startDate);
+			                endDate.text(sche.endDate);
+						}
 		                //장소 설정 여부
 		                if(sche.scheAddr != null) {
 		                	sche.scheAddrDetail = sche.scheAddrDetail != null ? sche.scheAddrDetail : '';
@@ -2286,16 +2298,19 @@
 					type : 'GET',
 					data : {'prjBoardId': boardList[i].dataset.id, 'prjParticirId': '${particirInfo.prjParticirId }'},
 					success : function(voteData) {
+						let DateBox = $(boardList[i]).find('div.sche-date');
 						let endDate = $(boardList[i]).find('span[data-end]');
+						let voteBtns = $(boardList[i]).find('.vote-btn button');
 						let compnoVote = $(boardList[i]).find('.compnoVote');
 						let anonyVote = $(boardList[i]).find('.anonyVote');
 						let voteList = $(boardList[i]).find('.vote-lists ul');
 						let voteParticirCount = $(boardList[i]).find('.vote-particir-count');
 						let attendBtn = $(boardList[i]).find('button[name="voteAttend"]');
 						let nonAttendBtn = $(boardList[i]).find('button[name="voteNonAttend"]');
+						let overDate = `<span>(기간종료)</span>`;
+						let currentTime = new Date();
+						let endTime = new Date(voteData.voteInfo[0].endDate);
 						
-						// 종료일
-						endDate.text(voteData.voteInfo[0].endDate);
 						// 복수 투표 여부
 						if (voteData.voteInfo[0].compnoVote == 'A1') {
 							compnoVote.text('복수 투표');
@@ -2339,6 +2354,16 @@
 								$('#' + boardList[i].dataset.id + '-' + voteData.voteListMine[j].listId).prop('checked',true);
 								voteList.find('.vote-list input').prop('disabled', true);
 							}
+						}
+						//날짜 확인
+						if(endTime < currentTime) {
+							DateBox.css('color', 'var(--color-dark-white)');
+							endDate.text(voteData.voteInfo[0].endDate);
+			                DateBox.append(overDate);
+			                voteList.find('input').prop('disabled', true);
+			                voteBtns.prop('disabled', true);
+						} else {
+							endDate.text(voteData.voteInfo[0].endDate);
 						}
 					}, error : function(reject) {
 						console.log(reject);
@@ -2399,7 +2424,7 @@
 				     	
 				     	// 하위 업무 리스트
 				     	if(subTasks.length == 0) {
-				     		$(boardList[i]).find('.sub-task-lists').empty();
+				     		$(boardList[i]).find('.sub-task-lists-title').empty();
 				     		return;
 				     	}
 				     	
@@ -2710,57 +2735,6 @@
 			}
 		})
 	};
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
 	
 	//북마크
 	$('span[data-bookmark]').on('click', function(e) {
@@ -3153,7 +3127,7 @@
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">일반</li>
+		    		<li class="insert-list-item active">일반</li>
 		    		<li class="insert-list-item">업무</li>
 		    		<li class="insert-list-item">일정</li>
 		    		<li class="insert-list-item">투표</li>
@@ -3345,12 +3319,6 @@
 		    		<div>게시물 수정</div>		
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
-		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">일반</li>
-		    		<li class="insert-list-item">업무</li>
-		    		<li class="insert-list-item">일정</li>
-		    		<li class="insert-list-item">투표</li>
-		    	</ul>
 		    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
 				<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
 				<input type="hidden" value="" name="prjBoardId" id="prjBoardId">
@@ -3859,12 +3827,10 @@
 			//업무 담당자 리스트
 			let prjManager =[];
 			$('#insertSubTask-modal .board-taskManager').find('span:not(:eq(0))').each(function(index, item){
-				console.log($(item));
 		        let prjParticirId = $(item).attr('name');
 		        prjManager.push({prjParticirId});
 		    });
 			
-			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			$.ajax({
 				url:'${pageContext.request.contextPath}/member/taskInsert',
 				type:'POST',
@@ -4078,12 +4044,15 @@
 			let targetText = target.text();
 			let modalBox = target.closest('[class$="board-modal"]');
 			let visibleDiv = $(modalBox).find('.d-b');
+			let activeItem = target.parent().find('.active');
 			let board = $(modalBox).find('[name=board]');
 			let task = $(modalBox).find('[name=task]');
 			let sche = $(modalBox).find('[name=sche]');
 			let vote = $(modalBox).find('[name=vote]');
 			
 			visibleDiv.removeClass('d-b');
+			activeItem.removeClass('active');
+			target.addClass('active');
 			
 			if(targetText == '일반') {
 				$(board).addClass('d-b');

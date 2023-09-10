@@ -61,18 +61,9 @@ public class AdminController {
 		return "admin/companyInfo";
 	}
 	
-	
-	@PostMapping("/updateCompany")
+	@PostMapping(value= "/updateCompany", produces = "application/text; charset=UTF-8")
+	@ResponseBody
 	public String updateCompany(CompanyVO companyVO, @RequestPart MultipartFile logo, HttpSession session, Model model) {
-		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
-		String message = null;
-		
-		if(dbCompany != null) {
-			message = "이미 존재하는 회사 url 입니다. 다시 입력해 주세요.";
-			model.addAttribute("message", message);
-			
-			return "/companyInfo";
-		} 
 		
 		String originalName = logo.getOriginalFilename();	
 		System.out.println(originalName+"originalName");
@@ -98,19 +89,13 @@ public class AdminController {
 		companyVO.setLogoPath(fileName);
 		companyVO.setRealLogoPath(setImagePath(uploadFileName));
 		
-		companyService.insertCompany(companyVO);
+		adminService.updateCompany(companyVO);
 		
-		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
-		member.setCompanyId(companyVO.getCompanyId());
-		member.setCompanyAccp("A1");
-		member.setMemberGrade("H1");
+		session.setAttribute("companyInfo", companyService.getCompanyById(companyVO));
 		
-		memberService.updateMember(member);
-		
-		session.setAttribute("companyId", member.getCompanyId());
-		
-		return "/companyInfo";
+		return "수정이 완료되었습니다.";
 	}
+	
 	//폴더생성
 		public String makeFolder() {
 			String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
@@ -206,21 +191,6 @@ public class AdminController {
 			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
 			model.addAttribute("companyInfo", company);
 			return "adminPage/companyInfo";
-		}
-		
-		// 회사 정보 수정
-		@RequestMapping("company/updateCompany")
-		@ResponseBody
-		public boolean updateCompany(CompanyVO companyVO, HttpSession session) {
-			
-			int result = adminService.updateCompany(companyVO);
-			if(result == 0) {
-				return false;
-			}
-			
-			CompanyVO updatedCompany = companyService.getCompanyById(companyVO);
-			session.setAttribute("companyInfo", updatedCompany);
-			return true;
 		}
 		
 		// 회사 구성원 리스트

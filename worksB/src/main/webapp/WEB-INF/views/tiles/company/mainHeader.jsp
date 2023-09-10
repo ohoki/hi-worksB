@@ -77,7 +77,7 @@
 						<c:if test="${memberInfo.realProfilePath ne null }">
 							<img src="${pageContext.request.contextPath}/images/${memberInfo.realProfilePath }" alt="기본 프로필 사진" class="my-profile-logo" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 						</c:if>	
-						<div class="my-profile-modal__name">${memberInfo.memberName }</div>
+						<div class="my-profile-modal__name">${memberInfo.memberName } (${memberInfo.memberGradeLiteral })</div>
 						<ul>
 							<li class="my-profile-item"><img alt="소속 회사" src="${pageContext.request.contextPath}/resources/icon/building-solid.svg" class="item-icon"><span>${companyInfo.companyName }</span></li>
 							<li class="my-profile-item"><img alt="이메일" src="${pageContext.request.contextPath}/resources/icon/envelope-solid.svg" class="item-icon"><span>${memberInfo.memberId }</span></li>
@@ -192,7 +192,7 @@
 						employeeDiv.classList.add('employee');
 						//이미지 태그
 						let employeeProfile = document.createElement('img');
-						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.setAttribute('alt', members[i].memberName);
 						employeeProfile.classList.add('employee-img');
 						if(members[i].realProfilePath != null) {
 							employeeProfile.src = "${pageContext.request.contextPath}/images/"+members[i].realProfilePath;
@@ -304,7 +304,7 @@
 				img.attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 				
 				//정보
-				$('.employee-modal__name').text(member.memberName);
+				$('.employee-modal__name').text(member.memberName + ' (' + member.memberGradeLiteral + ')');
 				$('#e-id').text(member.memberId);
 				$('#e-phone').text(member.memberPhone);
 				
@@ -343,7 +343,6 @@
 	});
 	
 	$('#employees .employee').on('click', function(e) {
-		console.log('gg');
 		e.stopPropagation();
 	} );
 		
@@ -366,7 +365,7 @@
 						employeeDiv.classList.add('employee');
 						//이미지 태그
 						let employeeProfile = document.createElement('img');
-						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.setAttribute('alt', members[i].memberName);
 						employeeProfile.classList.add('employee-img');
 						if(members[i].realProfilePath != null) {
 							employeeProfile.src = "${pageContext.request.contextPath}/images/"+members[i].realProfilePath;
