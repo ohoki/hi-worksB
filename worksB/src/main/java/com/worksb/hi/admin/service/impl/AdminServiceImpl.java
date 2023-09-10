@@ -1,5 +1,6 @@
 package com.worksb.hi.admin.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -199,6 +200,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int updateFileAccess(ProjectVO vo) {
 		return adminMapper.updateFileAccess(vo);
+	}
+
+	@Override
+	public int countDownloadByDate(int companyId, Date startDate, Date endDate) {
+		return adminMapper.countDownloadByDate(companyId, startDate, endDate);
+	}
+
+	@Override
+	public List<FileDataVO> filteredFileList(FileDataVO filedataVO, PagingVO pagingVO) {
+		return adminMapper.filteredFileList(filedataVO, pagingVO);
 	}
 
 

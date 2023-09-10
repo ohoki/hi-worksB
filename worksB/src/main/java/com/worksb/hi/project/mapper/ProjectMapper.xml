@@ -16,9 +16,7 @@
 							project_name,
 							project_access,
 							manager_accp,
-							write_access,
 							update_access,
-							board_access,
 							comment_access,
 							file_access,
 							dept_id,
@@ -30,9 +28,7 @@
 						#{projectName},
 						#{projectAccess},
 						#{managerAccp},
-						#{writeAccess},
 						#{updateAccess},
-						#{boardAccess},
 						#{commentAccess},
 						#{fileAccess},
 						#{deptId},
@@ -46,9 +42,7 @@
 				p.project_name,
 				p.project_access,
 				p.manager_accp,
-				p.write_access,
 				p.update_access,
-				p.board_access,
 				p.comment_access,
 				p.file_access,
 				p.dept_id,
@@ -65,9 +59,7 @@
 		SET project_name = #{projectName},
 			project_access = #{projectAccess},
 			manager_accp = #{managerAccp},
-			write_access = #{writeAccess},
 			update_access = #{updateAccess},
-			board_access = #{boardAccess},
 			comment_access = #{commentAccess},
 			file_access = #{fileAccess},
 			dept_id = #{deptId}
@@ -91,7 +83,6 @@
 				p.pin_yn,                
 				p.board_type,           
 				p.project_id,                 
-				p.coordinate,
 				m.member_name,
 				m.real_profile_path
 		FROM 	prj_board p
@@ -192,7 +183,9 @@
 				project_markup,           
 				particir_accp       
 		FROM prj_particir
-		WHERE member_id = #{memberId} AND project_id = #{projectId}
+		WHERE member_id = #{memberId} 
+			AND project_id = #{projectId}
+			AND particir_accp='A1'
 	</select>
 	
 	<!-- 프로젝트 승인 대기 조회 -->
@@ -251,9 +244,7 @@
 	    p.project_name,
 	    find_subcode(p.project_access) AS project_access,
 	    find_subcode(p.manager_accp) AS manager_accp,
-	    find_subcode(p.write_access) AS write_access,
 	    find_subcode(p.update_access) AS update_access,
-	    find_subcode(p.board_access) AS board_access,
 	    find_subcode(p.file_access) AS file_access,
 	    find_subcode(p.comment_access) AS comment_access, 
 	    pp1.prj_particir_num,
@@ -301,9 +292,7 @@
 	    p.project_name,
 	    find_subcode(p.project_access) AS project_access,
 	    find_subcode(p.manager_accp) AS manager_accp,
-	    find_subcode(p.write_access) AS write_access,
 	    find_subcode(p.update_access) AS update_access,
-	    find_subcode(p.board_access) AS board_access,
 	    find_subcode(p.file_access) AS file_access,
 	    find_subcode(p.comment_access) AS comment_access, 
 	    pp1.prj_particir_num,
@@ -352,9 +341,7 @@
        p.project_name,
        find_subcode(p.project_access) AS project_access,
        find_subcode(p.manager_accp) AS manager_accp,
-       find_subcode(p.write_access) AS write_access,
        find_subcode(p.update_access) AS update_access,
-       find_subcode(p.board_access) AS board_access,
        find_subcode(p.file_access) AS file_access,
        find_subcode(p.comment_access) AS comment_access, 
        p.dept_id,
@@ -604,6 +591,11 @@
 	FROM file_data
 	WHERE file_id=#{fileId}
 </select>
+<!-- 파일삭제 -->
+<delete id="deleteFile" parameterType="int">
+	DELETE file_data
+	WHERE file_id=#{fileId}
+</delete>
 <!-- 즐찾여부 -->
 <select id="getMarkupInfo" resultType="PrjParticirVO">
 	SELECT

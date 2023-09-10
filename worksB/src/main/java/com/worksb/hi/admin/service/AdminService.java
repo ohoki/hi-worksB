@@ -1,5 +1,6 @@
 package com.worksb.hi.admin.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,10 @@ public interface AdminService {
 	public List<FileDataVO> downloadList(int companyId,PagingVO pagingVO);
 	//downloadlist의 갯수
 	public int downloadCount(int companyId);
+	//날짜설정에 기반한 갯수
+	public int countDownloadByDate(int companyId,Date startDate, Date endDate);
+	//날짜설정에 기반한 내용
+	public List<FileDataVO> filteredFileList(FileDataVO filedataVO,PagingVO pagingVO);
 	
 	//prjlist갯수
 	public int prjcount(int companyId);

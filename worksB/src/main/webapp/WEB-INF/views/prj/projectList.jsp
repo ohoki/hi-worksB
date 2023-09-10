@@ -77,7 +77,7 @@
 					<div class="project-info">
 						${list.prjParticirNum }<img class="icon" name="prjParticirList" data-id="${list.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 						<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
-						<span class="unread-project">1</span>
+ 
 					</div>
 				</div>
 			</c:forEach>
@@ -103,7 +103,7 @@
 					<div class="project-info">
 						${list.prjParticirNum }<img class="icon" name="prjParticirList" data-id="${list.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 						<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
-						<span class="unread-project">1</span>
+ 
 					</div>
 				</div>
 			</c:forEach>
@@ -125,12 +125,12 @@
 //즐겨찾기
 	//즐찾해제
     document.addEventListener("click",(e)=>{     
+        	let star = e.target;
        
         if(e.target.className.includes('colored-star')){
-        	let star = e.target;
 
     	    let markup = 'A2';
-    	    let prjId = $('.colored-star').data("id");
+    	    let prjId =$(star).data("id");
     	    updateStar(markup, prjId);
 
     	    star.src = "${pageContext.request.contextPath }/resources/icon/emptyStar.svg"
@@ -145,7 +145,7 @@
         	let empty = e.target;
 
        	    let markup = 'A1';
-       	    let prjId = $('.empty-star').data("id");
+       	    let prjId = $(star).data("id");
        	    updateStar(markup, prjId);
 
        	    empty.src = "${pageContext.request.contextPath }/resources/icon/fullStar.svg"

@@ -285,6 +285,8 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 		})
 		$('#prjParticir-modal').addClass('modal-visible');
 	})
+		sessionStorage.removeItem('startDate'); // 시작일 데이터 삭제
+		sessionStorage.removeItem('endDate'); // 시작일 데이터 삭제
 </script>
 </body>
 </html>
