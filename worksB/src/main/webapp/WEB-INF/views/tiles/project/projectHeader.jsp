@@ -141,6 +141,7 @@
 	height: 30px;
 	border-radius: 5px;
 	transition: all 0.5s;
+	margin-left: 800px;
 }
 .particir-check-btn:hover {
 	background-color: var(--color-dark-red);
@@ -191,6 +192,11 @@
 	border-radius: 5px;
 }
 
+.noEmployee {
+	text-align: center;
+	margin: 10px auto;
+}
+
 </style>
 </head>
 <body>
@@ -209,8 +215,8 @@
     </div>
     <div>
 		<ul class="project__nav">
-			<li><a href="${pageContext.request.contextPath }/projectFeed?projectId=${projectInfo.projectId}">피드</a></li>
-			<li><a href="${pageContext.request.contextPath }/projectTask?projectId=${projectInfo.projectId}">업무</a></li>
+			<li><a href="${pageContext.request.contextPath }/member/projectFeed?projectId=${projectInfo.projectId}">피드</a></li>
+			<li><a href="${pageContext.request.contextPath }/member/projectTask?projectId=${projectInfo.projectId}">업무</a></li>
 			<li><a href="${pageContext.request.contextPath}/projectCalendar?projectId=${projectInfo.projectId}">캘린더</a></li>
 			<li onclick="location.href='${pageContext.request.contextPath }/filetab?projectId=${projectInfo.projectId}&fileAccess=${projectInfo.fileAccess }'">파일</li>
 			<c:if test="${particirInfo.manager eq 'A1'}">
@@ -226,7 +232,7 @@
 			<div class="modal-body">
 				<ul id="menuList">
 					<c:if test="${particirInfo.manager eq 'A1'}">
-						<li onclick="location.href='member/projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
+						<li onclick="location.href='${pageContext.request.contextPath }/member/projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
 					</c:if>
 					<c:if test="${particirInfo.manager eq 'A1'}">
 						<li class="projectCls">프로젝트 만료</li>	
@@ -378,72 +384,85 @@
 		
 		let projectId = $(this).data('id');
 		$.ajax({
-			url : '${pageContext.request.contextPath }/getCheckParticir',
+			url : '${pageContext.request.contextPath }/member/getCheckParticir',
 			type : 'GET',
 			data : {'projectId' : projectId },
 			success : function(particir){
 				let particirDiv = $('#particirAccp');
 				particirDiv.empty();
 				
-				for(let i=0; i<particir.length; i++) {
-					//div태그
-					let employeeDiv = document.createElement('div');
-					employeeDiv.classList.add('flex');
-					employeeDiv.classList.add('employee');
-					//이미지 태그
-					let employeeProfile = document.createElement('img');
-					employeeProfile.setAttribute('alt', '회원사진');
-					employeeProfile.classList.add('employee-img');
-					if(particir[i].realProfilePath != null) {
-						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
-					}else {
-						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
-					}
-					//스팬 태그
-					let span = document.createElement('span');
-					span.innerText = particir[i].memberName;
-					//히든 인풋 태그 (멤버id값)
-					let input = document.createElement('input');
-					input.setAttribute('type', 'hidden');
-					input.value = particir[i].memberId;
-					
-					// 승인 버튼 태그
-					let updateAccp = document.createElement('button');
-					updateAccp.classList.add('updateAccp')
-					updateAccp.innerText = '승인하기';
-					
-					// 프로젝트 참여자 신청 승인
-					updateAccp.addEventListener('click', function() {
-						e.stopPropagation();
-						updateAccpParticir(projectId, particir[i].memberId);
-
-						$(this).parent().remove();
-					});
-					
-					// 승인 거절 버튼 태그
-					let deleteAccp = document.createElement('button');
-					deleteAccp.classList.add('deleteAccp');
-					deleteAccp.innerText = '승인거절';
-					
-					// 프로젝트 참여자 신청 승인 거절하기
-					deleteAccp.addEventListener('click', function() {
-						e.stopPropagation();
-						deleteAccpParticir(projectId, particir[i].memberId);
-
-						$(this).parent().remove();
+				if(particir.length != 0){
+					for(let i=0; i<particir.length; i++) {
+						//div태그
+						let employeeDiv = document.createElement('div');
+						employeeDiv.classList.add('flex');
+						employeeDiv.classList.add('employee');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(particir[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						
-					});
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = particir[i].memberName;
+						//히든 인풋 태그 (멤버id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.value = particir[i].memberId;
+						
+						// 승인 버튼 태그
+						let updateAccp = document.createElement('button');
+						updateAccp.classList.add('updateAccp')
+						updateAccp.innerText = '승인하기';
+						
+						// 프로젝트 참여자 신청 승인
+						updateAccp.addEventListener('click', function() {
+							e.stopPropagation();
+							updateAccpParticir(projectId, particir[i].memberId);
+
+							$(this).parent().remove();
+						});
+						
+						// 승인 거절 버튼 태그
+						let deleteAccp = document.createElement('button');
+						deleteAccp.classList.add('deleteAccp');
+						deleteAccp.innerText = '승인거절';
+						
+						// 프로젝트 참여자 신청 승인 거절하기
+						deleteAccp.addEventListener('click', function() {
+							e.stopPropagation();
+							deleteAccpParticir(projectId, particir[i].memberId);
+
+							$(this).parent().remove();
+							
+						});
+						
+						//태그 삽입
+						employeeDiv.append(employeeProfile);
+						employeeDiv.append(span);
+						employeeDiv.append(input);
+						
+						employeeDiv.append(updateAccp);
+						employeeDiv.append(deleteAccp);
+						
+						particirDiv.append(employeeDiv);
+					}
+				}else{
+					let noEmployeeDiv = document.createElement('div');
+					noEmployeeDiv.classList.add('noEmployee');
+					noEmployeeDiv.innerText = '신청자가 존재하지 않습니다.';
 					
-					//태그 삽입
-					employeeDiv.append(employeeProfile);
-					employeeDiv.append(span);
-					employeeDiv.append(input);
+					particirDiv.append(noEmployeeDiv);
 					
-					employeeDiv.append(updateAccp);
-					employeeDiv.append(deleteAccp);
-					
-					particirDiv.append(employeeDiv);
 				}
+				
+				
 			},
 			error : function(reject){
 				console.log(reject);
@@ -457,7 +476,7 @@
 		let check = confirm("승인하시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/updateAccpParticir',
+				url: '${pageContext.request.contextPath}/member/updateAccpParticir',
 				type: 'POST',
 				data: {'projectId' : projectId, 'memberId' : memberId},
 				success: function(response){
@@ -477,7 +496,7 @@
 		let check = confirm("승인 거절하시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/deleteAccpParticir',
+				url: '${pageContext.request.contextPath}/member/deleteAccpParticir',
 				type: 'POST',
 				data: {'projectId' : projectId, 'memberId' : memberId},
 				success: function(response){
@@ -499,7 +518,7 @@
 		let check = confirm("프로젝트를 만료하시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/updateProjectCls',
+				url: '${pageContext.request.contextPath}/member/updateProjectCls',
 				type: 'POST',
 				data: {'projectId' : '${projectInfo.projectId}'},
 				success: function(response){
@@ -519,7 +538,7 @@
 		let check = confirm("프로젝트를 나가시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/deleteParticir',
+				url: '${pageContext.request.contextPath}/member/deleteParticir',
 				type: 'POST',
 				data: {'projectId' : '${projectInfo.projectId}', 'memberId' : '${memberInfo.memberId}'},
 				success: function(response){

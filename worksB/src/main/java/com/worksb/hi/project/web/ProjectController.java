@@ -134,7 +134,7 @@ public class ProjectController {
 		// 참여자 등록
 		projectService.insertParticipant(participant);
 		
-		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
+		return "redirect:/member/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 	
 	//프로젝트 수정폼
@@ -177,7 +177,7 @@ public class ProjectController {
 		
 		projectService.updateProject(projectVO);
 
-		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
+		return "redirect:/member/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 
 	// 프로젝트 삭제
@@ -188,7 +188,7 @@ public class ProjectController {
 	}
 	
 	// 프로젝트 피드
-	@GetMapping("/projectFeed")
+	@GetMapping("/member/projectFeed")
     public String projectFeed(@RequestParam int projectId, Model model, HttpSession session) {
         ProjectVO projectInfo = projectService.getProjectInfo(projectId);
         // 게시글 리스트
@@ -227,41 +227,41 @@ public class ProjectController {
     }
 	
 	// 프로젝트 참여자 조회
-	@GetMapping("particirList")
+	@GetMapping("/member/particirList")
 	@ResponseBody
 	public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
 		return projectService.getParticirList(projectId);
 	}
 
 	//프로젝트 승인 대기 조회
-	@GetMapping("/getCheckParticir")
+	@GetMapping("/member/getCheckParticir")
 	@ResponseBody
 	public List<PrjParticirVO> getCheckParticir(PrjParticirVO prjParticirVO){
 		return projectService.getCheckParticir(prjParticirVO);
 	}
 	
 	//프로젝트 참여자 승인
-	@PostMapping("/updateAccpParticir")
+	@PostMapping("/member/updateAccpParticir")
 	@ResponseBody
 	public int updateAccpParticir(PrjParticirVO prjParticirVO) {
 		return projectService.updateAccpParticir(prjParticirVO);
 	}
 	
 	//프로젝트 참여자 승인거절
-	@PostMapping("/deleteAccpParticir")
+	@PostMapping("/member/deleteAccpParticir")
 	@ResponseBody
 	public int deleteAccpParticir(PrjParticirVO prjParticirVO) {
 		return projectService.deleteAccpParticir(prjParticirVO);
 	}
 		
 	// 프로젝트 만료
-	@PostMapping("/updateProjectCls")
+	@PostMapping("/member/updateProjectCls")
 	@ResponseBody
 	public int updateProjectCls(ProjectVO projectVO) {
 		return projectService.updateProjectCls(projectVO);
 	}
 	// 프로젝트 나가기
-	@PostMapping("/deleteParticir")
+	@PostMapping("/member/deleteParticir")
 	@ResponseBody
 	public int deleteParticir(PrjParticirVO prjParticirVO) {
 		return projectService.deleteParticir(prjParticirVO);
