@@ -202,7 +202,7 @@ public class AdminController {
 		public String companyInfoForm(Model model, HttpSession session) {
 			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
 			model.addAttribute("companyInfo", company);
-			return "adminPage/companyInfo";
+			return "admin/companyInfo";
 		}
 		
 		// 회사 정보 수정

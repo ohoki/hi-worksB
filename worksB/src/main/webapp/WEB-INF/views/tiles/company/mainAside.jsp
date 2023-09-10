@@ -124,8 +124,8 @@
 		<p class="side__menu__cate"><img alt="프로젝트 아이콘" src="${pageContext.request.contextPath }/resources/icon/users-solid.svg">사내 게시판</p>
 		<div class="side__menu">
 			<ul class="side__menu__items">
-				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/noticeList">사내 공지</a></li>
-				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/carpoolList">같이타요</a></li>
+				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/member/noticeList">사내 공지</a></li>
+				<li class="side__menu__item"><a href="${pageContext.request.contextPath }/member/carpoolList">같이타요</a></li>
 			</ul>
 		</div>
 		<!-- 마이 공간 -->

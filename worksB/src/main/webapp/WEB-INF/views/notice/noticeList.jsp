@@ -138,7 +138,7 @@ td {
 			공지사항
 			</h2>
 			<button type="button" class="insert__button"
-				onclick="location.href='noticeInsert'">공지 작성</button>
+				onclick="location.href='${pageContext.request.contextPath }/member/noticeInsert'">공지 작성</button>
 		</div>
 		<div style="min-height: 500px;">
 			<table class="table">

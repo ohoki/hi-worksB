@@ -8,16 +8,78 @@
 <meta charset="UTF-8">
 <title>구성원 관리</title>
 <style>
-	/* thead에 css입히실때 65줄이랑 버튼 누르면 표 생성하는 295줄 둘다 class붙여야돼요! */
+	
+	.menuButtons{
+		margin-left: 20px;
+		margin-top: 20px;
+	}
+	
+	.adminManagementMenu {
+		margin-left: 300px;
+		display: flex;
+		margin-left: 300px;
+	}
+	
+	.adminManagementMenu li{
+		padding: 5px 10px 0 10px;
+		border-bottom: 3px solid transparent;
+		height: 30px;
+	}
+	
+	.adminManagementMenu li:hover{
+		color: var(--color-dark-red);
+		border-bottom: 3px solid var(--color-dark-red);
+		cursor: pointer;	
+		transition: all 0.5s;	
+	}
+	
+	.adminManagementMenu button:hover{
+		color: var(--color-dark-red);
+		transition: all 0.5s;	
+	}
+	
+	.menuButton {
+		color: black;
+		background-color: white;
+		text-decoration: none;
+		font-size: medium;
+	}
+	
 	body {
-		font-size:medium;
+		font-size: medium;
 	}
-	table {
-		border: 1px solid;
+	
+	table{
+		width: 95%;
+		color : var(--color-dark-grey);
+		margin: 0 auto;
 		border-collapse: collapse;
+		margin-top: 10px;
 	}
-	table td, th {
-		border: 1px solid;
+	
+	th, td {
+		border: 1px solid var(--color-dark-beigie);
+		text-align: right;
+		width : 140px;
+		text-align: center;
+	}
+	
+	th {
+		height: 40px;
+		background-color: var(--color-beigie);
+	}
+	
+	 tr:hover {
+		background-color: var(--color-beigie);
+	}
+	
+	td {
+		padding: 10px;	
+	}
+	  
+	tr{
+		border: 1px solid var(--color-dark-beigie);
+		cursor: pointer;
 	}
 	
 	/* 구성원 수정 폼 모달 */
@@ -37,7 +99,7 @@
 	  margin: 15% auto;
 	  padding: 20px;
 	  border: 1px solid #888;
-	  width: 400px;
+	  width: 500px;
 	  height: 600px;
 	}
 	.closeUpdateForm {
@@ -53,13 +115,79 @@
 	  text-decoration: none;
 	  cursor: pointer;
 	}
+	
+	.topH1 {
+		display: block;
+	    font-size: var(--font-regular);
+	    margin-block-start: 0.67em;
+	    margin-block-end: 0.67em;
+	    margin-inline-start: 0px;
+	    margin-inline-end: 0px;
+	    font-weight: bold;
+	    margin-top: 30px;
+	    margin-left: 35px;
+	    color: var(--color-dark-grey);
+	}
+	
+	.tableH2 {
+		text-align: center;
+		color: var(--color-dark-grey);
+	}
 	/* 모달끝 */
+	
+	/* 셀렉트 박스 스타일 */
+	select {
+	  padding: 8px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  font-size: 14px;
+	  background-color: white;
+	  width: 50;
+	  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+	  transition: border-color 0.2s, box-shadow 0.2s;
+	}
+	
+	/* 셀렉트 박스 포커스 스타일 */
+	select:focus {
+	  border-color: #007bff;
+	  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+	}
+	
+	/* 셀렉트 박스 확장 아이콘 스타일 (선택 사항) */
+	select::-ms-expand {
+	  display: none;
+	}
+	
+	/* 레이블 스타일 */
+	label {
+	  display: block;
+	  margin-bottom: 10px;
+	  font-weight: bold;
+	}
+	
+	/* 선택 옵션 스타일 (선택 사항) */
+	select option {
+	  padding: 8px;
+	}
+	
+	/* 선택 옵션 호버 스타일 (선택 사항) */
+	select option:hover {
+	  background-color: var(--color-beigie);
+	}
+	
+	.closeUpdateForm {
+		text-align: right;
+	}
 </style>
 </head>
 <body>
-	<h2>구성원 관리</h2>
-		<button type="button" id="memberManagement">구성원 관리</button>
-		<button type="button" id="welcomeCompany">회사 가입 승인</button>
+	<h1 class="topH1">구성원 관리</h1>
+	<div class="menuButtons">
+		<ul class="adminManagementMenu">
+			<li><button class="menuButton" type="button" id="memberManagement">구성원 관리</button></li>
+			<li><button class="menuButton" type="button" id="welcomeCompany">회사 가입 승인</button></li>
+		</ul>
+	</div>
 	<table>
 		<thead id="tableHead">
 			<tr class="memberMenuOne">
@@ -92,10 +220,10 @@
 		<form class="updateMember" method="post">
 			<div>
 				<span>구성원 정보 수정</span>
-				<button type="button" id="closeUpdateForm">창 닫기</button><br>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor" id="closeUpdateForm">
 				<label>이메일</label>
 				<input data-memberId type="text" readonly="readonly"><br>
-				<label>회사 번호</label>
+				<label>회사명</label>
 				<input data-companyName type="text"readonly="readonly"><br>
 				<br>
 				<label>이름 </label>
@@ -126,20 +254,20 @@
 					</select>
 					</label>
 				</p>
-					<p>
-						<span>회원 등급</span>
-						<label for="memberGrade" >
-							<select id="memberGrade" name="memberGrade" data-memberGrade>
-								<option value="">선택</option>
-								<option value="H3" 
-									<c:if test="${memberGrade eq 'H3' }">selected </c:if>>게스트</option>
-								<option value="H2"
-									<c:if test="${memberGrade eq 'H2' }">selected </c:if>>일반 회원</option>
-								<option value="H1"
-									<c:if test="${memberGrade eq 'H1' }">selected </c:if>>관리자</option>
-							</select>
-						</label>
-					</p>
+				<p>
+					<span>회원 등급</span>
+					<label for="memberGrade" >
+						<select id="memberGrade" name="memberGrade" data-memberGrade>
+							<option value="">선택</option>
+							<option value="H3" 
+								<c:if test="${memberGrade eq 'H3' }">selected </c:if>>게스트</option>
+							<option value="H2"
+								<c:if test="${memberGrade eq 'H2' }">selected </c:if>>일반 회원</option>
+							<option value="H1"
+								<c:if test="${memberGrade eq 'H1' }">selected </c:if>>관리자</option>
+						</select>
+					</label>
+				</p>
 				<button type="button" class="updateButton">수정</button>
 			</div>
 		</form>
@@ -361,7 +489,7 @@
 				success : function(taskLists){
 					if(taskLists.length == 0){
 						let hightaskList =`
-									<h2>가입 대기중인 인원이 없습니다.</h2>`;
+									<h2 class="tableH2">가입 대기중인 인원이 없습니다.</h2>`;
 							$('.memberMenuTwo').empty();
 							$(".noData").append(hightaskList);
 						
