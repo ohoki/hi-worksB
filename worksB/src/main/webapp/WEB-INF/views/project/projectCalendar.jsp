@@ -206,6 +206,12 @@
 	    color: var(--color-dark-grey);
 	    font-weight: var(--weight-bold);
 	}
+	.fc-theme-standard .fc-popover {
+	    background: var(--fc-page-bg-color);
+	    border: 1px solid var(--fc-border-color);
+	    z-index: 2;
+	}
+	
 	.flex {
 		display: flex;
 	}
@@ -475,6 +481,9 @@
 	}	
 	.board-title span {
 		color: var(--color-blue);
+	}
+	.board-title span[data-title] {
+		color: var(--color-dark-grey);
 	}
 	.board-title {
 		font-size: var(--font-small);
@@ -878,7 +887,8 @@
 			</div>
 			<div class="board-title">
 				<div>
-					<span>[일정]</span><input type="text" class="board-title-boardTitle">
+					<span>[일정]</span>
+					<span data-title></span>
 				</div>
 				<div class="sche-particir-list">
 					<span class="sche-particir">참석 <span class="sche-particir-count"></span></span>
@@ -1978,7 +1988,7 @@
 							$('.profile').attr("src", profilePath);
 						}
 						//제목 확인
-						$('.board-title-boardTitle').val(result.boardVO.prjBoardTitle);
+						$('.prjSche-modal__content span[data-title]').text(result.boardVO.prjBoardTitle);
 						//참석자 불참석자 확인
 						$('.sche-particir-count').text(result.scheVO.attendanceYes);
 						$('.sche-nonParticir-count').text(result.scheVO.attendanceNo);
@@ -1997,12 +2007,14 @@
 		                }
 						$('.board-content div').append(result.boardVO.prjBoardSubject);
 		                //일정 참여 여부
-   						let attendBtn = $('#prjSche-modal__content sche-btns').find('button[name="attend"]');
-						let nonAttendBtn = $('#prjSche-modal__content sche-btns').find('button[name="nonAttend"]');
-		                if(result.scheVO.myAttendance == 'A1') {
+   						let attendBtn = $('.prjSche-modal__content .sche-btns').find('button[name="attend"]');
+						let nonAttendBtn = $('.prjSche-modal__content .sche-btns').find('button[name="nonAttend"]');
+		                if(result.scheVO.myAttendance === 'A1') {
 		                	attendBtn.attr('class', 'btn-green active');
-		                } else if(result.scheVO.myAttendance == 'A2'){
+		                	nonAttendBtn.removeClass('active');
+		                } else if(result.scheVO.myAttendance === 'A2'){
 		                	nonAttendBtn.attr('class', 'active');
+		                	attendBtn.attr('class', 'btn-green');
 		                }
 						//댓글 조회
 				     	getCommentList(result.boardVO.prjBoardId, 'C6')

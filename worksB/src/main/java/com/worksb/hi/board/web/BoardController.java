@@ -732,11 +732,17 @@ public class BoardController {
 	@ResponseBody
 	public BoardRequestVO getScheBoardInfo(@RequestParam("prjBoardId") int prjBoardId, HttpSession session) {
 		BoardRequestVO vo = new BoardRequestVO();
+		vo.setBoardVO(boardService.getScheBoardInfo(prjBoardId));
+		
+		MemberVO userInfo = (MemberVO) session.getAttribute("memberInfo");
+		String userId = userInfo.getMemberId();
 		ScheVO scheVO = new ScheVO();
 		scheVO.setPrjBoardId(prjBoardId);
-		vo.setBoardVO(boardService.getScheBoardInfo(prjBoardId));
+		scheVO.setMemberId(userId);
+		scheVO.setProjectId(vo.getBoardVO().getProjectId());
 		vo.setScheVO(boardService.getScheInfo(scheVO));
 		
+		//작성자 정보
 		MemberVO memberVO = new MemberVO();
 		String memberId = vo.getBoardVO().getMemberId();
 		memberVO.setMemberId(memberId);

@@ -7,10 +7,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <!-- bootstrap -->
+<link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
+<!-- bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
-<link href="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <style>
 	a{
 		text-decoration: none;
@@ -906,13 +909,28 @@
 	    width: 130px !important;
 	}
 	
+	/* todoList */
+	
+	.tdlViewTitle{
+	    color: var(--color-blue);
+	    font-size: 20px;
+	    font-weight: bolder;
+	} 
+	#tdlView .modal-body {
+	    position: relative;
+	    flex: 1 1 auto;
+	    padding: 1rem;
+	    color: var(--color-blue);
+	    font-size: 20px;
+	    font-weight: bolder;
+	}
+	.tdlViewTitle .tdlListTitle {
+		color: var(--color-dark-grey) !important;
+	}
 </style>
 </head>
 <!-- full calendar  -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-<!-- bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <!-- dateTimePicker -->
 <script src="${pageContext.request.contextPath}/resources/dateTimePicker/jquery.datetimepicker.full.min.js"></script>
 <!-- ckeditor -->
@@ -1023,7 +1041,12 @@
 	      <div id="tdlView">
 		  	<div class="modal-body">
 		      	<form id="tdlFormView">
-			      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요"><hr>
+			      	<div class="tdlViewTitle">
+			      		<span>[제목] </span>
+				      	<span name="listTitle" class="tdlListTitle" ></span>
+				      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요">
+			      	</div>
+			      	<hr>
 			      	<label for="memberId">작성자 : </label><input name="memberId" type="text" value="${memberInfo.memberName }" readonly><br>
 			      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker6"  autocomplete="off">
 			      	<input id="listId" name="listId" type="text" hidden="hidden">
@@ -1833,11 +1856,16 @@
 	    				//조회모달 띄우기
 	    				$('#tdlBody').attr("class","div_hidden");
 	    				$('#tdlView').attr("class","div_block");
-	    				//inputTag 읽기전용으로/제목넣기, 해당날짜넣기,id값넣기
-	    				$('#tdlFormView input').prop("readonly",true);
-	    				$('#tdlFormView input').eq(0).val(result.todoList[0].listTitle);
+	    				/* //inputTag 읽기전용으로/제목넣기, 해당날짜넣기,id값넣기
+	    				$('#tdlFormView input').prop("readonly",true); */
+	    				
+	    				$('#tdlFormView span[name="listTitle"]').empty();
+	    				$('#tdlFormView .tdlViewTitle span').prop('hidden',false)
+	    				$('#tdlFormView span[name="listTitle"]').text(result.todoList[0].listTitle);
+	    				$('#tdlFormView input[name="listTitle"]').val(result.todoList[0].listTitle).prop('hidden', true);
+	    				
 	    				let applyDate = result.todoList[0].applyDate.substr(0,10);
-	    				$('#tdlFormView input').eq(2).val(applyDate).datetimepicker('destroy');
+	    				$('#datetimepicker6').val(applyDate).datetimepicker('destroy');
 	    				$('#listId').val(result.todoList[0].listId);
     					$('.tdlList-view').append('')
     					//ITEM항목 생성
@@ -2242,7 +2270,11 @@
 		
 		//tdl 수정폼
 		function tdlUpdateForm(result){
-			$('#tdlFormView input').eq(0).prop("readonly",false).focus();
+			$('#tdlFormView span[name="listTitle"]')
+		
+			$('#tdlFormView .tdlViewTitle span').prop('hidden',true)
+			$('#tdlFormView input[name="listTitle"]').prop('hidden',false).focus();
+			
 			$('#tdlFormView input').eq(2).prop("readonly",false);
 			$('#datetimepicker6').datetimepicker({
 			    format:'Y-m-d',
