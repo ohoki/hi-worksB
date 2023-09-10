@@ -140,6 +140,7 @@
 	width: 130px;
 	height: 30px;
 	border-radius: 5px;
+	transition: all 0.5s;
 }
 .particir-check-btn:hover {
 	background-color: var(--color-dark-red);
@@ -225,7 +226,7 @@
 			<div class="modal-body">
 				<ul id="menuList">
 					<c:if test="${particirInfo.manager eq 'A1'}">
-						<li onclick="location.href='projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
+						<li onclick="location.href='member/projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
 					</c:if>
 					<c:if test="${particirInfo.manager eq 'A1'}">
 						<li class="projectCls">프로젝트 만료</li>	

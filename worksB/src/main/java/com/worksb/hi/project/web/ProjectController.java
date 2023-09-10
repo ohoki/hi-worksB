@@ -81,7 +81,7 @@ public class ProjectController {
 	
 	//이진 - 등록수정삭제
 	//프로젝트 등록 폼
-	@GetMapping("/projectInsert")
+	@GetMapping("/member/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
 
 		// 소속 회사의 부서정보 받아오기
@@ -94,7 +94,7 @@ public class ProjectController {
 	}
 	
 	//프로젝트 등록
-	@PostMapping("/projectInsert")
+	@PostMapping("/member/projectInsert")
 	public String projectInsertProcess(ProjectVO projectVO, HttpSession session) {
 		
 		//A1 : Yes, A2 : No
@@ -138,7 +138,7 @@ public class ProjectController {
 	}
 	
 	//프로젝트 수정폼
-	@GetMapping("/projectUpdate")
+	@GetMapping("/member/projectUpdate")
 	public String projectUpdateForm(@RequestParam int projectId, Model model, HttpSession session) {
 		//기존 프로젝트 정보 가져오기
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
@@ -161,7 +161,7 @@ public class ProjectController {
 	}
 	
 	//프로젝트 수정
-	@PostMapping("/projectUpdate")
+	@PostMapping("/member/projectUpdate")
 	public String projectUpdate(ProjectVO projectVO) {
 		
 		//A1 : Yes, A2 : No

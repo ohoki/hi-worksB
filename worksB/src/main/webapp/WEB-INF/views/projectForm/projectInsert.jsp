@@ -50,25 +50,11 @@
 	            <p class="permission__title">게시글</p>
 	            <ul>
 	                <li>
-	                    <label>작성 권한</label>
-	                    <select class="form__select" name="writeAccess">
-	                        <option value="J1">전체</option>
-	                        <option value="J2">프로젝트 관리자만</option>
-	                    </select>
-	                </li>
-	                <li>
 	                    <label>수정 권한</label>
 	                    <select class="form__select" name="updateAccess">
 	                        <option value="J1">전체</option>
 	                        <option value="J3" selected>프로젝트 관리자 + 작성자만</option>
 	                        <option value="J4">작성자만</option>
-	                    </select>
-	                </li>
-	                <li>
-	                    <label>조회 권한</label>
-	                    <select class="form__select" name="boardAccess">
-	                        <option value="J1">전체</option>
-	                        <option value="J3">프로젝트 관리자 + 작성자만</option>
 	                    </select>
 	                </li>
 	            </ul>

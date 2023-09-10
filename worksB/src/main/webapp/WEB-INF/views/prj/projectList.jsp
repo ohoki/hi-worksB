@@ -45,18 +45,41 @@
 .modal-visible {
 	display: block !important;
 }
+
+.list-box {
+	min-height: 300px;
+	overflow: auto;
+	overflow-x: hidden;
+}
+
+.list-box::-webkit-scrollbar, .content-left-item:nth-child(1)::-webkit-scrollbar {
+    width: 10px;
+ }
+ 
+.list-box::-webkit-scrollbar-thumb, .content-left-item:nth-child(1)::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  background-color: var(--color-dark-beigie);
+}
+
+.list-box::-webkit-scrollbar-track, .content-left-item:nth-child(1)::-webkit-scrollbar-track {
+  background-color: grey;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+  background-color: var(--color-dark-beigie);
+}
+
+.list-title {
+	color: var(--color-dark-grey);
+}
 </style>
 </head>
 <body>
 <!-- !!!!!!!!!!!!!!!!!!!미확인알림 안해뜸!!!!!!!!!!!!!!!!!!!! -->
 	<div class="prj-title">
 		<h1>내 프로젝트</h1>
-		<div class="icons">
-			<a href="${pageContext.request.contextPath }/projectList"><img class="icon" alt="리스트로 보기"
-				src="${pageContext.request.contextPath }/resources/icon/list.svg"></a>
-			<a href="${pageContext.request.contextPath }/projectList"><img class="icon" alt="타일형으로 보기"
-				src="${pageContext.request.contextPath }/resources/icon/microsoft.svg"></a>
-		</div>
 	</div>
 	<!-- 좋아요를 누른 프로젝트 -->
 	<div class="list-box">
