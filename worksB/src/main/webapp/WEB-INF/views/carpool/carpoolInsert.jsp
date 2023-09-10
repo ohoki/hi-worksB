@@ -191,7 +191,7 @@ div h2 {
 		<h2>카풀 게시판 작성</h2>
 	</div>
 	<div class="body">
-		<form action="carpoolInsert" method="post" onsubmit="return check();">
+		<form action="${pageContext.request.contextPath }/member/carpoolInsert" method="post" onsubmit="return check();">
 			<table class="table">
 				<thead>
 					<tr class="main__p">

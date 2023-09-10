@@ -358,10 +358,10 @@ th, tfoot td {
 				</div>
 				<div class="buttons">
 					<c:if test="${memberInfo.memberId eq carpoolInfo.memberId}">
-						<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/carpoolUpdate?boardId=${carpoolInfo.boardId}'">수정</button>
-						<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/carpoolDelete?boardId=${carpoolInfo.boardId}'">삭제</button>
+						<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/member/carpoolUpdate?boardId=${carpoolInfo.boardId}'">수정</button>
+						<button type="button" class="buttonss__button" onclick="carpoolDelete()">삭제</button>
 					</c:if>
-					<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/carpoolList'">목록</button>
+					<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/member/carpoolList'">목록</button>
 				</div>
 			</div>
 		</form>
@@ -383,31 +383,6 @@ th, tfoot td {
 				<textarea id="commentContent" name="commentContent" placeholder="댓글을 입력하세요"></textarea>
 			</div>
 		</form>
-		<!-- 대댓글 작성 폼 -->
-		<div id="replyInsert" class="replyInsert">
-			<form id="replyInsertForm" class="replyInsertForm" method="post">
-				<div class="cmtList">
-	    			<p class="cmtList__cmtInsertc">댓글 작성 | ${memberInfo.memberName }</p>
-	    			<div id="cmtInsert__textc">
-	        			<textarea class="commentContentc" name="commentContentc" placeholder="댓글을 입력하세요"></textarea>
-	        			<button type="button" id="insertButtonc">등록</button>
-	        			<button type="button" id="closeReply">닫기</button>
-	    			</div>
-    			</div>
-			</form>
-		</div>
-		
-		<!-- 수정 폼 / 댓글 대댓글 공유-->
-		<div id="UpdateFromModal">
-			<form class="UpdateContent" method="post">
-				<div>
-    				<p>댓글 수정</p>
-    				<textarea id="newCommentContent" name="newCommentContent"></textarea>
-    				<button type="button" id="cmtUpdateButton">수정</button>
-    				<button type="button" id="closeUpdate">닫기</button>
-  				</div>
-			</form>
-		</div>
 	</div>
 </body>
 <script>
@@ -416,229 +391,247 @@ th, tfoot td {
 		getcmtList();
 	});
 	
-	/* ------------------------------------댓글 시작---------------------------------- */
-	// 댓글 리스트를 출력하는 함수
-	function getcmtList(){
-		let cmt = $(".boardCmtList");
-		let str = "";
-		$.get("boardCmtList",{boardId : ${carpoolInfo.boardId}, boardType : 'C3'},function(list) {
-			for(let i = 0 , len = list.length || 0; i < len; i++ ){
-				/* 부모/자식 댓글 구분 */
-				
-				if(list[i].commentContent == '삭제된 댓글 입니다.'){
-					str += "<ul>" + "<li class='cmtName'>" + list[i].memberName + "</li>";
-					str += "<li class='cmtInsert'>" + "<button type='button' id='cmtInsertFormButton' class='cmtInsertFormButton'>" + "답글작성" + "</button>" + "</li>";
-					str += "<li class='cmtContent'>" + list[i].commentContent + "</li>"
-					/* 밑으론 hidden */
-					str += "<li>" + "<input type='hidden' class='commentId' value='" + list[i].commentId +" '>" + "</li>";
-					str += "<li>" + "<input type='hidden' class='boardType' value='" + list[i].boardType +" '>" + "</li>";
-					str += "<li>" + "<input type='hidden' class='boardId' value='" + list[i].boardId +" '>" + "</li>" + "</ul>";
-				} else if(list[i].parentId == 0){
-					/* 부모 댓글일 경우 */
-					str += "<ul>" + "<li class='cmtName'>" + list[i].memberName + "</li>";
-				 	str += "<li class='cmtInsert'>" + "<button type='button' id='cmtInsertFormButton' class='cmtInsertFormButton'>" + "답글작성" + "</button>" + "</li>";
-				 	/* 내가 쓴 글일경우 */
-				 	if(list[i].memberId == "${memberInfo.memberId}"){
-				 		str += "<li class='cmtInsert'>" + "<button type='button' class='cmtUpdate'>" + "수정" + "</button>" + "</li>";
-				 		str += "<li class='cmtInsert'>" + "<button type='button' class='cmtDelete'>" + "삭제" + "</button>" + "</li>";
-				 	}
-					str += "<li class='cmtDate'>" + list[i].commentRegdate + " |" + "</li>";
-					str += "<li class='cmtContent'>" + list[i].commentContent + "</li>";
-					/* 밑으론 히든 */
-					str += "<li>" + "<input type='hidden' class='commentId' value='" + list[i].commentId +" '>" + "</li>";
-					str += "<li>" + "<input type='hidden' class='boardType' value='" + list[i].boardType +" '>" + "</li>";
-					str += "<li>" + "<input type='hidden' class='boardId' value='" + list[i].boardId +" '>" + "</li>";
-					str += "<li>" + "<input type='hidden' class='commentParent' value='" + list[i].parentId + " '>" + "</li>" + "</ul>";
-				} else {
-					/* 자식 댓글일 경우 */
-					str +=  "<ul class = 'cmts'>" + "<li class='cmtNamec'>" + list[i].memberName + "</li>";
-				 	/* 내가 쓴 글일경우 */
-				 	if(list[i].memberId == "${memberInfo.memberId}"){
-				 		str += "<li class='cmtInsert'>" + "<button type='button' class='cmtUpdate' >" + "수정" + "</button>" + "</li>";
-				 		str += "<li class='cmtInsert'>" + "<button type='button' class='cmtDelete'>" + "삭제" + "</button>" + "</li>";
-				 	}
-					str += "<li class='cmtDatec'>" + list[i].commentRegdate + " |" + "</li>";
-					str += "<li class='cmtContent' style='margin-left: 50px'>" + list[i].commentContent + "</li>";
-					/* 밑으론 히든 */
-					str += "<li>" + "<input type='hidden' class='commentId' value='" + list[i].commentId +" '>" + "</li>";
-					str += "<li>" + "<input type='hidden' class='boardType' value='" + list[i].boardType +" '>" + "</li>";
-					str += "<li>" + "<input type='hidden' class='boardId' value='" + list[i].boardId +" '>" + "</li>";
-					str += "<li>" + "<input type='hidden' class='commentParent' value='" + list[i].parentId + " '>" + "</li>" + "</ul>";
-				}
-				
-			}
-			cmt.html(str);
-		})
-	};
-	
-	// 댓글 등록 ajax
-	document.getElementById('insertButton').addEventListener('click', function(){
-		let commentContent = $("textarea[name='commentContent']");
-		
-		console.log(commentContent);
-    	$.post("boardCmtInsert", {boardId : ${carpoolInfo.boardId} , 
-    							  boardType : 'C3', 
-    							  memberId : '${memberInfo.memberId}' ,
-    							  commentContent : commentContent.val() ,
-    							  parentId : 0 
-    	}, function (response) {
-    		commentContent.val('');
-		    	
-	    	getcmtList();
-		    });
-	});
-	
-	/* 대댓글 작성 */
-	$(document).on('click', '.cmtInsertFormButton', function(e){
-		let commentId = $(this).closest("ul").find(".commentId").val();
-		let boardType = $(this).closest("ul").find(".boardType").val();
-		let boardId = $(this).closest("ul").find(".boardId").val();
-		console.log(commentId);
-		console.log(boardType);
-		console.log(boardId);
-		
-		let replyInsert = document.getElementById("replyInsert");
-		let replyInsertForm = document.getElementsByClassName("replyInsertForm");
-		let closeReply = document.getElementById("closeReply");
-		let myParent = $(this).closest("ul").find(".commentParent").val();
-		
-		// 모달창 열기
-		replyInsert.style.display = "block";
-		document.body.style.overflow = "hidden"; // 스크롤바 제거
-		
-		// 모달창 닫기
-		closeReply.addEventListener("click", () => {
-		replyInsert.style.display = "none";
-		document.body.style.overflow = "auto"; // 스크롤바 보이기
-		});
-		
-		$(document).on('click', '#insertButtonc', function(e){
-			
-			let commentContentc = $("textarea[name='commentContentc']").val();
-			$.post("boardCmtInsert", {boardId : ${carpoolInfo.boardId},
-									  boardType : 'C3',
-									  memberId : '${memberInfo.memberId}',
-									  commentContent : commentContentc,
-									  parentId : commentId 
-				},function(response){
-					$('.commentContentc').text('');
-					console.log("댓글 등록 성공!");
-					getcmtList();
-					
-					replyInsert.style.display = "none";
-					document.body.style.overflow = "auto"; // 스크롤바 보이기
-				});
-		});
-	});
-	/* 대댓글 작성 끝 */
+	//게시글 삭제
+	function carpoolDelete() {
+		if(confirm('정말로 삭제하시겠습니까?')) {
+			location.href='${pageContext.request.contextPath}/member/carpoolDelete?boardId=${carpoolInfo.boardId}';
+		}	
+	}
 	
 	// 댓글 수정 / 성공은 했는데 한 페이지에서 새로고침 없이 또 수정하면 중복수정됨 / 수정 필수
-	$(document).on('click', '.cmtUpdate', function(e){
-		let commentId = $(this).closest("ul").find(".commentId").val();
-		let boardType = $(this).closest("ul").find(".boardType").val();
-		let boardId = $(this).closest("ul").find(".boardId").val();
-		let cmtContent = $(this).closest("ul").find(".cmtContent").text();
-		console.log('댓글 아이디');
-		console.log(commentId);
-		console.log('보드 타입');
-		console.log(boardType);
-		console.log('게시글id');
-		console.log(boardId);
-		console.log('댓글 내용');
-		console.log(cmtContent);
-		
-		newCommentContent.value = cmtContent;
-		
-		let UpdateFromModal = document.getElementById("UpdateFromModal");
-		let UpdateContent = document.getElementsByClassName("UpdateContent");
-		let closeUpdate = document.getElementById("closeUpdate");
-		
-		// 모달창 열기
-		UpdateFromModal.style.display = "block";
-		document.body.style.overflow = "hidden"; // 스크롤바 제거
-		
-		// 모달창 닫기
-		closeUpdate.addEventListener("click", () => {
-		UpdateFromModal.style.display = "none";
-		document.body.style.overflow = "auto"; // 스크롤바 보이기
-		});
-		
-		$('#cmtUpdateButton').click(function(){
-			let newCommentContent = $("textarea[name='newCommentContent']").val();
-			console.log('작성된댓글내용');
-			console.log(newCommentContent);
-			$.post("boardCmtUpdate", {commentId : commentId ,
-									  boardType : 'C3' ,
-									  boardId : ${carpoolInfo.boardId} ,
-									  commentContent : newCommentContent
-		}, function(response){
-			if(response.success){
-				$('newCommentContent').val("");
-				alert("댓글 수정이 완료되었습니다.");
-				UpdateFromModal.style.display = "none";
-				document.body.style.overflow = "auto";
-				console.log("성공했을때 나오는 텍스트")
-				console.log(newCommentContent);
-				getcmtList();
+	$(document).on('click', '.cmt-update .update', function(e){
+			e.stopPropagation();
+			let updateBtn = $(e.currentTarget);
+			let commentId = $(this).closest(".cmtList-item").find(".commentId").val();
+			let boardType = $(this).closest(".cmtList-item").find(".boardType").val();
+			let boardId = $(this).closest(".cmtList-item").find(".boardId").val();
+			let cmtContentBox = $(this).closest(".cmtList-item").find(".cmt-content");
+			let cmtContent = $(this).closest(".cmtList-item").find(".cmt-content").val();
+			
+			if(updateBtn.text() == '수정') {
+				cmtContentBox.prop('disabled', false);
+				cmtContentBox.focus();
+				updateBtn.text('수정완료');
+			} else if(updateBtn.text() == '수정완료') {
+				let newCommentContent = cmtContent;
 				
-			} else {
-				$('newCommentContent').val(' ');
-				alert("댓글을 수정했습니다.")
-				UpdateFromModal.style.display = "none";
-				document.body.style.overflow = "auto";
-				console.log("실패했을때 나오는 텍스트!")
-				console.log(newCommentContent);
-				getcmtList();
-			};
-		})
-		})
-	});
+				$.post("${pageContext.request.contextPath}/member/boardCmtUpdate", {commentId : commentId ,
+					  boardType : 'C3' ,
+					  boardId : '${carpoolInfo.boardId}' ,
+					  commentContent : newCommentContent}
+				, function(response){
+					if(response){
+						alert("댓글 수정이 완료되었습니다.");
+						getcmtList();
+					} else {
+						alert("댓글을 수정에 실패했습니다.");
+						getcmtList();
+					};
+				});
+			}
+		});
 	/* 댓글 수정 끝 */
 	
-	// 댓글 삭제 ajax
-		$(document).on('click', '.cmtDelete', function(e){
-			
-			let commentId = $(this).closest("ul").find(".commentId").val();
-			let boardType = $(this).closest("ul").find(".boardType").val();
-			let boardId = $(this).closest("ul").find(".boardId").val();
-			let cmtContent = $(this).closest("ul").find(".cmtContent").text();
-			let findParent = $(this).closest("ul").next().find(".commentParent").val();
-			let myParent = $(this).closest("ul").find(".commentParent").val();
-			
-			console.log('댓글 아이디');
-			console.log(commentId);
-			console.log('보드 타입');
-			console.log(boardType);
-			console.log('게시글id');
-			console.log(boardId);
-			console.log('댓글 내용');
-			console.log(cmtContent);
-			console.log('내 댓글이 0이면 부모 1이상이면 자식');
-			console.log(myParent);
-			console.log('다음글의 부모')
-			console.log(findParent);
-			
-			if ( myParent == 0 && findParent > 0 ){
-				console.log("삭제하면 안되는 댓글")
-				$.post("boardCmtDelete", {boardId : ${carpoolInfo.boardId} ,
-									   boardType : '${carpoolInfo.boardType}',
-									   commentId : commentId }, 
-									   
-					function(response){		  
-						getcmtList();
+	// 댓글 리스트를 출력하는 함수
+		function getcmtList(){
+			let cmt = $(".boardCmtList ul");
+			//초기화
+			cmt.children().remove();				
+			$.get("${pageContext.request.contextPath}/member/boardCmtList",{boardId : ${carpoolInfo.boardId}, boardType : 'C3'},function(list) {
+				for(let i = 0 , len = list.length || 0; i < len; i++ ){
+					let cmtListItem;
+					
+					/* 부모/자식 댓글 구분 */
+					if(list[i].deleted == 'Y'){
+						cmtListItem = `
+							<li>
+								<div class="d-flex cmtList-item">
+									<input type='hidden' class='commentId' value='\${list[i].commentId}'>
+									<input type='hidden' class='boardType' value='\${list[i].boardType}'>
+							        <input type='hidden' class='boardId' value='\${list[i].boardId}'>
+							        <input type='hidden' class='commentParent' value='\${list[i].parentId}'>
+									<div class="d-flex" style="flex-grow:1;">
+										<img src="${pageContext.request.contextPath}/images/\${list[i].realProfilePath} }" alt="\${list[i].memberName}" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+										<div style="flex-grow:1;">
+											<div class="cmt-title">
+												<span>\${list[i].memberName}</span>
+												<span>\${list[i].commentRegdate}</span>
+											</div>
+											<textarea class="cmt-content" rows='2'>삭제 된 댓글입니다.</textarea>
+										</div>								
+									</div>
+									<div>
+				                    	<div class="reply">
+											답글
+										</div>
+									</div>
+								</div>
+							</li>`;
+					} else if(list[i].parentId == 0){
+						cmtListItem = `
+									<li>
+										<div class="d-flex cmtList-item">
+											<input type='hidden' class='commentId' value='\${list[i].commentId}'>
+											<input type='hidden' class='boardType' value='\${list[i].boardType}'>
+									        <input type='hidden' class='boardId' value='\${list[i].boardId}'>
+									        <input type='hidden' class='commentParent' value='\${list[i].parentId}'>
+											<div class="d-flex" style="flex-grow:1;">
+												<img src="${pageContext.request.contextPath}/images/\${list[i].realProfilePath} }" alt="\${list[i].memberName}" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+												<div style="flex-grow:1;">
+													<div class="cmt-title">
+														<span>\${list[i].memberName}</span>
+														<span>\${list[i].commentRegdate}</span>
+													</div>
+													<textarea class="cmt-content" rows='2'>\${list[i].commentContent}</textarea>
+												</div>								
+											</div>
+											<div>
+												<div class="cmt-update">
+						                       		<span class="cursor update" style="margin-right: 10px;">수정</span>
+						                       		<span class="cursor delete">삭제</span>
+						                    	</div>
+						                    	<div class="reply">
+													답글
+												</div>
+											</div>
+										</div>
+									</li>`;
+					} else {
+						cmtListItem = `		
+									<li>
+										<div class="d-flex cmtList-item">
+											<input type='hidden' class='commentId' value='\${list[i].commentId}'>
+											<input type='hidden' class='boardType' value='\${list[i].boardType}'>
+									        <input type='hidden' class='boardId' value='\${list[i].boardId}'>
+									        <input type='hidden' class='commentParent' value='\${list[i].parentId}'>
+											<div class="d-flex" style="flex-grow:1;">
+												<img src="${pageContext.request.contextPath}/resources/icon/arrow-list.PNG" class="cmt-plus-arrow">
+												<img src="${pageContext.request.contextPath}/images/\${list[i].realProfilePath} }" alt="\${list[i].memberName}" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+												<div style="flex-grow:1;">
+													<div class="cmt-title">
+														<span>\${list[i].memberName}</span>
+														<span>\${list[i].commentRegdate}</span>
+													</div>
+													<textarea class="cmt-content" rows='2'>\${list[i].commentContent}</textarea>
+												</div>								
+											</div>
+											<div>
+												<div class="cmt-update">
+						                       		<span class="cursor update" style="margin-right: 10px;">수정</span>
+						                       		<span class="cursor delete">삭제</span>
+						                    	</div>
+											</div>
+										</div>
+									</li>`;
+					}
+					cmt.append(cmtListItem);
+					// 본인 여부 확인
+					if(list[i].memberId != "${memberInfo.memberId}") {
+						$('.cmt-update').remove();
+					}
+					// 댓글창 잠금
+					$('.cmt-content').prop('disabled', true);
+				}
 			})
-			} else {
-				console.log("삭제해도 되는 댓글!");
-				$.post("realCmtDelete", {boardId : ${carpoolInfo.boardId} ,
-					   					 boardType : '${carpoolInfo.boardType}',
-					   					 commentId : commentId }, 
-					function(response){
-						getcmtList();
-			})
+		};
+		
+		// 댓글 등록 ajax
+		document.getElementById('insertButton').addEventListener('click', function(e){
+			e.stopPropagation();
+			
+			let commentContent = $("textarea[name='commentContent']");
+			
+	    	$.post("${pageContext.request.contextPath}/member/boardCmtInsert", {boardId : ${carpoolInfo.boardId} , 
+	    							  boardType : 'C3', 
+	    							  memberId : '${memberInfo.memberId}' ,
+	    							  commentContent : commentContent.val() ,
+	    							  parentId : 0 
+	    	}, function (response) {
+	    		commentContent.val('');
+			    	
+		    	getcmtList();
+			});
+		});	
+	
+	
+		// 댓글 삭제 ajax
+		$(document).on('click', '.cmt-update .delete', function(e){
+			if(confirm('댓글을 삭제하시겠습니까?')) {
+				let commentId = $(this).closest(".cmtList-item").find(".commentId").val();
+				let boardType = $(this).closest(".cmtList-item").find(".boardType").val();
+				let boardId = $(this).closest(".cmtList-item").find(".boardId").val();
+				let cmtContent = $(this).closest(".cmtList-item").find(".cmtContent").text();
+				let findParent = $(this).closest(".cmtList-item").parent().next().find(".commentParent").val();
+				let myParent = $(this).closest(".cmtList-item").find(".commentParent").val();
+				
+				if ( myParent == 0 && findParent > 0 ){
+					$.post("${pageContext.request.contextPath}/member/boardCmtDelete", {boardId : ${carpoolInfo.boardId} ,
+										   boardType : '${carpoolInfo.boardType}',
+										   commentId : commentId }, 
+						function(response){		  
+							getcmtList();
+					})
+				} else {
+					$.post("${pageContext.request.contextPath}/member/realCmtDelete", {boardId : ${carpoolInfo.boardId} ,
+						   					 boardType : '${carpoolInfo.boardType}',
+						   					 commentId : commentId }, 
+						function(response){
+							getcmtList();
+					})
+				}
 			}
-			
 		});
 		/* 삭제 끝 */
+		
+		/* 대댓글 작성 */
+		$(document).on('click', '.reply', function(e){
+			let commentId = $(this).closest(".cmtList-item").find(".commentId").val();
+			
+			let replyForm = `		
+				<li>
+					<div class="d-flex cmtList-item">
+						<input type='hidden' class='commentParent' value='\${commentId}'>
+						<div class="d-flex" style="flex-grow:1;">
+							<img src="${pageContext.request.contextPath}/resources/icon/arrow-list.PNG" class="cmt-plus-arrow">
+							<img src="${pageContext.request.contextPath}/images/${meberInfo.realProfilePath}" alt="${memberInfo.memberName}" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+							<div style="flex-grow:1;">
+								<div class="cmt-title">
+									<span>${memberInfo.memberName}</span>
+								</div>
+								<textarea class="cmt-content" rows='2'></textarea>
+							</div>								
+						</div>
+						<div>
+							<div class="reply-update">
+	                       		<span class="cursor reply-insert" style="margin-right: 10px;">등록</span>
+	                       		<span class="cursor reply-cancel">취소</span>
+	                    	</div>
+						</div>
+					</div>
+				</li>`;
+				
+				$(this).closest(".cmtList-item").parent().after(replyForm);
+				$(this).closest(".cmtList-item").parent().next().find('.cmt-content').focus();
+		});
+		
+		$(document).on('click', '.reply-update span', function(e){
+			if($(e.currentTarget).hasClass('reply-insert')) {
+				let commentContent = $(this).closest(".cmtList-item").find('.cmt-content').val();
+				let commentId = $(this).closest(".cmtList-item").find(".commentParent").val();
+				
+				$.post("${pageContext.request.contextPath}/member/boardCmtInsert", {boardId : '${carpoolInfo.boardId}',
+										  boardType : '${carpoolInfo.boardType}',
+										  memberId : '${memberInfo.memberId}',
+										  commentContent : commentContent,
+										  parentId : commentId 
+					},function(response){
+						getcmtList();
+				});
+			} else {
+				$(this).closest(".cmtList-item").parent().remove();
+			}
+		});
+		/* 대댓글 작성 끝 */
 	/* --------------------------댓글 끝------------------------- */
 	
 	 // 좋아요 버튼 클릭 시 호출되는 함수
@@ -651,7 +644,7 @@ th, tfoot td {
 	            
 				let likeCount = `<span id="likeCount"> \${response.count} </span>`;
 	            
-	            if (response.result == 'liked') {
+				 if (response.result == 'liked') {
 	                // 좋아요 상태일 경우 
 	                $("#like").text("좋아요 취소");
 	            } else if (response.result == "unliked") {
@@ -687,7 +680,7 @@ th, tfoot td {
 			return;
 		}
 		$.ajax({
-			url:"${pageContext.request.contextPath }/applyCarpool",
+			url:"${pageContext.request.contextPath }/member/applyCarpool",
 			data:{'boardId':boardId},
 			method:'GET'
 		})
@@ -716,7 +709,7 @@ th, tfoot td {
 			//로그인한 아이디와 일치하는지 확인
 			if($('.m-info').data('id')==memberId){
 				$.ajax({
-					url:'${pageContext.request.contextPath }/cancelCarpool',
+					url:'${pageContext.request.contextPath }/member/cancelCarpool',
 					data:{'boardId':boardId},
 					method:'GET'
 				})

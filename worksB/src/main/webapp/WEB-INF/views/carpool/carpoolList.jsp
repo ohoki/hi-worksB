@@ -135,7 +135,7 @@ td {
 				같이 타요
 			</h2>
 			<button type="button" class="insert__button"
-				onclick="location.href='carpoolInsert'">게시물 작성</button>
+				onclick="location.href='${pageContext.request.contextPath }/member/carpoolInsert'">게시물 작성</button>
 		</div>
 		<div style="min-height: 500px;">
 			<table class="table">
@@ -150,7 +150,7 @@ td {
 					</tr>
 				<tbody>
 					<c:forEach items="${carpoolList}" var="carpool">
-						<tr onclick="location.href='carpoolInfo?boardId=${carpool.boardId}'">
+						<tr onclick="location.href='${pageContext.request.contextPath }/member/carpoolInfo?boardId=${carpool.boardId}'">
 							<td>${carpool.boardId }</td>
 							<td>
 								<p class="table__title">

@@ -1130,7 +1130,7 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-								<c:if test="${board.memberId eq memberInfo.memberId}">
+								<c:if test="${board.memberId eq memberInfo.memberId || particirInfo.manager eq 'A1'}">
 									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 								</c:if>
 							</div>
@@ -1202,7 +1202,7 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-								<c:if test="${board.memberId eq memberInfo.memberId}">
+								<c:if test="${board.memberId eq memberInfo.memberId || particirInfo.manager eq 'A1'}">
 									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 								</c:if>
 							</div>
@@ -1296,7 +1296,7 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-								<c:if test="${board.memberId eq memberInfo.memberId}">
+								<c:if test="${board.memberId eq memberInfo.memberId || particirInfo.manager eq 'A1'}">
 									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 								</c:if>
 							</div>
@@ -1391,7 +1391,7 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-								<c:if test="${board.memberId eq memberInfo.memberId}">
+								<c:if test="${board.memberId eq memberInfo.memberId || particirInfo.manager eq 'A1'}">
 									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 								</c:if>
 							</div>

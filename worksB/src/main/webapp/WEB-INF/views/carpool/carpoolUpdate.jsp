@@ -141,7 +141,7 @@ div h2 {
 		<h2>카풀 수정</h2>
 	</div>
 	<div class="body">
-		<form action="carpoolUpdate" method="post" onsubmit="return check();">
+		<form action="${pageContext.request.contextPath }/member/carpoolUpdate" method="post" onsubmit="return check();">
 			<table class="table">
 				<thead>
 					<tr class="main__p">

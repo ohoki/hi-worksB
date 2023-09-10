@@ -1414,12 +1414,14 @@
 		     	$('.update-task-btn').attr('data-id', prjBoardId);
 		     	$('.delete-task-btn').attr('data-id', prjBoardId);
 		     	
-		     	// 작성자만 메뉴 버튼 활성화
+		     	// 작성자와 관리자만 메뉴 버튼 활성화
 		     	let boardMemberId = highTask.memberId;
 		     	let memberId = '${memberInfo.memberId}'
-		     	let menu = `\${boardMemberId == memberId ? 
+		     	let managerRole = '${particirInfo.manager}'
+		     	let menu = `\${boardMemberId == memberId || managerRole == 'A1'? 
 	        			`<img class="task-menu-btn cursor" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">` 
 	        			: ''}`;
+
         			
 		     	$('div[name="boardMenu"]').empty();
 		     	$('div[name="boardMenu"]').append(menu);
