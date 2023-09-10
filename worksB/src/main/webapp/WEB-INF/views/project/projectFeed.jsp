@@ -509,7 +509,7 @@
 			color: var(--color-dark-grey);
 		}
 		
-		.update-board-modal-title {
+		.update-board-modal-title, .insert-board-modal-title {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -536,7 +536,7 @@
 		    border-bottom: 2px solid var(--color-dark-beigie);
 		}
 		
-		.insert-list-item:hover {
+		.insert-list-item:hover, .insert-list-item.active {
 			border-bottom: 2px solid var(--color-dark-red);
 		}
 		
@@ -1573,7 +1573,7 @@
 				<input type="hidden" name="highPrjBoardId" value="">
 				<input type="hidden" name="highTaskId" value="">
 				<div class="update-board-modal-title">
-		    		<div>게시물 수정</div>		
+		    		<div>업무 수정</div>		
 		    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -1620,15 +1620,15 @@
 	<div id="insertSubTask-modal">
 		<!-- 모달페이지 띄우기 위함 -->
 		<form>
-			<input type="hidden" class="modal-dialog d-none">
-			<input type="hidden" class="modal-content d-none">
-			<input type="hidden" name="highPrjBoardId" value="">
-			<input type="hidden" name="highTaskId" value="">
-			<div class="update-board-modal-title">
-	    		<div>게시물 수정</div>		
-	    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	    	</div>
 			<div class="insertSubTask-modal-content">
+				<input type="hidden" class="modal-dialog d-none">
+				<input type="hidden" class="modal-content d-none">
+				<input type="hidden" name="highPrjBoardId" value="">
+				<input type="hidden" name="highTaskId" value="">
+				<div class="insert-board-modal-title">
+		    		<div>업무 추가</div>		
+		    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		    	</div>
 				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
 				<div class="board-state">
 					<input type="radio" class="btn-check" name="state" value="G1" id="option16" autocomplete="off" checked>
@@ -1803,16 +1803,6 @@
 				}
 			})
 		});
-			
-		
-			
-			
-			
-			
-			
-			
-		
-		
 		
 		//업무 담당자
 		$(document).on('click', '.task-manager span', function(e) {
@@ -2042,6 +2032,11 @@
 		});
 		$('#updateSubTask-modal').on('click', function(e) {
 			$(e.currentTarget).removeClass('d-b');
+		});
+		
+		$('#insertSubTask-modal button[type="reset"]').on('click', function() {
+			$('#insertSubTask-modal').css('display', 'none');
+			$('.modal-backdrop').css('display', 'none');
 		});
 		
 		function updatePinBoard(boardId, pinYn) {
@@ -2426,7 +2421,7 @@
 				     	
 				     	// 하위 업무 리스트
 				     	if(subTasks.length == 0) {
-				     		$(boardList[i]).find('.sub-task-lists').empty();
+				     		$(boardList[i]).find('.sub-task-lists-title').empty();
 				     		return;
 				     	}
 				     	
@@ -3129,7 +3124,7 @@
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">일반</li>
+		    		<li class="insert-list-item active">일반</li>
 		    		<li class="insert-list-item">업무</li>
 		    		<li class="insert-list-item">일정</li>
 		    		<li class="insert-list-item">투표</li>
@@ -4052,12 +4047,15 @@
 			let targetText = target.text();
 			let modalBox = target.closest('[class$="board-modal"]');
 			let visibleDiv = $(modalBox).find('.d-b');
+			let activeItem = target.parent().find('.active');
 			let board = $(modalBox).find('[name=board]');
 			let task = $(modalBox).find('[name=task]');
 			let sche = $(modalBox).find('[name=sche]');
 			let vote = $(modalBox).find('[name=vote]');
 			
 			visibleDiv.removeClass('d-b');
+			activeItem.removeClass('active');
+			target.addClass('active');
 			
 			if(targetText == '일반') {
 				$(board).addClass('d-b');
