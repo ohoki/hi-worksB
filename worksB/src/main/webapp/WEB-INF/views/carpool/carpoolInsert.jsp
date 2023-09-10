@@ -52,6 +52,7 @@
 	width: 50px;
 	height: 30px;
 	border: 1px solid var(--color-dark-red);
+	background-color: white;
 	color: var(--color-dark-red);
 	border-radius: 5px;
 	transition: all 0.5s;
@@ -97,6 +98,7 @@ th, tfoot td {
 
 .label {
     font-weight: bold;
+    margin: 10px;
 }
 
 .input-box {
@@ -110,27 +112,19 @@ th, tfoot td {
 .input-button {
     padding: 5px 15px;
     border: none;
-    background-color: var(--color-green);
-    color: var(--color-white);
+    background-color: var(--color-dark-beigie);
+    color: var(--color-dark-grey);
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 5px;
 }
 
-#departureDateInput {
-    width: 50%;
+#departureDateInput, #passelect {
+    width: 70%;
     padding: 5px;
-    margin-bottom: 10px;
     border: 1px solid var(--color-dark-beigie);
     border-radius: 5px;
-}
-
-#passelect {
-    width: 50%;
-    padding: 5px;
-    margin-bottom: 10px;
-    border: 1px solid var(--color-dark-beigie);
-    border-radius: 5px;
+    margin-top: 25px;
 }
 
 .radio {
@@ -240,17 +234,17 @@ th, tfoot td {
 				<tr>
 					<td class="type-content" colspan="4">
 						<div class="select">
-    							<input type="radio" id="select" name="category" value="B1" class="radio">
-    							<label for="select" class="radio-label">태워드립니다</label>
-    							<input type="radio" id="select2" name="category" value="B2" class="radio">
-    							<label for="select2" class="radio-label">태워주세요</label>
+   							<input type="radio" id="select" name="category" value="B1" class="radio">
+   							<label for="select" class="radio-label">태워드립니다</label>
+   							<input type="radio" id="select2" name="category" value="B2" class="radio">
+   							<label for="select2" class="radio-label">태워주세요</label>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td class="p-0 d-xl-table-cell d-none">
 					    <button type="button" id="departureButton" class="input-button">출발지 선택</button><br>
-  							<input type="text" id="departureInput" name="departure" class="input-box" readonly="readonly"><br>
+  						<input type="text" id="departureInput" name="departure" class="input-box" readonly="readonly"><br>
 					</td>
 					<td style="text-align: center;">
 						<label id="passenger" class="label">인원</label>
