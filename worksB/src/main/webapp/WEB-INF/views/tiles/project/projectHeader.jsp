@@ -141,6 +141,7 @@
 	height: 30px;
 	border-radius: 5px;
 	transition: all 0.5s;
+	margin-left: 800px;
 }
 .particir-check-btn:hover {
 	background-color: var(--color-dark-red);
@@ -189,6 +190,11 @@
 	overflow: auto;
 	overflow-x: hidden;
 	border-radius: 5px;
+}
+
+.noEmployee {
+	text-align: center;
+	margin: 10px auto;
 }
 
 </style>
@@ -385,65 +391,78 @@
 				let particirDiv = $('#particirAccp');
 				particirDiv.empty();
 				
-				for(let i=0; i<particir.length; i++) {
-					//div태그
-					let employeeDiv = document.createElement('div');
-					employeeDiv.classList.add('flex');
-					employeeDiv.classList.add('employee');
-					//이미지 태그
-					let employeeProfile = document.createElement('img');
-					employeeProfile.setAttribute('alt', '회원사진');
-					employeeProfile.classList.add('employee-img');
-					if(particir[i].realProfilePath != null) {
-						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
-					}else {
-						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
-					}
-					//스팬 태그
-					let span = document.createElement('span');
-					span.innerText = particir[i].memberName;
-					//히든 인풋 태그 (멤버id값)
-					let input = document.createElement('input');
-					input.setAttribute('type', 'hidden');
-					input.value = particir[i].memberId;
-					
-					// 승인 버튼 태그
-					let updateAccp = document.createElement('button');
-					updateAccp.classList.add('updateAccp')
-					updateAccp.innerText = '승인하기';
-					
-					// 프로젝트 참여자 신청 승인
-					updateAccp.addEventListener('click', function() {
-						e.stopPropagation();
-						updateAccpParticir(projectId, particir[i].memberId);
-
-						$(this).parent().remove();
-					});
-					
-					// 승인 거절 버튼 태그
-					let deleteAccp = document.createElement('button');
-					deleteAccp.classList.add('deleteAccp');
-					deleteAccp.innerText = '승인거절';
-					
-					// 프로젝트 참여자 신청 승인 거절하기
-					deleteAccp.addEventListener('click', function() {
-						e.stopPropagation();
-						deleteAccpParticir(projectId, particir[i].memberId);
-
-						$(this).parent().remove();
+				if(particir.length != 0){
+					for(let i=0; i<particir.length; i++) {
+						//div태그
+						let employeeDiv = document.createElement('div');
+						employeeDiv.classList.add('flex');
+						employeeDiv.classList.add('employee');
+						//이미지 태그
+						let employeeProfile = document.createElement('img');
+						employeeProfile.setAttribute('alt', '회원사진');
+						employeeProfile.classList.add('employee-img');
+						if(particir[i].realProfilePath != null) {
+							employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
+						}else {
+							employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+						}
+						$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
 						
-					});
+						//스팬 태그
+						let span = document.createElement('span');
+						span.innerText = particir[i].memberName;
+						//히든 인풋 태그 (멤버id값)
+						let input = document.createElement('input');
+						input.setAttribute('type', 'hidden');
+						input.value = particir[i].memberId;
+						
+						// 승인 버튼 태그
+						let updateAccp = document.createElement('button');
+						updateAccp.classList.add('updateAccp')
+						updateAccp.innerText = '승인하기';
+						
+						// 프로젝트 참여자 신청 승인
+						updateAccp.addEventListener('click', function() {
+							e.stopPropagation();
+							updateAccpParticir(projectId, particir[i].memberId);
+
+							$(this).parent().remove();
+						});
+						
+						// 승인 거절 버튼 태그
+						let deleteAccp = document.createElement('button');
+						deleteAccp.classList.add('deleteAccp');
+						deleteAccp.innerText = '승인거절';
+						
+						// 프로젝트 참여자 신청 승인 거절하기
+						deleteAccp.addEventListener('click', function() {
+							e.stopPropagation();
+							deleteAccpParticir(projectId, particir[i].memberId);
+
+							$(this).parent().remove();
+							
+						});
+						
+						//태그 삽입
+						employeeDiv.append(employeeProfile);
+						employeeDiv.append(span);
+						employeeDiv.append(input);
+						
+						employeeDiv.append(updateAccp);
+						employeeDiv.append(deleteAccp);
+						
+						particirDiv.append(employeeDiv);
+					}
+				}else{
+					let noEmployeeDiv = document.createElement('div');
+					noEmployeeDiv.classList.add('noEmployee');
+					noEmployeeDiv.innerText = '신청자가 존재하지 않습니다.';
 					
-					//태그 삽입
-					employeeDiv.append(employeeProfile);
-					employeeDiv.append(span);
-					employeeDiv.append(input);
+					particirDiv.append(noEmployeeDiv);
 					
-					employeeDiv.append(updateAccp);
-					employeeDiv.append(deleteAccp);
-					
-					particirDiv.append(employeeDiv);
 				}
+				
+				
 			},
 			error : function(reject){
 				console.log(reject);

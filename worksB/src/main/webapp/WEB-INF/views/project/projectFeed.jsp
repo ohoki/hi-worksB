@@ -1774,7 +1774,7 @@
   					// 셀렉트 박스 생성		            	
         			let subSelectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
         			$.ajax({
-        		    	url : '${pageContext.request.contextPath}/particirList',
+        		    	url : '${pageContext.request.contextPath}/member/particirList',
         		        type: 'GET',
         		        data: {'projectId': '${projectInfo.projectId}'},
         		        success: function(particir){
@@ -3657,7 +3657,7 @@
 						// 셀렉트 박스 생성		            	
 	        			let selectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
 	        			$.ajax({
-	        		    	url : '${pageContext.request.contextPath}/particirList',
+	        		    	url : '${pageContext.request.contextPath}/member/particirList',
 	        		        type: 'GET',
 	        		        data: {'projectId': "${projectInfo.projectId}"},
 	        		        success: function(particir){
@@ -4106,7 +4106,7 @@
 			addManagerBtn.remove();
 			
 			$.ajax({
-		    	url : '${pageContext.request.contextPath}/particirList',
+		    	url : '${pageContext.request.contextPath}/member/particirList',
 		        type: 'GET',
 		        data: {'projectId': "${projectInfo.projectId}"},
 		        success: function(particir){
@@ -4380,6 +4380,7 @@
 				}
 			})
 		})
+		
 		
 	</script>
 	<!-- 게시글 작성 종료 -->

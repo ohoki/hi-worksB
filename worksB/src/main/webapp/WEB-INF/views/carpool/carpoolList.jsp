@@ -162,7 +162,7 @@ td {
 										[태워주세요] 
 									</c:otherwise>
 								</c:choose>
-							${carpool.boardTitle }</p><br>
+							${carpool.boardTitle }</p>
 								<P class="table__title">${carpool.departure } &#10142; ${carpool.arrival }</p>
 							</td>
 							<td>${carpool.memberName} </td>

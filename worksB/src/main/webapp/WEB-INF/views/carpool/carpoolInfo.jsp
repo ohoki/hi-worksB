@@ -77,12 +77,12 @@ th, tfoot td {
 	border-radius: 5px;
 	color: var(--color-dark-grey);
 	font-weight: var(--weight-bold);
+	transition: all 0.5s;
 }
 
 .carBtn:hover {
-	background-color: var(--color-white);
-	color: var(--color-dark-red);
-	border: 1px solid var(--color-dark-red);
+	background-color: var(--color-dark-red);
+	color: white;
 }
 .carBtn-td{
 	margin: 0 auto;
@@ -229,14 +229,45 @@ th, tfoot td {
 		cursor: pointer;
 	}
 
+.particir-Content{
+	text-align: center;
+	padding: 15px;
+	min-height : 120px;
+}
 
+.profile{
+	width: 30px;
+	height: 30px;
+}
 
+.employee{
+	display: flex;
+	border-top: none !important;
+    border-bottom : 1px solid var(--color-dark-beigie); !important;
+}
 
+.participants{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 5px;
+}
+
+.m-info{
+	
+}
 
 
 </style>
 </head>
 <body>
+	<!-- api -->
+	<!-- ckeditor -->
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/super-build/ckeditor.js"></script>
+	<!-- 사진 업로드를 위한 ckfinder -->
+	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+	<!-- ckeditor 끝 -->
 	<div class="carpool-board-box">
 		<div class="insert">
 			<h2>
@@ -244,7 +275,7 @@ th, tfoot td {
 				같이 타요
 			</h2>
 		</div>
-		<form action="carpoolInfo" method="post">
+		<div>
 			<table class="table">
 				<thead>
 					<tr class="main__p">
@@ -291,15 +322,19 @@ th, tfoot td {
 						</td>
 					</tr>
 					<tr>
-						<td colspan="4">
+						<td class="particir-Content" colspan="4">
 							<div class="carBtn-td">
 								<button class="carBtn" onclick="participate('${carpoolInfo.boardId}',${carpoolInfo.passenger },${ participantsCounting},'${carpoolInfo.memberId }','${memberId }')">참여하기</button>
 								<button class="carBtn" onclick="cancel('${carpoolInfo.boardId}','${memberId}')">취소하기</button>
 							</div>
 							<div>
-								<div id="participants">
+								<div id="participants" class="participants">
 								<c:forEach items="${ participantList}" var="list">
-									<p class="m-info" data-id="${list.memberId }">${list.memberName }</p>
+									<div class="employee">
+										<img src="${pageContext.request.contextPath}/images/${list.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
+										<span class="m-info" data-id="${list.memberId }">${list.memberName }</span>
+										<input type="hidden" value="${list.memberId }">
+									</div>
 								</c:forEach>
 								</div>
 							</div>
@@ -364,7 +399,7 @@ th, tfoot td {
 					<button type="button" class="buttonss__button" onclick="location.href='${pageContext.request.contextPath}/member/carpoolList'">목록</button>
 				</div>
 			</div>
-		</form>
+		</div>
 		
 		<!-- ajax로 댓글 생성하는 공간 -->
 		<div class="boardCmtList">
