@@ -634,6 +634,7 @@
 	    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 	    margin: 5px auto;
 	    background-color: white;
+	    font-size: 18px;
 	}
 	
 	.insert-board-modal-header {
@@ -862,7 +863,7 @@
 	<!-- 일정 상세조회 모달 -->
 	<div id="prjSche-modal">
 		<div class="prjSche-modal__content">
-			<input type="text" id="prjScheId" hidden="true">
+			<input type="hidden" id="prjScheId" name="prjBoardId" data-boardType="C6">
 			<div class="board-header">
 				<div class="board-header-info">
 					<img src="${pageContext.request.contextPath}/resources/img/user.png" alt="기본 프로필 사진" class="profile"
@@ -909,9 +910,9 @@
 				<button type="button" name="nonAttend">불참</button>
 			</div>
 			<div class="board-footer">
-				<div>
+				<div >
 					<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
-					<span class="board-footer-icon" data-bookmark="no"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>
+					<span class="board-footer-icon" data-bookmark="no" name="bookmark-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>
 				</div>
 				<div>
 					<span class="board-footer-info">댓글 <span data-commentCount></span></span>
@@ -933,8 +934,8 @@
 	
 	<!-- 업무 상세조회 모달 -->
 	<div id="task-modal" data-tasktype="">
-		<input type="hidden" id="prjTaskId" value="" name="prjBoardId">
 		<div class="task-modal__content">
+			<input type="hidden" id="prjTaskId" value="" name="prjBoardId" data-boardType="C8">
 			<div class="board-header">
 			<input type="hidden" value="" name="prjBoardId">
 				<div class="board-header-info">
@@ -967,34 +968,35 @@
 					<input type="hidden" name="processivity">
 				</div>
 			</div>
-				<div class="d-flex" style="margin-right: 40px;">
-					<div class="task-manager"> 
-						<span class="text">담당자 : </span>
-					</div>
-					<div data-priority></div>
+			<div class="d-flex" style="margin-right: 40px;">
+				<div class="task-manager"> 
+					<span class="text">담당자 : </span>
 				</div>
-				<div data-state>
-					<button type="button" value="G1">요청</button>
-					<button type="button" value="G2">진행</button>
-					<button type="button" value="G3">피드백</button>
-					<button type="button" value="G4">완료</button>
-					<button type="button" value="G5">보류</button>
+				<div data-priority></div>
+			</div>
+			<div data-state>
+				<button type="button" value="G1">요청</button>
+				<button type="button" value="G2">진행</button>
+				<button type="button" value="G3">피드백</button>
+				<button type="button" value="G4">완료</button>
+				<button type="button" value="G5">보류</button>
+			</div>
+			<div class="board-content">
+				<div>
 				</div>
-				<div class="board-content"><div>
 			</div>
-		</div>
-		<div class="sub-task-lists">
-			<div class="d-flex">
-				<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+			<div class="sub-task-lists">
+				<div class="d-flex">
+					<div class="sub-task-lists-title">하위업무 <span data-subtaskcount></span></div>
+				</div>
+				<div class="sub-task-list">
+				</div>
 			</div>
-			<div class="sub-task-list">
-			</div>
-		</div>
-		<div class="board-footer">
-			<div >
-				<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
-				<span class="board-footer-icon" data-bookmark="no" name="bookmark-icon"> 북마크</span>
-			</div>
+			<div class="board-footer">
+				<div >
+					<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
+					<span class="board-footer-icon" data-bookmark="no" name="bookmark-icon"> 북마크</span>
+				</div>
 				<div>
 					<span class="board-footer-info">댓글 <span data-commentCount></span></span>
 					<span class="board-footer-info">좋아요 <span data-likeCount></span></span>
@@ -1314,6 +1316,7 @@
 			}
 		})
 	};
+	
 	// 북마크 정보
 	function getBookmarkInfo(memberId, boardId){
 		$.ajax({
@@ -1366,20 +1369,33 @@
 		})
 	}
 	
-	//북마크 기능
+	
+	//북마크
 	$('span[data-bookmark]').on('click', function(e) {
-		let boardIdInputTag = $(e.currentTarget).parent().parent().parent().find('input[hidden="true"]').eq(0)
-		let prjBoardId = boardIdInputTag.val()
-		let boardType;
-		if(boardIdInputTag.attr('id')==="prjTaskId"){
-			boardType = "C8";
-		}else if(boardIdInputTag.attr('id')==="prjScheId"){
-			boardType = "C6";
+		
+		console.log(e.currentTarget)
+		
+		let boardContainer = $(e.currentTarget).parent().parent().parent();
+		let prjBoardId = boardContainer.children('input[name="prjBoardId"]').val();
+		let boardType = boardContainer.children('input[name="prjBoardId"]').data("boardType");
+/* 		console.log(boardContainer.children('input[name="prjBoardId"]'))
+		console.log(boardContainer.children('input[name="prjBoardId"]').data())
+		console.log(boardContainer.children('input[name="prjBoardId"]').data("boardType"))
+		
+		console.log(boardContainer.children('input[name="prjBoardId"]').attr("id")) */
+		let id= boardContainer.children('input[name="prjBoardId"]').attr("id");
+		if(id==="prjScheId"){
+			boardType = "C6"
+		}else{
+			boardType = "C8"
 		}
+		console.log(boardType)
 		let prjId = '${projectInfo.projectId}';
 		let memberId = '${memberInfo.memberId}';
 		let bookmark = $(e.currentTarget).data('bookmark');
 		let data = {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType};
+		
+		console.log(data)
 		if(bookmark == 'no') {
 			if(confirm('이 게시글을 북마크 하시겠습니까?')) {
 				$.ajax({
@@ -1387,9 +1403,42 @@
 					type : 'POST',
 					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
 					success : function() {
-						$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
-						$(e.currentTarget).data('bookmark', 'yes');
-						
+						$.ajax({
+							url : '${pageContext.request.contextPath}/getBookmarkByMe',
+							type : 'POST',
+							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+							success : function(pinProjects) {
+								let bookmarkUl = $('.bookmark-board-contets ul');
+								
+								bookmarkUl.empty();
+								
+								if(pinProjects.length != 0) {
+									for(let i=0; i<pinProjects.length; i++) {
+										let pinProject = pinProjects[i];
+										
+										let bookmarkList = `
+											<li>
+												<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+												<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+													<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+													<span>\${pinProject.prjBoardTitle}</span>									
+												</a>
+											</li>`;
+											
+										bookmarkUl.append(bookmarkList);	
+									}
+								} else {
+									let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+									
+									bookmarkUl.append(noBookmark);
+								}
+								$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+								$(e.currentTarget).data('bookmark', 'yes');
+							},
+							error : function(reject) {
+								console.log(reject);
+							}
+						})
 					},
 					error : function(reject) {
 						console.log(reject);
@@ -1403,9 +1452,42 @@
 					type : 'POST',
 					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
 					success : function() {
-						$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg').data('data-bookmark', 'no');
-						$(e.currentTarget).data('bookmark', 'no');
-						
+						$.ajax({
+							url : '${pageContext.request.contextPath}/getBookmarkByMe',
+							type : 'POST',
+							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+							success : function(pinProjects) {
+								let bookmarkUl = $('.bookmark-board-contets ul');
+								bookmarkUl.empty();
+								
+								if(pinProjects.length != 0) {
+									for(let i=0; i<pinProjects.length; i++) {
+										let pinProject = pinProjects[i];
+										
+										let bookmarkList = `
+											<li>
+												<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+												<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+													<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+													<span>\${pinProject.prjBoardTitle}</span>									
+												</a>
+											</li>`;
+											
+										bookmarkUl.append(bookmarkList);	
+									}
+								} else {
+									let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+									
+									bookmarkUl.append(noBookmark);
+								}
+								
+								$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg').data('data-bookmark', 'no');
+								$(e.currentTarget).data('bookmark', 'no');
+							},
+							error : function(reject) {
+								console.log(reject);
+							}
+						})
 					},
 					error : function(reject) {
 						console.log(reject);
@@ -1732,6 +1814,17 @@
 						taskInfo.find('input[name="prjBoardId"]').val(prjBoardId);
 						
 						// 클릭한 업무 정보
+						console.log(taskData)
+				     	//북마크 여부 조회   board-footer   data-bookmark   img
+				     	if(taskData.markedUserId=="yes"){
+							$('.task-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+							$('.task-modal__content span[data-bookmark]').data('bookmark', 'yes');
+				     	}else if(taskData.markedUserId=="no"||taskData.markedUserId===null){
+							$('.task-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg');								
+							$('.task-modal__content span[data-bookmark]').data('bookmark', 'no');
+				     	}
+						
+						
 						//이름
 						taskInfo.find('div[data-memberName]').text(highTask.memberName);
 						//프로필
@@ -1843,7 +1936,11 @@
 						// 북마크 정보
 						getBookmarkInfo('${memberInfo.memberId}', prjBoardId);
 						
-
+/* 						// 북마크 등록/해제
+						$('span[name="bookmark-icon"]').on('click', function(e){
+							bookmarkBoard('${memberInfo.memberId}', "${projectInfo.projectId}", prjBoardId, 'C8');
+						});
+						 */
 					},error : function(error){
 						console.log(error)
 					}
@@ -1859,7 +1956,9 @@
 					success:function(result){
 						console.log(result)
 				     	//북마크 여부 조회   board-footer   data-bookmark   img
-				     	if(result.markedUserId=="yes"){
+				     	if(result.markedUserId==="yes"){
+				     		console.log($('.prjSche-modal__content span[data-bookmark]'))
+				     	
 							$('.prjSche-modal__content span[data-bookmark]').find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
 							$('.prjSche-modal__content span[data-bookmark]').data('bookmark', 'yes');
 				     	}else if(result.markedUserId=="no"||result.markedUserId===null){
@@ -1914,6 +2013,8 @@
 						    likeBoard('${memberInfo.memberId}', boardId, 'C6');
 						    $('span[name="prjLike"]').off()
 						});
+						// 북마크 정보
+						getBookmarkInfo('${memberInfo.memberId}', prjBoardId);
 					},
 					error:function(error){
 						console.log(error)

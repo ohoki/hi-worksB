@@ -91,7 +91,7 @@ public class PrivateScheController {
 			hash.put("start", strStartDate); //시작일자
 			String strEndDate = simpleDateFormat.format(priScheList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
-			hash.put("color", "rgba(249, 166, 52, 0.7)");
+			hash.put("color", "rgba(249, 166, 52, 0.4)");
 
 			
 			jsonObj = new JSONObject(hash);
@@ -103,7 +103,7 @@ public class PrivateScheController {
 			hash.put("start", tdlList.get(i).getApplyDate());
 			hash.put("end", "");
 			hash.put("allDay", "true");
-			hash.put("color", "rgb(28 215 31 / 60%)");
+			hash.put("color", "rgb(28 215 31 / 50%) ");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -116,7 +116,7 @@ public class PrivateScheController {
 			String taskEndDate = simpleDateFormat.format(myTask.get(i).getEndDate());
 			hash.put("end", taskEndDate);
 			hash.put("allDay", "true");
-			hash.put("color", "rgba(156, 187, 58, 0.7)");
+			hash.put("color", "rgba(156, 187, 58, 0.4)");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -173,7 +173,7 @@ public class PrivateScheController {
 			hash.put("start", strStartDate); //시작일자
 			String strEndDate = simpleDateFormat.format(priScheList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
-			hash.put("color", "rgba(249, 166, 52, 0.7)");
+			hash.put("color", "rgba(249, 166, 52, 0.4)");
 
 			
 			jsonObj = new JSONObject(hash);
@@ -188,7 +188,7 @@ public class PrivateScheController {
 			String taskEndDate = simpleDateFormat.format(myTask.get(i).getEndDate());
 			hash.put("end", taskEndDate);
 			hash.put("allDay", "true");
-			hash.put("color", "rgba(156, 187, 58, 0.7)");
+			hash.put("color", "rgba(156, 187, 58, 0.4)");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -223,7 +223,7 @@ public class PrivateScheController {
 			hash.put("start", tdlList.get(i).getApplyDate());
 			hash.put("end", "");
 			hash.put("allDay", "true");
-			hash.put("color", "rgb(28 215 31 / 60%)");
+			hash.put("color", "rgb(28 215 31 / 50%) ");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -278,7 +278,7 @@ public class PrivateScheController {
 			hash.put("start", strStartDate); //시작일자
 			String strEndDate = simpleDateFormat.format(priScheList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
-			hash.put("color", "rgba(249, 166, 52, 0.7)");
+			hash.put("color", "rgba(249, 166, 52, 0.4)");
 
 			
 			jsonObj = new JSONObject(hash);
@@ -290,7 +290,7 @@ public class PrivateScheController {
 			hash.put("start", tdlList.get(i).getApplyDate());
 			hash.put("end", "");
 			hash.put("allDay", "true");
-			hash.put("color", "rgb(28 215 31 / 60%)");
+			hash.put("color", "rgb(28 215 31 , 0.5)");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -303,7 +303,7 @@ public class PrivateScheController {
 			String taskEndDate = simpleDateFormat.format(myTask.get(i).getEndDate());
 			hash.put("end", taskEndDate);
 			hash.put("allDay", "true");
-			hash.put("color", "rgba(156, 187, 58, 0.7)");
+			hash.put("color", "rgba(156, 187, 58, 0.4)");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -317,9 +317,10 @@ public class PrivateScheController {
 	@GetMapping("privateSche")
 	public String viewPriCalendar() {
 		
-		return "mypage/privateCalendar";
-	}
-	
+		return "mypage/prCalendar";
+		//return "mypage/privateCalendar";
+	}	
+
 	//개인일정 입력
 	@PostMapping("priScheInsert")
 	@ResponseBody
