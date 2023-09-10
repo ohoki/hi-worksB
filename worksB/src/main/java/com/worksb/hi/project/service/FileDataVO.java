@@ -58,5 +58,11 @@ public class FileDataVO {
 	//다운로드횟수
 	private int count;
 	
+	//검색조건
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date endDate;
+	
 
 }

@@ -1,5 +1,6 @@
 package com.worksb.hi.admin.mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,10 @@ public interface AdminMapper {
 	public List<FileDataVO> downloadList(@Param("companyId")int companyId,@Param("pagingvo")PagingVO pagingVO);
 	//downloadlist의 갯수
 	public int downloadCount(int companyId);
+	//날짜설정에 기반한 갯수
+	public int countDownloadByDate(@Param("companyId")int companyId,@Param("startDate")Date startDate,@Param("endDate") Date endDate);
+	//날짜설정에 기반한 내용
+	public List<FileDataVO> filteredFileList(@Param("vo")FileDataVO filedataVO,@Param("paging")PagingVO pagingVO);
 	
 	//prjlist갯수
 	public int prjcount(int companyId);

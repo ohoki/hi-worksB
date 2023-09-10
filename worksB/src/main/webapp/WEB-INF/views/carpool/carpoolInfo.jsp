@@ -691,7 +691,7 @@ th, tfoot td {
 	        })
 		 };
 
-	function participate(boardId,available,counted,writer,memberId){
+	function participate(boardId,available,counted,writer,memberId, category){
 		if(writer==memberId){
 			alert('작성자는 신청하지 못합니다')
 			return;
@@ -700,16 +700,22 @@ th, tfoot td {
 		let requestList=[];
 		let countChildren=$('#participants').children()
 		requestList.length=countChildren.length
-		if(requestList.length==0){
+// 		if(requestList.length==0){
 			
-		}
+// 		}
 		for(let i=0;i<requestList.length;i++){
 			if(memberId==$('.m-info').data('id')){
 				alert('이미 신청하였습니다.')
 				return;
 			}
 		}
-
+		//태워주세요탭인경우 1명까지만 신청
+		if(category=='B2'){
+			if(counted>=1){
+				alert('마감되었습니다.')
+				return;
+			}
+		}
 		if(available<=counted){
 			alert('마감되었습니다.')
 			return;

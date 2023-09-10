@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +29,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -501,6 +503,7 @@ public class ProjectController {
 		//관리자여부 파악
 		vo.setMemberId(memberId);
 		String manager=projectService.managerOrNot(vo);
+		m.addAttribute("manager",manager);
 	
 					//파일공개권한이 전체인 경우
 		if(vo.getFileAccess().equals("J1")) {
@@ -527,6 +530,10 @@ public class ProjectController {
 			}
 			m.addAttribute("paging", pagingVO);
 			m.addAttribute("fileList",list);
+			//파일탭의 접근권한
+			m.addAttribute("access",vo.getFileAccess());
+			//로그인한 아이디
+			m.addAttribute("loginId",memberId);
 			
 //공개권한이 전체가 아닌 경우
 		}else{
@@ -587,7 +594,12 @@ public class ProjectController {
 		return "project/projectFile";
 	}
 	
-	
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public int deleteFile(@RequestBody FileDataVO vo) {
+		System.out.println(vo.getFileId()+"fileId");
+		return projectService.deleteFile(vo.getFileId());
+	}
 	
 	
 	//파일업로드
@@ -674,7 +686,8 @@ public class ProjectController {
 
 		    FileDataVO fileData = projectService.getFileById(fileId);
 
-		    String filePath =downloadPath+fileData.getRealFilePath(); 
+		    String filePath = downloadPath + File.separator + fileData.getRealFilePath().replace("\\", File.separator);
+
 
 	        try {
 	            // 파일 경로를 Path 객체로 변환
@@ -691,8 +704,14 @@ public class ProjectController {
 //	        response.setContentType("application/octet-stream");
 //	        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileData.getFileName() + "\"");
 
+	        
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 	        String encodedFileName = URLEncoder.encode(fileData.getFileName(), StandardCharsets.UTF_8.toString());
-	        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+	        headers.setContentDispositionFormData("attachment", encodedFileName);
+
+//	        String encodedFileName = URLEncoder.encode(fileData.getFileName(), StandardCharsets.UTF_8.toString());
+//	        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
 	        try (OutputStream outputStream=response.getOutputStream()) {
 	            outputStream.write(fileData.getFileContent());
 	        } catch (IOException e) {
