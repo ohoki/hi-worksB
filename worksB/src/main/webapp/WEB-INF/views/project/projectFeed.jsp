@@ -49,7 +49,7 @@
 		.pin-board {
 			clear: both;
 		    width : 70%;
-		    height: 300px;
+		    max-height: 300px;
 		    margin: 30px auto;
 		    overflow: auto;
 		    overflow-x: hidden;
@@ -1095,10 +1095,10 @@
 		<div style="width: 65%;">
 			<button type="button" class="board-insert-btn" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
 			<!-- 상단 고정 게시글 -->
-			<c:if test="${pinBoardInfo.size() ne 0 }">
-				<div class="pin-board">
-					<div class="pin-board-title">상단고정</div>
-					<ul>
+			<div class="pin-board">
+				<div class="pin-board-title">상단고정</div>
+				<ul>
+					<c:if test="${pinBoardInfo.size() ne 0 }">
 						<c:forEach items="${pinBoardInfo }" var="pinBoard">
 							<li>
 								<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
@@ -1109,9 +1109,12 @@
 								</a>	
 							</li>						
 						</c:forEach>
-					</ul>
-				</div>			
-			</c:if>
+					</c:if>
+					<c:if test="${pinBoardInfo.size() eq 0 }">
+						<span style="font-size: var(--font-micro);">상단고정 된 게시글이 없습니다.</span>
+					</c:if>
+				</ul>
+			</div>			
 			<!-- 게시글 조회 -->
 			<div class="all-board-title" style="clear: both;">전체</div>
 			<c:forEach items="${boards }" var="board">
@@ -3316,12 +3319,6 @@
 		    		<div>게시물 수정</div>		
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
-		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">일반</li>
-		    		<li class="insert-list-item">업무</li>
-		    		<li class="insert-list-item">일정</li>
-		    		<li class="insert-list-item">투표</li>
-		    	</ul>
 		    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
 				<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
 				<input type="hidden" value="" name="prjBoardId" id="prjBoardId">

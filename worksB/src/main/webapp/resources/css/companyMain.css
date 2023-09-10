@@ -26,11 +26,12 @@
 	margin: 0 10px;
 }
 
-.title-date {
+.title-date, .title-time {
 	font-size: 17px;
 	color: var(--color-light-blue);
 	font-weight: var(--weight-bold);	
 	margin-right: 20px;
+	text-align: right;
 }
 
 .main-box-content-left {
@@ -90,6 +91,12 @@
   border-radius: 10px;
   box-shadow: inset 0px 0px 5px white;
   background-color: var(--color-dark-beigie);
+}
+
+.content-right-item:nth-child(1){
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .project-list {
@@ -193,6 +200,27 @@ img[data-bookmark] {
 	border-radius: 5px;
 }
 
+.today-weather {
+	padding: 0 20px;
+	font-size: var(--font-small);
+	margin: 20px 0;
+	flex-grow: 1;
+}
+
+.city {
+	margin-top: 15px;	
+}
+
+.weather-head {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.city {
+	color: var(--color-orange);
+	font-weight: var(--weight-bold);
+}
 .modal-visible {
 	display: block !important;
 }

@@ -12,7 +12,10 @@
 	<div class="main-box">
 		<div  class="main-box-title d-flex">
 			<h1 class="memberName d-flex" style="font-size: var(--font-regular);">${memberInfo.memberName }님</h1>
-			<div class="title-date"></div>
+			<div>
+				<div class="title-date"></div>
+				<div class="title-time"></div>					
+			</div>
 		</div>
 		<div class="main-box-content d-flex">
 			<div class="main-box-content-left">
@@ -47,8 +50,21 @@
 			<div class="main-box-content-right">
 				<ul>
 					<li class="content-right-item">
-						<h2>날씨</h2>
-						<div>날씨 정보</div>
+		            	<h2>현재 날씨</h2>
+			            <div class="today-weather">
+				            <div class="d-flex">
+				            	<div class="weather-head">
+				            		<div class="today-icon"></div>
+					            	<div class="city"></div>
+					            </div>
+								<div>
+					                <div style="font-weight: var(--weight-bold); font-size:30px;"><span class="temp"></span>&#8451</div>
+					                <div>체감온도 <span class="feel-like"></span>&#8451</div>
+					                <div>바람 <span class="wind"></span>km/h</div>
+					                <div>습도 <span class="humidity"></span>%</div>
+								</div>	
+				            </div>
+			        	</div>
 					</li>
 					<li class="content-right-item">
 						<h2>공지사항</h2>
@@ -80,40 +96,55 @@
 		</div>			
 	</div>
 <script>
-	
-	//날짜 변환
-	function get_date_str(date)
-	{
-	    var sYear = date.getFullYear();
-	    var sMonth = date.getMonth() + 1;
-	    var sDate = date.getDate();
-	
-	    sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
-	    sDate  = sDate > 9 ? sDate : "0" + sDate;
-	    return sYear + sMonth + sDate;
-	}
-	
+	//시간 및 날씨
+ 	setInterval(myTimer, 1000); // 1초마다 호출되게 한다.
 
-	//날씨정보 조회
-	var xhr = new XMLHttpRequest();
-	var url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst'; /*URL*/
-	var queryParams = '?' + encodeURIComponent('serviceKey') + '='+'ErWxhzVYX3Ip%2Fwa2vZDtynnjnxxyIaxQ4nke2Z0WSCA%2BVDbQ4qBSO%2F2LDepC6c0S1uIuglh%2Fy8AMMrSDZydY5g%3D%3D'; /*Service Key*/
-	queryParams += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1'); /**/
-	queryParams += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('1000'); /**/
-	queryParams += '&' + encodeURIComponent('dataType') + '=' + encodeURIComponent('JSON'); /**/
-	queryParams += '&' + encodeURIComponent('base_date') + '=' + encodeURIComponent(get_date_str(new Date())); /**/
-	queryParams += '&' + encodeURIComponent('base_time') + '=' + encodeURIComponent('0600'); /**/
-	queryParams += '&' + encodeURIComponent('nx') + '=' + encodeURIComponent('35'); /**/
-	queryParams += '&' + encodeURIComponent('ny') + '=' + encodeURIComponent('128'); /**/
-	xhr.open('GET', url + queryParams);
-	xhr.onreadystatechange = function () {
-	    if (this.readyState == 4) {
-	        console.log('Status: '+this.status+'nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'nBody: '+this.responseText);
-	    }
-	};
+    function myTimer() {
+        let today = new Date(); //데이트객체생성
+        let t_time = today.toLocaleTimeString();
+       
+        $('.title-time').text(t_time);
+    }
 	
-	xhr.send('');
-	
+ 	// 현재 위치 가져오기
+    navigator.geolocation.getCurrentPosition(getSuccess, getError);
+
+    function getSuccess(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      
+      $.getJSON(`http://api.openweathermap.org/data/2.5/weather?lat=\${lat}&lon=\${lng}&appid=e145b6dbc8292ff00959430e13dedb7d`, function (result) {
+      	  
+    	  //이미지 변경 예정
+    	  var weatherIcon = {
+    			    '01' : 'fas fa-sun',
+    			    '02' : 'fas fa-cloud-sun',
+    			    '03' : 'fas fa-cloud',
+    			    '04' : 'fas fa-cloud-meatball',
+    			    '09' : 'fas fa-cloud-sun-rain',
+    			    '10' : 'fas fa-cloud-showers-heavy',
+    			    '11' : 'fas fa-poo-storm',
+    			    '13' : 'far fa-snowflake',
+    			    '50' : 'fas fa-smog'
+    			};
+    	  
+    	  console.log(result);
+          // 현재온도
+          $(".temp").append(Math.floor(result.main.temp - 273.15)); //현재온도
+          $(".feel-like").append(Math.floor(result.main.feels_like - 273.15)); //체감
+          $(".wind").append(result.wind.speed); //바람
+          $(".humidity").append(result.main.humidity); //습도
+          $(".city").append(result.name); //도시이름
+          var $Icon = (result.weather[0].icon).substr(0,2);	
+          
+          // 현재온도 아이콘
+          $('.today-icon').append('<i class="' + weatherIcon[$Icon] +' fa-5x"></i>');
+  	    });
+    }
+
+    function getError() {
+      alert('Geolocation Error');
+    }
 	
 //----------인사 메세지
 	
