@@ -75,6 +75,11 @@
 		}
 		
 		const fileDOM = document.querySelector('#logoPath');
+		
+		sessionStorage.removeItem('startDate'); // 시작일 데이터 삭제
+		sessionStorage.removeItem('endDate'); // 시작일 데이터 삭제
+
+
 	</script>
 </body>
 </html>

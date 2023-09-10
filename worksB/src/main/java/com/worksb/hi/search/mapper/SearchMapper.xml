@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.worksb.hi.search.mapper.SearchMapper">
 	<select id="getAllPrj" resultType="SearchingVO">
-	            SELECT 
+        SELECT 
 			p.prj_board_id,
 			p.prj_board_title,
 			p.prj_board_regdate,
@@ -144,6 +144,14 @@
 		    FROM
 		        project
 		)pj ON pj.project_id=p.project_id
+		JOIN(
+            SELECT
+                prj_board_id
+            FROM
+                prj_task
+            WHERE high_task_id is null
+        ) task
+        on task.prj_board_id=p.prj_board_id
 		
 		WHERE prj_board_title LIKE '%'||#{SearchKeyword}||'%'
         AND prj_board_regdate 

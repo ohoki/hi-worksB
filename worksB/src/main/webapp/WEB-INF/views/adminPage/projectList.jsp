@@ -262,6 +262,11 @@
 			<span><label><input type="checkbox" id="file-access2" class="file-access" name="J1" value="J1">프로젝트구성원</label></span>
 			<span><label><input type="checkbox" id="file-access1" class="file-access" name="J3" value="J3">관리자+작성자</label></span>
 		</div>
+		<div>
+			<span>게시글수정권한</span>
+			<span><label><input type="checkbox" id="update-access1" class="update-access" name="J1" value="J1">전체</label></span>
+			<span><label><input type="checkbox" id="update-access2" class="update-access" name="J3" value="J3">관리자+작성자</label></span>
+		</div>
 		<div id="edit-prj-name">
 			<button onclick="editFileAccess(${list.size()})">수정하기</button>
 		</div>
@@ -353,7 +358,7 @@
 						console.log(projectName+'projectName')
 						if($('tbody tr td').eq(i).data('pjid')==projectId){
 							$('tbody tr td').eq(i).text(projectName)
-							break;
+							//break;
 						}
 					}
 				}
@@ -467,7 +472,8 @@
 		})
 		$('#prjParticir-modal').addClass('modal-visible');
 	})
-	
+		sessionStorage.removeItem('startDate'); // 시작일 데이터 삭제
+		sessionStorage.removeItem('endDate'); // 시작일 데이터 삭제
 
 </script>
 </html>

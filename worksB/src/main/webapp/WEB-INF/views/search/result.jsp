@@ -203,5 +203,10 @@
 	    });
 		  } );
 	 $('#end-datepicker').datepicker('setDate', 'today')
+
+	 
+	 sessionStorage.removeItem('startDate'); // 시작일 데이터 삭제
+	sessionStorage.removeItem('endDate'); // 시작일 데이터 삭제
+
 </script>
 </html>
