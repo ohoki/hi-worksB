@@ -275,6 +275,7 @@
 		                let end=$('#end-datepicker').val()
 		                if(start==0){
 		                	alert('시작일을 먼저 선택해 주세요')
+		                	
 		                }else if(start>end){
 		                	alert('시작일을 잘못 입력하였습니다')
 		                }else{

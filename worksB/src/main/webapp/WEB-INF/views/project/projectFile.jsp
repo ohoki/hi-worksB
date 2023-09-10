@@ -333,17 +333,14 @@
 	 		let uploader=$(checkedFile).data('uploader')
 	 		let fId=$(checkedFile).data('fid')
 		
-			if(uploader!=loginId && manager==null){
-				alert('작성자만 삭제할 수 있습니다')
-				return;
-			}else if(checkedFile.length<1){
+			if(checkedFile.length<1){
 				alert('삭제할 파일을 선택해주세요')
-				return;
 			}else if(checkedFile.length>1){
 				alert('한 개만 삭제가 가능합니다')
-				return;
-			}
-			if(confirm('파일을 삭제하시겠습니까?')){
+				//요기부터 1개만 선택한 구간
+			}else if(uploader!=loginId && manager==''){
+				alert('작성자만 삭제할 수 있습니다')
+			}else if(confirm('파일을 삭제하시겠습니까?')){
 				if(manager!='' || uploader==loginId){
 					if(manager!=''){
 						alert('관리자권한으로 삭제합니다')
