@@ -193,7 +193,8 @@
 			c.car_vote_particir_id,
 			c.member_id,
 			c.board_id,
-            m.member_name
+            m.member_name,
+            m.real_profile_path
 		FROM car_vote_particir c
         JOIN member m on(m.member_id=c.member_id)
 		WHERE board_id=#{boardId}

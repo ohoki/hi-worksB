@@ -174,7 +174,8 @@
 					console.log(reject);
 				}
 			})
-	    });
+    });
+
 	</script>
 </body>
 </html>

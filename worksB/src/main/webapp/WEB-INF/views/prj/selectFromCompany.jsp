@@ -257,13 +257,13 @@
 		let id=$(e.target).data("prjid");
 		//전체 공개
 		if(access == 'YES') {
-			location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id;
+			location.href='${pageContext.request.contextPath }/member/projectFeed?projectId='+id;
 			return;
 		}
 		//비공개 && 승인 완료
 		console.log(accp);
 		if(accp == 'YES') {
-			location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id;
+			location.href='${pageContext.request.contextPath }/member/projectFeed?projectId='+id;
 			return;	
 		} //비공개 && (승인 대기 or 승인 신청 x) 
 		else {
@@ -329,7 +329,7 @@
 		$('.prjParticir-modal-content').css('top', y + 'px');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath }/particirList',
+			url : '${pageContext.request.contextPath }/member/particirList',
 			type : 'GET',
 			data : {'projectId': projectId},
 			success : function(particir){
@@ -351,6 +351,7 @@
 						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 					}
 					$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+
 					//스팬 태그
 					let span = document.createElement('span');
 					span.innerText = particir[i].memberName;

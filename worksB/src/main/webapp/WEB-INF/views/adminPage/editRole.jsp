@@ -64,6 +64,8 @@
 </body>
 
 <script>
+	sessionStorage.removeItem('startDate'); // 시작일 데이터 삭제
+	sessionStorage.removeItem('endDate'); // 시작일 데이터 삭제
 	let size=${dlist.size()}
 	let oldDeptName=[];
 	oldDeptName.length=size;

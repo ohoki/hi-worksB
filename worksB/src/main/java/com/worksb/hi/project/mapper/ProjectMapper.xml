@@ -183,7 +183,9 @@
 				project_markup,           
 				particir_accp       
 		FROM prj_particir
-		WHERE member_id = #{memberId} AND project_id = #{projectId}
+		WHERE member_id = #{memberId} 
+			AND project_id = #{projectId}
+			AND particir_accp='A1'
 	</select>
 	
 	<!-- 프로젝트 승인 대기 조회 -->
@@ -589,6 +591,11 @@
 	FROM file_data
 	WHERE file_id=#{fileId}
 </select>
+<!-- 파일삭제 -->
+<delete id="deleteFile" parameterType="int">
+	DELETE file_data
+	WHERE file_id=#{fileId}
+</delete>
 <!-- 즐찾여부 -->
 <select id="getMarkupInfo" resultType="PrjParticirVO">
 	SELECT

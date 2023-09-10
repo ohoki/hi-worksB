@@ -28,7 +28,7 @@
 									<li class="d-flex project-list-item" data-prjid="${project.projectId}">
 										<div class="d-flex">
 											<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg" data-bookmark="yes">	
-											<a href="${pageContext.request.contextPath}/projectFeed?projectId=${project.projectId}">${project.projectName}</a>
+											<a href="${pageContext.request.contextPath}/member/projectFeed?projectId=${project.projectId}">${project.projectName}</a>
 										</div>
 										<div class="d-flex">
 											${project.particirNumber }
@@ -272,7 +272,7 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 		$('.prjParticir-modal-content').css('top', y + 'px');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath }/particirList',
+			url : '${pageContext.request.contextPath }/member/particirList',
 			type : 'GET',
 			data : {'projectId': projectId},
 			success : function(particir){
@@ -316,6 +316,8 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 		})
 		$('#prjParticir-modal').addClass('modal-visible');
 	})
+		sessionStorage.removeItem('startDate'); // 시작일 데이터 삭제
+		sessionStorage.removeItem('endDate'); // 시작일 데이터 삭제
 </script>
 </body>
 </html>
