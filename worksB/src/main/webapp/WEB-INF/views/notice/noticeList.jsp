@@ -137,8 +137,10 @@ td {
 				<img class="notice-icon" src="${pageContext.request.contextPath }/resources/icon/clipboard-regular.svg" alt="게시글 아이콘">
 			공지사항
 			</h2>
-			<button type="button" class="insert__button"
-				onclick="location.href='${pageContext.request.contextPath }/member/noticeInsert'">공지 작성</button>
+			<c:if test="${memberInfo.memberGrade eq 'H1' }">
+				<button type="button" class="insert__button"
+				onclick="location.href='${pageContext.request.contextPath}/admin/noticeInsert'">공지 작성</button>
+			</c:if>
 		</div>
 		<div style="min-height: 500px;">
 			<table class="table">
@@ -153,7 +155,7 @@ td {
 					</tr>
 				<tbody>
 					<c:forEach items="${noticeList}" var="notice">
-						<tr onclick="location.href='noticeInfo?noticeId=${notice.noticeId}'">
+						<tr onclick="location.href='${pageContext.request.contextPath}/member/noticeInfo?noticeId=${notice.noticeId}'">
 							<td>${notice.noticeId }</td>
 							<td style="text-align: left; padding: 0 20px;">${notice.noticeTitle }</td>
 							<td>${notice.memberName} </td>

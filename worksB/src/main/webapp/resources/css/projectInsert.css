@@ -31,7 +31,7 @@
     margin-right: 10px;
     font-weight: var(--weight-bold);
     color: var(--color-dark-grey);
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .form__input-title {
@@ -73,23 +73,26 @@
 
 button {
     width: 400px;
-    background-color: var(--color-light-white);
-    color: var(--color-grey);
+    background-color: var(--color-dark-beigie);
+    color: var(--color-light-grey);
+    font-weight: var(--weight-bold);
     padding: 10px 20px;
     border-radius: 10px;
     font-size: 18px;
     margin-top: 15px;
+   	transition: all 0.5s;
 }
 
 button:hover {
-    background-color: #c0e6f5;
-    color: #ffffff;
+	background-color: var(--color-dark-red);
+	color: white;
 }
 
 .form__select {
-    height: 40px;
+    height: 25px;
     width: 400px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: var(--size-border-radius);
+    font-size: 16px;
 }

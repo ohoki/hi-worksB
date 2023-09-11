@@ -123,15 +123,7 @@
 				</div>	      			
 				<div class="profile-content">
 					<p><span>회사</span>${companyInfo.companyName }</p>
-					<c:if test="${memberInfo.memberGrade eq 'ROLE_H1'}">
-						<p><span>등급</span>관리자</p>
-					</c:if>
-					<c:if test="${memberInfo.memberGrade eq 'ROLE_H2'}">
-						<p><span>등급</span>사원</p>
-					</c:if>
-					<c:if test="${memberInfo.memberGrade eq 'ROLE_H3'}">
-						<p><span>등급</span>게스트</p>
-					</c:if>
+					<p><span>등급</span>${memberInfo.memberGradeLiteral }</p>
 					<p><span>아이디</span>${memberInfo.memberId }</p>					
 				</div>
 			</div>

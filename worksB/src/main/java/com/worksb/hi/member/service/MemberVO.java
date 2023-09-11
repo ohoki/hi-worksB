@@ -30,6 +30,7 @@ public class MemberVO {
 	private String profilePath;
 	private String realProfilePath;
 	private String memberGrade;
+	private String memberGradeLiteral;
 	private String conIp;
 	private Integer jobId;
 	private String jobName;

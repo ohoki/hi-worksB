@@ -89,7 +89,7 @@
 				<div class="list">
 					<div class="project-name">
 						<img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-id="${list.projectId }"> 
-					<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
+					<span onclick="location.href='${pageContext.request.contextPath }/member/projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
 					<c:if test="${list.projectAccess eq 'YES' }">
 						<img class="icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg" style="margin-left: 20px;">
 					</c:if>
@@ -100,7 +100,7 @@
 					<div class="project-info">
 						${list.prjParticirNum }<img class="icon" name="prjParticirList" data-id="${list.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 						<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
-						<span class="unread-project">1</span>
+ 
 					</div>
 				</div>
 			</c:forEach>
@@ -115,7 +115,7 @@
 				<div class="list">
 					<div class="project-name">
 						<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg" data-id="${list.projectId }" data-end="NO"> 
-						<span onclick="location.href='projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
+						<span onclick="location.href='${pageContext.request.contextPath }/member/projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
 						<c:if test="${list.projectAccess eq 'YES' }">
 							<img class="icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg" style="margin-left: 20px;">
 						</c:if>
@@ -126,7 +126,7 @@
 					<div class="project-info">
 						${list.prjParticirNum }<img class="icon" name="prjParticirList" data-id="${list.projectId }" alt="참가인원" title="참가인원" src="${pageContext.request.contextPath }/resources/icon/user-solid.svg">
 						<!-- 	unreadproject있으면 db로부터 받아와서 첨부하기!! --> 
-						<span class="unread-project">1</span>
+ 
 					</div>
 				</div>
 			</c:forEach>
@@ -148,12 +148,12 @@
 //즐겨찾기
 	//즐찾해제
     document.addEventListener("click",(e)=>{     
+        	let star = e.target;
        
         if(e.target.className.includes('colored-star')){
-        	let star = e.target;
 
     	    let markup = 'A2';
-    	    let prjId = $('.colored-star').data("id");
+    	    let prjId =$(star).data("id");
     	    updateStar(markup, prjId);
 
     	    star.src = "${pageContext.request.contextPath }/resources/icon/emptyStar.svg"
@@ -168,7 +168,7 @@
         	let empty = e.target;
 
        	    let markup = 'A1';
-       	    let prjId = $('.empty-star').data("id");
+       	    let prjId = $(star).data("id");
        	    updateStar(markup, prjId);
 
        	    empty.src = "${pageContext.request.contextPath }/resources/icon/fullStar.svg"
@@ -221,7 +221,7 @@
 		$('.prjParticir-modal-content').css('top', y + 'px');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath }/particirList',
+			url : '${pageContext.request.contextPath }/member/particirList',
 			type : 'GET',
 			data : {'projectId': projectId},
 			success : function(particir){
@@ -235,13 +235,15 @@
 					employeeDiv.classList.add('employee');
 					//이미지 태그
 					let employeeProfile = document.createElement('img');
-					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.setAttribute('alt', particir[i].memberName);
 					employeeProfile.classList.add('employee-img');
 					if(particir[i].realProfilePath != null) {
 						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
 					}else {
 						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 					}
+					$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+
 					//스팬 태그
 					let span = document.createElement('span');
 					span.innerText = particir[i].memberName;

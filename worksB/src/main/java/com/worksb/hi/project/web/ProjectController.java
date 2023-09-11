@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +29,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,7 +81,7 @@ public class ProjectController {
 	
 	//이진 - 등록수정삭제
 	//프로젝트 등록 폼
-	@GetMapping("/projectInsert")
+	@GetMapping("/member/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
 
 		// 소속 회사의 부서정보 받아오기
@@ -92,7 +94,7 @@ public class ProjectController {
 	}
 	
 	//프로젝트 등록
-	@PostMapping("/projectInsert")
+	@PostMapping("/member/projectInsert")
 	public String projectInsertProcess(ProjectVO projectVO, HttpSession session) {
 		
 		//A1 : Yes, A2 : No
@@ -132,11 +134,11 @@ public class ProjectController {
 		// 참여자 등록
 		projectService.insertParticipant(participant);
 		
-		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
+		return "redirect:/member/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 	
 	//프로젝트 수정폼
-	@GetMapping("/projectUpdate")
+	@GetMapping("/member/projectUpdate")
 	public String projectUpdateForm(@RequestParam int projectId, Model model, HttpSession session) {
 		//기존 프로젝트 정보 가져오기
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
@@ -159,7 +161,7 @@ public class ProjectController {
 	}
 	
 	//프로젝트 수정
-	@PostMapping("/projectUpdate")
+	@PostMapping("/member/projectUpdate")
 	public String projectUpdate(ProjectVO projectVO) {
 		
 		//A1 : Yes, A2 : No
@@ -175,7 +177,7 @@ public class ProjectController {
 		
 		projectService.updateProject(projectVO);
 
-		return "redirect:/projectFeed?projectId=" + projectVO.getProjectId();
+		return "redirect:/member/projectFeed?projectId=" + projectVO.getProjectId();
 	}
 
 	// 프로젝트 삭제
@@ -186,7 +188,7 @@ public class ProjectController {
 	}
 	
 	// 프로젝트 피드
-	@GetMapping("/projectFeed")
+	@GetMapping("/member/projectFeed")
     public String projectFeed(@RequestParam int projectId, Model model, HttpSession session) {
         ProjectVO projectInfo = projectService.getProjectInfo(projectId);
         // 게시글 리스트
@@ -225,41 +227,41 @@ public class ProjectController {
     }
 	
 	// 프로젝트 참여자 조회
-	@GetMapping("particirList")
+	@GetMapping("/member/particirList")
 	@ResponseBody
 	public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
 		return projectService.getParticirList(projectId);
 	}
 
 	//프로젝트 승인 대기 조회
-	@GetMapping("/getCheckParticir")
+	@GetMapping("/member/getCheckParticir")
 	@ResponseBody
 	public List<PrjParticirVO> getCheckParticir(PrjParticirVO prjParticirVO){
 		return projectService.getCheckParticir(prjParticirVO);
 	}
 	
 	//프로젝트 참여자 승인
-	@PostMapping("/updateAccpParticir")
+	@PostMapping("/member/updateAccpParticir")
 	@ResponseBody
 	public int updateAccpParticir(PrjParticirVO prjParticirVO) {
 		return projectService.updateAccpParticir(prjParticirVO);
 	}
 	
 	//프로젝트 참여자 승인거절
-	@PostMapping("/deleteAccpParticir")
+	@PostMapping("/member/deleteAccpParticir")
 	@ResponseBody
 	public int deleteAccpParticir(PrjParticirVO prjParticirVO) {
 		return projectService.deleteAccpParticir(prjParticirVO);
 	}
 		
 	// 프로젝트 만료
-	@PostMapping("/updateProjectCls")
+	@PostMapping("/member/updateProjectCls")
 	@ResponseBody
 	public int updateProjectCls(ProjectVO projectVO) {
 		return projectService.updateProjectCls(projectVO);
 	}
 	// 프로젝트 나가기
-	@PostMapping("/deleteParticir")
+	@PostMapping("/member/deleteParticir")
 	@ResponseBody
 	public int deleteParticir(PrjParticirVO prjParticirVO) {
 		return projectService.deleteParticir(prjParticirVO);
@@ -501,6 +503,7 @@ public class ProjectController {
 		//관리자여부 파악
 		vo.setMemberId(memberId);
 		String manager=projectService.managerOrNot(vo);
+		m.addAttribute("manager",manager);
 	
 					//파일공개권한이 전체인 경우
 		if(vo.getFileAccess().equals("J1")) {
@@ -527,6 +530,10 @@ public class ProjectController {
 			}
 			m.addAttribute("paging", pagingVO);
 			m.addAttribute("fileList",list);
+			//파일탭의 접근권한
+			m.addAttribute("access",vo.getFileAccess());
+			//로그인한 아이디
+			m.addAttribute("loginId",memberId);
 			
 //공개권한이 전체가 아닌 경우
 		}else{
@@ -587,7 +594,12 @@ public class ProjectController {
 		return "project/projectFile";
 	}
 	
-	
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public int deleteFile(@RequestBody FileDataVO vo) {
+		System.out.println(vo.getFileId()+"fileId");
+		return projectService.deleteFile(vo.getFileId());
+	}
 	
 	
 	//파일업로드
@@ -674,7 +686,8 @@ public class ProjectController {
 
 		    FileDataVO fileData = projectService.getFileById(fileId);
 
-		    String filePath =downloadPath+fileData.getRealFilePath(); 
+		    String filePath = downloadPath + File.separator + fileData.getRealFilePath().replace("\\", File.separator);
+
 
 	        try {
 	            // 파일 경로를 Path 객체로 변환
@@ -691,8 +704,14 @@ public class ProjectController {
 //	        response.setContentType("application/octet-stream");
 //	        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileData.getFileName() + "\"");
 
+	        
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 	        String encodedFileName = URLEncoder.encode(fileData.getFileName(), StandardCharsets.UTF_8.toString());
-	        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+	        headers.setContentDispositionFormData("attachment", encodedFileName);
+
+//	        String encodedFileName = URLEncoder.encode(fileData.getFileName(), StandardCharsets.UTF_8.toString());
+//	        response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
 	        try (OutputStream outputStream=response.getOutputStream()) {
 	            outputStream.write(fileData.getFileContent());
 	        } catch (IOException e) {

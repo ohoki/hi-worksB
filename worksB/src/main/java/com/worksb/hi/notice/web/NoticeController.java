@@ -1,10 +1,13 @@
 package com.worksb.hi.notice.web;
 
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +42,7 @@ public class NoticeController {
     ComLikeService comLikeService;
 	
 	//페이징 전체조회
-	@GetMapping("noticeList")
+	@GetMapping("/member/noticeList")
 	public String noticeList(Model model
 						, SearchVO searchVO
 						, @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage 
@@ -63,7 +66,7 @@ public class NoticeController {
 	}
 	
 	// 상세보기
-	@GetMapping("/noticeInfo")
+	@GetMapping("/member/noticeInfo")
 	public String getNoticeInfo(NoticeVO noticeVO, ComLikeVO comLikeVO, Model model, HttpSession session,
 								@RequestParam("noticeId")int noticeId) {
 	    
@@ -91,20 +94,20 @@ public class NoticeController {
 	}
 	
 	// 등록 폼
-	@GetMapping("/noticeInsert")
+	@GetMapping("/admin/noticeInsert")
 	public String noticeInsertForm() {
 		return "notice/noticeInsert";
 	}
 	
 	// 등록
-	@PostMapping("/noticeInsert")
-	public String noticeInsert(NoticeVO noticeVO) {
+	@PostMapping("/admin/noticeInsert")
+	public String noticeInsert(NoticeVO noticeVO, HttpServletRequest request) {
 		noticeService.noticeInsert(noticeVO);
-		return "redirect:noticeList";
+		return "redirect:/member/noticeList";
 	}
 
 	// 게시글 수정 폼
-	@GetMapping("/noticeUpdate")
+	@GetMapping("/admin/noticeUpdate")
 	public String noticeUpdateForm(NoticeVO noticeVO, Model model) {
 		NoticeVO findVO = noticeService.getNoticeInfo(noticeVO);
 		model.addAttribute("noticeInfo", findVO);
@@ -112,21 +115,21 @@ public class NoticeController {
 	}
 	
 	//게시글 수정
-	@PostMapping("/noticeUpdate")
+	@PostMapping("/admin/noticeUpdate")
 	public String noticeUpdate(NoticeVO noticeVO){
 		noticeService.noticeUpdate(noticeVO);
-		return "redirect:noticeList";
+		return "redirect:/member/noticeList";
 	}
 	
 	// 게시글 삭제
-	@GetMapping("/noticeDelete")
+	@GetMapping("/admin/noticeDelete")
 	public String noticeDelete(@RequestParam(name = "noticeId", defaultValue = "0") int noticeId) {
 		noticeService.noticeDelete(noticeId);
-		return "redirect:noticeList";
+		return "redirect:/member/noticeList";
 	}
 	
 	// 좋아요 여부 확인
-    @GetMapping("/like")
+    @GetMapping("/member/like")
     @ResponseBody
     public  Map<String, Object> like(ComLikeVO comLikeVO ) {
         Map<String, Object> map = new HashMap<>();
@@ -144,18 +147,4 @@ public class NoticeController {
         map.put("count", comLikeService.countLikes(comLikeVO));
         return map;
     }
-    
-    
-    
-    // noticeList에서 공지마다 좋아요
-	/*
-	 * @GetMapping("/noticeLikeCount")
-	 * 
-	 * @ResponseBody public String getLikeCountForNotice(@RequestParam("noticeId")
-	 * int noticeId, ComLikeVO comLikeVO, NoticeVO noticeVO) {
-	 * 
-	 * comLikeVO.setBoardId(noticeVO.getNoticeId()); comLikeVO.setBoardType("C2");
-	 * // 해당 공지마다의 좋아요 총 갯수 조회 return comLikeService.noticeLikeCount(noticeId,
-	 * comLikeVO); }
-	 */
 }

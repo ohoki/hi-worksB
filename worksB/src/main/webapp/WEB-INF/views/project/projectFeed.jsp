@@ -49,7 +49,7 @@
 		.pin-board {
 			clear: both;
 		    width : 70%;
-		    height: 300px;
+		    max-height: 300px;
 		    margin: 30px auto;
 		    overflow: auto;
 		    overflow-x: hidden;
@@ -509,7 +509,7 @@
 			color: var(--color-dark-grey);
 		}
 		
-		.update-board-modal-title {
+		.update-board-modal-title, .insert-board-modal-title {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -536,7 +536,7 @@
 		    border-bottom: 2px solid var(--color-dark-beigie);
 		}
 		
-		.insert-list-item:hover {
+		.insert-list-item:hover, .insert-list-item.active {
 			border-bottom: 2px solid var(--color-dark-red);
 		}
 		
@@ -1095,10 +1095,10 @@
 		<div style="width: 65%;">
 			<button type="button" class="board-insert-btn" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
 			<!-- 상단 고정 게시글 -->
-			<c:if test="${pinBoardInfo.size() ne 0 }">
-				<div class="pin-board">
-					<div class="pin-board-title">상단고정</div>
-					<ul>
+			<div class="pin-board">
+				<div class="pin-board-title">상단고정</div>
+				<ul>
+					<c:if test="${pinBoardInfo.size() ne 0 }">
 						<c:forEach items="${pinBoardInfo }" var="pinBoard">
 							<li>
 								<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/thumbtack-solid.svg" alt="상단고정 아이콘" style="margin-left: 20px;">
@@ -1109,9 +1109,12 @@
 								</a>	
 							</li>						
 						</c:forEach>
-					</ul>
-				</div>			
-			</c:if>
+					</c:if>
+					<c:if test="${pinBoardInfo.size() eq 0 }">
+						<span style="font-size: var(--font-micro);">상단고정 된 게시글이 없습니다.</span>
+					</c:if>
+				</ul>
+			</div>			
 			<!-- 게시글 조회 -->
 			<div class="all-board-title" style="clear: both;">전체</div>
 			<c:forEach items="${boards }" var="board">
@@ -1130,7 +1133,7 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-								<c:if test="${board.memberId eq memberInfo.memberId}">
+								<c:if test="${board.memberId eq memberInfo.memberId || particirInfo.manager eq 'A1'}">
 									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 								</c:if>
 							</div>
@@ -1202,7 +1205,7 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-								<c:if test="${board.memberId eq memberInfo.memberId}">
+								<c:if test="${board.memberId eq memberInfo.memberId || particirInfo.manager eq 'A1'}">
 									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 								</c:if>
 							</div>
@@ -1296,7 +1299,7 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-								<c:if test="${board.memberId eq memberInfo.memberId}">
+								<c:if test="${board.memberId eq memberInfo.memberId || particirInfo.manager eq 'A1'}">
 									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 								</c:if>
 							</div>
@@ -1391,7 +1394,7 @@
 								<fmt:formatDate value="${board.prjBoardRegdate }" pattern="yyyy-MM-dd hh:mm"/>
 							</div>
 							<div>
-								<c:if test="${board.memberId eq memberInfo.memberId}">
+								<c:if test="${board.memberId eq memberInfo.memberId || particirInfo.manager eq 'A1'}">
 									<img class="board-header-btn" src="${pageContext.request.contextPath }/resources/icon/ellipsis-vertical-solid.svg">
 								</c:if>
 							</div>
@@ -1573,7 +1576,7 @@
 				<input type="hidden" name="highPrjBoardId" value="">
 				<input type="hidden" name="highTaskId" value="">
 				<div class="update-board-modal-title">
-		    		<div>게시물 수정</div>		
+		    		<div>업무 수정</div>		
 		    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -1620,15 +1623,15 @@
 	<div id="insertSubTask-modal">
 		<!-- 모달페이지 띄우기 위함 -->
 		<form>
-			<input type="hidden" class="modal-dialog d-none">
-			<input type="hidden" class="modal-content d-none">
-			<input type="hidden" name="highPrjBoardId" value="">
-			<input type="hidden" name="highTaskId" value="">
-			<div class="update-board-modal-title">
-	    		<div>게시물 수정</div>		
-	    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	    	</div>
 			<div class="insertSubTask-modal-content">
+				<input type="hidden" class="modal-dialog d-none">
+				<input type="hidden" class="modal-content d-none">
+				<input type="hidden" name="highPrjBoardId" value="">
+				<input type="hidden" name="highTaskId" value="">
+				<div class="insert-board-modal-title">
+		    		<div>업무 추가</div>		
+		    		<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		    	</div>
 				<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
 				<div class="board-state">
 					<input type="radio" class="btn-check" name="state" value="G1" id="option16" autocomplete="off" checked>
@@ -1697,7 +1700,7 @@
 			$('.modal-backdrop').css('display', 'block');
 			
 			$.ajax({
-				url : '${pageContext.request.contextPath}/getTaskInfo',
+				url : '${pageContext.request.contextPath}/member/getTaskInfo',
 				type : 'GET',
 				data : {'prjBoardId' : prjBoardId},
 				success : function(taskData) {
@@ -1749,7 +1752,7 @@
 			let highTaskId = taskModal.find('input[name="highTaskId"]').val();
 			
 			$.ajax({
-				url : '${pageContext.request.contextPath}/getTaskInfo',
+				url : '${pageContext.request.contextPath}/member/getTaskInfo',
 				type : 'GET',
 				data : {'prjBoardId' : boardId},
 				success : function(taskData) {
@@ -1774,7 +1777,7 @@
   					// 셀렉트 박스 생성		            	
         			let subSelectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
         			$.ajax({
-        		    	url : '${pageContext.request.contextPath}/particirList',
+        		    	url : '${pageContext.request.contextPath}/member/particirList',
         		        type: 'GET',
         		        data: {'projectId': '${projectInfo.projectId}'},
         		        success: function(particir){
@@ -1803,16 +1806,6 @@
 				}
 			})
 		});
-			
-		
-			
-			
-			
-			
-			
-			
-		
-		
 		
 		//업무 담당자
 		$(document).on('click', '.task-manager span', function(e) {
@@ -1824,7 +1817,7 @@
 			$('.taskManager-modal-content').css('top', y + 'px');
 			
 			$.ajax({
-				url : '${pageContext.request.contextPath}/getManager',
+				url : '${pageContext.request.contextPath}/member/getManager',
 				type : 'GET',
 				data : {'prjBoardId' : boardId},
 				success : function(managers) {
@@ -1899,7 +1892,7 @@
 		
 		function getScheParticirList(prjBoardId, commonCode) {
 			$.ajax({
-				url : '${pageContext.request.contextPath}/getParticir',
+				url : '${pageContext.request.contextPath}/member/getParticir',
 				type : 'GET',
 				data : {'prjBoardId' : prjBoardId, 'attendance' : commonCode},
 				success : function(particirs) {
@@ -1965,7 +1958,7 @@
 			voteParticirDiv.empty();
 			if(anonyVoteText == '') {
 				$.ajax({
-					url : '${pageContext.request.contextPath}/getVoteParticir',
+					url : '${pageContext.request.contextPath}/member/getVoteParticir',
 					type : 'GET',
 					data : {'prjBoardId' : boardId},
 					success : function(voteParticir) {
@@ -2044,15 +2037,20 @@
 			$(e.currentTarget).removeClass('d-b');
 		});
 		
+		$('#insertSubTask-modal button[type="reset"]').on('click', function() {
+			$('#insertSubTask-modal').css('display', 'none');
+			$('.modal-backdrop').css('display', 'none');
+		});
+		
 		function updatePinBoard(boardId, pinYn) {
 			$('div[data-boardmodal]').removeClass('d-b');
 			$.ajax({
-				url : '${pageContext.request.contextPath}/updatePin',
+				url : '${pageContext.request.contextPath}/member/updatePin',
 				type : 'POST',
 				data : {'projectId': '${projectInfo.projectId}', 'prjBoardId': boardId, 'pinYn' : pinYn},
 				success : function() {
 					$.ajax({
-						url : '${pageContext.request.contextPath}/getPinBoard',
+						url : '${pageContext.request.contextPath}/member/getPinBoard',
 						type : 'POST',
 						data : {'projectId': '${projectInfo.projectId}'},
 						success : function(pinProjects) {
@@ -2141,7 +2139,7 @@
 				} else if(boardType == 'C7') {
 					// 투표 수정 가능 체크
 					$.ajax({
-						url: '${pageContext.request.contextPath}/countVoteParticir',
+						url: '${pageContext.request.contextPath}/member/countVoteParticir',
 						type: 'GET',
 						data: {'prjBoardId' : boardId},
 						success: function(data){
@@ -2166,12 +2164,12 @@
 				if(boardType == 'C5'){
 					if(check){
 						$.ajax({
-							url: '${pageContext.request.contextPath}/deleteBoard',
+							url: '${pageContext.request.contextPath}/member/deleteBoard',
 							type: 'POST',
 							data: {'prjBoardId' : boardId},
 							success: function(response){
 								alert("삭제되었습니다.");
-								location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + prjId;
+								location.href='${pageContext.request.contextPath}/member/projectFeed?projectId=' + prjId;
 							},
 							error: function(error){
 								alert("삭제에 실패했습니다.");
@@ -2187,7 +2185,7 @@
 							data: {'prjBoardId' : boardId},
 							success: function(response){
 								alert("삭제되었습니다.");
-								location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + prjId;
+								location.href='${pageContext.request.contextPath}/member/projectFeed?projectId=' + prjId;
 							},
 							error: function(error){
 								alert("삭제에 실패했습니다.");
@@ -2198,12 +2196,12 @@
 				}else if(boardType == 'C7'){
 					if(check){
 						$.ajax({
-							url: '${pageContext.request.contextPath}/deleteVote',
+							url: '${pageContext.request.contextPath}/member/deleteVote',
 							type: 'POST',
 							data: {'prjBoardId' : boardId},
 							success: function(response){
 								alert("삭제되었습니다.");
-								location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + prjId;
+								location.href='${pageContext.request.contextPath}/member/projectFeed?projectId=' + prjId;
 							},
 							error: function(error){
 								alert("삭제에 실패했습니다.");
@@ -2214,12 +2212,12 @@
 				}else if(boardType == 'C8'){
 					if(check){
 						$.ajax({
-							url: '${pageContext.request.contextPath}/deleteTask',
+							url: '${pageContext.request.contextPath}/member/deleteTask',
 							type: 'POST',
 							data: {'prjBoardId' : boardId},
 							success: function(response){
 								alert("삭제되었습니다.");
-								location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + prjId;
+								location.href='${pageContext.request.contextPath}/member/projectFeed?projectId=' + prjId;
 							},
 							error: function(error){
 								alert("삭제에 실패했습니다.");
@@ -2241,20 +2239,34 @@
 			if (boardList[i].dataset.type == 'C6') {
 				//일정
 				$.ajax({
-					url : '${pageContext.request.contextPath}/getScheInfo',
+					url : '${pageContext.request.contextPath}/member/getScheInfo',
 					type : 'GET',
 					data : {'prjBoardId': boardList[i].dataset.id, 'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}' },
 					success : function(sche) {
+						let DateBox = $(boardList[i]).find('div.sche-date');
 						let startDate = $(boardList[i]).find('span[data-start]');
 						let endDate = $(boardList[i]).find('span[data-end]');
+						let scheBtns = $(boardList[i]).find('.sche-btns button');
 						let addrSpan = $(boardList[i]).find('.sche-addr');
 						let attendYesCount = $(boardList[i]).find('.sche-particir-count');
 						let attendNoCount = $(boardList[i]).find('.sche-nonParticir-count');
 						let attendBtn = $(boardList[i]).find('button[name="attend"]');
 						let nonAttendBtn = $(boardList[i]).find('button[name="nonAttend"]');
+						let overDate = `<span>(기간종료)</span>`;
+						let currentTime = new Date();
+						let endTime = new Date(sche.endDate);
 						
-						startDate.text(sche.startDate);
-		                endDate.text(sche.endDate);
+						//날짜 확인
+						if(endTime < currentTime) {
+							DateBox.css('color', 'var(--color-dark-white)');
+							startDate.text(sche.startDate);
+			                endDate.text(sche.endDate);
+			                DateBox.append(overDate);
+			                scheBtns.prop('disabled', true);
+						} else {
+							startDate.text(sche.startDate);
+			                endDate.text(sche.endDate);
+						}
 		                //장소 설정 여부
 		                if(sche.scheAddr != null) {
 		                	sche.scheAddrDetail = sche.scheAddrDetail != null ? sche.scheAddrDetail : '';
@@ -2282,20 +2294,23 @@
 			}else if (boardList[i].dataset.type == 'C7') {
 				//투표
 				$.ajax({
-					url : '${pageContext.request.contextPath}/getVoteInfo',
+					url : '${pageContext.request.contextPath}/member/getVoteInfo',
 					type : 'GET',
 					data : {'prjBoardId': boardList[i].dataset.id, 'prjParticirId': '${particirInfo.prjParticirId }'},
 					success : function(voteData) {
+						let DateBox = $(boardList[i]).find('div.sche-date');
 						let endDate = $(boardList[i]).find('span[data-end]');
+						let voteBtns = $(boardList[i]).find('.vote-btn button');
 						let compnoVote = $(boardList[i]).find('.compnoVote');
 						let anonyVote = $(boardList[i]).find('.anonyVote');
 						let voteList = $(boardList[i]).find('.vote-lists ul');
 						let voteParticirCount = $(boardList[i]).find('.vote-particir-count');
 						let attendBtn = $(boardList[i]).find('button[name="voteAttend"]');
 						let nonAttendBtn = $(boardList[i]).find('button[name="voteNonAttend"]');
+						let overDate = `<span>(기간종료)</span>`;
+						let currentTime = new Date();
+						let endTime = new Date(voteData.voteInfo[0].endDate);
 						
-						// 종료일
-						endDate.text(voteData.voteInfo[0].endDate);
 						// 복수 투표 여부
 						if (voteData.voteInfo[0].compnoVote == 'A1') {
 							compnoVote.text('복수 투표');
@@ -2340,6 +2355,16 @@
 								voteList.find('.vote-list input').prop('disabled', true);
 							}
 						}
+						//날짜 확인
+						if(endTime < currentTime) {
+							DateBox.css('color', 'var(--color-dark-white)');
+							endDate.text(voteData.voteInfo[0].endDate);
+			                DateBox.append(overDate);
+			                voteList.find('input').prop('disabled', true);
+			                voteBtns.prop('disabled', true);
+						} else {
+							endDate.text(voteData.voteInfo[0].endDate);
+						}
 					}, error : function(reject) {
 						console.log(reject);
 					}
@@ -2347,7 +2372,7 @@
 			} else if (boardList[i].dataset.type == 'C8') {
 				//업무
 				$.ajax({
-					url : '${pageContext.request.contextPath}/getTaskInfo',
+					url : '${pageContext.request.contextPath}/member/getTaskInfo',
 					type : 'GET',
 					data : {'prjBoardId' : boardList[i].dataset.id},
 					success : function(taskData) {
@@ -2399,7 +2424,7 @@
 				     	
 				     	// 하위 업무 리스트
 				     	if(subTasks.length == 0) {
-				     		$(boardList[i]).find('.sub-task-lists').empty();
+				     		$(boardList[i]).find('.sub-task-lists-title').empty();
 				     		return;
 				     	}
 				     	
@@ -2443,7 +2468,7 @@
 	// 댓글 리스트
 	function getCommentList(boardId, boardType){
 		$.ajax({
-			url : '${pageContext.request.contextPath}/projectCmtList',
+			url : '${pageContext.request.contextPath}/member/projectCmtList',
 			type : 'GET',
 			data : {'boardId' : boardId, 'boardType': boardType},
 			success : function(comments){
@@ -2534,7 +2559,7 @@
 		let boardCommentBox = boardContainer.find('div[name="board-comment-box"]');
 		let member = '${memberInfo.memberId}';
 		$.ajax({
-			url : '${pageContext.request.contextPath}/projectCmtList',
+			url : '${pageContext.request.contextPath}/member/projectCmtList',
 			type : 'GET',
 			data : {'boardId' : prjBoardId, 'boardType': boardType},
 			success : function(comments){
@@ -2583,7 +2608,7 @@
 		let commentId = boardComment.data('cmtid');
 		if(confirm('삭제하시겠습니까?')){
 			$.ajax({
-				url : '${pageContext.request.contextPath}/deleteProjectCmt',
+				url : '${pageContext.request.contextPath}/member/deleteProjectCmt',
 				type : 'POST',
 				data : {'commentId' : commentId},
 				success : function() {
@@ -2607,7 +2632,7 @@
 		let boardComment = $(e.currentTarget).closest('.board-comment');
 		let commentId = boardComment.data('cmtid');
 		$.ajax({
-			url : '${pageContext.request.contextPath}/commentInfo',
+			url : '${pageContext.request.contextPath}/member/commentInfo',
 			type : 'GET', 
 			data : {'commentId' : commentId},
 			success : function(comments){
@@ -2641,7 +2666,7 @@
 		let commentContent = boardComment.find('input[name="commentContent"]').val();
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/updateProjectCmt',
+			url : '${pageContext.request.contextPath}/member/updateProjectCmt',
 			type : 'POST',
 			data : { 'commentId' : commentId, 'commentContent' : commentContent},
 			success : function(comments){
@@ -2662,7 +2687,7 @@
 		let boardType = boardContainer.data('type');
 		let memberId = '${memberInfo.memberId}';
 		$.ajax({
-			url : '${pageContext.request.contextPath}/likeBoard',
+			url : '${pageContext.request.contextPath}/member/likeBoard',
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
 			success : function(like){
@@ -2688,7 +2713,7 @@
 	// 좋아요 정보
 	function getPrjLike(memberId, boardId){
 		$.ajax({
-			url : '${pageContext.request.contextPath}/getPrjLike',
+			url : '${pageContext.request.contextPath}/member/getPrjLike',
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId},
 			success : function(likeInfo){
@@ -2710,57 +2735,6 @@
 			}
 		})
 	};
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
 	
 	//북마크
 	$('span[data-bookmark]').on('click', function(e) {
@@ -2775,12 +2749,12 @@
 		if(bookmark == 'no') {
 			if(confirm('이 게시글을 북마크 하시겠습니까?')) {
 				$.ajax({
-					url : '${pageContext.request.contextPath}/insertBookmark',
+					url : '${pageContext.request.contextPath}/member/insertBookmark',
 					type : 'POST',
 					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
 					success : function() {
 						$.ajax({
-							url : '${pageContext.request.contextPath}/getBookmarkByMe',
+							url : '${pageContext.request.contextPath}/member/getBookmarkByMe',
 							type : 'POST',
 							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
 							success : function(pinProjects) {
@@ -2824,12 +2798,12 @@
 		}else if(bookmark == 'yes') {
 			if(confirm('북마크를 해제 하시겠습니까?')) {
 				$.ajax({
-					url : '${pageContext.request.contextPath}/deleteBookmark',
+					url : '${pageContext.request.contextPath}/member/deleteBookmark',
 					type : 'POST',
 					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
 					success : function() {
 						$.ajax({
-							url : '${pageContext.request.contextPath}/getBookmarkByMe',
+							url : '${pageContext.request.contextPath}/member/getBookmarkByMe',
 							type : 'POST',
 							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
 							success : function(pinProjects) {
@@ -2926,13 +2900,13 @@
 			}
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/sheParticipate',
+			url : '${pageContext.request.contextPath}/member/sheParticipate',
 			type : 'POST',
 			data : {'prjParticirId' : prjParticirId ,'prjBoardId' : boardId, 'attendance' : attendance},
 			success : function() {
 				//새 정보
 				$.ajax({
-					url : '${pageContext.request.contextPath}/getScheInfo',
+					url : '${pageContext.request.contextPath}/member/getScheInfo',
 					type : 'GET',
 					data : {'prjBoardId': boardId, 'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}' },
 					success : function(sche) {
@@ -2970,7 +2944,7 @@
 			}
 			
 			$.ajax({
-				url : '${pageContext.request.contextPath}/votePaticir',
+				url : '${pageContext.request.contextPath}/member/votePaticir',
 				type : 'POST',
 				data:JSON.stringify(voteParticir),
 				contentType:'application/json',
@@ -2981,7 +2955,7 @@
 					
 					//새정보 입력
 					$.ajax({
-						url : '${pageContext.request.contextPath}/getVoteInfo',
+						url : '${pageContext.request.contextPath}/member/getVoteInfo',
 						type : 'GET',
 						data : {'prjBoardId': prjBoardId, 'prjParticirId': '${particirInfo.prjParticirId }'},
 						success : function(voteData) {
@@ -3000,7 +2974,7 @@
 		} //투표취소 
 		else if(btn.attr('name') == 'voteNonAttend') {
 			$.ajax({
-				url : '${pageContext.request.contextPath}/votePaticirDelete',
+				url : '${pageContext.request.contextPath}/member/votePaticirDelete',
 				type : 'POST',
 				data:{'prjParticirId': prjParticirId, 'prjBoardId': prjBoardId},
 				success : function(string) {
@@ -3011,7 +2985,7 @@
 					
 					//새정보 입력
 					$.ajax({
-						url : '${pageContext.request.contextPath}/getVoteInfo',
+						url : '${pageContext.request.contextPath}/member/getVoteInfo',
 						type : 'GET',
 						data : {'prjBoardId': prjBoardId, 'prjParticirId': '${particirInfo.prjParticirId }'},
 						success : function(voteData) {
@@ -3038,13 +3012,13 @@
 		let state = targetBtn.val();
 		
 		$.ajax({
-			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			url: '${pageContext.request.contextPath}/member/updateTaskInfo',
 			type:'POST',
 			data: {'prjBoardId' : prjBoardId, 'state' : state},
 			success : function(result) {
 				//업무
 				$.ajax({
-					url : '${pageContext.request.contextPath}/getTaskInfo',
+					url : '${pageContext.request.contextPath}/member/getTaskInfo',
 					type : 'GET',
 					data : {'prjBoardId' : prjBoardId},
 					success : function(taskData) {
@@ -3073,7 +3047,7 @@
 		let processivity = boardContainer.find('input[name=processivity]').val();
 		
 		$.ajax({
-			url: '${pageContext.request.contextPath}/updateTaskInfo',
+			url: '${pageContext.request.contextPath}/member/updateTaskInfo',
 			type:'POST',
 			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
 			success : function(result) {
@@ -3092,12 +3066,12 @@
 
 		if(confirm('북마크를 해제 하시겠습니까?')) {
 			$.ajax({
-				url : '${pageContext.request.contextPath}/deleteBookmark',
+				url : '${pageContext.request.contextPath}/member/deleteBookmark',
 				type : 'POST',
 				data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}', 'prjBoardId': prjBoardId, 'boardType':boardType},
 				success : function(pinProjects) {
 					$.ajax({
-						url : '${pageContext.request.contextPath}/getBookmarkByMe',
+						url : '${pageContext.request.contextPath}/member/getBookmarkByMe',
 						type : 'POST',
 						data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
 						success : function(pinProjects) {
@@ -3153,7 +3127,7 @@
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
 		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">일반</li>
+		    		<li class="insert-list-item active">일반</li>
 		    		<li class="insert-list-item">업무</li>
 		    		<li class="insert-list-item">일정</li>
 		    		<li class="insert-list-item">투표</li>
@@ -3162,7 +3136,7 @@
 				<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
 			</div>
 			<!-- 일반 게시글 작성 폼 -->
-			<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none d-b" name="board">
+			<form action="${pageContext.request.contextPath }/member/boardInsert" method="post" class="dis-none d-b" name="board">
 				<div class="insert-board-area">
 					<div class="board-form" >
 						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
@@ -3255,7 +3229,7 @@
 			</form>
 		
 			<!-- 일정 작성 폼!!! -->
-			<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none" id="sche" name="sche">
+			<form action="${pageContext.request.contextPath }/member/boardInsert" method="post" class="dis-none" id="sche" name="sche">
 				<div class="insert-board-area">
 					<div class="board-form" >
 						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
@@ -3286,7 +3260,7 @@
 			</form>
 		        
 			<!-- 투표 작성 폼!!! -->
-			<form action="${pageContext.request.contextPath }/boardInsert" method="post" class="dis-none" id="vote" name="vote">
+			<form action="${pageContext.request.contextPath }/member/boardInsert" method="post" class="dis-none" id="vote" name="vote">
 				<div class="insert-board-area">
 					<div class="board-form" >
 						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요." required>
@@ -3345,18 +3319,12 @@
 		    		<div>게시물 수정</div>		
 		    		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		    	</div>
-		    	<ul class="insert-board-list">
-		    		<li class="insert-list-item">일반</li>
-		    		<li class="insert-list-item">업무</li>
-		    		<li class="insert-list-item">일정</li>
-		    		<li class="insert-list-item">투표</li>
-		    	</ul>
 		    	<input type="hidden" name="memberId" value="${memberInfo.memberId }" id="memberId">
 				<input type="hidden" name="projectId" value="${projectInfo.projectId}" id="projectId">
 				<input type="hidden" value="" name="prjBoardId" id="prjBoardId">
 			</div>
 			<!-- 일반 게시글 작성 폼 -->
-			<form action="${pageContext.request.contextPath }/updateBoard" method="post" class="dis-none d-b" name="board">
+			<form action="${pageContext.request.contextPath }/member/updateBoard" method="post" class="dis-none d-b" name="board">
 				<div class="insert-board-area">
 					<div class="board-form" >
 						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -3447,7 +3415,7 @@
 			</form>
 		
 			<!-- 일정 작성 폼!!! -->
-			<form action="${pageContext.request.contextPath }/updateFeedSche" method="post" class="dis-none" id="sche" name="sche">
+			<form action="${pageContext.request.contextPath }/member/updateFeedSche" method="post" class="dis-none" id="sche" name="sche">
 				<div class="insert-board-area">
 					<div class="board-form" >
 						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -3478,7 +3446,7 @@
 			</form>
 		        
 			<!-- 투표 작성 폼!!! -->
-			<form action="${pageContext.request.contextPath }/updateVote" method="post" class="dis-none" id="vote" name="vote">
+			<form action="${pageContext.request.contextPath }/member/updateVote" method="post" class="dis-none" id="vote" name="vote">
 				<div class="insert-board-area">
 					<div class="board-form" >
 						<input type="text" class="board-form-title" name="prjBoardTitle" placeholder="제목을 입력하세요.">
@@ -3544,7 +3512,7 @@
 			
 			if(boardType == 'C5') { // 일반 게시글 수정 양식
 				$.ajax({
-					url: '${pageContext.request.contextPath}/getBoardInfo',
+					url: '${pageContext.request.contextPath}/member/getBoardInfo',
 					type: 'GET',
 					data: {'prjBoardId' : prjBoardId},
 					success: function(boardData){
@@ -3558,7 +3526,7 @@
 				});
 			}else if(boardType == 'C6') { // 일정 게시글 수정 양식
 				$.ajax({
-					url: '${pageContext.request.contextPath}/getSche',
+					url: '${pageContext.request.contextPath}/member/getSche',
 					type: 'GET',
 					data: {'prjBoardId' : prjBoardId},
 					success: function(scheData){
@@ -3582,7 +3550,7 @@
 				
 			}else if(boardType == 'C7') { //투표 게시글 수정 양식
 				$.ajax({
-					url: '${pageContext.request.contextPath}/getVoteInfo',
+					url: '${pageContext.request.contextPath}/member/getVoteInfo',
 					type: 'GET',
 					data: {'prjBoardId' : prjBoardId},
 					success: function(voteData){
@@ -3617,7 +3585,7 @@
 				
 			}else if(boardType == 'C8') { //상위 업무 게시글 수정 양식
 				$.ajax({
-					url : '${pageContext.request.contextPath}/getTaskInfo',
+					url : '${pageContext.request.contextPath}/member/getTaskInfo',
 					type : 'GET',
 					data : {'prjBoardId' : prjBoardId},
 					success : function(taskData) {
@@ -3657,7 +3625,7 @@
 						// 셀렉트 박스 생성		            	
 	        			let selectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
 	        			$.ajax({
-	        		    	url : '${pageContext.request.contextPath}/particirList',
+	        		    	url : '${pageContext.request.contextPath}/member/particirList',
 	        		        type: 'GET',
 	        		        data: {'projectId': "${projectInfo.projectId}"},
 	        		        success: function(particir){
@@ -3732,13 +3700,13 @@
 			
 			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			$.ajax({
-				url:'${pageContext.request.contextPath}/updateTask',
+				url:'${pageContext.request.contextPath}/member/updateTask',
 				type:'POST',
 				data:JSON.stringify({boardVO, taskVO, prjManager}),
 				contentType:'application/json',
 				success:function(data){
 					alert('정상적으로 수정되었습니다.');
-					location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + data;
+					location.href='${pageContext.request.contextPath}/member/projectFeed?projectId=' + data;
 				},error: function(reject) {
 					console.log(reject);
 				}
@@ -3774,7 +3742,7 @@
 			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			// 수정
 			$.ajax({
-				url:'${pageContext.request.contextPath}/updateTask',
+				url:'${pageContext.request.contextPath}/member/updateTask',
 				type:'POST',
 				data:JSON.stringify({boardVO, taskVO, prjManager}),
 				contentType:'application/json',
@@ -3801,7 +3769,7 @@
 			
 			if(confirm('선택하신 업무를 삭제하시겠습니까?')){
 				$.ajax({
-					url: '${pageContext.request.contextPath}/deleteTask',
+					url: '${pageContext.request.contextPath}/member/deleteTask',
 					type: 'POST',
 					data: {'prjBoardId' : prjBoardId},
 					success: function(response){
@@ -3859,14 +3827,12 @@
 			//업무 담당자 리스트
 			let prjManager =[];
 			$('#insertSubTask-modal .board-taskManager').find('span:not(:eq(0))').each(function(index, item){
-				console.log($(item));
 		        let prjParticirId = $(item).attr('name');
 		        prjManager.push({prjParticirId});
 		    });
 			
-			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			$.ajax({
-				url:'${pageContext.request.contextPath}/taskInsert',
+				url:'${pageContext.request.contextPath}/member/taskInsert',
 				type:'POST',
 				data:JSON.stringify({boardVO, taskVO, prjManager}),
 				contentType:'application/json',
@@ -3886,7 +3852,7 @@
 		// 하위 업무 리스트 출력
 		function getSubtaskList(highPrjBoardId) {
 			$.ajax({
-				url : '${pageContext.request.contextPath}/getTaskInfo',
+				url : '${pageContext.request.contextPath}/member/getTaskInfo',
 				type : 'GET',
 				data : {'prjBoardId' : highPrjBoardId},
 				success : function(taskData) {
@@ -4078,12 +4044,15 @@
 			let targetText = target.text();
 			let modalBox = target.closest('[class$="board-modal"]');
 			let visibleDiv = $(modalBox).find('.d-b');
+			let activeItem = target.parent().find('.active');
 			let board = $(modalBox).find('[name=board]');
 			let task = $(modalBox).find('[name=task]');
 			let sche = $(modalBox).find('[name=sche]');
 			let vote = $(modalBox).find('[name=vote]');
 			
 			visibleDiv.removeClass('d-b');
+			activeItem.removeClass('active');
+			target.addClass('active');
 			
 			if(targetText == '일반') {
 				$(board).addClass('d-b');
@@ -4106,7 +4075,7 @@
 			addManagerBtn.remove();
 			
 			$.ajax({
-		    	url : '${pageContext.request.contextPath}/particirList',
+		    	url : '${pageContext.request.contextPath}/member/particirList',
 		        type: 'GET',
 		        data: {'projectId': "${projectInfo.projectId}"},
 		        success: function(particir){
@@ -4324,12 +4293,12 @@
 			
 			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}));
 			$.ajax({
-				url:'${pageContext.request.contextPath}/taskInsert',
+				url:'${pageContext.request.contextPath}/member/taskInsert',
 				type:'POST',
 				data:JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}),
 				contentType:'application/json',
 				success:function(data){
-					location.href='${pageContext.request.contextPath}/projectFeed?projectId=' + data;
+					location.href='${pageContext.request.contextPath}/member/projectFeed?projectId=' + data;
 				},error: function(reject) {
 					console.log(reject);
 				}
@@ -4366,7 +4335,7 @@
 			let boardCommentBox = $(e.currentTarget).find('div[name="board-comment-box"]');
 			
 			$.ajax({
-				url : '${pageContext.request.contextPath}/insertProjectCmt',
+				url : '${pageContext.request.contextPath}/member/insertProjectCmt',
 				type : 'POST',
 				data : {'memberId': memberId, 'boardId': boardId, 'boardType':boardType, 'commentContent': cmtContent.val()},
 				success : function(success) {
@@ -4380,6 +4349,7 @@
 				}
 			})
 		})
+		
 		
 	</script>
 	<!-- 게시글 작성 종료 -->

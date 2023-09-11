@@ -28,5 +28,5 @@ public class CarpoolVO {
 	private int applicant;
 	private String memberName;
 	private int car_vote_particir_id;
-	
+	private String realProfilePath;
 }

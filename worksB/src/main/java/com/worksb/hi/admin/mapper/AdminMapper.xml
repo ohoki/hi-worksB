@@ -65,9 +65,7 @@
 						project_name, 
 						project_access,  
 						manager_accp,   
-						write_access,   
 						update_access,  
-						board_access,  
 						comment_access, 
 						file_access,  
 						dept_id,       
@@ -409,4 +407,52 @@
 		UPDATE project SET file_access=#{fileAccess}
 		WHERE project_id=#{projectId}
 	</update>
+	
+	<select id="countDownloadByDate" resultType="int">
+	   SELECT 
+            COUNT(*)
+		FROM download_file d
+		JOIN (
+    		SELECT 
+        		member_id,
+       			company_id
+    		FROM
+        		member
+    		WHERE company_id=#{companyId}
+				)m 
+			ON d.member_id=m.member_id
+             WHERE
+            file_regdate BETWEEN #{startDate}
+                        AND #{endDate}
+	</select>
+	<select id="filteredFileList" resultType="FileDataVO">
+	  	SELECT *
+			FROM (
+			    SELECT rownum rn, a.*
+			    FROM (
+				    SELECT 
+							d.file_id,
+							d.file_name,
+							d.file_type,
+							d.file_regdate,
+							d.converted_size,
+							d.member_id,
+							m.company_id
+					FROM download_file d
+					JOIN (
+			    		SELECT 
+			        		member_id,
+			       			company_id
+			    		FROM
+			        		member
+			    		WHERE 
+			    			company_id=#{vo.companyId})m 
+						ON 
+							d.member_id=m.member_id
+						  WHERE
+          						file_regdate BETWEEN #{vo.startDate}
+                        							AND #{vo.endDate}
+						ORDER BY d.file_regdate DESC) a ) 
+			WHERE rn BETWEEN #{paging.start} AND #{paging.end}
+	</select>
 </mapper>

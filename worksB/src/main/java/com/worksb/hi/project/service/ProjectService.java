@@ -90,4 +90,6 @@ public interface ProjectService {
 	public FileDataVO getFileById(int fileId);
 	//파일다운로드 이력 추가
 	public int updateFile(FileDataVO vo);
+	//파일삭제
+	public int deleteFile(int flieId);
 }

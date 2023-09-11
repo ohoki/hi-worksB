@@ -191,7 +191,7 @@
 					<option value="A1">만료</option>
 				</select>
 				<c:if test="${memberInfo.memberGrade ne 'H3'}">
-					<button onclick="location.href='${pageContext.request.contextPath }/projectInsert'">프로젝트 생성</button>
+					<button onclick="location.href='${pageContext.request.contextPath }/member/projectInsert'">프로젝트 생성</button>
 				</c:if>
 			</div>
 		</div>
@@ -257,13 +257,13 @@
 		let id=$(e.target).data("prjid");
 		//전체 공개
 		if(access == 'YES') {
-			location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id;
+			location.href='${pageContext.request.contextPath }/member/projectFeed?projectId='+id;
 			return;
 		}
 		//비공개 && 승인 완료
 		console.log(accp);
 		if(accp == 'YES') {
-			location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id;
+			location.href='${pageContext.request.contextPath }/member/projectFeed?projectId='+id;
 			return;	
 		} //비공개 && (승인 대기 or 승인 신청 x) 
 		else {
@@ -329,7 +329,7 @@
 		$('.prjParticir-modal-content').css('top', y + 'px');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath }/particirList',
+			url : '${pageContext.request.contextPath }/member/particirList',
 			type : 'GET',
 			data : {'projectId': projectId},
 			success : function(particir){
@@ -343,13 +343,15 @@
 					employeeDiv.classList.add('employee');
 					//이미지 태그
 					let employeeProfile = document.createElement('img');
-					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.setAttribute('alt', particir[i].memberName);
 					employeeProfile.classList.add('employee-img');
 					if(particir[i].realProfilePath != null) {
 						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
 					}else {
 						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 					}
+					$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+
 					//스팬 태그
 					let span = document.createElement('span');
 					span.innerText = particir[i].memberName;

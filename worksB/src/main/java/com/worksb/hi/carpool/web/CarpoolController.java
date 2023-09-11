@@ -36,7 +36,7 @@ public class CarpoolController {
     ComLikeService comLikeService;
 	
 	//페이징 전체조회
-	@GetMapping("/carpoolList")
+	@GetMapping("/member/carpoolList")
 	public String carpoolList(Model model
 						, SearchVO searchVO
 						, HttpSession session
@@ -73,7 +73,7 @@ public class CarpoolController {
 	}
 	
 	// 단건 조회
-	@GetMapping("/carpoolInfo")
+	@GetMapping("/member/carpoolInfo")
 	public String getCarpoolInfo(@RequestParam("boardId")int boardId, HttpSession session, CarpoolVO carpoolVO,Model model, ComLikeVO comLikeVO) {
 		if(boardId!=0) {
 			carpoolVO.setBoardId(boardId);			
@@ -97,24 +97,30 @@ public class CarpoolController {
 		model.addAttribute("participantList",carpoolService.getApplicantList(boardId));
 		model.addAttribute("memberId",memberId);
 		
+		// 세션의 id값 가져오기
+        comLikeVO.setMemberId(memberId);
+		
+		//좋아요
+	    model.addAttribute("checkLike",comLikeService.checkLiked(comLikeVO));
+		
 		return "carpool/carpoolInfo";
 	}
 	
 	// 등록 폼
-	@GetMapping("/carpoolInsert")
+	@GetMapping("/member/carpoolInsert")
 	public String carpoolInsertForm() {
 		return "carpool/carpoolInsert";
 	}
 	
 	// 등록
-	@PostMapping("/carpoolInsert")
+	@PostMapping("/member/carpoolInsert")
 	public String carpoolInsert(CarpoolVO carpoolVO) {
 		carpoolService.carpoolInsert(carpoolVO);
-		return "redirect:carpoolList";
+		return "redirect:/member/carpoolList";
 	}
 	
 	// 수정 폼
-	@GetMapping("/carpoolUpdate")
+	@GetMapping("/member/carpoolUpdate")
 	public String carpoolUpdateForm(CarpoolVO carpoolVO, Model model) {
 		CarpoolVO findVO = carpoolService.getCarpoolInfo(carpoolVO);
 		model.addAttribute("carpoolInfo", findVO);
@@ -122,22 +128,22 @@ public class CarpoolController {
 	}
 	
 	// 수정
-	@PostMapping("/carpoolUpdate")
+	@PostMapping("/member/carpoolUpdate")
 	public String carpoolUpdate(CarpoolVO carpoolVO) {
 		carpoolService.carpoolUpdate(carpoolVO);
-		return "redirect:carpoolList";
+		return "redirect:/member/carpoolList";
 	}
 	
 	//삭제
 	// 게시글 삭제
-	@GetMapping("/carpoolDelete")
+	@GetMapping("/member/carpoolDelete")
 	public String carpoolDelete(@RequestParam(name = "boardId", defaultValue = "0") int boardId) {
 		carpoolService.carpoolDelete(boardId);
-		return "redirect:carpoolList";
+		return "redirect:/member/carpoolList";
 	}
 	
 	//카풀신청
-	@GetMapping("/applyCarpool")
+	@GetMapping("/member/applyCarpool")
 	@ResponseBody
 	public CarpoolVO countParticipants(@RequestParam("boardId")int boardId, HttpSession session) {	
 		String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
@@ -151,7 +157,7 @@ public class CarpoolController {
 	}
 	
 	//카풀신청취소
-	@GetMapping("/cancelCarpool")
+	@GetMapping("/member/cancelCarpool")
 	@ResponseBody
 	public CarpoolVO cancel(@RequestParam("boardId")int boardId, HttpSession session) {
 		String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
