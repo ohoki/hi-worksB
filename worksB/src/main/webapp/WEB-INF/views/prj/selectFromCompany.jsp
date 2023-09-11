@@ -83,6 +83,8 @@
 	justify-content: flex-start;
 	font-size: 16px; 
 	color: var(--color-light-grey);
+	overflow: auto; 
+	max-width: 800px;
 }
 .list-count {
 	font-size: var(--font-small); 
@@ -167,14 +169,14 @@
 }
 </style>
 </head>
-<!-- A1은 YES A2는 NO -->
 <body>
     <form name="deptInfo" action="${pageContext.request.contextPath }/SelectFromCompany">
     	<input type="hidden" name="deptId" value="${projectVO.deptId }">
     	<input type="hidden" name="projectCls" value="${projectVO.projectCls }">
     </form>
+    
     <h1 class="list-title">회사 전체 프로젝트</h1>
-	<div style="padding: 5px 50px;">
+	<div style="padding: 5px 50px; overflow: hidden;">
 		<ul class="dept-list">
 			<li class="view-dept" onclick="viewPart('')">전체보기</li>
 			<c:forEach items="${deptList }" var="dept">
@@ -191,7 +193,7 @@
 					<option value="A1">만료</option>
 				</select>
 				<c:if test="${memberInfo.memberGrade ne 'H3'}">
-					<button onclick="location.href='${pageContext.request.contextPath }/member/projectInsert'">프로젝트 생성</button>
+					<button onclick="location.href='${pageContext.request.contextPath }/projectInsert'">프로젝트 생성</button>
 				</c:if>
 			</div>
 		</div>
@@ -257,13 +259,13 @@
 		let id=$(e.target).data("prjid");
 		//전체 공개
 		if(access == 'YES') {
-			location.href='${pageContext.request.contextPath }/member/projectFeed?projectId='+id;
+			location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id;
 			return;
 		}
 		//비공개 && 승인 완료
 		console.log(accp);
 		if(accp == 'YES') {
-			location.href='${pageContext.request.contextPath }/member/projectFeed?projectId='+id;
+			location.href='${pageContext.request.contextPath }/projectFeed?projectId='+id;
 			return;	
 		} //비공개 && (승인 대기 or 승인 신청 x) 
 		else {
@@ -329,7 +331,7 @@
 		$('.prjParticir-modal-content').css('top', y + 'px');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath }/member/particirList',
+			url : '${pageContext.request.contextPath }/particirList',
 			type : 'GET',
 			data : {'projectId': projectId},
 			success : function(particir){

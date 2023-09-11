@@ -97,7 +97,8 @@
                     ON(p.project_id=board.project_id)
                     
 					WHERE dept_id 
-						IN (SELECT dept_id FROM department WHERE company_id= #{companyId})) a ) 
+						IN (SELECT dept_id FROM department WHERE company_id= #{companyId})
+					ORDER BY p.project_id) a ) 
 			WHERE rn BETWEEN #{pagingvo.start} AND #{pagingvo.end}
 	</select>
 	
