@@ -10,7 +10,7 @@ public interface PrivateScheService {
 	public PrivateScheVO selectPsche(int scheId);
 	
 	//전체조회
-	public List<PrivateScheVO> selectAllPsche(String memberId);
+	public List<PrivateScheVO> selectAllPsche(PrivateScheVO privateScheVO);
 	
 	//일정등록
 	public int insertPsche(PrivateScheVO privateScheVO);
@@ -22,5 +22,5 @@ public interface PrivateScheService {
 	public int deletePsche(int scheId);
 	
 	//개인이 맡은 프로젝트 업무게시글 조회
-	public List<BoardVO> searchMyTask(String memberId);
+	public List<BoardVO> searchMyTask(PrivateScheVO privateScheVO);
 }

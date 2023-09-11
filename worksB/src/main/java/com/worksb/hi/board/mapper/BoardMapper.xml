@@ -38,7 +38,7 @@
 							, #{inspYn}
 							</if>
 							, #{boardType}
-							, #{projectId}
+							, #{projectId}	
 						)
 	</insert>
 	
@@ -178,8 +178,8 @@
 		         	FROM sche_particir p where s.prj_board_id = p.prj_board_id 
 		         	AND prj_particir_id = (SELECT prj_particir_id FROM prj_particir 
 		         	WHERE member_id = #{memberId} AND project_id = #{projectId}) ) AS my_attendance
-					FROM prj_sche s LEFT JOIN  p ON (s.prj_board_id = p.prj_board_id)
-				WHERE   s.prj_board_id = #{prjBoardId}
+		FROM 	prj_sche s LEFT JOIN  p ON (s.prj_board_id = p.prj_board_id)
+		WHERE   s.prj_board_id = #{prjBoardId}
 	</select>
 	
 	<!-- 투표 조회 -->
@@ -727,6 +727,7 @@
 			<if test="scheAddrDetail !=null and !scheAddrDetail.equals('')">
 				, sche_addr_detail = #{scheAddrDetail}
 			</if>
+
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>
@@ -793,8 +794,7 @@
 		FROM	prj_board
 		WHERE	project_id = #{projectId}
 		<if test="searchKeyword !=null and searchKeyword !=''">
-			AND (prj_board_title LIKE '%' || #{searchKeyword} || '%'
-			OR prj_board_subject LIKE '%' || #{searchKeyword} || '%')
+			AND prj_board_title LIKE '%' || #{searchKeyword} || '%'
 		</if>
 	</select>
 	<!-- 프로젝트 일정 캘린더 검색조회 -->

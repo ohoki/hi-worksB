@@ -24,8 +24,8 @@ public class PrivateScheServiceImpl implements PrivateScheService {
 	
 	//전체조회
 	@Override
-	public List<PrivateScheVO> selectAllPsche(String memberId) {
-		return privateScheMapper.selectAllPsche(memberId);
+	public List<PrivateScheVO> selectAllPsche(PrivateScheVO privateScheVO) {
+		return privateScheMapper.selectAllPsche(privateScheVO);
 	}
 	
 	//일정입력
@@ -52,8 +52,8 @@ public class PrivateScheServiceImpl implements PrivateScheService {
 	}
 	//개인이 맡은 업무게시글번호 조회
 	@Override
-	public List<BoardVO> searchMyTask(String memberId) {
-		return privateScheMapper.searchMyTask(memberId);
+	public List<BoardVO> searchMyTask(PrivateScheVO privateScheVO) {
+		return privateScheMapper.searchMyTask(privateScheVO);
 	}
 
 }

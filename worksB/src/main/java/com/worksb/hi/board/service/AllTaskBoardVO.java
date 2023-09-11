@@ -16,7 +16,7 @@ public class AllTaskBoardVO {
 	private String prjBoardTitle;
 	private String prjBoardSubject;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm" ,timezone = "Asia/Seoul")
 	private Date prjBoardRegdate;
 	private String memberId;
 	private String inspYn;
@@ -28,10 +28,10 @@ public class AllTaskBoardVO {
 
 	private Integer highTaskId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
 	private Date startDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm",timezone = "Asia/Seoul")
 	private Date endDate;
 	private String priority;
 	private String priorityName;

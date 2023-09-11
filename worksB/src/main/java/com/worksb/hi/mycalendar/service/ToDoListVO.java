@@ -21,7 +21,7 @@ public class ToDoListVO {
 	private String listRegdate;
 	private String memberId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private Date applyDate;
 	
 //	CONTENT NOT NULL VARCHAR2(100) 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.worksb.hi.board.service.BoardService;
 import com.worksb.hi.board.service.BoardVO;
+import com.worksb.hi.board.service.ScheVO;
 import com.worksb.hi.board.service.TaskVO;
 import com.worksb.hi.member.service.MemberVO;
 import com.worksb.hi.mycalendar.service.PrivateScheService;
@@ -50,12 +51,14 @@ public class PrivateScheController {
 		
 		//session에서 사용자 id값 가져와서 개인일정/todoList 검색
 		MemberVO vo = (MemberVO) session.getAttribute("memberInfo");
+		PrivateScheVO searchVO = new PrivateScheVO();
+		searchVO.setMemberId(vo.getMemberId());
 		//개인 일정 리스트
-		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(vo.getMemberId());
+		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(searchVO);
 		//개인 todoList 리스트
-		List<ToDoListVO> tdlList = toDoListService.selectAllTdl(vo.getMemberId());
+		List<ToDoListVO> tdlList = toDoListService.selectAllTdl(searchVO);
 		//개인 업무 리스트
-		List<BoardVO> myTaskList = privateScheService.searchMyTask(vo.getMemberId());
+		List<BoardVO> myTaskList = privateScheService.searchMyTask(searchVO);
 		//상위업무/하위업무 나누기
 		List<TaskVO> myTask = new ArrayList<TaskVO>();
 		for(int i=0;i<myTaskList.size();i++) {
@@ -88,7 +91,7 @@ public class PrivateScheController {
 			hash.put("start", strStartDate); //시작일자
 			String strEndDate = simpleDateFormat.format(priScheList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
-			hash.put("color", "rgba(249, 166, 52, 0.7)");
+			hash.put("color", "rgba(249, 166, 52, 0.4)");
 
 			
 			jsonObj = new JSONObject(hash);
@@ -100,7 +103,7 @@ public class PrivateScheController {
 			hash.put("start", tdlList.get(i).getApplyDate());
 			hash.put("end", "");
 			hash.put("allDay", "true");
-			hash.put("color", "rgb(28 215 31 / 60%)");
+			hash.put("color", "rgb(28 215 31 / 50%) ");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -113,7 +116,7 @@ public class PrivateScheController {
 			String taskEndDate = simpleDateFormat.format(myTask.get(i).getEndDate());
 			hash.put("end", taskEndDate);
 			hash.put("allDay", "true");
-			hash.put("color", "rgba(156, 187, 58, 0.7)");
+			hash.put("color", "rgba(156, 187, 58, 0.4)");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -128,12 +131,15 @@ public class PrivateScheController {
 	@ResponseBody
 	public List<Map<String, Object>> scheTaskView(HttpSession session) {
 		
+		
 		//session에서 사용자 id값 가져와서 개인일정/todoList 검색
 		MemberVO vo = (MemberVO) session.getAttribute("memberInfo");
+		PrivateScheVO searchVO = new PrivateScheVO();
+		searchVO.setMemberId(vo.getMemberId());
 		//개인 일정 리스트
-		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(vo.getMemberId());
+		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(searchVO);
 		//개인 업무 리스트
-		List<BoardVO> myTaskList = privateScheService.searchMyTask(vo.getMemberId());
+		List<BoardVO> myTaskList = privateScheService.searchMyTask(searchVO);
 		//상위업무/하위업무 나누기
 		List<TaskVO> myTask = new ArrayList<TaskVO>();
 		for(int i=0;i<myTaskList.size();i++) {
@@ -167,7 +173,7 @@ public class PrivateScheController {
 			hash.put("start", strStartDate); //시작일자
 			String strEndDate = simpleDateFormat.format(priScheList.get(i).getEndDate()); 
 			hash.put("end", strEndDate); //종료일자
-			hash.put("color", "rgba(249, 166, 52, 0.7)");
+			hash.put("color", "rgba(249, 166, 52, 0.4)");
 
 			
 			jsonObj = new JSONObject(hash);
@@ -182,7 +188,7 @@ public class PrivateScheController {
 			String taskEndDate = simpleDateFormat.format(myTask.get(i).getEndDate());
 			hash.put("end", taskEndDate);
 			hash.put("allDay", "true");
-			hash.put("color", "rgba(156, 187, 58, 0.7)");
+			hash.put("color", "rgba(156, 187, 58, 0.4)");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -200,8 +206,10 @@ public class PrivateScheController {
 		
 		//session에서 사용자 id값 가져와서 개인일정/todoList 검색
 		MemberVO vo = (MemberVO) session.getAttribute("memberInfo");
+		PrivateScheVO searchVO = new PrivateScheVO();
+		searchVO.setMemberId(vo.getMemberId());
 		//개인 todoList 리스트
-		List<ToDoListVO> tdlList = toDoListService.selectAllTdl(vo.getMemberId());
+		List<ToDoListVO> tdlList = toDoListService.selectAllTdl(searchVO);
 		
 		//json객체 리스트화
 		JSONObject jsonObj = new JSONObject();
@@ -215,7 +223,87 @@ public class PrivateScheController {
 			hash.put("start", tdlList.get(i).getApplyDate());
 			hash.put("end", "");
 			hash.put("allDay", "true");
-			hash.put("color", "rgb(28 215 31 / 60%)");
+			hash.put("color", "rgb(28 215 31 / 50%) ");
+
+			jsonObj = new JSONObject(hash);
+			jsonArr.add(jsonObj);
+		}
+		
+		return jsonArr;
+	}
+	//개인 스케줄 검색 조회
+	@GetMapping("searchPrivateCalendar")
+	@ResponseBody
+	public List<Map<String, Object>> searchCalendar(String searchKeyword,HttpSession session){
+		MemberVO vo = (MemberVO) session.getAttribute("memberInfo");
+		PrivateScheVO searchVO = new PrivateScheVO();
+		searchVO.setMemberId(vo.getMemberId());
+		searchVO.setSearchKeyword(searchKeyword);
+		//session에서 사용자 id값 가져와서 개인일정/todoList 검색
+		//개인 일정 리스트
+		List<PrivateScheVO> priScheList = privateScheService.selectAllPsche(searchVO);
+		//개인 todoList 리스트
+		List<ToDoListVO> tdlList = toDoListService.selectAllTdl(searchVO);
+		//개인 업무 리스트
+		List<BoardVO> myTaskList = privateScheService.searchMyTask(searchVO);
+		//상위업무/하위업무 나누기
+		List<TaskVO> myTask = new ArrayList<TaskVO>();
+		for(int i=0;i<myTaskList.size();i++) {
+			int prjBoardId = myTaskList.get(i).getPrjBoardId();
+			TaskVO tVO = boardService.searchTaskCal(prjBoardId);
+			System.out.println(tVO);
+			if(Objects.equals(tVO,null)) {
+				tVO = boardService.searchLowerTaskCalendar(prjBoardId);
+				if(Objects.equals(tVO,null)) {
+					continue;
+				}else {
+					myTask.add(boardService.searchLowerTaskCalendar(prjBoardId));
+					System.out.println(myTask);
+				}
+			}else {
+				myTask.add(tVO);
+				System.out.println(myTask);
+			}
+		}
+		System.out.println(myTask);
+		//json객체 리스트화
+		JSONObject jsonObj = new JSONObject();
+		JSONArray jsonArr = new JSONArray();
+		HashMap<String, Object> hash = new HashMap<String, Object>();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); 
+		for(int i=0;i<priScheList.size();i++) {
+			hash.put("id", priScheList.get(i).getScheId());//단건조회용 sche_id 입력
+			hash.put("title", priScheList.get(i).getScheTitle()); //제목
+			String strStartDate = simpleDateFormat.format(priScheList.get(i).getStartDate());
+			hash.put("start", strStartDate); //시작일자
+			String strEndDate = simpleDateFormat.format(priScheList.get(i).getEndDate()); 
+			hash.put("end", strEndDate); //종료일자
+			hash.put("color", "rgba(249, 166, 52, 0.4)");
+
+			
+			jsonObj = new JSONObject(hash);
+			jsonArr.add(jsonObj);
+		}
+		for(int i=0;i<tdlList.size();i++) {
+			hash.put("id", "t"+tdlList.get(i).getListId());
+			hash.put("title", tdlList.get(i).getListTitle());
+			hash.put("start", tdlList.get(i).getApplyDate());
+			hash.put("end", "");
+			hash.put("allDay", "true");
+			hash.put("color", "rgb(28 215 31 , 0.5)");
+
+			jsonObj = new JSONObject(hash);
+			jsonArr.add(jsonObj);
+		}
+		for(int i=0;i<myTask.size();i++) {
+			hash.put("id", "W"+myTask.get(i).getPrjBoardId());
+			hash.put("title", myTask.get(i).getPrjBoardTitle());
+			String taskStartDate = simpleDateFormat.format(myTask.get(i).getStartDate());
+			hash.put("start", taskStartDate);
+			String taskEndDate = simpleDateFormat.format(myTask.get(i).getEndDate());
+			hash.put("end", taskEndDate);
+			hash.put("allDay", "true");
+			hash.put("color", "rgba(156, 187, 58, 0.4)");
 
 			jsonObj = new JSONObject(hash);
 			jsonArr.add(jsonObj);
@@ -224,13 +312,15 @@ public class PrivateScheController {
 		return jsonArr;
 	}
 	
+	
 	//개인일정 페이지 불러오기
 	@GetMapping("privateSche")
 	public String viewPriCalendar() {
 		
-		return "mypage/privateCalendar";
-	}
-	
+		return "mypage/prCalendar";
+		//return "mypage/privateCalendar";
+	}	
+
 	//개인일정 입력
 	@PostMapping("priScheInsert")
 	@ResponseBody
@@ -288,7 +378,6 @@ public class PrivateScheController {
 	}
 	
 	//todoList 단건조회
-	@SuppressWarnings("unchecked")
 	@GetMapping("selectTdl")
 	@ResponseBody
 	public Map<String, List<ToDoListVO>> viewTodoList(int listId) {
@@ -377,6 +466,19 @@ public class PrivateScheController {
 		return resultMsg;
 	}
 	
-	//todoList ITEM 삭제
+	//todoList ITEM 성공여부 업데이트
+	@PostMapping("updateTdlItem")
+	@ResponseBody
+	public String updateTdlItem(@RequestBody ToDoListVO vo) {
+		System.out.println(vo);
+		int result = toDoListService.updateItem(vo);
+		String resultMsg;
+		if(result==1) {
+			resultMsg = "success";
+		}else {
+			resultMsg = "fail";
+		}
+		return resultMsg;
+	}
 	
 }

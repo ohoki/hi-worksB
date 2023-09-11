@@ -1445,8 +1445,6 @@
 					bookmarkBoard('${memberInfo.memberId}', "${projectInfo.projectId}", prjBoardId, 'C8');
 				});
 					
-				
-				
 		    }, error : function(reject) {
 				console.log(reject);
 			}

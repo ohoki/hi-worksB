@@ -20,7 +20,7 @@ RESULT_YN    NOT NULL VARCHAR2(5) 	결과 공개 여부 A1 YES / A2 NO
 	private int prjBoardId;
 	private int voteParticirId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
 	private Date endDate;
 	
 	private String anonyVote;

@@ -14,7 +14,7 @@
 		WHERE list_id = #{listId}
 	</select>
 	<!-- 전체조회 -->
-	<select id="selectAllTdl" resultType="ToDoListVO" parameterType="String">
+	<select id="selectAllTdl" resultType="ToDoListVO" parameterType="PrivateScheVO">
 		SELECT list_id,             
 			   list_title,   
 			   list_regdate,           
@@ -22,6 +22,9 @@
 			   apply_date 
 		FROM to_do_list
 		WHERE member_id = #{memberId}
+		<if test="searchKeyword != null and searchKeyword !=''">
+			AND list_title LIKE '%' || #{searchKeyword } || '%'
+		</if>
 	</select>
 	<!-- to do list 등록 -->
 	<insert id="insertTdl" parameterType="ToDoListVO">
@@ -92,10 +95,11 @@
 				, #{listId}
 				)
 	</insert>
+	<!-- item 업데이트 -->
 	<update id="updateItem" parameterType="ToDoListVO">
 		UPDATE to_do_list_item
 		<set>
-			<if test="content != null or !content.equals('')">
+			<if test="content != null and !content.equals('')">
 				content = #{content},
 			</if>
 			<if test="success != null and !success.equals('')">
@@ -104,10 +108,12 @@
 		</set>
 		WHERE item_id = #{itemId}
 	</update>
+	<!-- item 전체 삭제 -->
 	<delete id="deleteItemList">
 		DELETE FROM to_do_list_item
 		WHERE list_id = #{listId}
 	</delete>
+	<!-- item 단건 삭제 -->
 	<delete id="deleteItem">
 		DELETE FROM to_do_list_item
 		WHERE item_id = #{itemId}
