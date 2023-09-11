@@ -66,11 +66,11 @@
 	
 	th {
 		height: 40px;
-		background-color: var(--color-beigie);
+		background-color: var(--color-dark-beigie);
 	}
 	
 	 tr:hover {
-		background-color: var(--color-beigie);
+		background-color: var(--color-dark-beigie);
 	}
 	
 	td {
