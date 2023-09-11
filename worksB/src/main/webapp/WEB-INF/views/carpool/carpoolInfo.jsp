@@ -328,14 +328,10 @@ th, tfoot td {
 								<button class="carBtn" onclick="cancel('${carpoolInfo.boardId}','${memberId}')">취소하기</button>
 							</div>
 							<div>
-								<div id="participants" class="participants">
-								<c:forEach items="${ participantList}" var="list">
-									<div class="employee">
-										<img src="${pageContext.request.contextPath}/images/${list.realProfilePath }" alt="기본 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
-										<span class="m-info" data-id="${list.memberId }">${list.memberName }</span>
-										<input type="hidden" value="${list.memberId }">
-									</div>
-								</c:forEach>
+								<div id="participants">
+									<c:forEach items="${ participantList}" var="list">
+										<p class="m-info" data-id="${list.memberId }">${list.memberName }</p>
+									</c:forEach>
 								</div>
 							</div>
 						</td>
@@ -726,7 +722,26 @@ th, tfoot td {
 			method:'GET'
 		})
 		.done(data=>{
-			let pTag=$('<p>').text(data.memberName);
+			/* let participantDiv = $('<div>').addClass('participant');
+			let pTag=$('<span>').text(data.memberName);
+			pTag.addClass('m-info');
+			pTag.attr('data-id', data.memberId);
+			
+			let img = $('<img>').addClass('profile');
+		    img.attr('alt', '프로필 사진');
+			
+            if(data.realProfilePath != null) {
+				img.attr('src', '${pageContext.request.contextPath}/images/' + data.realProfilePath);
+			}else {
+				img.attr('src', '${pageContext.request.contextPath }/resources/img/user.png');
+			}
+            
+            participantDiv.append(img);
+            particip antDiv.append(pTag);
+            
+            $('#participants').append(participantDiv); */
+            
+            let pTag=$('<p>').text(data.memberName);
 			pTag.addClass('m-info');
 			pTag.attr('data-id', data.memberId);
 			$('#participants').append(pTag)

@@ -227,7 +227,8 @@ public class ProjectController {
     }
 	
 	// 프로젝트 참여자 조회
-	@GetMapping("particirList")
+
+	@GetMapping("/particirList")
 	@ResponseBody
 	public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
 		return projectService.getParticirList(projectId);

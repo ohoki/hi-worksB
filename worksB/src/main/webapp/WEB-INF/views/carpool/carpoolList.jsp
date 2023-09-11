@@ -126,6 +126,22 @@ td {
 	width: 6%
 }
 
+.table__title {
+  font-weight: var(--weight-bold);
+  color: var(--color-dark-red);
+}
+
+.td-title{
+	text-align: left;
+	padding: 5px;
+}
+
+.location{
+	text-align: center;
+	color: var(--color-dark-grey);
+}
+
+
 </style>
 <body>
 	<div class="carpool-box">
@@ -152,8 +168,8 @@ td {
 					<c:forEach items="${carpoolList}" var="carpool">
 						<tr onclick="location.href='${pageContext.request.contextPath }/member/carpoolInfo?boardId=${carpool.boardId}'">
 							<td>${carpool.boardId }</td>
-							<td>
-								<p class="table__title">
+							<td class="td-title">
+								<span class="table__title">
 								<c:choose>
 									<c:when test="${carpool.category eq 'B1' }">
 										[태워드립니다] 
@@ -161,9 +177,9 @@ td {
 									<c:otherwise>
 										[태워주세요] 
 									</c:otherwise>
-								</c:choose>
-							${carpool.boardTitle }</p>
-								<P class="table__title">${carpool.departure } &#10142; ${carpool.arrival }</p>
+								</c:choose></span>
+							<span>${carpool.boardTitle }</span>
+								<P class="table__title location">${carpool.departure } &#10142; ${carpool.arrival }</p>
 							</td>
 							<td>${carpool.memberName} </td>
 							<td><fmt:formatDate value="${carpool.boardRegdate }"
