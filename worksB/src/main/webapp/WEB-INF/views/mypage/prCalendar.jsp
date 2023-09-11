@@ -622,10 +622,22 @@
 	.tdlviewtitle .tdlListTitle {
 		color: var(--color-dark-grey);
 	}
+	.tdlviewtitle span[name="regDate"]{
+		margin-left :20px; 
+		color: var(--color-dark-grey);
+		font-weight: normal;
+		font-size: 15px;
+	}
+	#tdlFormView .applyDate{
+		color: var(--color-dark-red);
+	}
 	#tdlView .tdl_content{
 		color: var(--color-dark-grey);
 	    font-weight: bolder;
 	    font-size: 15px;
+	}
+	#tdlView .tdl_content p{
+		margin-bottom: 5px;
 	}
 	.progress-bar{
 		height: 30px;
@@ -647,8 +659,46 @@
 	    font-weight: bolder;
 		font-size: 15px
 	}
-	
-	
+	#tdlModal .btn-primary {
+	    color: #000000c2;
+	    background-color: #42ff45d6;
+	    border-color: #0dfd71;
+        font-family: 'Noto Sans KR', sans-serif;
+	    font-size: 15px;
+	    font-weight: bolder;
+	}
+	#tdlModal .btn-primary:hover, .btn-primary:active{
+	    color: #fff;
+	    background-color: #26fb29;
+	    border-color: #0dfd71;
+	}
+	#tdlModal .btn-secondary {
+	    color: #fff;
+	    background-color: #b5bdc3;
+	    border-color: #6c757d;
+        font-family: 'Noto Sans KR', sans-serif;
+	    font-size: 15px;
+	    font-weight: bolder;
+	}
+	#tdlModal .btn-secondary:hover, .btn-secondary:active{
+	    color: #fff;
+	    background-color: #919191;
+	    border-color: #6c757d;
+	}
+	#tdlBody input[name="applyDate"]{
+		background-color: #4d4d4d21;
+	    width: 100px;
+	}
+	#tdlFormInsert input[name="listTitle"]{
+	    height: 30px;
+	    width: 300px;
+	}
+
+	#tdlBody .tdlList input[type="text"]{
+		margin-left : 5px;
+		width: 300px;
+	    background-color: #9b9a9a17;
+	}
 	
 	
 	/* 참여자 */	
@@ -810,13 +860,18 @@
 		      <div class="modal-body">
 			      	<form id="tdlFormInsert">
 				      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요"><hr>
-				      	<label for="memberId">작성자 : </label><input name="memberId" type="text" value="${memberInfo.memberName }" readonly><br>
+				      	<div>
+				      		<span>작성자 : ${memberInfo.memberName }</span>
+				      	</div>
+				      	<input name="memberId" type="text" value="${memberInfo.memberId }" hidden="ture">
 				      	<label for="applyDate">To Do List 해당일자 : </label>
 				      	<input name="applyDate" type="text" id="datetimepicker5"  autocomplete="off">
 			      	</form>
-			      	<div class="tdlList">
+			      	<div>
+				      	<div class="tdlList">
+				      	</div>
+				      	<button type="button" class="btn btn-primary addTdlLine">To Do List 추가</button>
 			      	</div>
-			      	<button type="button" class="btn btn-primary addTdlLine">To Do List 추가</button>
 		      </div>
 		      <div class="modal-footer">
 			      <button type="submit" form="tdlFormInsert" class="btn btn-primary" id="tdlInsertBtn">TDL 저장</button>
@@ -833,6 +888,7 @@
 			      		<span>[제목] </span>
 				      	<span name="listTitle" class="tdlListTitle" ></span>
 				      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요">
+				      	<span name="regDate"></span>
 			      	</div>
 			      	<hr>
 			      	<div>
@@ -1465,7 +1521,9 @@
 	
 	//tdl line 추가
 	$(document).on('click', '.addTdlLine', function(){
+		console.log("yes")
 		if($(this).parent().parent().parent().attr("class")==="div_block"){
+			console.log()
 			let divTag = $('<div></div>')
 			let chkBoxTag = $('<input>').attr("type", "checkbox").attr("name", "success").attr("value","A1");
 			let inputTag = $('<input>').attr("type", "text").attr("name", "content").attr("placeholder","List를 입력하세요");
@@ -1647,18 +1705,20 @@
 	    			data:data,
 	    			dataType:"JSON",
 	    			success:function(result){
+	    				console.log(result)
 	    				tdlModal.show();
 	    				//조회모달 띄우기
 	    				$('#tdlBody').attr("class","div_hidden");
 	    				$('#tdlView').attr("class","div_block");
 	    				/* //inputTag 읽기전용으로/제목넣기, 해당날짜넣기,id값넣기
 	    				$('#tdlFormView input').prop("readonly",true); */
-	    				
+	    				//제목
 	    				$('#tdlFormView span[name="listTitle"]').empty();
 	    				$('#tdlFormView .tdlviewtitle span').prop('hidden',false)
 	    				$('#tdlFormView span[name="listTitle"]').text(result.todoList[0].listTitle);
 	    				$('#tdlFormView input[name="listTitle"]').val(result.todoList[0].listTitle).prop('hidden', true);
-	    				
+	    				//작성일자
+	    				$('#tdlFormView span[name="regDate"]').text(result.todoList[0].listRegdate);
 	    				//날짜 조회
 	    				let applyDate = result.todoList[0].applyDate.substr(0,10);
 	    				$('#tdlFormView .applyDate').text(applyDate).prop('hidden',false)
@@ -1668,6 +1728,7 @@
     					//ITEM항목 생성
 	    				for(let i = 0; i<result.item.length;i++){
 							let divTag = $('<div></div>')
+							let labelTag = $('<label></label>').attr("for","input-"+result.item[i].itemId)
 							let chkBoxTag = $('<input>').attr("type", "checkbox").attr("id", "input-"+result.item[i].itemId);
 							if(result.item[i].success==="A1"){
 								chkBoxTag.prop("checked",true);
@@ -1675,7 +1736,8 @@
 							let inputTag = $('<input>').attr("type", "text").attr("name", "content");
 							let delBtn = $('<img>').attr("class","tdlLineDeleteBtn").attr("src","${pageContext.request.contextPath }/resources/icon/minusCircleBtn.svg").attr("alt","minus SVG").attr("width","20").attr("height","20");
 							divTag.append(chkBoxTag)
-							divTag.append(inputTag)
+							labelTag.append(inputTag)
+							divTag.append(labelTag)
 							divTag.append(delBtn)
 							divTag.attr("id","Items-"+result.item[i].itemId)
 							$('.tdlList-view').append(divTag);
@@ -1768,7 +1830,8 @@
 				        	taskInfo.find('span[data-start]').text(highTask.startDate);
 							taskInfo.find('span[data-end]').text(highTask.endDate);
 				        }else {
-				        	taskInfo.find('span[data-start]').parent().remove();
+				        	taskInfo.find('span[data-start]').text("상위업무 시작일과 동일");
+							taskInfo.find('span[data-end]').text(highTask.endDate);
 				        }
 						//우선순위
 						 if(highTask.priorityName != null) {
@@ -1993,7 +2056,7 @@
 			tdlModal.show()
 			$('#tdlBody').attr("class","div_block");
 			$('#tdlView').attr("class","div_hidden");
-			$('#tdlFormInsert input').eq(2).prop("required",true);
+			$('#tdlFormInsert input[name="listTitle"]').prop("required",true);
 			$('#datetimepicker5').val(nowTime.substr(0,10));
 		};
 		//tdlformInsert 
@@ -2009,7 +2072,6 @@
 				$('#tdlFormInsert input[name="listTitle"]').focus();
 				return false;
 			}
-			$('#tdlFormInsert input[name="memberId"]').val(memberId);
 			let tdlFormInsert = $('#tdlFormInsert')
 			let tdlObj = serializeObject(tdlFormInsert);
 

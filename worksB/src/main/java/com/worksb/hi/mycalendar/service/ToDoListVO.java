@@ -18,7 +18,9 @@ public class ToDoListVO {
 	//LIST 항목
 	private int listId;
 	private String listTitle;
-	private String listRegdate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+	private Date listRegdate;
 	private String memberId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
