@@ -1114,7 +1114,7 @@
 			let prjBoardId = taskInfo.data('id');
 
 			$.ajax({
-				url: '${pageContext.request.contextPath}/member/getTaskInfo',
+				url: '${pageContext.request.contextPath}/getTaskInfo',
 				type: 'GET',
 				data: { 'prjBoardId': prjBoardId },
 				success: function(taskData) {
@@ -1236,7 +1236,7 @@
 	//업무 리스트 전체 출력
 	function getTaskListInfo() {
 		$.ajax({
-			url:'${pageContext.request.contextPath}/member/getHightaskList',
+			url:'${pageContext.request.contextPath}/getHightaskList',
 			type : 'GET',
 			data : {'projectId' : '${projectInfo.projectId}'},
 			success : function(taskList) {
@@ -1302,7 +1302,7 @@
 		let prjBoardId = tr.data('id');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/getTaskInfo',
+			url : '${pageContext.request.contextPath}/getTaskInfo',
 			type : 'GET',
 			data : {'prjBoardId' : prjBoardId},
 			success : function(taskData) {
@@ -1456,7 +1456,7 @@
 	// 댓글 리스트
 	function getCommentList(boardId, boardType){
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/projectCmtList',
+			url : '${pageContext.request.contextPath}/projectCmtList',
 			type : 'GET',
 			data : {'boardId' : boardId, 'boardType': boardType},
 			success : function(comments){
@@ -1525,7 +1525,7 @@
 		let updateTaskBox = $('#boardUpdateModal');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/getTaskInfo',
+			url : '${pageContext.request.contextPath}/getTaskInfo',
 			type : 'GET',
 			data : {'prjBoardId' : prjBoardId},
 			success : function(taskData) {
@@ -1567,7 +1567,7 @@
 				// 셀렉트 박스 생성		            	
     			let selectBox = $('<select class="add-taskManager-select" onchage="addManager(this)")><option value="" selected disabled>담당자 추가</option></select>');
     			$.ajax({
-    		    	url : '${pageContext.request.contextPath}/member/particirList',
+    		    	url : '${pageContext.request.contextPath}/particirList',
     		        type: 'GET',
     		        data: {'projectId': "${projectInfo.projectId}"},
     		        success: function(particir){
@@ -1631,7 +1631,7 @@
 		
 		console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 		$.ajax({
-			url:'${pageContext.request.contextPath}/member/updateTask',
+			url:'${pageContext.request.contextPath}/updateTask',
 			type:'POST',
 			data:JSON.stringify({boardVO, taskVO, prjManager}),
 			contentType:'application/json',
@@ -1658,7 +1658,7 @@
 		$('.modal-backdrop').css('display', 'block');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/getTaskInfo',
+			url : '${pageContext.request.contextPath}/getTaskInfo',
 			type : 'GET',
 			data : {'prjBoardId' : prjBoardId},
 			success : function(taskData) {
@@ -1709,7 +1709,7 @@
 		let highTaskId = taskModal.find('input[name="highTaskId"]').val();
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/getTaskInfo',
+			url : '${pageContext.request.contextPath}/getTaskInfo',
 			type : 'GET',
 			data : {'prjBoardId' : boardId},
 			success : function(taskData) {
@@ -1790,7 +1790,7 @@
 		
 		// 수정
 		$.ajax({
-			url:'${pageContext.request.contextPath}/member/updateTask',
+			url:'${pageContext.request.contextPath}/updateTask',
 			type:'POST',
 			data:JSON.stringify({boardVO, taskVO, prjManager}),
 			contentType:'application/json',
@@ -1814,7 +1814,7 @@
 		let check = confirm("삭제하시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/member/deleteTask',
+				url: '${pageContext.request.contextPath}/deleteTask',
 				type: 'POST',
 				data: {'prjBoardId' : prjBoardId},
 				success: function(response){
@@ -1839,7 +1839,7 @@
 		
 		if(confirm('선택하신 업무를 삭제하시겠습니까?')){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/member/deleteTask',
+				url: '${pageContext.request.contextPath}/deleteTask',
 				type: 'POST',
 				data: {'prjBoardId' : prjBoardId},
 				success: function(response){
@@ -1969,7 +1969,7 @@
 	// 좋아요 등록/해제
 	function likeBoard(memberId, boardId, boardType){
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/likeBoard',
+			url : '${pageContext.request.contextPath}/likeBoard',
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId, 'boardType': boardType},
 			success : function(like){
@@ -1996,7 +1996,7 @@
 	// 좋아요 정보
 	function getPrjLike(memberId, boardId){
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/getPrjLike',
+			url : '${pageContext.request.contextPath}/getPrjLike',
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId},
 			success : function(likeInfo){
@@ -2022,7 +2022,7 @@
 	// 북마크 정보
 	function getBookmarkInfo(memberId, boardId){
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/getBookmarkInfo',
+			url : '${pageContext.request.contextPath}/getBookmarkInfo',
 			type : 'GET',
 			data : {'memberId': memberId, 'prjBoardId' : boardId},
 			success : function(bookmark){
@@ -2047,7 +2047,7 @@
 	// 북마크 등록/해제
 	function bookmarkBoard(memberId, projectId, boardId, boardType){
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/bookmarkBoard',
+			url : '${pageContext.request.contextPath}/bookmarkBoard',
 			type : 'GET',
 			data : {'memberId': memberId, 'projectId': projectId, 'prjBoardId' : boardId, 'boardType': boardType},
 			success : function(bookmark){
@@ -2082,13 +2082,13 @@
 		
 		console.log(prjBoardId);
 		$.ajax({
-			url: '${pageContext.request.contextPath}/member/updateTaskInfo',
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
 			type:'POST',
 			data: {'prjBoardId' : prjBoardId, 'state' : state},
 			success : function(result) {
 				//업무
 				$.ajax({
-					url : '${pageContext.request.contextPath}/member/getTaskInfo',
+					url : '${pageContext.request.contextPath}/getTaskInfo',
 					type : 'GET',
 					data : {'prjBoardId' : prjBoardId},
 					success : function(taskData) {
@@ -2119,7 +2119,7 @@
 		let processivity = boardContainer.find('input[name=processivity]').val();		
 		
 		$.ajax({
-			url: '${pageContext.request.contextPath}/member/updateTaskInfo',
+			url: '${pageContext.request.contextPath}/updateTaskInfo',
 			type:'POST',
 			data: {'prjBoardId' : prjBoardId, 'processivity' : processivity},
 			success : function(result) {
@@ -2142,7 +2142,7 @@
 		$('.taskManager-modal-content').css('top', y + 'px');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/getManager',
+			url : '${pageContext.request.contextPath}/getManager',
 			type : 'GET',
 			data : {'prjBoardId' : prjBoardId},
 			success : function(managers) {
