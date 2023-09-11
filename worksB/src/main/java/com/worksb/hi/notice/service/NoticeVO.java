@@ -19,7 +19,6 @@ public class NoticeVO {
 	private Date boardRegdate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date boardUpddate;
-	private String coordinate;
 	private int boardHit;
 	private String boardType;
 	private int companyId;
