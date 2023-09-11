@@ -81,7 +81,7 @@ public class ProjectController {
 	
 	//이진 - 등록수정삭제
 	//프로젝트 등록 폼
-	@GetMapping("/member/projectInsert")
+	@GetMapping("/projectInsert")
 	public String projectInsertForm(HttpSession session, Model model) {
 
 		// 소속 회사의 부서정보 받아오기
@@ -94,7 +94,7 @@ public class ProjectController {
 	}
 	
 	//프로젝트 등록
-	@PostMapping("/member/projectInsert")
+	@PostMapping("/projectInsert")
 	public String projectInsertProcess(ProjectVO projectVO, HttpSession session) {
 		
 		//A1 : Yes, A2 : No
@@ -138,7 +138,7 @@ public class ProjectController {
 	}
 	
 	//프로젝트 수정폼
-	@GetMapping("/member/projectUpdate")
+	@GetMapping("/projectUpdate")
 	public String projectUpdateForm(@RequestParam int projectId, Model model, HttpSession session) {
 		//기존 프로젝트 정보 가져오기
 	    ProjectVO projectInfo = projectService.getProjectInfo(projectId);
@@ -161,7 +161,7 @@ public class ProjectController {
 	}
 	
 	//프로젝트 수정
-	@PostMapping("/member/projectUpdate")
+	@PostMapping("/projectUpdate")
 	public String projectUpdate(ProjectVO projectVO) {
 		
 		//A1 : Yes, A2 : No
@@ -227,6 +227,7 @@ public class ProjectController {
     }
 	
 	// 프로젝트 참여자 조회
+
 	@GetMapping("/particirList")
 	@ResponseBody
 	public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
@@ -394,6 +395,7 @@ public class ProjectController {
 		//관리자여부 파악
 		vo.setMemberId(memberId);
 		String manager=projectService.managerOrNot(vo);
+		m.addAttribute("managerOrNot",manager);
 	
 					//파일공개권한이 전체인 경우
 		if(access.equals("J1")) {
@@ -503,7 +505,7 @@ public class ProjectController {
 		//관리자여부 파악
 		vo.setMemberId(memberId);
 		String manager=projectService.managerOrNot(vo);
-		m.addAttribute("manager",manager);
+		m.addAttribute("managerOrNot",manager);
 	
 					//파일공개권한이 전체인 경우
 		if(vo.getFileAccess().equals("J1")) {

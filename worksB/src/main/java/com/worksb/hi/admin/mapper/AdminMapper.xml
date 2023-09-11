@@ -97,7 +97,8 @@
                     ON(p.project_id=board.project_id)
                     
 					WHERE dept_id 
-						IN (SELECT dept_id FROM department WHERE company_id= #{companyId})) a ) 
+						IN (SELECT dept_id FROM department WHERE company_id= #{companyId})
+					ORDER BY p.project_id) a ) 
 			WHERE rn BETWEEN #{pagingvo.start} AND #{pagingvo.end}
 	</select>
 	
@@ -204,8 +205,8 @@
 			   find_subcode(m.emp_status) AS emp_status, 
 			   find_subcode(m.con_status) AS con_status, 
 			   c.company_id, 
-			   NVL(d.dept_name, ' ') as dept_name,
-			   NVL(j.job_name, ' ') as job_name,
+			   NVL(d.dept_name, ' - ') as dept_name,
+			   NVL(j.job_name, ' - ') as job_name,
 			   j.job_name
 		  from member m join company c
                         on(m.company_id = c.company_id)

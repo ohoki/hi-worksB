@@ -89,7 +89,7 @@
 				<div class="list">
 					<div class="project-name">
 						<img class="icon colored-star" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/fullStar.svg" data-id="${list.projectId }"> 
-					<span onclick="location.href='${pageContext.request.contextPath }/member/projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
+					<span onclick="location.href='${pageContext.request.contextPath }/projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
 					<c:if test="${list.projectAccess eq 'YES' }">
 						<img class="icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg" style="margin-left: 20px;">
 					</c:if>
@@ -115,7 +115,7 @@
 				<div class="list">
 					<div class="project-name">
 						<img class="icon empty-star" alt="즐겨찾기 별해제" src="${pageContext.request.contextPath }/resources/icon/emptyStar.svg" data-id="${list.projectId }" data-end="NO"> 
-						<span onclick="location.href='${pageContext.request.contextPath }/member/projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
+						<span onclick="location.href='${pageContext.request.contextPath }/projectFeed?projectId=${list.projectId}'">${list.projectName}</span>
 						<c:if test="${list.projectAccess eq 'YES' }">
 							<img class="icon" alt="전체공개이미지" title="전체공개" src="${pageContext.request.contextPath }/resources/icon/globe-solid.svg" style="margin-left: 20px;">
 						</c:if>

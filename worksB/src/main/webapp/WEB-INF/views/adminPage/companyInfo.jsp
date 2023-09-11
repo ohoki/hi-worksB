@@ -158,24 +158,51 @@
 			formData.append("companyName", companyName);
 			formData.append("companyAddr", companyAddr);
 			formData.append("companyUrl", companyUrl);
-			formData.append("logo", logo);
+			if(logo != null) {
+				formData.append("logo", logo);	
+			}
+			let urlCheck = true;
 			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/admin/updateCompany',
-				type : 'POST',
-				processData : false,
-				contentType : false,
-				data : formData,
-				success : function(message) {
-					alert(message);
-					location.reload();
-				},
-				error : function(reject) {
-					console.log(reject);
-				}
-			})
-    });
-
+			//url이 다르다면 url 중복 체크
+			if(companyUrl != '${companyInfo.companyUrl}') {
+				$.ajax({
+					url: '${pageContext.request.contextPath}/searchCompany',
+					type: 'POST',
+					data: {'companyUrl' : $('#companyUrl').val()},
+					async: false,
+					success : function(message) {
+						if(message == '사용가능') {
+							urlCheck = true;
+						} else {
+							urlCheck = false;
+							alert('이미 사용중인 url입니다. 다시 입력해주세요.');
+							$('#companyUrl').val('');
+							$('#companyUrl').focus();
+						}
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				});
+			}
+			
+			if(urlCheck) {
+				$.ajax({
+					url : '${pageContext.request.contextPath}/admin/updateCompany',
+					type : 'POST',
+					processData : false,
+					contentType : false,
+					data : formData,
+					success : function(message) {
+						alert(message);
+						location.reload();
+					},
+					error : function(reject) {
+						console.log(reject);
+					}
+				})	
+			}
+	    });
 	</script>
 </body>
 </html>
