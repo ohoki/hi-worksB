@@ -155,6 +155,46 @@ th, tfoot td {
 .type-content{
 	text-align: center;
 }
+
+	/* modal */
+#modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+}
+.map_wrap {
+  background-color: #fefefe;
+  margin: 15% auto;
+
+  border: 1px solid #888;
+  width: 80%;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+	/* 맵 */
+	.map_wrap {position:relative;width:900px;height:700px;}
+    .title {font-weight:bold;display:block;}
+    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
+    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+
 </style>
 </head>
 <body>
@@ -165,7 +205,8 @@ th, tfoot td {
 	<!-- 사진 업로드를 위한 ckfinder -->
 	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<!-- ckeditor 끝 -->
-
+	<!-- 카카오맵 -->
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d2a237b360646754fd5f20a66df56e27&libraries=services"></script>
 	<div class="carpool-insert-box">
 		<div class="insert">
 			<h2>
@@ -235,7 +276,18 @@ th, tfoot td {
 					<button type="submit">수정</button>
 				</div>
 			</form>
-	</div>
+		</div>
+		<!-- 지도  -->
+		<div id="modal">
+			<div class="map_wrap">
+	    		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+	   			<div class="hAddr">
+	       			<span class="title">현재 위치</span>
+	       			<span id="centerAddr"></span>
+	       			<button id="close-modal">닫기</button>
+	   			</div>
+			</div>
+		</div>
 	<script>
 	
 		function check(){
@@ -332,6 +384,153 @@ th, tfoot td {
 	        ]
 	    });	
 		
+		
+		/* 카카오 지도 */
+		/* 내 위치 */
+		 function askForLocation () {
+		    navigator.geolocation.getCurrentPosition(accessToGeo)
+		}
+		askForLocation();
+		
+		function accessToGeo (position) {
+			
+		       let latitude = position.coords.latitude;
+		    
+		    	let longitude = position.coords.longitude;
+		    
+		    	
+		   	console.log(latitude);
+		   	console.log(longitude);
+		    // 맵의 좌표이동
+		    // 이동할 위도 경도 위치를 생성합니다 
+		    var moveLatLon = new kakao.maps.LatLng(latitude, longitude);
+		    
+		    // 지도 중심을 이동 시킵니다
+		    map.setCenter(moveLatLon);
+		} 
+		
+		
+		
+		 <!-- 지도 -->
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	    mapOption = {
+	        center: new kakao.maps.LatLng(35.8700317, 128.6005225), // 지도의 중심좌표
+	        level: 1 // 지도의 확대 레벨
+	    };  
+
+		var departureInput = document.getElementById("departureInput"); // departureInput 필드를 가져옴
+		var arrivalInput = document.getElementById("arrivalInput"); // arrivalInput 필드를 가져옴
+		
+		// 지도를 생성합니다    
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+		
+		// 주소-좌표 변환 객체를 생성합니다
+		var geocoder = new kakao.maps.services.Geocoder();
+		
+		var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
+		    infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+		
+		// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+		searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+		
+		// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+		kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+		    searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+		        if (status === kakao.maps.services.Status.OK) {
+		            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+		            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+		            
+		            
+					console.log(result[0].address.address_name);
+					
+			
+						// 모달 빠져나오기
+			  		modal.style.display = "none";
+			  		document.body.style.overflow = "auto"; // 스크롤바 보이기
+			  		
+			  			// 값 넣기
+			  			console.log(departureInput.value);
+			  		
+			  			if(departureInput.value == null || departureInput.value.trim() === "" ){
+			  				departureInput.value = result[0].address.address_name;
+			  				console.log(departureInput.value);
+			  			} else if(departureInput.value != null){
+			  				arrivalInput.value = result[0].address.address_name;
+			  			}
+			  				
+		            	// 마커를 클릭한 위치에 표시합니다 
+		            	marker.setPosition(mouseEvent.latLng);
+		            	marker.setMap(map);
+		
+			            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+			            infowindow.setContent(content);
+			            infowindow.open(map, marker);
+		            
+		
+		        }   
+		    });
+		});
+
+
+		// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+		kakao.maps.event.addListener(map, 'idle', function() {
+		    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+		});
+		
+		function searchAddrFromCoords(coords, callback) {
+		    // 좌표로 행정동 주소 정보를 요청합니다
+		    geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);         
+		}
+		
+		function searchDetailAddrFromCoords(coords, callback) {
+		    // 좌표로 법정동 상세 주소 정보를 요청합니다
+		    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+		}
+		
+		// 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+		function displayCenterInfo(result, status) {
+		    if (status === kakao.maps.services.Status.OK) {
+		        var infoDiv = document.getElementById('centerAddr');
+		
+		        for(var i = 0; i < result.length; i++) {
+		            // 행정동의 region_type 값은 'H' 이므로
+		            if (result[i].region_type === 'H') {
+		                infoDiv.innerHTML = result[i].address_name;
+		                break;
+		            }
+		        }
+		    }    
+		}
+		
+
+		let modal = document.getElementById("modal");
+		let openModalBtn = document.getElementById("departureButton");
+		let closeModalBtn = document.getElementById("close-modal");
+		// 모달창 열기
+		openModalBtn.addEventListener("click", () => {
+		  modal.style.display = "block";
+		  document.body.style.overflow = "hidden"; // 스크롤바 제거
+		});
+		// 모달창 닫기
+		closeModalBtn.addEventListener("click", () => {
+		  modal.style.display = "none";
+		  document.body.style.overflow = "auto"; // 스크롤바 보이기
+		});
+		
+		
+		const openModalBtnn = document.getElementById("arrivalButton");
+		
+		// 모달창 열기
+		openModalBtnn.addEventListener("click", () => {
+		  modal.style.display = "block";
+		  document.body.style.overflow = "hidden"; // 스크롤바 제거
+		});
+		
+		// 모달창 닫기
+		closeModalBtn.addEventListener("click", () => {
+		  modal.style.display = "none";
+		  document.body.style.overflow = "auto"; // 스크롤바 보이기
+		});
 		
 	</script>
 </body>
