@@ -63,31 +63,33 @@ public class AdminController {
 	
 	@PostMapping(value= "/updateCompany", produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String updateCompany(CompanyVO companyVO, @RequestPart MultipartFile logo, HttpSession session, Model model) {
+	public String updateCompany(CompanyVO companyVO, @RequestPart(required = false) MultipartFile logo, HttpSession session, Model model) {
 		
-		String originalName = logo.getOriginalFilename();	
-		System.out.println(originalName+"originalName");
-		String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-		System.out.println(fileName+"fileName");
-		String folderPath = makeFolder();
-		System.out.println(folderPath+"folderPath");
-		String uuid = UUID.randomUUID().toString();
-		System.out.println(uuid+"uuid");
-		String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
-		System.out.println(uploadFileName+"uploadFileName");
-		String saveName = uploadPath + File.separator + uploadFileName;
-		System.out.println(saveName+"saveName");
-		Path savePath = Paths.get(saveName);
-		System.out.println(savePath+"savePath");
-		
-		try {
-			logo.transferTo(savePath);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(logo != null) {
+			String originalName = logo.getOriginalFilename();	
+			System.out.println(originalName+"originalName");
+			String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+			System.out.println(fileName+"fileName");
+			String folderPath = makeFolder();
+			System.out.println(folderPath+"folderPath");
+			String uuid = UUID.randomUUID().toString();
+			System.out.println(uuid+"uuid");
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			System.out.println(uploadFileName+"uploadFileName");
+			String saveName = uploadPath + File.separator + uploadFileName;
+			System.out.println(saveName+"saveName");
+			Path savePath = Paths.get(saveName);
+			System.out.println(savePath+"savePath");
+			
+			try {
+				logo.transferTo(savePath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			companyVO.setLogoPath(fileName);
+			companyVO.setRealLogoPath(setImagePath(uploadFileName));
 		}
-		
-		companyVO.setLogoPath(fileName);
-		companyVO.setRealLogoPath(setImagePath(uploadFileName));
 		
 		adminService.updateCompany(companyVO);
 		
