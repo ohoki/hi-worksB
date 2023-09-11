@@ -50,7 +50,6 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 	font-size: var(--font-micro);
-	min-height: 500px;
 }
 
 td, th {
@@ -108,6 +107,28 @@ td {
 	transition: all 0.5s;
 }
 
+.table__ftr th:nth-child(1) {
+	width: 6%
+}
+
+
+
+.table__ftr th:nth-child(3) {
+	width: 12%
+}
+
+.table__ftr th:nth-child(4) {
+	width: 12%
+}
+
+.table__ftr th:nth-child(5) {
+	width: 6%
+}
+
+.table__ftr th:nth-child(6) {
+	width: 6%
+}
+
 </style>
 <body>
 	<div class="notice-box">
@@ -116,36 +137,39 @@ td {
 				<img class="notice-icon" src="${pageContext.request.contextPath }/resources/icon/clipboard-regular.svg" alt="게시글 아이콘">
 			공지사항
 			</h2>
-			<button type="button" class="insert__button"
-				onclick="location.href='noticeInsert'">공지 작성</button>
+			<c:if test="${memberInfo.memberGrade eq 'H1' }">
+				<button type="button" class="insert__button"
+				onclick="location.href='${pageContext.request.contextPath}/admin/noticeInsert'">공지 작성</button>
+			</c:if>
 		</div>
-	
-		<table class="table">
-			<thead>
-				<tr class="table__ftr">
-					<th>번호</th>
-					<th>제목</th>
-					<th>글쓴이</th>
-					<th>작성일</th>
-					<th>좋아요</th>
-					<th>조회</th>
-				</tr>
-			<tbody>
-				<c:forEach items="${noticeList}" var="notice">
-					<tr onclick="location.href='noticeInfo?noticeId=${notice.noticeId}'">
-						<td>${notice.noticeId }</td>
-						<td>${notice.noticeTitle }</td>
-						<td>${notice.memberName} </td>
-						<td><fmt:formatDate value="${notice.boardRegdate }"
-								pattern="yyyy/MM/dd" /></td>
-						<td>
-							<span id="likeCount-${notice.noticeId}">0</span>
-						</td>
-						<td>${notice.boardHit}</td>
+		<div style="min-height: 500px;">
+			<table class="table">
+				<thead>
+					<tr class="table__ftr">
+						<th>번호</th>
+						<th>제목</th>
+						<th>글쓴이</th>
+						<th>작성일</th>
+						<th>좋아요</th>
+						<th>조회</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
+				<tbody>
+					<c:forEach items="${noticeList}" var="notice">
+						<tr onclick="location.href='${pageContext.request.contextPath}/member/noticeInfo?noticeId=${notice.noticeId}'">
+							<td>${notice.noticeId }</td>
+							<td style="text-align: left; padding: 0 20px;">${notice.noticeTitle }</td>
+							<td>${notice.memberName} </td>
+							<td><fmt:formatDate value="${notice.boardRegdate }"
+									pattern="yyyy/MM/dd" /></td>
+							<td>
+								<span id="likeCount-${notice.noticeId}">0</span>
+							</td>
+							<td>${notice.boardHit}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
 	
 		<!-- search -->
 		<div class="search">

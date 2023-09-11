@@ -83,6 +83,8 @@
 	justify-content: flex-start;
 	font-size: 16px; 
 	color: var(--color-light-grey);
+	overflow: auto; 
+	max-width: 800px;
 }
 .list-count {
 	font-size: var(--font-small); 
@@ -167,14 +169,14 @@
 }
 </style>
 </head>
-<!-- A1은 YES A2는 NO -->
 <body>
     <form name="deptInfo" action="${pageContext.request.contextPath }/SelectFromCompany">
     	<input type="hidden" name="deptId" value="${projectVO.deptId }">
     	<input type="hidden" name="projectCls" value="${projectVO.projectCls }">
     </form>
+    
     <h1 class="list-title">회사 전체 프로젝트</h1>
-	<div style="padding: 5px 50px;">
+	<div style="padding: 5px 50px; overflow: hidden;">
 		<ul class="dept-list">
 			<li class="view-dept" onclick="viewPart('')">전체보기</li>
 			<c:forEach items="${deptList }" var="dept">
@@ -343,13 +345,15 @@
 					employeeDiv.classList.add('employee');
 					//이미지 태그
 					let employeeProfile = document.createElement('img');
-					employeeProfile.setAttribute('alt', '회원사진');
+					employeeProfile.setAttribute('alt', particir[i].memberName);
 					employeeProfile.classList.add('employee-img');
 					if(particir[i].realProfilePath != null) {
 						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
 					}else {
 						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
 					}
+					$(employeeProfile).attr('onerror', 'this.src="${pageContext.request.contextPath}/resources/img/user.png"');
+
 					//스팬 태그
 					let span = document.createElement('span');
 					span.innerText = particir[i].memberName;

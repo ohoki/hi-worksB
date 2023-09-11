@@ -62,7 +62,7 @@ public class BoardController {
 	}
     
     // 업무글 등록
-    @RequestMapping("taskInsert")
+    @RequestMapping("/taskInsert")
     @ResponseBody
     public int taskInsert(@RequestBody BoardRequestVO brVO) {
     	
@@ -167,14 +167,14 @@ public class BoardController {
 	
 	
 	// 일정 조회
-	@GetMapping("getScheInfo")
+	@GetMapping("/getScheInfo")
 	@ResponseBody
 	public ScheVO getScheInfo(ScheVO scheVO) {
 		return boardService.getScheInfo(scheVO); 
 	}
 	
 	// 일정 수정용 조회
-	@GetMapping("getSche")
+	@GetMapping("/getSche")
 	@ResponseBody
 	public Map<String, Object> getScheBoard(ScheVO scheVO){
 		Map<String, Object> resultMap = new HashMap<>();
@@ -190,7 +190,7 @@ public class BoardController {
         return resultMap;
 	}
 	// 투표 조회
-	@GetMapping("getVoteInfo")
+	@GetMapping("/getVoteInfo")
 	@ResponseBody
 	public Map<String, Object> getVoteInfo(VoteVO voteVO) {
 		
@@ -215,7 +215,7 @@ public class BoardController {
 	}
 	
 	// 업무 상세 조회
-	@GetMapping("getTaskInfo")
+	@GetMapping("/getTaskInfo")
 	@ResponseBody
 	public Map<String, Object> getTaskInfo(@RequestParam("prjBoardId") int prjBoardId) {
 	    Map<String, Object> resultMap = new HashMap<>();
@@ -325,7 +325,7 @@ public class BoardController {
     	return boardService.deleteTask(taskVO); 
 	}
 	//프로젝트 일정 수정
-	@PostMapping("updateFeedSche")
+	@PostMapping("/updateFeedSche")
 	public String updateFeedSche(ScheVO scheVO, BoardVO boardVO) {
 		boardService.updateBoard(boardVO);
 		boardService.updateSche(scheVO);
@@ -358,7 +358,7 @@ public class BoardController {
 		}
 	
 	// 투표 인원수
-	@GetMapping("/countVoteParticir")
+	@GetMapping("countVoteParticir")
 	@ResponseBody
 	public int countVoteParticir(VoteVO voteVO) {
 		return boardService.countVoteParticir(voteVO);
@@ -504,14 +504,14 @@ public class BoardController {
 	} 
 	
 	//게시글 별 일정 참여자 리스트 출력
-    @GetMapping("getParticir")
+    @GetMapping("/getParticir")
     @ResponseBody
     public List<ScheParticirVO> getParticir(ScheParticirVO particir) {
 		return boardService.getParticir(particir);
 	} 
     
     //게시글 별 투표 참여자 리스트 출력
-    @GetMapping("getVoteParticir")
+    @GetMapping("/getVoteParticir")
     @ResponseBody
     public List<VoteVO> getVoteParticir(VoteVO particir) {
 		return boardService.getVoteParticir(particir);

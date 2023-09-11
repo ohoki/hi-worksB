@@ -8,182 +8,270 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.list-option button{
-	width: 100px;
-	height: 40px;
-	margin-left: 20px;
-	background-color: var(--color-beigie);
-	border-radius: 5px;
-	color: var(--color-dark);
-	font-weight: var(--weight-bold);
-	border : 1px solid var(--color-dark-beigie);
-}
-.list-option button:hover {
-	background-color: var(--color-dark-red);
-	color: var(--color-white);
-	border : 1px solid var(--color-dark-red);
-	transition: all 0.5s;
-}
-.list-title {
-	font-size: var(--font-regular);
-	padding: 0 30px;
-	margin-bottom: 15px;
-	color: var(--color-dark-grey);
-	margin-top: 30px;
-}
-.list-box {
-	width: 70%;
-	margin: 0 auto;	
-	font-size: 18px; 
-	font-weight: var(--weight-semi-bold);
-}
-.list {
-	padding: 10px 40px;
-	margin: 5px 0;
-	border-radius: 5px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background-color: rgb(253, 252, 220, 0.2);
-}
-.list-option {
-	display: flex;
-	align-items: center;
-	margin: 20px 0 30px;
-	justify-content: space-between;
-}
-.list-option select {
-	width: 100px;
-	height: 30px;
-	border-radius: 4px;
-  	border: 1px solid var(--color-dark-beigie);
-  	outline: none;
-}
-.list-option select:focus{
-	outline: none;
-}
-.project-name {
-	margin-right: 50px;
-	height: 30px;
-	line-height: 30px;
-	display: flex;
-	align-items: center;
-}
-
-.project-name span {
-	cursor: pointer;
-}
-.project-info {
-	display: flex;
-	align-items: center;
-	margin-right: 80px;
-}
-.dept-list {
-	display: flex;
-	justify-content: flex-start;
-	font-size: 16px; 
-	color: var(--color-light-grey);
-}
-.list-count {
-	font-size: var(--font-small); 
-	font-weight: var(--weight-bold);
-}
-.list-count span {
-	color: var(--color-red);
-	margin-left: 5px;
-}
-.dept-list li {
-	padding: 7px 10px;
-	border-radius: 10px;
-	margin-right: 10px;
-	cursor: pointer;
-	border: 1px solid rgba(174, 213, 245, 0);
-}
-.dept-list li:hover {
-	border: 1px solid var(--color-dark-beigie);
-	background-color: var(--color-dark-beigie);
-	color: var(--color-dark-red);	
-	transition: all 0.5s;
-}
-.prj-icon {
-	margin: 0 10px;
-	display: inline-block;
-	cursor: pointer;
-}
-.list-btn {
-	width: 70px;
-	height: 34px;
-	border-radius: 17px;
-	color: white;
-	cursor: default;
-}
-.point {
-	cursor: pointer;
-}
-.green {
-	background-color: #29bf12;
-}
-.yellow {
-	background-color: var(--color-orange);
-}
-.red {
-	background-color: var(--color-red);
-}
-
-
-#prjParticir-modal{
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,0.1);
-	font-size: 12px;
-	display: none;
-	left: 0;
-	top: 0;
-}
-
-.prjParticir-modal-title{
-	font-size: 15px;
-	justify-content: space-between;
-	font-weight: var(--weight-bold);
-	padding: 5px 10px;
-}
-
-.prjParticir-modal-content{
-	position: absolute;
-	width: 15%;
-	height: 30%;
-	background-color: white;
-	font-size: 12px;
-	padding: 20px 15px;
-	z-index: 10;
-	overflow: auto;
-	overflow-x: hidden;
-	border-radius: 5px;
-}
-#change-info-modal{
-	position: absolute;
-	width: 28%;
-	height:15%;
-	background-color: rgba(0,0,0,0.01);
-	font-size: 17px;
-	font-weight:bold;
-	padding: 50px 0 30px 30px;
-	z-index: 10;
-	border-radius: 5px;
- 	transform: translate(150%, 50%); 
-	display:none;
+	button[id=managerBtn] {
+		/* display:none; */
+		background-color: var(--color-green);
+	    padding: 6px 12px;
+	    cursor: pointer;
+	    width: 60px;
+	    height: 20px;
+	    border-radius: 5px;
+	    font-weight: var(--weight-bold);
+	    color: white;
+	    line-height: 20px;
+	    font-size: 12px;
+	    margin-left: 30px;
+	}
+	button[class=change-name] {
+		/* display:none; */
+		background-color: var(--color-green);
+	    padding: 6px 12px;
+	    cursor: pointer;
+	    width: 60px;
+	    height: 20px;
+	    border-radius: 5px;
+	    font-weight: var(--weight-bold);
+	    color: white;
+	    line-height: 20px;
+	    font-size: 12px;
+/* 	    margin-left: 30px; */
+	}
+	div p{
+		text-align:center;
+	}
+	table{
+		width: 85%;
+		color : var(--color-dark-grey);
+		margin: 20px auto;
+		text-align: center;
+		font-size:20px;
+	}
+	thead{
+		background-color: #FEEDD6;
+	}
+	th, td {
+		border: 1px solid var(--color-dark-beigie);
+		text-align: center;
+		width : 140px;
+		max-height:20px;
+	}
 	
-}
-#edit-prj-name{
-	float:right;
-	padding-right:50px;
-	padding-top:20px;
-}
-
-.modal-visible {
-	display: block !important;
-}
+	th {
+		height: 40px;
+		font-weight: var(--weight-bold);
+		text-align: center;
+		background-color: rgb(249, 166, 52, 0.2);
+		color: var(--color-dark-grey);
+	}
+	
+	td[data-pjid] {
+		text-align: center;
+		width: 25%;
+	}
+	td[data-list] {
+		text-align: center;
+		width: 5%;
+	}
+	tr{
+		border: 1px solid var(--color-dark-beigie);
+	}
+	
+	.list-option button{
+		width: 100px;
+		height: 40px;
+		margin-left: 20px;
+		background-color: var(--color-beigie);
+		border-radius: 5px;
+		color: var(--color-dark);
+		font-weight: var(--weight-bold);
+		border : 1px solid var(--color-dark-beigie);
+	}
+	.list-option button:hover {
+		background-color: var(--color-dark-red);
+		color: var(--color-white);
+		border : 1px solid var(--color-dark-red);
+		transition: all 0.5s;
+	}
+	.list-title {
+		font-size: var(--font-regular);
+		padding: 0 30px;
+		margin-bottom: 15px;
+		color: var(--color-dark-grey);
+		margin-top: 30px;
+	}
+	.list-box {
+		width: 70%;
+		margin: 0 auto;	
+		font-size: 18px; 
+		font-weight: var(--weight-semi-bold);
+	}
+	.list {
+		padding: 10px 40px;
+		margin: 5px 0;
+		border-radius: 5px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background-color: rgb(253, 252, 220, 0.2);
+	}
+	.list-option {
+		display: flex;
+		align-items: center;
+		margin: 20px 0 30px;
+		justify-content: space-between;
+	}
+	.list-option select {
+		width: 100px;
+		height: 30px;
+		border-radius: 4px;
+	  	border: 1px solid var(--color-dark-beigie);
+	  	outline: none;
+	}
+	.list-option select:focus{
+		outline: none;
+	}
+	.project-name {
+		margin-right: 50px;
+		height: 30px;
+		line-height: 30px;
+		display: flex;
+		align-items: center;
+	}
+	
+	.project-name span {
+		cursor: pointer;
+	}
+	.project-info {
+		display: flex;
+		align-items: center;
+		margin-right: 80px;
+	}
+	.dept-list {
+		display: flex;
+		justify-content: flex-start;
+		font-size: 16px; 
+		color: var(--color-light-grey);
+	}
+	.list-count {
+		font-size: var(--font-small); 
+		font-weight: var(--weight-bold);
+	}
+	.list-count span {
+		color: var(--color-red);
+		margin-left: 5px;
+	}
+	.dept-list li {
+		padding: 7px 10px;
+		border-radius: 10px;
+		margin-right: 10px;
+		cursor: pointer;
+		border: 1px solid rgba(174, 213, 245, 0);
+	}
+	.dept-list li:hover {
+		border: 1px solid var(--color-dark-beigie);
+		background-color: var(--color-dark-beigie);
+		color: var(--color-dark-red);	
+		transition: all 0.5s;
+	}
+	.prj-icon {
+		margin: 0 10px;
+		display: inline-block;
+		cursor: pointer;
+	}
+	.list-btn {
+		width: 70px;
+		height: 34px;
+		border-radius: 17px;
+		color: white;
+		cursor: default;
+	}
+	.point {
+		cursor: pointer;
+	}
+	.green {
+		background-color: #29bf12;
+	}
+	.yellow {
+		background-color: var(--color-orange);
+	}
+	.red {
+		background-color: var(--color-red);
+	}
+	
+	
+	#prjParticir-modal{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.1);
+		font-size: 12px;
+		display: none;
+		left: 0;
+		top: 0;
+	}
+	
+	.prjParticir-modal-title{
+		font-size: 15px;
+		justify-content: space-between;
+		font-weight: var(--weight-bold);
+		padding: 5px 10px;
+	}
+	
+	.prjParticir-modal-content{
+		position: absolute;
+		width: 15%;
+		height: 30%;
+		background-color: white;
+		font-size: 12px;
+		padding: 20px 15px;
+		z-index: 10;
+		overflow: auto;
+		overflow-x: hidden;
+		border-radius: 5px;
+	}
+	#change-info-modal{
+		position: absolute;
+		width: 25%;
+		height:10%;
+		background-color: rgba(0,0,0,0.01);
+		font-size: 20px;
+		font-weight:bold;
+		padding: 20px 0 30px 30px;
+		z-index: 10;
+		border-radius: 5px;
+	 	transform: translate(150%, 50%); 
+		display:none;
+		border-radius:20px;
+		z-index:200;
+		
+	}
+	#change-info-modal input{
+		height:30px;
+		z-index:200;
+	}
+	#edit-prj-name{
+		float:right;
+		z-index:200;
+	}
+	#edit-prj-name button{
+		background-color: #8c8484;
+	    padding: 6px 12px;
+	    cursor: pointer;
+	    width: 60px;
+	    height: 20px;
+	    border-radius: 5px;
+	    font-weight: var(--weight-bold);
+	    color: white;
+	    line-height: 20px;
+	    font-size: 12px;
+	    margin-right: 30px;
+	    margin-top:10px;
+   		z-index:200;
+	}
+	
+	.modal-visible {
+		display: block !important;
+	}
 </style>
 </head>
 <body>
@@ -200,18 +288,18 @@
 					<td>참여자수</td>
 					<td>글 수 </td>
 					<td>정보변경</td>
-					<td>프로젝트로 이동</td>
 				</tr>
 			</thead>
 			<tbody>
 					<c:forEach items="${list }" var="list">
 						<tr>
-							<td data-pjid="${list.projectId }">${list.projectName}</td>
+							<td data-pjid="${list.projectId }">
+								<a href="${pageContext.request.contextPath}/projectFeed?projectId=${list.projectId}"  onmouseover="this.style.fontWeight='bold'" onmouseout="this.style.fontWeight=''">${list.projectName}</a>
+							</td>
 							<td class="manager" data-pjid="${list.projectId }">${list.memberId }</td>
-							<td class="participants" data-pjid="${list.projectId }"><a href="#" onmouseover="this.style.fontWeight='bold'" onmouseout="this.style.fontWeight=''">${list.mnumber }</a></td>
+							<td class="participants" data-pjid="${list.projectId }"><a href="#" onmouseover="this.style.fontWeight='bold'" onmouseout="this.style.fontWeight=''">${list.mnumber } 명</a></td>
 							<td>${list.boardcount }</td>
 							<td><button data-pjid="${list.projectId }" data-pjname="${list.projectName }" data-manager="${list.fileAccess }" data-deptid="${list.deptId }"class="change-name">변경하기</button></td>
-							<td><button onclick="location.href='${pageContext.request.contextPath }/projectFeed?projectId='+'${list.projectId }'">GO</button></td>
 						</tr>
 					</c:forEach>
 			</tbody>
@@ -255,7 +343,7 @@
 	<div id="change-info-modal" >
 		<div>
 			<span>프로젝트이름</span>
-			<span><input value="" placeholder="수정할 이름" id="edited-name"></span>
+			<span><input value="" placeholder="수정할 이름" id="edited-name" size="20"></span>
 		</div>
 		<div>
 			<span>파일접근권한</span>
@@ -288,11 +376,11 @@
 	
 	$('#prj-list .change-name').on("click",function(event){
 		$('#change-info-modal').css('display','block')
-// 		let x = e.clientX - 320;
-// 		let y = e.clientY;
+		let x = event.clientX - 320;
+		let y = event.clientY;
 		
-// 		$('#change-info-modal').css('left', x + 'px');
-// 		$('#change-info-modal').css('top', y + 'px');
+		$('#change-info-modal').css('left', x + 'px');
+		$('#change-info-modal').css('top', y + 'px');
 		
 		
 		
@@ -353,7 +441,7 @@
 						console.log(projectName+'projectName')
 						if($('tbody tr td').eq(i).data('pjid')==projectId){
 							$('tbody tr td').eq(i).text(projectName)
-							break;
+							//break;
 						}
 					}
 				}
@@ -415,6 +503,7 @@
 					let mBtn=document.createElement('button');
 					if(particir[i].manager=='A2'){
 						let mBtnText=document.createTextNode('관리자변경');
+						mBtn.setAttribute('id', 'managerBtn');
 						mBtn.appendChild(mBtnText);
 					}
 					//히든 인풋 태그 (멤버id값)
@@ -467,7 +556,8 @@
 		})
 		$('#prjParticir-modal').addClass('modal-visible');
 	})
-	
+		sessionStorage.removeItem('startDate'); // 시작일 데이터 삭제
+		sessionStorage.removeItem('endDate'); // 시작일 데이터 삭제
 
 </script>
 </html>

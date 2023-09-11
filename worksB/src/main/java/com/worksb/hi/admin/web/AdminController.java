@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,7 @@ import com.worksb.hi.company.service.DepartmentVO;
 import com.worksb.hi.company.service.JobVO;
 import com.worksb.hi.member.service.MemberService;
 import com.worksb.hi.member.service.MemberVO;
+import com.worksb.hi.project.service.FileDataVO;
 import com.worksb.hi.project.service.PrjParticirVO;
 import com.worksb.hi.project.service.ProjectService;
 import com.worksb.hi.project.service.ProjectVO;
@@ -58,56 +61,43 @@ public class AdminController {
 		return "admin/companyInfo";
 	}
 	
-	
-	@PostMapping("/updateCompany")
-	public String updateCompany(CompanyVO companyVO, @RequestPart MultipartFile logo, HttpSession session, Model model) {
-		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
-		String message = null;
+	@PostMapping(value= "/updateCompany", produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String updateCompany(CompanyVO companyVO, @RequestPart(required = false) MultipartFile logo, HttpSession session, Model model) {
 		
-		if(dbCompany != null) {
-			message = "이미 존재하는 회사 url 입니다. 다시 입력해 주세요.";
-			model.addAttribute("message", message);
+		if(logo != null) {
+			String originalName = logo.getOriginalFilename();	
+			System.out.println(originalName+"originalName");
+			String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+			System.out.println(fileName+"fileName");
+			String folderPath = makeFolder();
+			System.out.println(folderPath+"folderPath");
+			String uuid = UUID.randomUUID().toString();
+			System.out.println(uuid+"uuid");
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			System.out.println(uploadFileName+"uploadFileName");
+			String saveName = uploadPath + File.separator + uploadFileName;
+			System.out.println(saveName+"saveName");
+			Path savePath = Paths.get(saveName);
+			System.out.println(savePath+"savePath");
 			
-			return "/companyInfo";
-		} 
-		
-		String originalName = logo.getOriginalFilename();	
-		System.out.println(originalName+"originalName");
-		String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-		System.out.println(fileName+"fileName");
-		String folderPath = makeFolder();
-		System.out.println(folderPath+"folderPath");
-		String uuid = UUID.randomUUID().toString();
-		System.out.println(uuid+"uuid");
-		String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
-		System.out.println(uploadFileName+"uploadFileName");
-		String saveName = uploadPath + File.separator + uploadFileName;
-		System.out.println(saveName+"saveName");
-		Path savePath = Paths.get(saveName);
-		System.out.println(savePath+"savePath");
-		
-		try {
-			logo.transferTo(savePath);
-		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+				logo.transferTo(savePath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			companyVO.setLogoPath(fileName);
+			companyVO.setRealLogoPath(setImagePath(uploadFileName));
 		}
 		
-		companyVO.setLogoPath(fileName);
-		companyVO.setRealLogoPath(setImagePath(uploadFileName));
+		adminService.updateCompany(companyVO);
 		
-		companyService.insertCompany(companyVO);
+		session.setAttribute("companyInfo", companyService.getCompanyById(companyVO));
 		
-		MemberVO member = (MemberVO)session.getAttribute("memberInfo");
-		member.setCompanyId(companyVO.getCompanyId());
-		member.setCompanyAccp("A1");
-		member.setMemberGrade("H1");
-		
-		memberService.updateMember(member);
-		
-		session.setAttribute("companyId", member.getCompanyId());
-		
-		return "/companyInfo";
+		return "수정이 완료되었습니다.";
 	}
+	
 	//폴더생성
 		public String makeFolder() {
 			String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
@@ -125,7 +115,7 @@ public class AdminController {
 			return uploadFileName.replace(File.separator, "/");
 		}
 		
-
+		//다운로드리스트
 		@RequestMapping("/downloadlist")
 		public String downloaded(Model m,HttpSession session,
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
@@ -138,7 +128,7 @@ public class AdminController {
 			m.addAttribute("paging", pagingvo);
 			return "admin/downloadedfile";
 		}
-		
+		//프로젝트리스트
 		@GetMapping("/projectlist")
 		public String prjList(Model m,HttpSession session,
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
@@ -158,7 +148,7 @@ public class AdminController {
 			return "admin/projectList";
 		}
 		
-		
+		//직무수정
 		@GetMapping("/editRole")
 		public String editRole(Model m,HttpSession session) {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
@@ -166,7 +156,7 @@ public class AdminController {
 			m.addAttribute("jList",adminService.jobList(companyId));
 			return "admin/editRole";
 		}
-		
+		//부서입력
 		@PostMapping("/insertDept")
 		@ResponseBody
 		public int updateDept(HttpSession session,@RequestParam("deptName")String deptName,DepartmentVO vo) {
@@ -175,13 +165,13 @@ public class AdminController {
 			vo.setDeptName(deptName);
 			return adminService.insertDept(vo);
 		}
-		
+		//부서삭제
 		@PostMapping("/deleteDept")
 		@ResponseBody
 		public int deleteDept(HttpSession session,@RequestParam("deptId")int deptId) {
 			return adminService.deleteDept(deptId);
 		}
-		
+		//직무입력
 		@PostMapping("/insertRole")
 		@ResponseBody
 		public int updateRole(HttpSession session,@RequestParam("roleName")String roleName,JobVO vo) {
@@ -190,7 +180,7 @@ public class AdminController {
 			vo.setJobName(roleName);
 			return adminService.insertRole(vo);
 		}
-		
+		//직무삭제
 		@PostMapping("/deleteRole")
 		@ResponseBody
 		public int deleteRole(HttpSession session,@RequestParam("roleId")int jobId) {
@@ -202,22 +192,7 @@ public class AdminController {
 		public String companyInfoForm(Model model, HttpSession session) {
 			CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
 			model.addAttribute("companyInfo", company);
-			return "adminPage/companyInfo";
-		}
-		
-		// 회사 정보 수정
-		@RequestMapping("company/updateCompany")
-		@ResponseBody
-		public boolean updateCompany(CompanyVO companyVO, HttpSession session) {
-			
-			int result = adminService.updateCompany(companyVO);
-			if(result == 0) {
-				return false;
-			}
-			
-			CompanyVO updatedCompany = companyService.getCompanyById(companyVO);
-			session.setAttribute("companyInfo", updatedCompany);
-			return true;
+			return "admin/companyInfo";
 		}
 		
 		// 회사 구성원 리스트
@@ -274,7 +249,7 @@ public class AdminController {
 		public String memberAccpUpdate(MemberVO memberVO) {
 			return adminService.memberAccpUpdate(memberVO);
 		}
-		
+		//직무수정
 		@PostMapping("/updateRole")
 		@ResponseBody
 		public int updateRole(@RequestParam("roleId")int jobId,@RequestParam("roleName") String jobName) {
@@ -283,7 +258,7 @@ public class AdminController {
 			vo.setJobName(jobName);
 			return adminService.updateRole(vo);
 		}
-		
+		//부서수정
 		@PostMapping("/updateDept")
 		@ResponseBody
 		public int updateDept(@RequestParam("deptId")int deptId,@RequestParam("deptName") String deptName) {
@@ -326,6 +301,7 @@ public class AdminController {
 			}
 			return 0;
 		}
+		//프로젝트명수정
 		@PostMapping("/updatePrjName")
 		@ResponseBody
 		public int updatePrjName(@RequestBody ProjectVO vo) {
@@ -345,7 +321,7 @@ public class AdminController {
 			}
 			return 0;
 		}
-		
+		//참여자목록
 		@GetMapping("/getParticirList")
 		@ResponseBody
 		public List<PrjParticirVO> getParticirList(@RequestParam int projectId){
@@ -357,15 +333,28 @@ public class AdminController {
 		public List<PrjParticirVO> getManager(@RequestParam String memberId,@RequestParam("projectId") int projectId ){
 			return adminService.getManager(memberId,projectId);
 		}
-//		@PostMapping("/searchByDate")
-//		public String searchByDate(HttpSession session,Model m,SearchingVO vo,
-//				 @RequestParam("searchkeyword") String searchKeyword,
-//				 @RequestParam("searchBoardType") String boardType,
-//				 @RequestParam("startDate")String startDate,
-//				 @RequestParam("endDate")String endDate) {
-//			
-//			return "";
-//		}
+		//날짜로파일다운로드목록조회
+		@GetMapping("/searchByDate")
+		public String searchByDate(HttpSession session,Model m,SearchingVO vo,
+				 @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+				 @RequestParam("endDate")  @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+				 @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
+				 @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
+			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
+			int total=adminService.countDownloadByDate(companyId,startDate,endDate);
+			//갯수에 따른 페이징
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			FileDataVO fVO=new FileDataVO();
+			fVO.setStartDate(startDate);
+			fVO.setEndDate(endDate);
+			fVO.setCompanyId(companyId);
+			//출력내용
+			List<FileDataVO> list=adminService.filteredFileList(fVO,pagingVO);
+			m.addAttribute("paging",pagingVO);
+			m.addAttribute("list",list);
+			
+			return "admin/downloadedfile";
+		}
 		@PostMapping("/updateManager")
 		@ResponseBody
 		public int updateManager(@RequestBody PrjParticirVO vo) {

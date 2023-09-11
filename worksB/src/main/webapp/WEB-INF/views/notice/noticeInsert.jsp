@@ -8,112 +8,78 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-body {
-	margin: 0 auto;
-	font-size: small;
-}
-
-.body {
-	width: 800px;
-	margin: 0 auto;
-}
-
-.top {
-	margin-bottom: 80px;
-}
-
-.table {
-	width: 800px;
-}
-
-.table__title{
-	font-size: small;
-	text-align: left;
-	height: 40px;
-}
-
-.main__p {
-	font-size: larger;
-	font-weight: bolder;
-}
-
-div h2 {
-	margin-top: 51px;
-	text-align: center;
-}
-
-.content {
-	float: left;
-	width: 800px;
-	padding: 2px;
-	border-bottom: 1px solid rgb(174, 213, 245);
-	border-top: 1px solid rgb(174, 213, 245);
-	
-}
-
-.buttonss {
-	width: 800px;
-	height: 50px;
-	border-bottom: 1px solid rgb(174, 213, 245);
-}
-
-.button1 {
-	float: left;
-	margin-top: 5px;
-	color: black;
-}
-
-.buttons {
-	float: right;
-	width: 103px;
-	margin-top: 5px;
-}
-
-.buttons :first-child {
-	float: left;
-	margin-right: 3px;
-}
-
-.buttonss__button {
-	background-color: rgb(174, 213, 245);
-    border-radius: 5px;
-    color: white;
-    width: 50px;
-    height: 30px;
-    font-weight: bold;
-}
-
-.table__title :first-child {
-	display: inline-block;
-	line-height: 26px;
-	width: 40px;
-	height: 25px;
-	text-align: center;
-	background: rgb(174, 213, 245);
-	border: 1px solid rgb(174, 213, 245);
-	border-radius: 5px;
-	
-}
-
-.table__title :last-child {
-	border: 1px solid rgb(174, 213, 245);
-	border-radius: 3px;
-	width: 757px;
-	height: 25px;
-}
-
-	.ck.ck-editor {
-    	width: 817px;
-    	margin: 0 auto;
-    	board: 0;
+	.notice-insert-box {
+		width: 60%;
+		margin: 60px auto; 
+		color: var(--color-dark-grey);
+		font-size: var(--font-micro);
 	}
+	
+	.insert {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20px 20px;
+	}
+	
+	.insert h2 {
+		margin: 0;
+		font-size: var(--font-regular);
+		font-weight: var(--weight-bold);
+		color: var(--color-green);
+	}
+	
+	.notice-icon {
+		width: 20px;
+		height: 20px;
+	}
+	
+	#noticeTitle {
+		width: 95%;
+		padding: 0 20px;
+		margin-bottom: 15px;
+		border-bottom: 1px solid var(--color-dark-beigie);
+		height: 40px;
+		color: var(--color-dark-grey);
+	}
+	
+	.notice-footer {
+		text-align: right;
+		margin: 20px 0;
+	}
+	
+	.notice-footer button{
+		margin-left: 20px;
+		width: 50px;
+		height: 30px;
+		border: 1px solid var(--color-dark-red);
+		color: var(--color-dark-red);
+		border-radius: 5px;
+		transition: all 0.5s;
+	}
+	
+	.notice-footer button:hover {
+		color: var(--color-white);
+		background-color: var(--color-dark-red);
+	}
+	
+	.ck.ck-list__item .ck-button {
+	    width: 90% !important;
+	}
+	
 	.ck-editor__editable {
-		margin: 0 auto;
-	    min-height: 300px;
-	    width: 800px;
+	    min-height: 400px;
 	}
-
-
+	
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+	    transition: background-color 5000s ease-in-out 0s;
+	    -webkit-transition: background-color 9999s ease-out;
+	    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+	    -webkit-text-fill-color: var(--color-dark-grey) !important;
+	}
 </style>
 </head>
 <body>
@@ -124,38 +90,45 @@ div h2 {
 	<!-- 사진 업로드를 위한 ckfinder -->
 	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<!-- ckeditor 끝 -->
-	<div class="top">
-		<h2>공지사항 작성</h2>
-	</div>
+	<div class="notice-insert-box">
+		<div class="insert">
+			<h2>
+				<img class="notice-icon" src="${pageContext.request.contextPath }/resources/icon/clipboard-regular.svg" alt="게시글 아이콘">
+			공지사항 등록
+			</h2>
+		</div>
 		<!-- 에디터 사용 -->
-		<form action="noticeInsert" method="POST" onsubmit="return noticeCheck();">
-			<label id="noticeTitle">제목 </label>
-			<input type="text" id="noticeTitle" name="noticeTitle">
+		<form action="${pageContext.request.contextPath}/admin/noticeInsert" method="POST" onsubmit="return noticeCheck();">
+			<input type="text" id="noticeTitle" name="noticeTitle" placeholder="제목을 입력해주세요.">
 			<textarea name="noticeContent" id="editor"></textarea>
 			
 		    <!-- hidden -->
 		    <input type="hidden" name="memberId" value="${memberInfo.memberId }">
 			<input type="hidden" name="companyId" value="${memberInfo.companyId}">
-			
-			<button type="button" onclick="location.href='noticeList'">목록</button>
-		    <input type="submit" value="작성">
+			<div class="notice-footer">
+				<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/noticeList'">목록</button>
+		    	<button type="submit">등록</button>			
+			</div>
     	</form>
-	<script>
+	</div>
 	
+	<script>
 	function noticeCheck(){
 		var noticeTitle = document.getElementById("noticeTitle").value;
-		var editor = document.getElementById("editor").value;
+		var editorData = editor.getData();
+		
+		console.log(noticeTitle);
+		console.log(editorData);
 		
 	    if (noticeTitle.trim() === "") {
 	        alert("제목을 입력해주세요.");
 	        return false;
 	        }
 	    
-	    if (editor.trim() === "") {
-	        alert("제목을 입력해주세요.");
+	    if (editorData.trim() === "") {
+	        alert("내용을 입력해주세요.");
 	        return false;
 	        }
-	    
 	}
 
 	

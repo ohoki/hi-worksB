@@ -230,6 +230,11 @@ public class ProjectServiceImpl implements ProjectService {
 	public int updateFile(FileDataVO vo) {
 		return projectMapper.updateFile(vo);
 	}
+
+	@Override
+	public int deleteFile(int flieId) {
+		return projectMapper.deleteFile(flieId);
+	}
 	
 	
 

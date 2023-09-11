@@ -137,9 +137,6 @@
 								start_date
 								, end_date
 								, prj_board_id
-								<if test="alarmDate !=null">
-									, alarm_date
-								</if>
 								<if test="scheAddr !=null and !scheAddr.equals('')">
 									, sche_addr
 								</if>
@@ -152,9 +149,6 @@
 								#{startDate}
 								, #{endDate}
 								, #{prjBoardId}
-								<if test="alarmDate !=null">
-									, #{alarmDate}
-								</if>
 								<if test="scheAddr !=null and !scheAddr.equals('')">
 									, #{scheAddr}
 								</if>	
@@ -733,7 +727,7 @@
 			<if test="scheAddrDetail !=null and !scheAddrDetail.equals('')">
 				, sche_addr_detail = #{scheAddrDetail}
 			</if>
-	
+
 		</set>
 		WHERE prj_board_id = #{prjBoardId}
 	</update>

@@ -8,16 +8,77 @@
 <meta charset="UTF-8">
 <title>구성원 관리</title>
 <style>
-	/* thead에 css입히실때 65줄이랑 버튼 누르면 표 생성하는 295줄 둘다 class붙여야돼요! */
+	
+	.menuButtons{
+		margin-left: 20px;
+		margin-top: 20px;
+	}
+	
+	.adminManagementMenu {
+		margin-left: 300px;
+		display: flex;
+		margin-left: 300px;
+	}
+	
+	.adminManagementMenu li{
+		padding: 5px 10px 0 10px;
+		border-bottom: 3px solid transparent;
+		height: 30px;
+	}
+	
+	.adminManagementMenu li:hover{
+		color: var(--color-dark-red);
+		border-bottom: 3px solid var(--color-dark-red);
+		cursor: pointer;
+		transition: all 0.5s;	
+	}
+	
+	.adminManagementMenu button:hover{
+		color: var(--color-dark-red);
+		transition: all 0.5s;	
+	}
+	
+	.menuButton {
+		color: black;
+		background-color: white;
+		text-decoration: none;
+		font-size: medium;
+	}
+	
 	body {
-		font-size:medium;
+		font-size: medium;
 	}
-	table {
-		border: 1px solid;
+	
+	table{
+		width: 95%;
+		color : var(--color-dark-grey);
+		margin: 0 auto;
 		border-collapse: collapse;
+		margin-top: 10px;
 	}
-	table td, th {
-		border: 1px solid;
+	
+	th, td {
+		border: 1px solid var(--color-dark-beigie);
+		text-align: right;
+		width : 140px;
+		text-align: center;
+	}
+	
+	th {
+		height: 40px;
+		background-color: var(--color-beigie);
+	}
+	
+	 tr:hover {
+		background-color: var(--color-beigie);
+	}
+	
+	td {
+		padding: 10px;	
+	}
+	  
+	tr{
+		border: 1px solid var(--color-dark-beigie);
 	}
 	
 	/* 구성원 수정 폼 모달 */
@@ -46,6 +107,8 @@
 	  font-size: 28px;
 	  font-weight: bold;
 	  color: black;
+	  float:right;
+	  text-align: right;
 	}
 	.closeUpdateForm:hover,
 	.closeUpdateForm:focus {
@@ -54,12 +117,151 @@
 	  cursor: pointer;
 	}
 	/* 모달끝 */
+	
+	.topH1 {
+		display: block;
+	    font-size: var(--font-regular);
+	    margin-block-start: 0.67em;
+	    margin-block-end: 0.67em;
+	    margin-inline-start: 0px;
+	    margin-inline-end: 0px;
+	    font-weight: bold;
+	    margin-top: 30px;
+	    margin-left: 35px;
+	    color: var(--color-dark-grey);
+	}
+	
+	.tableH2 {
+		text-align: center;
+		color: var(--color-dark-grey);
+	}
+	
+	.cursor {
+		float: right;
+		width: 20px;
+	}
+	
+	.form__label{
+		width: 100px;
+		display:inline-block;
+		margin-top: 15px;
+		padding-left: 20px;
+	}
+	.form__input{
+		width: 200px;
+    	height: 30px;
+		border-radius: 2px;
+    	border: 3px solid var(--color-dark-beigie);
+    	padding-left: 10px;
+	}
+	
+	.form__select {
+		display:inline-block;
+		border-radius: 2px;
+    	border: 3px solid var(--color-dark-beigie);
+	}
+	
+	.form__guide {
+		display:inline-block;
+		margin-top: 15px;
+		padding-left: 20px;
+		color: red;
+		font-size: medium;
+		font-weight: bold;
+	}
+	
+	.form__guidee {
+		width: 300px;
+		margin-right: 150px;
+		font-size: small;
+	}
+	
+	.updateTop{
+		display:inline-block;
+		margin-bottom: 20px;
+		margin-right: 10px;
+		margin-top: 2px;
+		width: 300px;
+	}
+	
+	/* 셀렉트 박스 스타일 */
+	select {
+	  	padding: 8px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;
+	  	font-size: 14px;
+	  	background-color: white;
+	  	width: 50;
+	  	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+		transition: border-color 0.2s, box-shadow 0.2s;
+	}
+	
+	/* 셀렉트 박스 포커스 스타일 */
+	select:focus {
+	  	border-color: #007bff;
+	  	box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+	}
+	
+	/* 셀렉트 박스 확장 아이콘 스타일 (선택 사항) */
+	select::-ms-expand {
+	  	display: none;
+	}
+	
+	/* 레이블 스타일 */
+	label {
+	  	margin-bottom: 10px;
+	  	font-weight: bold;
+	}
+	
+	/* 선택 옵션 스타일 (선택 사항) */
+	select option {
+	 	padding: 8px;
+	}
+	
+	/* 선택 옵션 호버 스타일 (선택 사항) */
+	select option:hover {
+		background-color: var(--color-beigie);
+	}
+	
+	.updateButton {
+		width: 100px;
+	    height: 40px;
+	    margin-left: 20px;
+	    background-color: rgb(22, 66, 91, 0.8);
+    	border-radius: 5px;
+   		color: var(--color-white);
+    	font-weight: var(--weight-bold);
+	    float: right;
+	}
+	
+	.update__form {
+		width: 60px;
+	    height: 25px;
+	    background-color: rgb(22, 66, 91, 0.8);
+    	border-radius: 5px;
+   		color: var(--color-white);
+    	font-weight: var(--weight-bold);
+    	cursor: pointer;
+	}
+	.acceptButton {
+		width: 60px;
+	    height: 25px;
+	    background-color: rgb(22, 66, 91, 0.8);
+    	border-radius: 5px;
+   		color: var(--color-white);
+    	font-weight: var(--weight-bold);
+    	cursor: pointer;
+	}
 </style>
 </head>
 <body>
-	<h2>구성원 관리</h2>
-		<button type="button" id="memberManagement">구성원 관리</button>
-		<button type="button" id="welcomeCompany">회사 가입 승인</button>
+	<h1 class="topH1">구성원 관리</h1>
+	<div class="menuButtons">
+		<ul class="adminManagementMenu">
+			<li><button class="menuButton" type="button" id="memberManagement">구성원 관리</button></li>
+			<li><button class="menuButton" type="button" id="welcomeCompany">회사 가입 승인</button></li>
+		</ul>
+	</div>
 	<table>
 		<thead id="tableHead">
 			<tr class="memberMenuOne">
@@ -91,23 +293,27 @@
 	<div  id="memberUpdateModal">
 		<form class="updateMember" method="post">
 			<div>
-				<span>구성원 정보 수정</span>
-				<button type="button" id="closeUpdateForm">창 닫기</button><br>
-				<label>이메일</label>
-				<input data-memberId type="text" readonly="readonly"><br>
-				<label>회사 번호</label>
-				<input data-companyName type="text"readonly="readonly"><br>
+				<h2 class="updateTop">구성원 정보 수정</h2>
+				<img alt="창 끄기" src="${pageContext.request.contextPath}/resources/icon/xmark-solid.svg" class="cursor" id="closeUpdateForm">
+				<span class="form__guide">필수 정보</span>
+				<span class="form__guidee">(수정 불가)</span>
+				<label class="form__label">이메일</label>
+				<input data-memberId type="text" readonly="readonly" class="form__input"><br>
+				<label class="form__label">회사명</label>
+				<input data-companyName type="text"readonly="readonly" class="form__input"><br>
 				<br>
-				<label>이름 </label>
-				<input data-memberName type="text" name="memberName"><br>
+				<span class="form__guide">추가 정보</span>
+				<span class="form__guidee">(수정 가능)</span>
+				<label class="form__label">이름 </label>
+				<input data-memberName type="text" name="memberName" class="form__input"><br>
 
-				<label>휴대폰 번호 </label>
-				<input data-memberPhone type="text" name="memberphone"><br>
+				<label class="form__label">휴대폰 번호 </label>
+				<input data-memberPhone type="text" name="memberphone" class="form__input"><br>
 				<input data-companyId type="hidden" name="companyId" readonly="readonly">
 				<p>
-					<span>부서</span>
+					<label class="form__label">부서 </label>
 					<label for="deptId">
-					<select id="deptId" name="deptId" data-deptId>
+					<select id="deptId" name="deptId" data-deptId class="form__select">
 						<option value="" >선택해주세요</option>
 							<c:forEach items="${deptList }" var="dept">
 								<option value="${dept.deptId }" >${dept.deptName }</option>
@@ -116,9 +322,9 @@
 					</label>
 				</p>
 				<p>
-					<span>직책</span>
+					<label class="form__label">직책 </label>
 					<label for="jobId">
-					<select id="jobId" name="jobId" data-jobId>
+					<select id="jobId" name="jobId" data-jobId class="form__select">
 						<option value="" >선택해주세요</option>
 							<c:forEach items="${jobList }" var="job">
 								<option value="${job.jobId }"> ${job.jobName }</option>
@@ -126,20 +332,17 @@
 					</select>
 					</label>
 				</p>
-					<p>
-						<span>회원 등급</span>
-						<label for="memberGrade" >
-							<select id="memberGrade" name="memberGrade" data-memberGrade>
-								<option value="">선택</option>
-								<option value="H3" 
-									<c:if test="${memberGrade eq 'H3' }">selected </c:if>>게스트</option>
-								<option value="H2"
-									<c:if test="${memberGrade eq 'H2' }">selected </c:if>>일반 회원</option>
-								<option value="H1"
-									<c:if test="${memberGrade eq 'H1' }">selected </c:if>>관리자</option>
-							</select>
-						</label>
-					</p>
+				<p>
+					<label class="form__label">회원 등급 </label>
+					<label for="memberGrade" >
+						<select id="memberGrade" name="memberGrade" class="form__select" data-memberGrade >
+							<option value="">선택</option>
+							<option value="H3" >게스트</option>
+							<option value="H2" >일반 회원</option>
+							<option value="H1" >관리자</option>
+						</select>
+					</label>
+				</p>
 				<button type="button" class="updateButton">수정</button>
 			</div>
 		</form>
@@ -177,7 +380,7 @@
 								<td>\${taskList[i].deptName }</td>
 								<td>\${taskList[i].jobName }</td>
 								<td>\${taskList[i].empStatus }</td>
-								<td><input type="button" value="관리"></td>
+								<td><input type="button" value="관리" class="update__form"></td>
 							</tr>`;
 							$(".taskList").append(hightaskList);
 							
@@ -185,7 +388,6 @@
 					},
 					error : function(reject){
 						console.log(reject);
-						
 					}
 			})
 		};
@@ -361,7 +563,7 @@
 				success : function(taskLists){
 					if(taskLists.length == 0){
 						let hightaskList =`
-									<h2>가입 대기중인 인원이 없습니다.</h2>`;
+									<h2 class="tableH2">가입 대기중인 인원이 없습니다.</h2>`;
 							$('.memberMenuTwo').empty();
 							$(".noData").append(hightaskList);
 						
@@ -421,6 +623,8 @@
 			}
 			
 		});
+		sessionStorage.removeItem('startDate'); // 시작일 데이터 삭제
+		sessionStorage.removeItem('endDate'); // 시작일 데이터 삭제
 	</script>
 </body>
 </html>

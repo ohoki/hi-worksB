@@ -137,6 +137,21 @@
 	    margin-right: 30px;
 	}
 	
+	button[name=delete] {
+		/* display:none; */
+		background-color: var(--color-red);
+	    padding: 6px 12px;
+	    cursor: pointer;
+	    width: 80px;
+	    height: 20px;
+	    border-radius: 5px;
+	    font-weight: var(--weight-bold);
+	    color: white;
+	    line-height: 20px;
+	    font-size: 12px;
+	    margin-left: 30px;
+	}
+	
 	.d-flex {
 		display: flex;
 		align-items: center;
@@ -148,15 +163,21 @@
 <c:set var="size" value="${fileList.size() }" />
 	<div class="file-main-box">
 		<div class="d-flex file-header" style="justify-content: flex-end;">
-			<!-- 업로드와 다운로드 --> 
-			<button type="button" onclick="download()" name="download">download</button>
-			<form  action="${pageContext.request.contextPath }/uploadFiles" method="post" enctype="multipart/form-data" id="uploadForm">
-				<label for="upload" class="upload-btn">
-	      			<input type="file" name="file" id="upload">
-	      			<span>Upload File</span>
-				</label>
-				<input type="hidden" name="prjId" value="${projectInfo.projectId }" >
-			</form>
+<!-- 		프로젝트구성원일때만 버튼 활성화 -->
+			<c:if test="${particirInfo ne null }">
+				<!-- 업로드와 다운로드 그리고 삭제--> 
+				<button type="button" onclick="download()" name="download">download</button>
+				<form  action="${pageContext.request.contextPath }/uploadFiles" method="post" enctype="multipart/form-data" id="uploadForm">
+					<label for="upload" class="upload-btn">
+		      			<input type="file" name="file" id="upload">
+		      			<span>Upload File</span>
+					</label>
+					<input type="hidden" name="prjId" value="${projectInfo.projectId }" >
+				</form>
+				<form action="${pageContext.request.contextPath }/deleteFile"  method="post" id="deleteForm">
+					<button type="button" onclick="deleteFile('${loginId}','${managerOrNot }')" name="delete">delete</button>
+				</form>
+			</c:if>
 		</div>
 
 		<table>
@@ -177,7 +198,7 @@
 							<td data-member>${list.memberName }</td>
 							<td data-regdate><fmt:formatDate value="${list.fileRegdate }" pattern="YY/MM/dd" type="date"/></td>
 							<td data-count>${list.count }</td>
-							<td hidden><input type="checkbox" id="${list.fileId }"></td>
+							<td hidden><input data-uploader="${list.memberId}" data-fid=${list.fileId} type="checkbox" id="${list.fileId }">${list.fileId}</td>
 							<td hidden>${list.fileSize }</td>
 							<td hidden>${list.realFilePath }</td>
 							<td hidden>${list.memberId }</td>
@@ -211,23 +232,36 @@
 				</c:if>
 			</div>
 			<div>
+<%-- 				<c:if test="access"></c:if> --%>
 				<!-- 		검색 --> 
-				<form action="${pageContext.request.contextPath }/searchfiles" method="post" name="searchform">
-					<div class="search__search">
-						<input type="hidden" name="nowPage" value="1">
-						<input type="hidden" name="access" value="${projectInfo.fileAccess }">
-						<input type="hidden" name="prjId" value="${projectInfo.projectId }" >
-						<select name="searchtype" class="search__select">
-							<option value="1" <c:if test="${searchVO.searchtype==1}"> selected   </c:if>>파일명</option>
-							<option value="2" <c:if test="${searchVO.searchtype==2}"> selected   </c:if>>등록자</option>
-						</select> 
-						<input type="text" name="searchkeyword" class="search__input" value="${searchVO.searchkeyword}">
-						<button type="submit" class="search__submit">검색</button>
-					</div>
-				</form>
+						<!-- 		프로젝트구성원일때만 검색 활성화 -->
+				<c:if test="${particirInfo ne null }">
+					<form action="${pageContext.request.contextPath }/searchfiles" method="post" name="searchform">
+						<div class="search__search">
+							<input type="hidden" name="nowPage" value="1">
+							<input type="hidden" name="access" value="${projectInfo.fileAccess }">
+							<input type="hidden" name="prjId" value="${projectInfo.projectId }" >
+							<select name="searchtype" class="search__select">
+								<option value="1" <c:if test="${searchVO.searchtype==1}"> selected   </c:if>>파일명</option>
+								<option value="2" <c:if test="${searchVO.searchtype==2}"> selected   </c:if>>등록자</option>
+							</select> 
+							<input type="text" name="searchkeyword" class="search__input" value="${searchVO.searchkeyword}">
+							<button type="submit" class="search__submit">검색</button>
+						</div>
+					</form>
+				</c:if>
 			</div>
 		</div>
 	</div>
+	
+	
+	<!-- 모달 팝업 -->
+<div id="errorModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeErrorModal()">&times;</span>
+        <p id="errorMessage"></p>
+    </div>
+</div>
 </body>
 <script>
 	let fileSizeAndnotEmpty=document.querySelector('#upload');
@@ -271,15 +305,63 @@
 	    	checkbox.closest('tr').css({"font-weight":"var(--weight-semi-bold)"});	
 	    }
 	};
-
+//파일용량검사
 	fileSizeAndnotEmpty.addEventListener('change',function(){
 		if(fileSizeAndnotEmpty.files[0].size > maxSize) {
-				alert('파일의 용량이 너무 큽니다');
+				let msg='파일의 용량이 너무 큽니다';
+				openErrorModal(msg);
 				fileSizeAndnotEmpty.value = '';
-				return false;		
 			}
 	})
+	//alert창띄우면 오류메세지떠서 모달팝업으로 수정
+	function openErrorModal(msg){
+		let modal=$('#errorModal');
+		let errorContent=$('#errorMessage');
+		
+		errorContent.text(msg);
+		$(modal).css('display','block')
+}
+	function closeErrorModal(){
+		let modal=$('#errorModal');
+		$(modal).css('display','none')
+	}
 	
+	//파일삭제
+	function deleteFile(loginId,manager){
+
+			let checkedFile = $('input[type="checkbox"]:checked');
+	 		let uploader=$(checkedFile).data('uploader')
+	 		let fId=$(checkedFile).data('fid')
+		
+			if(checkedFile.length<1){
+				alert('삭제할 파일을 선택해주세요')
+			}else if(checkedFile.length>1){
+				alert('한 개만 삭제가 가능합니다')
+				//요기부터 1개만 선택한 구간
+			}else if(uploader!=loginId && manager==''){
+				alert('작성자만 삭제할 수 있습니다')
+			}else if(confirm('파일을 삭제하시겠습니까?')){
+				if(manager!='' || uploader==loginId){
+					if(manager!=''){
+						alert('관리자권한으로 삭제합니다')
+					}
+					$.ajax({
+						url:"${pageContext.request.contextPath}/deleteFile",
+						contentType:'application/json',
+						type:'POST',
+						data:JSON.stringify({
+							'fileId':fId
+						})
+					})
+					.done(data=>{
+						if(data==1){
+							$(checkedFile).closest('tr').remove();
+						}
+					})
+					.fail(reject=>{console.log(reject)})
+				}
+			}
+	}
 	
 	function download(){
 		let checkedFile = $('input[type="checkbox"]:checked');

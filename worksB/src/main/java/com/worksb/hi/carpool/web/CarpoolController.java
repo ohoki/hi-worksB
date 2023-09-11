@@ -1,5 +1,6 @@
 package com.worksb.hi.carpool.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,6 +25,7 @@ import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberVO;
 
+@RequestMapping("/member")
 @Controller
 public class CarpoolController {
 	
@@ -33,7 +36,7 @@ public class CarpoolController {
     ComLikeService comLikeService;
 	
 	//페이징 전체조회
-	@GetMapping("/carpoolList")
+	@GetMapping("/member/carpoolList")
 	public String carpoolList(Model model
 						, SearchVO searchVO
 						, HttpSession session
@@ -52,7 +55,16 @@ public class CarpoolController {
 		int companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 		
 		List<CarpoolVO> carpoolList = carpoolService.getCarpoolList(pagingVO,searchVO,companyId);
-		
+			
+		/*
+		 * // 각 게시글의 좋아요 갯수를 가져와서 모델에 추가 List<Integer> likeCounts = new ArrayList<>();
+		 * for (CarpoolVO carpool : carpoolList) { ComLikeVO comLikeVO = new
+		 * ComLikeVO(); comLikeVO.setBoardId(carpool.getBoardId());
+		 * comLikeVO.setBoardType("C3"); int likeCount =
+		 * comLikeService.countLikes(comLikeVO); likeCounts.add(likeCount); }
+		 * 
+		 * model.addAttribute("likeCounts", likeCounts); // 좋아요 갯수 리스트를 모델에 추가
+		 */		
 		model.addAttribute("carpoolList", carpoolList);
 		model.addAttribute("paging", pagingVO);
 		
@@ -61,7 +73,7 @@ public class CarpoolController {
 	}
 	
 	// 단건 조회
-	@GetMapping("/carpoolInfo")
+	@GetMapping("/member/carpoolInfo")
 	public String getCarpoolInfo(@RequestParam("boardId")int boardId, HttpSession session, CarpoolVO carpoolVO,Model model, ComLikeVO comLikeVO) {
 		if(boardId!=0) {
 			carpoolVO.setBoardId(boardId);			
@@ -85,24 +97,30 @@ public class CarpoolController {
 		model.addAttribute("participantList",carpoolService.getApplicantList(boardId));
 		model.addAttribute("memberId",memberId);
 		
+		// 세션의 id값 가져오기
+        comLikeVO.setMemberId(memberId);
+		
+		//좋아요
+	    model.addAttribute("checkLike",comLikeService.checkLiked(comLikeVO));
+		
 		return "carpool/carpoolInfo";
 	}
 	
 	// 등록 폼
-	@GetMapping("/carpoolInsert")
+	@GetMapping("/member/carpoolInsert")
 	public String carpoolInsertForm() {
 		return "carpool/carpoolInsert";
 	}
 	
 	// 등록
-	@PostMapping("/carpoolInsert")
+	@PostMapping("/member/carpoolInsert")
 	public String carpoolInsert(CarpoolVO carpoolVO) {
 		carpoolService.carpoolInsert(carpoolVO);
-		return "redirect:carpoolList";
+		return "redirect:/member/carpoolList";
 	}
 	
 	// 수정 폼
-	@GetMapping("/carpoolUpdate")
+	@GetMapping("/member/carpoolUpdate")
 	public String carpoolUpdateForm(CarpoolVO carpoolVO, Model model) {
 		CarpoolVO findVO = carpoolService.getCarpoolInfo(carpoolVO);
 		model.addAttribute("carpoolInfo", findVO);
@@ -110,22 +128,22 @@ public class CarpoolController {
 	}
 	
 	// 수정
-	@PostMapping("/carpoolUpdate")
+	@PostMapping("/member/carpoolUpdate")
 	public String carpoolUpdate(CarpoolVO carpoolVO) {
 		carpoolService.carpoolUpdate(carpoolVO);
-		return "redirect:carpoolList";
+		return "redirect:/member/carpoolList";
 	}
 	
 	//삭제
 	// 게시글 삭제
-	@GetMapping("/carpoolDelete")
+	@GetMapping("/member/carpoolDelete")
 	public String carpoolDelete(@RequestParam(name = "boardId", defaultValue = "0") int boardId) {
 		carpoolService.carpoolDelete(boardId);
-		return "redirect:carpoolList";
+		return "redirect:/member/carpoolList";
 	}
 	
 	//카풀신청
-	@GetMapping("/applyCarpool")
+	@GetMapping("/member/applyCarpool")
 	@ResponseBody
 	public CarpoolVO countParticipants(@RequestParam("boardId")int boardId, HttpSession session) {	
 		String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();
@@ -139,7 +157,7 @@ public class CarpoolController {
 	}
 	
 	//카풀신청취소
-	@GetMapping("/cancelCarpool")
+	@GetMapping("/member/cancelCarpool")
 	@ResponseBody
 	public CarpoolVO cancel(@RequestParam("boardId")int boardId, HttpSession session) {
 		String memberId=((MemberVO)session.getAttribute("memberInfo")).getMemberId();

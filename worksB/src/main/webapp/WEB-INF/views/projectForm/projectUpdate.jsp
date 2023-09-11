@@ -53,25 +53,11 @@
 	            <p class="permission__title">게시글</p>
 	            <ul>
 	                <li>
-	                    <label>작성 권한</label>
-	                    <select class="form__select" name="writeAccess">
-	                        <option value="J1" ${projectInfo.writeAccess == 'J1' ? 'selected' : ''}>전체</option>
-	                        <option value="J2" ${projectInfo.writeAccess == 'J2' ? 'selected' : ''}>프로젝트 관리자만</option>
-	                    </select>
-	                </li>
-	                <li>
 	                    <label>수정 권한</label>
 	                    <select class="form__select" name="updateAccess">
 	                        <option value="J1" ${projectInfo.updateAccess == 'J1' ? 'selected' : ''}>전체</option>
 	                        <option value="J3" ${projectInfo.updateAccess == 'J3' ? 'selected' : ''}>프로젝트 관리자 + 작성자만</option>
 	                        <option value="J4" ${projectInfo.updateAccess == 'J4' ? 'selected' : ''}>작성자만</option>
-	                    </select>
-	                </li>
-	                <li>
-	                    <label>조회 권한</label>
-	                    <select class="form__select" name="boardAccess">
-	                        <option value="J1" ${projectInfo.boardAccess == 'J1' ? 'selected' : ''}>전체</option>
-	                        <option value="J3" ${projectInfo.boardAccess == 'J3' ? 'selected' : ''}>프로젝트 관리자 + 작성자만</option>
 	                    </select>
 	                </li>
 	            </ul>

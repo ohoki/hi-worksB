@@ -65,9 +65,7 @@
 						project_name, 
 						project_access,  
 						manager_accp,   
-						write_access,   
 						update_access,  
-						board_access,  
 						comment_access, 
 						file_access,  
 						dept_id,       
@@ -99,7 +97,8 @@
                     ON(p.project_id=board.project_id)
                     
 					WHERE dept_id 
-						IN (SELECT dept_id FROM department WHERE company_id= #{companyId})) a ) 
+						IN (SELECT dept_id FROM department WHERE company_id= #{companyId})
+					ORDER BY p.project_id) a ) 
 			WHERE rn BETWEEN #{pagingvo.start} AND #{pagingvo.end}
 	</select>
 	
@@ -206,8 +205,8 @@
 			   find_subcode(m.emp_status) AS emp_status, 
 			   find_subcode(m.con_status) AS con_status, 
 			   c.company_id, 
-			   NVL(d.dept_name, ' ') as dept_name,
-			   NVL(j.job_name, ' ') as job_name,
+			   NVL(d.dept_name, ' - ') as dept_name,
+			   NVL(j.job_name, ' - ') as job_name,
 			   j.job_name
 		  from member m join company c
                         on(m.company_id = c.company_id)
@@ -409,4 +408,52 @@
 		UPDATE project SET file_access=#{fileAccess}
 		WHERE project_id=#{projectId}
 	</update>
+	
+	<select id="countDownloadByDate" resultType="int">
+	   SELECT 
+            COUNT(*)
+		FROM download_file d
+		JOIN (
+    		SELECT 
+        		member_id,
+       			company_id
+    		FROM
+        		member
+    		WHERE company_id=#{companyId}
+				)m 
+			ON d.member_id=m.member_id
+             WHERE
+            file_regdate BETWEEN #{startDate}
+                        AND #{endDate}
+	</select>
+	<select id="filteredFileList" resultType="FileDataVO">
+	  	SELECT *
+			FROM (
+			    SELECT rownum rn, a.*
+			    FROM (
+				    SELECT 
+							d.file_id,
+							d.file_name,
+							d.file_type,
+							d.file_regdate,
+							d.converted_size,
+							d.member_id,
+							m.company_id
+					FROM download_file d
+					JOIN (
+			    		SELECT 
+			        		member_id,
+			       			company_id
+			    		FROM
+			        		member
+			    		WHERE 
+			    			company_id=#{vo.companyId})m 
+						ON 
+							d.member_id=m.member_id
+						  WHERE
+          						file_regdate BETWEEN #{vo.startDate}
+                        							AND #{vo.endDate}
+						ORDER BY d.file_regdate DESC) a ) 
+			WHERE rn BETWEEN #{paging.start} AND #{paging.end}
+	</select>
 </mapper>

@@ -16,11 +16,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form id="sform" name="searchcategories" method="post" action="${pageContext.request.contextPath}/admin/searchByDate">
-		<input type="hidden" name="searchkeyword" value="${searchkeyword }">
-    	<input type="hidden" name="searchBoardType" id="b-type" value="${boardType }">
+	<form id="sform" name="searchcategories" action="${pageContext.request.contextPath}/admin/searchByDate">
+<%-- 		<input type="hidden" name="searchkeyword" value="${searchkeyword }"> --%>
+<%--     	<input type="hidden" name="searchBoardType" id="b-type" value="${boardType }"> --%>
     	<input type="hidden" name="startDate" id="start-date">
     	<input type="hidden" name="endDate" id="end-date">
+		<input type="hidden" name="nowPage" value="1">
 	</form>
 
 	<div>
@@ -78,7 +79,11 @@
 </body>
 <script type="text/javascript">
 	function search(p){
-		location.href="${pageContext.request.contextPath }/admin/downloadlist?nowPage="+p
+		if($('#start-datepicker').val()==null){
+			location.href="${pageContext.request.contextPath }/admin/downloadlist?nowPage="+p
+		}
+		searchcategories.nowPage.value=p;
+		searchcategories.submit();
 }
 	
 	
@@ -133,6 +138,7 @@
 		                }else if(start>end){
 		                	alert('시작일을 잘못 입력하였습니다')
 		                }else{
+		                	saveDatesToSessionStorage();
 			                $('#end-date').val(end)
 			                $('#start-date').val(start)
 			                $('#sform').submit();     	
@@ -142,5 +148,32 @@
 	    });
 		  } );
 	 $('#end-datepicker').datepicker('setDate', 'today')
+	 
+	 
+	 // 시작일과 종료일을 세션에 저장
+	function saveDatesToSessionStorage() {
+	    const start = $('#start-datepicker').val();
+	    const end = $('#end-datepicker').val();
+	    sessionStorage.setItem('startDate', start);
+	    sessionStorage.setItem('endDate', end);
+	}
+	
+	// 페이지 로드 시 세션에서 시작일과 종료일을 가져와 input에넣기
+	function loadDatesFromLocalStorage() {
+	    const start = sessionStorage.getItem('startDate');
+	    const end = sessionStorage.getItem('endDate');
+	    if (start && end) {
+	        $('#start-datepicker').val(start);
+	        $('#end-datepicker').val(end);
+	        $('#start-date').val(start);
+	        $('#end-date').val(end);
+	    }
+	}
+
+
+	// 페이지 로드 시 시작일과 종료일을 세션서 가져와 입력란에 채우기
+	$(document).ready(function() {
+		loadDatesFromLocalStorage();
+	});
 </script>
 </html>

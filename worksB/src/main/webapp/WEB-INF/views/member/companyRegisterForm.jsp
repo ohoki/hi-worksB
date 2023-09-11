@@ -106,7 +106,7 @@
 			alert(message);
 		}
 	});
-
+	
 	//비동기 방식으로 이미지 파일 미리보기 + 사이즈 및 용량제한
 	const fileDOM = document.querySelector('#logo');
 	const preview = document.querySelector('.image-box');
@@ -156,6 +156,7 @@
 			type: 'POST',
 			data: {'companyUrl' : $('#companyUrl').val()},
 			success : function(message) {
+				console.log(message);
 				if(message == '사용가능') {
 					$('#companyRegisterForm').submit();
 				} else {
