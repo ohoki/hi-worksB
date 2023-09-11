@@ -400,7 +400,7 @@ th, tfoot td {
 	
 	
 	/* 내 위치 */
-	/* function askForLocation () {
+	 function askForLocation () {
 	    navigator.geolocation.getCurrentPosition(accessToGeo)
 	}
 	askForLocation();
@@ -420,11 +420,11 @@ th, tfoot td {
 	    
 	    // 지도 중심을 이동 시킵니다
 	    map.setCenter(moveLatLon);
-	} */
+	} 
 	
 	
 	
-	/* <!-- 지도 -->
+	 <!-- 지도 -->
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
         center: new kakao.maps.LatLng(35.8700317, 128.6005225), // 지도의 중심좌표
@@ -453,10 +453,7 @@ th, tfoot td {
 	            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
 	            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
 	            
-	            var content = '<div class="bAddr">' +
-	                            '<span class="title">법정동 주소정보</span>' + 
-	                            detailAddr + 
-	                        '</div>';
+	            
 				console.log(result[0].address.address_name);
 				
 		
@@ -547,7 +544,7 @@ th, tfoot td {
 	  modal.style.display = "none";
 	  document.body.style.overflow = "auto"; // 스크롤바 보이기
 	});
-	 */
+	 
 		
 </script>
 </html>

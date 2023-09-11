@@ -180,9 +180,11 @@ th, tfoot td {
 						<tr>
 							<td class="type-content" colspan="4">
 								<div class="select">
-	    							<input type="radio" id="select" name="category" value="B1" class="radio">
+	    							<input type="radio" id="select" name="category" value="B1" class="radio"
+	    							<c:if test="${carpoolInfo.category eq 'B1' }">checked</c:if>>
 	    							<label for="select" class="radio-label">태워드립니다</label>
-	    							<input type="radio" id="select2" name="category" value="B2" class="radio">
+	    							<input type="radio" id="select2" name="category" value="B2" class="radio"
+	    							<c:if test="${carpoolInfo.category eq 'B2' }">checked</c:if>>
 	    							<label for="select2" class="radio-label">태워주세요</label>
 								</div>
 							</td>
@@ -195,12 +197,18 @@ th, tfoot td {
 							<td style="text-align: center;">
 								<label id="passenger" class="label">인원</label>
 								<select id="passelect" name="passenger">
-									<option value="0">0명</option>
-									<option value="1">1명</option>
-									<option value="2">2명</option>
-									<option value="3">3명</option>
-									<option value="4">4명</option>
-									<option value="5">5명</option>
+									<option value="0"
+									<c:if test="${carpoolInfo.passenger eq '0' }">selected</c:if>>0명</option>
+									<option value="1"
+									<c:if test="${carpoolInfo.passenger eq '1' }">selected</c:if>>1명</option>
+									<option value="2"
+									<c:if test="${carpoolInfo.passenger eq '2' }">selected</c:if>>2명</option>
+									<option value="3"
+									<c:if test="${carpoolInfo.passenger eq '3' }">selected</c:if>>3명</option>
+									<option value="4"
+									<c:if test="${carpoolInfo.passenger eq '4' }">selected</c:if>>4명</option>
+									<option value="5"
+									<c:if test="${carpoolInfo.passenger eq '5' }">selected</c:if>>5명</option>
 								</select>
 							</td>
 						</tr>
@@ -323,6 +331,8 @@ th, tfoot td {
 	            'MathType'
 	        ]
 	    });	
+		
+		
 	</script>
 </body>
 </html>

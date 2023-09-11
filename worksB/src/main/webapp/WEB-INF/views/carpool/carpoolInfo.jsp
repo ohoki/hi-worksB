@@ -268,6 +268,8 @@ th, tfoot td {
 	<!-- 사진 업로드를 위한 ckfinder -->
 	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 	<!-- ckeditor 끝 -->
+	<!-- 지도 -->
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d2a237b360646754fd5f20a66df56e27&libraries=services"></script>
 	<div class="carpool-board-box">
 		<div class="insert">
 			<h2>
@@ -319,6 +321,7 @@ th, tfoot td {
 					<tr>
 						<td class="table-content" colspan="4">
 							${carpoolInfo.boardContent }
+							<div id="map" style="width:100%;height:350px;"></div>
 						</td>
 					</tr>
 					<tr>
@@ -342,13 +345,13 @@ th, tfoot td {
 						<td class="table-departure">
 							출발
 						</td>
-						<td class="departure-content">
+						<td id="departureId" class="departure-content">
 							${carpoolInfo.departure } 
 						</td>
 						<td class="table-passenger">
 							탑승 인원수
 						</td>
-						<td class="passenger-content">
+						<td id="passengerId" class="passenger-content">
 							${carpoolInfo.passenger } 
 						</td>
 					</tr>
@@ -356,7 +359,7 @@ th, tfoot td {
 						<td class="table-arrival">
 							도착
 						</td>
-						<td class="arrival-content">
+						<td id="arrivalId" class="arrival-content">
 							${carpoolInfo.arrival } 
 						</td>
 						<td class="table-departureDate">
@@ -689,7 +692,7 @@ th, tfoot td {
 
 	function participate(boardId,available,counted,writer,memberId, category){
 		if(writer==memberId){
-			alert('작성자는 신청하지 못합니다')
+			alert('작성자는 신청할 수 없습니다')
 			return;
 		}
 
@@ -785,8 +788,79 @@ th, tfoot td {
 		if(count==pList.length){
 			alert('참여신청을 하지 않았습니다')		
 		}
-
-		
 	}
+	
+	/* 카카오맵 생성 */
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };  
+
+	// 지도를 생성합니다    
+	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	// 출발 위치 가져오기
+	let departureId = document.getElementById('departureId');
+	console.log(departureId);
+	// 도착 위치 가져오기
+	let arrivalId = document.getElementById('arrivalId');
+	console.log(arrivalId);
+	
+	
+	// 주소로 좌표를 검색합니다
+	geocoder.addressSearch( departureId.textContent, function(result, status) {
+	
+	    // 정상적으로 검색이 완료됐으면 
+	     if (status === kakao.maps.services.Status.OK) {
+	
+	        let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	
+	        // 결과값으로 받은 위치를 마커로 표시합니다
+	        let marker = new kakao.maps.Marker({
+	            map: map,
+	            position: coords
+	        });
+	
+	        // 인포윈도우로 장소에 대한 설명을 표시합니다
+	        let infowindow = new kakao.maps.InfoWindow({
+	            content: '<div style="width:150px;text-align:center;padding:6px 0;">출발지<br></div>' /* + '<div style="width:150px;text-align:center;padding:6px 0;">도착지</div>' */
+	        });
+	        
+	        infowindow.open(map, marker);
+	
+	        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	        map.setCenter(coords);
+	    } 
+	});
+	
+	// 주소로 좌표를 검색합니다
+	geocoder.addressSearch( arrivalId.textContent, function(result, status) {
+	
+	    // 정상적으로 검색이 완료됐으면 
+	     if (status === kakao.maps.services.Status.OK) {
+	
+	        let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	
+	        // 결과값으로 받은 위치를 마커로 표시합니다
+	        let marker = new kakao.maps.Marker({
+	            map: map,
+	            position: coords
+	        });
+	
+	        // 인포윈도우로 장소에 대한 설명을 표시합니다
+	        let infowindow = new kakao.maps.InfoWindow({
+	            content: '<div style="width:150px;text-align:center;padding:6px 0;">도착지<br></div>' /* + '<div style="width:150px;text-align:center;padding:6px 0;">도착지</div>' */
+	        });
+
+	        infowindow.open(map, marker);
+	
+	        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	        map.setCenter(coords);
+	    } 
+	});    
 </script>
 </html>

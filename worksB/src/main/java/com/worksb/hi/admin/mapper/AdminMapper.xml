@@ -202,7 +202,7 @@
 			   m.con_ip, 
 			   m.job_id, 
 			   m.dept_id, 
-			   find_subcode(m.emp_status) AS emp_status, 
+			   NVL(find_subcode(m.emp_status), '접속종료') AS emp_status, 
 			   find_subcode(m.con_status) AS con_status, 
 			   c.company_id, 
 			   NVL(d.dept_name, ' - ') as dept_name,
