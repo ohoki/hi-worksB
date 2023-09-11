@@ -22,7 +22,7 @@
 	width: 20%;
 	height: 50px;
 	border-radius: 5px;
-	background-color: rgb(174, 213, 245);
+	background-color: var(--color-dark-red);
 	border-radius: 5px;
 	color: var(--color-white);
 	font-weight: var(--weight-bold);
