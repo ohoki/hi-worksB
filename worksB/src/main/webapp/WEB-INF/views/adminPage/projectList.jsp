@@ -231,19 +231,19 @@
 	}
 	#change-info-modal{
 		position: absolute;
-		width: 25%;
-		height:10%;
-		background-color: rgba(0,0,0,0.01);
-		font-size: 20px;
-		font-weight:bold;
-		padding: 20px 0 30px 30px;
-		z-index: 10;
-		border-radius: 5px;
-	 	transform: translate(150%, 50%); 
+		top: 0;
+		left: 0;
+		width: 100%;
+		height:100%;
+		background-color: rgba(0,0,0,0.1);
 		display:none;
-		border-radius:20px;
-		z-index:200;
-		
+		z-index:1;
+	}
+	
+	.change-info-modal-content {
+		position: absolute;
+		width: 25%;
+		height: 300px;
 	}
 	#change-info-modal input{
 		height:30px;
@@ -341,17 +341,19 @@
 	
 <!-- 	정보수정모달 -->
 	<div id="change-info-modal" >
-		<div>
-			<span>프로젝트이름</span>
-			<span><input value="" placeholder="수정할 이름" id="edited-name" size="20"></span>
-		</div>
-		<div>
-			<span>파일접근권한</span>
-			<span><label><input type="checkbox" id="file-access2" class="file-access" name="J1" value="J1">프로젝트구성원</label></span>
-			<span><label><input type="checkbox" id="file-access1" class="file-access" name="J3" value="J3">관리자+작성자</label></span>
-		</div>
-		<div id="edit-prj-name">
-			<button onclick="editFileAccess(${list.size()})">수정하기</button>
+		<div class="change-info-modal-content">
+			<div>
+				<span>프로젝트이름</span>
+				<span><input value="" placeholder="수정할 이름" id="edited-name" size="20"></span>
+			</div>
+			<div>
+				<span>파일접근권한</span>
+				<span><label><input type="checkbox" id="file-access2" class="file-access" name="J1" value="J1">프로젝트구성원</label></span>
+				<span><label><input type="checkbox" id="file-access1" class="file-access" name="J3" value="J3">관리자+작성자</label></span>
+			</div>
+			<div id="edit-prj-name">
+				<button onclick="editFileAccess(${list.size()})">수정하기</button>
+			</div>		
 		</div>
 	</div>
 </body>
@@ -376,11 +378,11 @@
 	
 	$('#prj-list .change-name').on("click",function(event){
 		$('#change-info-modal').css('display','block')
-		let x = event.clientX - 320;
+		let x = event.clientX;
 		let y = event.clientY;
 		
-		$('#change-info-modal').css('left', x + 'px');
-		$('#change-info-modal').css('top', y + 'px');
+		$('.change-info-modal-content').css('left', x + 'px');
+		$('.change-info-modal-content').css('top', y + 'px');
 		
 		
 		
@@ -412,8 +414,8 @@
 		let projectId=$('#edit-prj-name button').data('pjid');
 		let fileAccess=$("#change-info-modal").find('input:checked').val();
 		let deptId=$('#edit-prj-name button').data('deptid');	
-		console.log(projectName);
-    	$.ajax({
+
+		$.ajax({
     			url:"${pageContext.request.contextPath }/admin/updatePrjName",
     			method:'POST',
     			data:JSON.stringify(

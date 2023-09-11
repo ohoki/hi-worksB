@@ -146,7 +146,7 @@
 			<div class="user-information">
 				<div class="user-information__title">
 					<h1 class="title-font">회원 정보</h1>
-					<button type="button" onclick="location.href='${pageContext.request.contextPath}/member/updatePwForm'" id="updatePw">비밀번호 변경</button>
+					<button type="button" onclick="location.href='${pageContext.request.contextPath}/updatePwForm'" id="updatePw">비밀번호 변경</button>
 				</div>
 				<div class="user-information__content">
 					<p>
@@ -264,7 +264,7 @@
 		formData.append("image", image);
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/updateProfile',
+			url : '${pageContext.request.contextPath}/updateProfile',
 			type : 'POST',
 			processData : false,
 			contentType : false,

@@ -179,7 +179,7 @@
 			let employeesDiv = $('#employees');
 			employeesDiv.empty();
 			$.ajax({
-				url : '${pageContext.request.contextPath}/member/memberList',
+				url : '${pageContext.request.contextPath}/memberList',
 				type : 'GET',
 				data : {'companyId' : "${memberInfo.companyId}"},
 				success : function(members) {
@@ -246,7 +246,7 @@
 	});
 	
 	$('.my-profile__btn').on('click', function() {
-		location.href='${pageContext.request.contextPath}/member/updateForm';
+		location.href='${pageContext.request.contextPath}/updateForm';
 	})
 	
 	//접속상태 변경
@@ -289,7 +289,7 @@
 		let memberId = $(e.currentTarget).children('input').val();
 
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/getMember',
+			url : '${pageContext.request.contextPath}/getMember',
 			type : 'GET',
 			data : {'memberId' : memberId},
 			success : function(member) {

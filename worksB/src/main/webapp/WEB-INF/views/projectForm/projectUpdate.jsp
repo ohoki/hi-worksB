@@ -13,7 +13,7 @@
 	<!-- 이진 -->
 	
     <p class="form__title">프로젝트 수정</p>
-    <form class="project-create-form" action="projectUpdate" method="post">
+    <form class="project-create-form" action="${pageContext.request.contextPath }/member/projectUpdate" method="post">
     	<input type="hidden" name="projectId" value="${projectInfo.projectId}">
         <div>
             <input type="text" class="form__input-title" name="projectName" value="${realProjectName}">
