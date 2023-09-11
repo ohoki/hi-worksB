@@ -33,11 +33,12 @@ public class ComLikeServiceImpl implements ComLikeService {
         return comLikeMapper.checkLiked(comLikeVO) > 0;
     }
 
-	// noticeList에서 좋아요 카운트
-	/*
-	 * @Override public String noticeLikeCount(int noticeId, ComLikeVO comLikeVO) {
-	 * return comLikeMapper.noticeLikeCount(noticeId); }
-	 */
+	
+	@Override 
+	public String noticeLikeCount(int noticeId, ComLikeVO comLikeVO) {
+		return comLikeMapper.noticeLikeCount(noticeId); 
+	}
+
 
 
 }

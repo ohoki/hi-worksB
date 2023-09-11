@@ -204,8 +204,8 @@
 			   find_subcode(m.emp_status) AS emp_status, 
 			   find_subcode(m.con_status) AS con_status, 
 			   c.company_id, 
-			   NVL(d.dept_name, ' ') as dept_name,
-			   NVL(j.job_name, ' ') as job_name,
+			   NVL(d.dept_name, ' - ') as dept_name,
+			   NVL(j.job_name, ' - ') as job_name,
 			   j.job_name
 		  from member m join company c
                         on(m.company_id = c.company_id)
