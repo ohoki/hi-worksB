@@ -27,7 +27,7 @@
 		<div class="header__icon">
 			<!-- 구성원 -->
 			<a href="#" data-type="employees"> 
-			<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/comments-solid.svg" class="header__profile">
+			<img alt="구성원 정보 보기" src="${pageContext.request.contextPath}/resources/icon/house-user-solid.svg" class="header__profile">
 			</a>
 			<!-- 프로필 -->
 			<c:if test="${memberInfo.realProfilePath eq null }">

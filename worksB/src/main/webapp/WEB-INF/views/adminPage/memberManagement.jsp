@@ -10,7 +10,7 @@
 <style>
 	
 	.menuButtons{
-		margin-left: 20px;
+		margin-left: 40px;
 		margin-top: 20px;
 	}
 	
@@ -26,11 +26,11 @@
 		height: 30px;
 	}
 	
-	.adminManagementMenu li:hover{
+	.adminManagementMenu li:hover, .adminManagementMenu li.active{
 		color: var(--color-dark-red);
 		border-bottom: 3px solid var(--color-dark-red);
 		cursor: pointer;
-		transition: all 0.5s;	
+		transition: all 0.5s;
 	}
 	
 	.adminManagementMenu button:hover{
@@ -39,10 +39,11 @@
 	}
 	
 	.menuButton {
-		color: black;
+		color: var(--color-dark-grey);
 		background-color: white;
 		text-decoration: none;
-		font-size: medium;
+		font-weight: var(--weight-bold);
+		font-size: 16px;
 	}
 	
 	body {
@@ -70,7 +71,7 @@
 	}
 	
 	 tr:hover {
-		background-color: var(--color-dark-beigie);
+		background-color: var(--color-beigie);
 	}
 	
 	td {
@@ -78,28 +79,33 @@
 	}
 	  
 	tr{
+		cursor: pointer;
 		border: 1px solid var(--color-dark-beigie);
 	}
 	
 	/* 구성원 수정 폼 모달 */
 	#memberUpdateModal {
-	  position: fixed;
+	  position: absolute;
 	  z-index: 1;
-	  left: 0;
-	  top: 0;
 	  width: 100%;
-	  height: 100%;
-	  overflow: auto;
-	  background-color: rgba(0, 0, 0, 0.4);
+	  height: 1000px;
+	  background-color: rgba(0, 0, 0, 0.1);
 	  display: none;
+	  top: 0;
+	  left: 0;
 	}
 	.updateMember {
-	  background-color: #fefefe;
+	  position: absolute;
+	  background-color: white;
+	  border-radius:10px;
 	  margin: 15% auto;
 	  padding: 20px;
-	  border: 1px solid #888;
+	  border: 1px solid var(--color-dark-beigie);
 	  width: 400px;
 	  height: 600px;
+	  transform : translate(-50%, -100%);
+	  left: 50%;
+	  top: 50%;
 	}
 	.closeUpdateForm {
 	  color: #aaa;
@@ -151,14 +157,14 @@
 		width: 200px;
     	height: 30px;
 		border-radius: 2px;
-    	border: 3px solid var(--color-dark-beigie);
+    	border: 1px solid var(--color-dark-beigie);
     	padding-left: 10px;
 	}
 	
 	.form__select {
 		display:inline-block;
 		border-radius: 2px;
-    	border: 3px solid var(--color-dark-beigie);
+    	border: 1px solid var(--color-dark-beigie);
 	}
 	
 	.form__guide {
@@ -258,7 +264,7 @@
 	<h1 class="topH1">구성원 관리</h1>
 	<div class="menuButtons">
 		<ul class="adminManagementMenu">
-			<li><button class="menuButton" type="button" id="memberManagement">구성원 관리</button></li>
+			<li class="active"><button class="menuButton" type="button" id="memberManagement">구성원 관리</button></li>
 			<li><button class="menuButton" type="button" id="welcomeCompany">회사 가입 승인</button></li>
 		</ul>
 	</div>
@@ -348,6 +354,12 @@
 		</form>
 	</div>
 	<script>
+		$('.adminManagementMenu li').on('click', function(e) {
+			$('.adminManagementMenu .active').removeClass('active');
+			$(e.currentTarget).addClass('active');
+		});
+	
+	
 		 $(document).ready(function() {
 			 getmemberList();
 			 $('.memberMenuTwo').empty();
@@ -431,6 +443,10 @@
 				}
 			});
 
+		});
+		
+		$('#memberUpdateModal').on('click', function(e) {
+			$(e.currentTarget).css('display', 'none');
 		});
 		
 		/* 회원 정보 수정 */

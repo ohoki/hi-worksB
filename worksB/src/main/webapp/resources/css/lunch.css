@@ -1,10 +1,15 @@
 @charset "UTF-8";
+@import "root.css";
+
         .ojc {
             margin: 0 auto;
+            width: 40%;
 
         }
         .ojc__header {
             text-align: center;
+            margin: 20px 0;
+            font-size: var(--font-micro);
         }
         .ojc__button {
             margin-right: 20%;
@@ -12,20 +17,70 @@
             color: black;
         }
         .ojc__btn-group{
-            margin-right: 20%;
-            text-align: right;
+            text-align: left;
             color: black;
+            margin-bottom: 10px;
         }
         .mandalart {
             margin: 0 auto;
-            width: 40%;
+            width: 100%;
             overflow: hidden;
-            background-color: #fd7e14;
+            background-color: transparent;
         }
         .mandalart-top {
             display: flex;
             text-align: center;
         }
+        
+        td {
+        	cursor: pointer;
+        }
+        
+        #manda {
+        	background-color: var(--color-dark-beigie);
+        	color: var(--color-dark-grey);
+        } 
+        
+        #manda1, #manda7 {
+        	background-color: var(--color-dark-red);
+        }
+        
+        #manda5, #manda2 {
+        	background-color: var(--color-green);	
+        }  
+        
+        #manda3, #manda4 {
+        	background-color: var(--color-orange);	
+        }
+        
+        #manda6, #manda8 {
+        	background-color: var(--color-light-blue);	
+        }
+        
+        .btn-primary:focus {
+	    	box-shadow: none;
+		}
+	
+	 	.btn-primary:focus {
+	    	box-shadow: none;
+	    	outline: none;
+		}
+		
+	    .btn-primary:active{
+		   	box-shadow: none;
+		}
+	    
+	    	
+		.btn-primary:not(:disabled).fc-button-active:focus, .btn-primary:not(:disabled):active:focus {
+	    	box-shadow: none;
+	    }
+	    
+	    .btn-primary:focus, .btn-primary.custom-select {
+			background-color: var(--color-dark-red);
+			border-color: var(--color-dark-red);
+			color: white;
+		}
+    
         .mandalart-top div{
             float: left;
             width: 33%;
@@ -47,12 +102,16 @@
             width: 33%;
         }
         .cover-black{
-            background-color : #ffc107;
-            color: #ffc107;
+            color: transparent;
         }
+        
         .reveal-gray{
-            background-color: #fd7e14;
+            background-color: #fed9b7;
+            color: var(--color-dark-grey);
+            font-weight: var(--weight-bold);
+            transition: all 2s;
         }
+        
         .mandalart td {
             width: 75px;
             height: 75px;
@@ -61,10 +120,17 @@
             border: 1px solid white;
         }
         .btn-primary {
-		    color: #fff;
-		    background-color: #ffc107;
-		    border-color: #fff;
+		    color: var(--color-dark-red);
+		    background-color: white;
+		    border : 1px solid var(--color-dark-red);
 		}
+		
+		.btn-primary:hover {
+			color: white;
+		    background-color: var(--color-dark-red);
+		    border : 1px solid var(--color-dark-red);
+		}
+		
 
         .map_wrap, .map_wrap * {padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
         .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}

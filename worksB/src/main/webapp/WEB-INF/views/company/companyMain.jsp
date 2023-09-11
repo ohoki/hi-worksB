@@ -107,44 +107,45 @@
     }
 	
  	// 현재 위치 가져오기
-    navigator.geolocation.getCurrentPosition(getSuccess, getError);
+    /* navigator.geolocation.getCurrentPosition(getSuccess, getError);
 
     function getSuccess(position) {
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
       
-      $.getJSON(`http://api.openweathermap.org/data/2.5/weather?lat=\${lat}&lon=\${lng}&appid=e145b6dbc8292ff00959430e13dedb7d`, function (result) {
-      	  
-    	  //이미지 변경 예정
-    	  var weatherIcon = {
-    			    '01' : 'fas fa-sun',
-    			    '02' : 'fas fa-cloud-sun',
-    			    '03' : 'fas fa-cloud',
-    			    '04' : 'fas fa-cloud-meatball',
-    			    '09' : 'fas fa-cloud-sun-rain',
-    			    '10' : 'fas fa-cloud-showers-heavy',
-    			    '11' : 'fas fa-poo-storm',
-    			    '13' : 'far fa-snowflake',
-    			    '50' : 'fas fa-smog'
-    			};
-    	  
-    	  console.log(result);
-          // 현재온도
-          $(".temp").append(Math.floor(result.main.temp - 273.15)); //현재온도
-          $(".feel-like").append(Math.floor(result.main.feels_like - 273.15)); //체감
-          $(".wind").append(result.wind.speed); //바람
-          $(".humidity").append(result.main.humidity); //습도
-          $(".city").append(result.name); //도시이름
-          var $Icon = (result.weather[0].icon).substr(0,2);	
-          
-          // 현재온도 아이콘
-          $('.today-icon').append('<i class="' + weatherIcon[$Icon] +' fa-5x"></i>');
-  	    });
     }
 
     function getError() {
       alert('Geolocation Error');
-    }
+    } */
+    
+    $.getJSON(`http://api.openweathermap.org/data/2.5/weather?q=Daegu,kr&appid=e145b6dbc8292ff00959430e13dedb7d`, function (result) {
+    	  
+  	  //이미지 변경 예정
+  	  var weatherIcon = {
+  			    '01' : 'fas fa-sun',
+  			    '02' : 'fas fa-cloud-sun',
+  			    '03' : 'fas fa-cloud',
+  			    '04' : 'fas fa-cloud-meatball',
+  			    '09' : 'fas fa-cloud-sun-rain',
+  			    '10' : 'fas fa-cloud-showers-heavy',
+  			    '11' : 'fas fa-poo-storm',
+  			    '13' : 'far fa-snowflake',
+  			    '50' : 'fas fa-smog'
+  			};
+  	  
+  	  console.log(result);
+        // 현재온도
+        $(".temp").append(Math.floor(result.main.temp - 273.15)); //현재온도
+        $(".feel-like").append(Math.floor(result.main.feels_like - 273.15)); //체감
+        $(".wind").append(result.wind.speed); //바람
+        $(".humidity").append(result.main.humidity); //습도
+        $(".city").append(result.name); //도시이름
+        var $Icon = (result.weather[0].icon).substr(0,2);	
+        
+        // 현재온도 아이콘
+        $('.today-icon').append('<i class="' + weatherIcon[$Icon] +' fa-5x"></i>');
+	    });
 	
 //----------인사 메세지
 	

@@ -196,7 +196,6 @@
 	text-align: center;
 	margin: 10px auto;
 }
-
 </style>
 </head>
 <body>
@@ -375,12 +374,14 @@
 						updateAccp.innerText = '승인하기';
 						
 						// 프로젝트 참여자 신청 승인
-						updateAccp.addEventListener('click', function() {
+						updateAccp.addEventListener('click', function(e) {
 							e.stopPropagation();
 							updateAccpParticir(projectId, particir[i].memberId);
+							$('#employee-modal').removeClass('modal-visible');
 
 							$(this).parent().remove();
 						});
+						
 						
 						// 승인 거절 버튼 태그
 						let deleteAccp = document.createElement('button');
@@ -388,9 +389,10 @@
 						deleteAccp.innerText = '승인거절';
 						
 						// 프로젝트 참여자 신청 승인 거절하기
-						deleteAccp.addEventListener('click', function() {
+						deleteAccp.addEventListener('click', function(e) {
 							e.stopPropagation();
 							deleteAccpParticir(projectId, particir[i].memberId);
+							$('#employee-modal').removeClass('modal-visible');
 
 							$(this).parent().remove();
 							
@@ -464,7 +466,6 @@
 		}
 		
 	};
-	
 	
 	// 프로젝트 만료 - 관리자
 	$('.projectCls').on('click', function(e){
