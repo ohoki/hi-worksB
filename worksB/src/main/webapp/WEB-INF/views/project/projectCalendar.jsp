@@ -922,7 +922,7 @@
 			<div class="board-footer">
 				<div >
 					<span class="board-footer-icon" name="prjLike"><img alt="좋아요 아이콘" src="${pageContext.request.contextPath }/resources/icon/face-laugh-wink-solid.svg" style="padding-right: 5px;"><span></span></span>
-					<span class="board-footer-icon" data-bookmark="no" name="bookmark-icon"><img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg"> 북마크</span>
+					<span class="board-footer-icon" data-bookmark="no" name="bookmark-icon"> 북마크</span>
 				</div>
 				<div>
 					<span class="board-footer-info">댓글 <span data-commentCount></span></span>
@@ -1274,16 +1274,16 @@
 			success : function(like){
 				console.log(like)
 				// 게시글 좋아요 수
+				let likeSpan = $('.board-footer').find('span[name="prjLike"] span');
+				likeSpan.empty();
 				getPrjLike(memberId, boardId);
 				
-				let likeSpan = $('#task-modal').find('span[name="prjLike"] span');
-				likeSpan.empty();
-				// 좋아요 상태 표시
-				if(like.checkLike == 'like'){
+/* 				// 좋아요 상태 표시
+				if(like.checkLike === 'like'){
 					likeSpan.append("좋아요 해제");
 				}else{
 					likeSpan.append("좋아요");
-				}
+				} */
 			},
 			error : function(reject){
 				console.log(reject)
@@ -1327,6 +1327,7 @@
 		})
 	};
 	
+	
 	// 북마크 정보
 	function getBookmarkInfo(memberId, boardId){
 		$.ajax({
@@ -1335,7 +1336,7 @@
 			data : {'memberId': memberId, 'prjBoardId' : boardId},
 			success : function(bookmark){
 
-				let bookmarkSpan = $('#task-modal').find('span[name="bookmark-icon"]')
+				let bookmarkSpan = $('.board-footer').find('span[name="bookmark-icon"]')
 				bookmarkSpan.empty();
 				if(bookmark != 0 ){
 					let bookmarkImg = `<img alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg"> 북마크`;
@@ -1362,7 +1363,7 @@
 				console.log(bookmark)
 				getBookmarkInfo(memberId, boardId);
 				
-				let bookmarkSpan = $('#task-modal').find('span[name="bookmark-icon"]')
+				let bookmarkSpan = $('.board-footer').find('span[name="bookmark-icon"]')
 				bookmarkSpan.empty();
 				
 				if(bookmark.checkBookmark == 'bookmark'){
@@ -1938,10 +1939,6 @@
 						// 좋아요 여부 / 좋아요 전체 수
 						getPrjLike('${memberInfo.memberId}', prjBoardId);
 						
-						// 좋아요 등록/해제
-						$('span[name="prjLike"]').on('click', function() {
-						    likeBoard('${memberInfo.memberId}', prjBoardId, 'C8');
-						});
 						
 						// 북마크 정보
 						getBookmarkInfo('${memberInfo.memberId}', prjBoardId);
@@ -1965,6 +1962,7 @@
 					dataType:"JSON",
 					success:function(result){
 						console.log(result)
+						let prjBoardId = boardId;
 				     	//북마크 여부 조회   board-footer   data-bookmark   img
 				     	if(result.markedUserId==="yes"){
 				     		console.log($('.prjSche-modal__content span[data-bookmark]'))
@@ -2016,15 +2014,14 @@
 		                	nonAttendBtn.attr('class', 'active');
 		                	attendBtn.attr('class', 'btn-green');
 		                }
-						//댓글 조회
-				     	getCommentList(result.boardVO.prjBoardId, 'C6')
-						//좋아요 조회
-				     	getPrjLike('${memberInfo.memberId}', boardId)
-						// 좋아요 등록/해제
-						$('span[name="prjLike"]').on('click', function() {
-						    likeBoard('${memberInfo.memberId}', boardId, 'C6');
-						    $('span[name="prjLike"]').off()
-						});
+						
+				     	//댓글 정보		     	
+				     	getCommentList(prjBoardId, 'C6');
+				     	
+						// 좋아요 여부 / 좋아요 전체 수
+						getPrjLike('${memberInfo.memberId}', prjBoardId);
+						
+
 						// 북마크 정보
 						getBookmarkInfo('${memberInfo.memberId}', prjBoardId);
 					},
@@ -2035,6 +2032,20 @@
 			}
 		};
 		
+		// 좋아요 등록/해제
+		$('span[name="prjLike"]').on('click', function(e) {
+			console.log(e.currentTarget)
+			let boardContainer = $(e.currentTarget).parent().parent().parent();
+			console.log(boardContainer)	
+			let type = boardContainer.find('input[type="hidden"]').attr('id')
+			console.log(type)
+			if(type === 'prjScheId'){
+				likeBoard('${memberInfo.memberId}', prjBoardId, 'C6');
+			}else if(type==='prjTaskId'){
+			    likeBoard('${memberInfo.memberId}', prjBoardId, 'C8');
+			}
+		    
+		});
 		
 		
 		
