@@ -2007,19 +2007,40 @@
 						//참석자 불참석자 확인
 						$('.sche-particir-count').text(result.scheVO.attendanceYes);
 						$('.sche-nonParticir-count').text(result.scheVO.attendanceNo);
+						
+						
+						let overDate = `<span class="over_period">(기간종료)</span>`;
+	                    let currentTime = new Date();
+	                    let endTime = new Date(result.scheVO.endDate);
+						let DateBox = $('.prjSche-modal__content').find('div.sche-date');
+						
+	                    //날짜 확인
+	                    if(endTime < currentTime) {
+	                       DateBox.css('color', 'var(--color-dark-white)');
+							$('.sche-date span[data-start]').text(result.scheVO.startDate);
+							$('.sche-date span[data-end]').text(result.scheVO.endDate);
+                           DateBox.append(overDate);
+                           $('.sche-btns button').prop('disabled', true);
+	                    } else {
+	                    	DateBox.css('color', 'var(--color-dark-red)');
+							$('.sche-date span[data-start]').text(result.scheVO.startDate);
+							$('.sche-date span[data-end]').text(result.scheVO.endDate);
+                            $('.sche-btns button').prop('disabled', false);
+                            $('.over_period').remove();
+	                    }
 						//시작일 확인
 						$('.sche-date span[data-start]').text(result.scheVO.startDate);
 						//마감일 확인
 						$('.sche-date span[data-end]').text(result.scheVO.endDate);
+						
 						//주소확인
-						if(result.scheVO.scheAddrDetail===null){
-							result.scheVO.scheAddrDetail = ""
-						}
 						if(result.scheVO.scheAddr != null) {
+							result.scheVO.scheAddrDetail =  result.scheVO.scheAddrDetail != null ?  result.scheVO.scheAddrDetail : '';
 							$('.sche-addr').append('<span class="sche-addr__info"> ' + result.scheVO.scheAddr + result.scheVO.scheAddrDetail + '</span>');
 		                }else {
 		                	$('.sche-addr').empty();
 		                }
+						//내용
 						$('.board-content div').append(result.boardVO.prjBoardSubject);
 		                //일정 참여 여부
    						let attendBtn = $('.prjSche-modal__content .sche-btns').find('button[name="attend"]');

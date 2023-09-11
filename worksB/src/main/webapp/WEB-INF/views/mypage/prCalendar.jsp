@@ -256,6 +256,7 @@
 		height : 30px;
 		background-color: #06b306b3;
 	}
+	
 	.tdlView{
 		padding : 30px;
 	}
@@ -597,262 +598,44 @@
 		cursor: pointer;
 		padding-left: 10px;
 	}
-	
-	
-	/* 일정 수정 모달  */
-	
-	.modal {
-		left: 0;
+
+	/* todoList 모달 */
+	#tdlModal .modal-header{
+		background-color: var(--color-beigie);
+	    font-weight: bolder;
 	}
-		.sche-date {
-		font-weight: var(--weight-bold);
-		font-size: 15px;
-		color: var(--color-dark-red);
-		margin: 10px 40px;
+	#tdlModal .modal-header h5{
+	    font-weight: bolder;
 	}
-	
-	.sche-addr {
-		font-weight: var(--weight-bold);
-		font-size: 15px;
-		color: var(--color-dark-grey);
-		margin: 10px 40px;
+	#tdlModal .modal-content {
+	    height: 600px;
+	    overflow: auto;
 	}
-	
-	.sche-date .text, .task-manager .text {
-		font-size: 15px;
-		color: var(--color-dark-grey);
-	}
-	
-	.sche-alarm {
-		font-weight: var(--weight-bold);
-		font-size: 15px;
-		color: var(--color-light-blue);
-	}
-		
-	.sche-btns {
-		margin: 20px auto;
-		text-align: center;
-	}
-	
-	.sche-btns button {
-		width: 70px;
-		height: 35px;
-		background-color: var(--color-light-red);
-		border-radius: 5px;
-		color: white;
-		font-weight: var(--weight-bold);
-		margin: 0 20px;
-		transition: all 0.3s;
-	}
-	
-	.sche-btns button:hover, .sche-btns button.active {
-		background-color: var(--color-dark-red);
-	}
-	
-	.btn-green {
-		background-color: #def4c6 !important;
-	}
-	
-	.btn-green:hover, .btn-green.active {
-		background-color: var(--color-green) !important;
-	}
-	.sche-particir, .sche-nonParticir {
-		font-size: var(--font-micro);
-		padding: 0 10px;
-		cursor: pointer;
-	}
-	
-	.sche-particir {
-		color: var(--color-green) !important;
-	}
-	
-	.sche-nonParticir {
-		color: var(--color-dark-red) !important;
-	}
-	.profile{
-		width: 10%;
-		height: 10%;
-	}
-	.sche-startDate, .sche-endDate, .sche-addr-info{
-		display: inline-block;
-	}
-	.sche-addr-info{
-		width: 200%;
-	}
-	div[data-prioriy] {
-		font-size: var(--font-micro);
-		color: var(--color-green);
-		font-weight: var(--weight-bold);
-	}
-	.insert-board-modal {
-		border: 1px solid var(--color-dark-beigie);
-	    border-radius: 20px;
-	    width : 50%;
-	    height: 720px;
-	    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-	    margin: 5px auto;
-	    background-color: white;
-	    font-size: 18px;
-	}
-	
-	.insert-board-modal-header {
-		margin: 30px 30px 0 30px;
-	}
-	
-	.insert-board-modal-title {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		font-weight: var(--weight-bold);
-		color: var(--color-dark-grey);
-	}
-	
-	.insert-board-list {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		text-align: center;
-	}
-	
-	.insert-list-item {
-		flex-grow: 1;
-		cursor: pointer;
-		transition: all 0.5s;
-		margin-top: 15px;
-		font-size: var(--font-micro);
-	    color: var(--color-dark-grey);
-	    padding: 5px 0;
-	    border-bottom: 2px solid var(--color-dark-beigie);
-	}
-	
-	.insert-list-item:hover {
-		border-bottom: 2px solid var(--color-dark-red);
-	}
-	
-	.dis-none {
-		display: none;
-	}
-	
-	.d-b {
-		display: block !important;
-	}
-	.insert-board-area {
+	#tdlView{
+		padding-left: 20px;
+		padding-right: 20px;
 		overflow: scroll;
-		overflow-x: hidden;
-		max-height: 550px;
+		overflow-x:hidden;
 	}
 	
-	.insert-board-area::-webkit-scrollbar, .pin-board::-webkit-scrollbar, .bookmark-board-contets::-webkit-scrollbar {
-	    width: 10px;
-	  }
-	  .insert-board-area::-webkit-scrollbar-thumb, .pin-board::-webkit-scrollbar-thumb, .bookmark-board-contets::-webkit-scrollbar-thumb {
-	    background-color: #2f3542;
-	    border-radius: 10px;
-	    background-clip: padding-box;
-	    border: 2px solid transparent;
-	    background-color: var(--color-dark-beigie);
-	  }
-	  .insert-board-area::-webkit-scrollbar-track, .pin-board::-webkit-scrollbar-track, .bookmark-board-contet::-webkit-scrollbar-track {
-	    background-color: grey;
-	    border-radius: 10px;
-	    box-shadow: inset 0px 0px 5px white;
-	    background-color: var(--color-dark-beigie);
-	  }
-	
-	.board-form {
-		margin: 10px 30px 0;
+	#tdlView .modal-body{
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	#tdlFormView{
 		color: var(--color-dark-grey);
-		
+	    font-weight: bolder;
+	    font-size: 15px;
 	}
-	
-	.board-form-title {
-		width: 100%;
-		height: 50px;
-		border-bottom: 1px solid var(--color-dark-beigie);
-		padding: 0 10px;
-		margin-bottom: 20px;
+	.tdlviewtitle{
+	    color: var(--color-blue);
+	    font-size: 20px;
+	    font-weight: bolder;
+	} 
+	.tdlviewtitle .tdlListTitle {
+		color: var(--color-dark-grey);
 	}
-	
-	.ck.ck-list__item .ck-button {
-	    width: 90% !important;
-	}
-	
-	.ck-editor__editable {
-	    min-height: 700px;
-	}
-	
-	.modal-footer {
-		margin: 0 30px;
-		display: block;
-		text-align: right;
-	}
-	
-	.modal-footer-select {
-		width : 200px;
-		height : 40px;
-		border : 1px solid var(--color-dark-beigie);
-	}
-	
-	.modal-footer-btn {
-		width: 100px;
-		height: 50px;
-		border-radius: 5px;
-		background-color: var(--color-dark-beigie);		
-		color: var(--color-light-grey);	
-		transition: all 0.5s;
-		font-size: var(--font-micro);
-		margin-bottom: 20px;
-	}
-	
-	.modal-footer-btn:hover {
-		background-color: var(--color-dark-red);	
-		color: white;
-	}
-	
-	.board-state {
-		text-align: left;
-	}
-	
-	.board-state label {
-		width: 70px;
-		height: 14px;
-		background-color: var(--color-dark-beigie);
-		padding: 10px;
-		border-radius: 5px;
-		color: white;
-		font-weight: var(--weight-bold);
-		line-height: 14px;
-		cursor: pointer;
-		text-align: center;
-		margin: 0 10px;
-		margin-bottom: 20px;
-	}
-	
-	.board-state input:checked + label {
-		background-color: var(--color-dark-red);
-		border: 3px solid var(--color-dark-red);
-	}
-	.sche__search{
-		margin : 20px 0;
-		cursor: default;
-	}
-	.board-comment {
-	    padding: 5px 40px;
-	    border-top: 1px solid var(--color-dark-beigie);
-	    display: flex;
-	    align-items: center;
-	    justify-content: space-between;
-	    color: var(--color-dark-grey);
-	}
-	.board-comment img {
-	    margin: 10px 20px 10px 0;
-	}
-	.profileImg{
-	    width: 40px;
-	    height: 40px;
-	    border-radius: 10px;
-	}
-	
+	/* 참여자 */	
 	#taskManager-modal, #scheParticr-modal{
 		position: absolute;
 		width: 100%;
@@ -885,7 +668,7 @@
 	}
 	.particir-visible {
 		display: block !important;
-
+	}
 	.processivity {
 		cursor: pointer;
 	}
@@ -893,6 +676,9 @@
 	.processivity-value {
 		transition: all 0.5s;
 	}
+	
+	/* 일정 수정 모달  */
+
 	/*오류 : css안입혀짐  */
 	div[data-state] button.active{
 		background-color: var(--color-dark-red) !important;
@@ -909,24 +695,7 @@
 	    width: 130px !important;
 	}
 	
-	/* todoList */
-	
-	.tdlViewTitle{
-	    color: var(--color-blue);
-	    font-size: 20px;
-	    font-weight: bolder;
-	} 
-	#tdlView .modal-body {
-	    position: relative;
-	    flex: 1 1 auto;
-	    padding: 1rem;
-	    color: var(--color-blue);
-	    font-size: 20px;
-	    font-weight: bolder;
-	}
-	.tdlViewTitle .tdlListTitle {
-		color: var(--color-dark-grey) !important;
-	}
+
 </style>
 </head>
 <!-- full calendar  -->
@@ -1026,7 +795,8 @@
 			      	<form id="tdlFormInsert">
 				      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요"><hr>
 				      	<label for="memberId">작성자 : </label><input name="memberId" type="text" value="${memberInfo.memberName }" readonly><br>
-				      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker5"  autocomplete="off">
+				      	<label for="applyDate">To Do List 해당일자 : </label>
+				      	<input name="applyDate" type="text" id="datetimepicker5"  autocomplete="off">
 			      	</form>
 			      	<div class="tdlList">
 			      	</div>
@@ -1041,24 +811,34 @@
 	      <div id="tdlView">
 		  	<div class="modal-body">
 		      	<form id="tdlFormView">
-			      	<div class="tdlViewTitle">
+			      	<input id="listId" name="listId" type="text" hidden="hidden">
+			      	<input name="memberId" type="hidden" value="${memberInfo.memberId}" >
+			      	<div class="tdlviewtitle">
 			      		<span>[제목] </span>
 				      	<span name="listTitle" class="tdlListTitle" ></span>
 				      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요">
 			      	</div>
 			      	<hr>
-			      	<label for="memberId">작성자 : </label><input name="memberId" type="text" value="${memberInfo.memberName }" readonly><br>
-			      	<label for="applyDate">To Do List 해당일자 : </label><input name="applyDate" type="text" id="datetimepicker6"  autocomplete="off">
-			      	<input id="listId" name="listId" type="text" hidden="hidden">
+			      	<div>
+				      	<span>작성자 : ${memberInfo.memberName }</span>
+			      	</div>
+			      	<div>
+				      	<label for="applyDate">To Do List 해당일자 : </label>
+				      	<span class="applyDate"></span>
+				      	<input name="applyDate" type="text" id="datetimepicker6"  autocomplete="off">
+			      	</div>
 		      	</form>
-	      		<hr>
-	      		<p>To Do List 진행도</p>
-	      		<div class="progress-bar">
-	      			<div class="progress-bar__line"></div>
+	      		<div class="tdl_content">
+		      		<hr>
+		      		<p>To Do List 진행도</p>
+		      		<div class="progress-bar">
+		      			<div class="progress-bar__line"></div>
+		      		</div>
+		      		<p>To Do List 목록</p>
+		      		<hr>
+			      	<div class="tdlList-view">
+			      	</div>
 	      		</div>
-	      		<p>To Do List 목록</p>
-		      	<div class="tdlList-view">
-		      	</div>
 	      	</div>
 	        <div class="modal-footer">
 	          <button type="button" form="tdlFormView" class="btn btn-primary" id="tdlUpdateBtn">TDL 수정</button>
@@ -1860,12 +1640,14 @@
 	    				$('#tdlFormView input').prop("readonly",true); */
 	    				
 	    				$('#tdlFormView span[name="listTitle"]').empty();
-	    				$('#tdlFormView .tdlViewTitle span').prop('hidden',false)
+	    				$('#tdlFormView .tdlviewtitle span').prop('hidden',false)
 	    				$('#tdlFormView span[name="listTitle"]').text(result.todoList[0].listTitle);
 	    				$('#tdlFormView input[name="listTitle"]').val(result.todoList[0].listTitle).prop('hidden', true);
 	    				
+	    				//날짜 조회
 	    				let applyDate = result.todoList[0].applyDate.substr(0,10);
-	    				$('#datetimepicker6').val(applyDate).datetimepicker('destroy');
+	    				$('#tdlFormView .applyDate').text(applyDate).prop('hidden',false)
+	    				$('#datetimepicker6').val(applyDate).prop('hidden',true).datetimepicker('destroy');
 	    				$('#listId').val(result.todoList[0].listId);
     					$('.tdlList-view').append('')
     					//ITEM항목 생성
@@ -2271,11 +2053,12 @@
 		//tdl 수정폼
 		function tdlUpdateForm(result){
 			$('#tdlFormView span[name="listTitle"]')
-		
-			$('#tdlFormView .tdlViewTitle span').prop('hidden',true)
+			//제목
+			$('#tdlFormView .tdlviewtitle span').prop('hidden',true)
 			$('#tdlFormView input[name="listTitle"]').prop('hidden',false).focus();
-			
-			$('#tdlFormView input').eq(2).prop("readonly",false);
+			//날짜
+			$('#tdlFormView .applyDate').prop("hidden",true);
+			$('#datetimepicker6').prop("hidden",false);
 			$('#datetimepicker6').datetimepicker({
 			    format:'Y-m-d',
 			    lang:'kr',
