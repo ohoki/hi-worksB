@@ -21,6 +21,12 @@
 		<security:intercept-url pattern="/selectMember" access="permitAll" />
 		<security:intercept-url pattern="/loginForm" access="permitAll" />
 		<security:intercept-url pattern="/registerForm" access="permitAll" />
+		<security:intercept-url pattern="/insertMember" access="permitAll" />
+		<security:intercept-url pattern="/insertMember" access="permitAll" />
+		<security:intercept-url pattern="/makeCertificationNumber" access="permitAll" />
+		<security:intercept-url pattern="/confirmCertificationNumber" access="permitAll" />
+		<security:intercept-url pattern="/updateMember" access="permitAll" />
+		<security:intercept-url pattern="/registerEmail" access="permitAll" />
 		<security:intercept-url pattern="/admin/**" access="hasRole('H1')"/>
 		<security:intercept-url pattern="/member/**" access="hasAnyRole('H1', 'H2')"/>
 		<security:intercept-url pattern="/**" access="hasAnyRole('H1', 'H2', 'H3')"/>	

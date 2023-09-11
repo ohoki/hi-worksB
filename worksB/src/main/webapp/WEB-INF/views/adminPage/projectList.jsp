@@ -8,6 +8,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	#prj-list-title {
+		margin: 0;
+	    color: var(--color-dark-grey);
+	    font-size: var(--font-regular);
+	    padding: 0 30px;
+	    margin: 30px 0;
+	}
+	
 	button[id=managerBtn] {
 		/* display:none; */
 		background-color: var(--color-green);
@@ -44,7 +52,8 @@
 		color : var(--color-dark-grey);
 		margin: 20px auto;
 		text-align: center;
-		font-size:20px;
+		font-size:18px;
+		border-collapse: collapse;
 	}
 	thead{
 		background-color: #FEEDD6;
@@ -275,12 +284,9 @@
 </style>
 </head>
 <body>
-
-	<div>
-		<p>프로젝트 목록</p>
-	</div>
+	<h1 id="prj-list-title">프로젝트 목록</h1>
 	<div id="prj-list">
-		<table>
+		<table style="width: 80%; margin: 70px auto 30px;">
 			<thead>
 				<tr>
 					<td>프로젝트명</td>
@@ -305,7 +311,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="paging" style="text-align: center">
+	<div class="paging" style="text-align: center; font-size: var(--font-micro);">
 					<!-- 이전 --> 
 				<c:if test="${paging.startPage!=1 } " >
 					<a href="javascript:search(${paging.startPage - 1 })">&lt이전</a>

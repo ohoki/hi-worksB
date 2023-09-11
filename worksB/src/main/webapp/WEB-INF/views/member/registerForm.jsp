@@ -10,7 +10,7 @@
 <body>
 	<div class="register-form-box">
 		<h1 class="register-form-box__title">회원가입</h1>
-		<form action="insertMember" method="post" class="register-form">
+		<form action="${pageContext.request.contextPath }/insertMember" method="post" class="register-form">
 			<label for="memberId">이메일
 				<div class="member-id-box">
 					<input type="email" placeholder="example@gmail.com" id="memberId" name="memberId" required>
@@ -51,7 +51,7 @@
 			}
 			
 			$.ajax({
-				url: 'selectMember?memberId='+id,
+				url: '${pageContext.request.contextPath}/selectMember?memberId='+id,
 				type: 'get',
 				success : function(data) {
 					if(data == 1) {
