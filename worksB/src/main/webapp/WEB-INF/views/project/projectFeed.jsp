@@ -1523,7 +1523,8 @@
 						<c:forEach items="${particirList }" var="particir">
 							<li class="employee">
 								<img class="employee-img" src="${pageContext.request.contextPath }/images/${particir.realProfilePath}" alt="회원 프로필 사진" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
-								<span>${particir.memberName }</span>									
+								<span>${particir.memberName }</span>
+								<input type="hidden" value="${particir.memberId }">								
 							</li>						
 						</c:forEach>						
 					</ul>
@@ -2638,7 +2639,7 @@
 			success : function(comments){
 				let commentUpdate = `
 						<div class="d-flex">
-							<img src="${pageContext.request.contextPath}/images/\${comments.realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='\${pageContext.request.contextPath}/resources/img/user.png'">
+							<img src="${pageContext.request.contextPath}/images/\${comments.realProfilePath }" alt="회원 프로필 사진" class="profile" onerror="this.src='${pageContext.request.contextPath}/resources/img/user.png'">
 							<div>
 								<input type="text" name="commentContent" value="\${comments.commentContent}">
 							</div>								

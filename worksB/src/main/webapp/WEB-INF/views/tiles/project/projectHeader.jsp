@@ -220,7 +220,7 @@
 			<li><a href="${pageContext.request.contextPath}/projectCalendar?projectId=${projectInfo.projectId}">캘린더</a></li>
 			<li onclick="location.href='${pageContext.request.contextPath }/filetab?projectId=${projectInfo.projectId}&fileAccess=${projectInfo.fileAccess }'">파일</li>
 			<c:if test="${particirInfo.manager eq 'A1'}">
-				<button type="button" id="accpList" class="particir-check-btn" data-id="${projectInfo.projectId}">참여신청자</button>
+				<li id="accpList" data-id="${projectInfo.projectId}">참여신청자</li>
 			</c:if>
 		</ul>
 	</div>
@@ -329,8 +329,8 @@
 
 	// 프로젝트 참여 승인
 	$('#accpList').on('click', function(e){
-		let x = e.clientX + 200;
-		let y = e.clientY;
+		let x = e.clientX - 50;
+		let y = e.clientY + 130;
 		
 		$('.particirAccp-modal-content').css('left', x + 'px');
 		$('.particirAccp-modal-content').css('top', y + 'px');
