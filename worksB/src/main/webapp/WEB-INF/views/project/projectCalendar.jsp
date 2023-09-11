@@ -1274,16 +1274,16 @@
 			success : function(like){
 				console.log(like)
 				// 게시글 좋아요 수
+				getPrjLike(memberId, boardId);
 				let likeSpan = $('.board-footer').find('span[name="prjLike"] span');
 				likeSpan.empty();
-				getPrjLike(memberId, boardId);
 				
-/* 				// 좋아요 상태 표시
-				if(like.checkLike === 'like'){
+				// 좋아요 상태 표시
+				if(like.checkLike == 'like'){
 					likeSpan.append("좋아요 해제");
 				}else{
 					likeSpan.append("좋아요");
-				} */
+				}
 			},
 			error : function(reject){
 				console.log(reject)
@@ -1299,6 +1299,8 @@
 			type : 'GET',
 			data : {'memberId': memberId, 'boardId' : boardId},
 			success : function(likeInfo){
+				console.log(likeInfo)
+			
 				// 게시글 좋아요 수
 				$('#task-modal').find('span[data-likeCount]').text(likeInfo.boardLike.length);
 				$('#prjSche-modal').find('span[data-likeCount]').text(likeInfo.boardLike.length);
@@ -1315,7 +1317,7 @@
 					likeSpan.append("좋아요");
 				}
 				//일정
-				if(scheLikeSpan.memberLike != null) {
+				if(likeInfo.memberLike != null) {
 					scheLikeSpan.append("좋아요 해제");
 				} else {
 					scheLikeSpan.append("좋아요");
@@ -1939,6 +1941,21 @@
 						// 좋아요 여부 / 좋아요 전체 수
 						getPrjLike('${memberInfo.memberId}', prjBoardId);
 						
+						// 좋아요 등록/해제
+						$('span[name="prjLike"]').on('click', function(e) {
+							console.log(e.currentTarget)
+							let boardContainer = $(e.currentTarget).parent().parent().parent();
+							console.log(boardContainer)	
+							let type = boardContainer.find('input[type="hidden"]').attr('id')
+							let prjBoardId = boardContainer.find('input[type="hidden"]').val();
+							console.log(type)
+							if(type === 'prjScheId'){
+								likeBoard('${memberInfo.memberId}', prjBoardId, 'C6');
+							}else if(type==='prjTaskId'){
+							    likeBoard('${memberInfo.memberId}', prjBoardId, 'C8');
+							}
+						    
+						});
 						
 						// 북마크 정보
 						getBookmarkInfo('${memberInfo.memberId}', prjBoardId);
@@ -2021,7 +2038,22 @@
 						// 좋아요 여부 / 좋아요 전체 수
 						getPrjLike('${memberInfo.memberId}', prjBoardId);
 						
-
+						// 좋아요 등록/해제
+						$('span[name="prjLike"]').on('click', function(e) {
+							console.log(e.currentTarget)
+							let boardContainer = $(e.currentTarget).parent().parent().parent();
+							console.log(boardContainer)	
+							let type = boardContainer.find('input[type="hidden"]').attr('id')
+							let prjBoardId = boardContainer.find('input[type="hidden"]').val();
+							console.log(type)
+							if(type === 'prjScheId'){
+								likeBoard('${memberInfo.memberId}', prjBoardId, 'C6');
+							}else if(type==='prjTaskId'){
+							    likeBoard('${memberInfo.memberId}', prjBoardId, 'C8');
+							}
+						    
+						});
+						
 						// 북마크 정보
 						getBookmarkInfo('${memberInfo.memberId}', prjBoardId);
 					},
@@ -2032,20 +2064,7 @@
 			}
 		};
 		
-		// 좋아요 등록/해제
-		$('span[name="prjLike"]').on('click', function(e) {
-			console.log(e.currentTarget)
-			let boardContainer = $(e.currentTarget).parent().parent().parent();
-			console.log(boardContainer)	
-			let type = boardContainer.find('input[type="hidden"]').attr('id')
-			console.log(type)
-			if(type === 'prjScheId'){
-				likeBoard('${memberInfo.memberId}', prjBoardId, 'C6');
-			}else if(type==='prjTaskId'){
-			    likeBoard('${memberInfo.memberId}', prjBoardId, 'C8');
-			}
-		    
-		});
+
 		
 		
 		
