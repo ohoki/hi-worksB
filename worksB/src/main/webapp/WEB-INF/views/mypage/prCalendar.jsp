@@ -246,20 +246,7 @@
 		width : 350px;
 		margin-bottom : 20px;
 	}
-	.progress-bar{
-		height: 30px;
-		width : 70%;
-		background-color: #6c757d5c;
-		border-radius: 30px; 
-	}
-	.progress-bar__line{
-		height : 30px;
-		background-color: #06b306b3;
-	}
-	
-	.tdlView{
-		padding : 30px;
-	}
+
 	.modal-content{
 		height: 600px;
 		overflow: auto;
@@ -635,6 +622,35 @@
 	.tdlviewtitle .tdlListTitle {
 		color: var(--color-dark-grey);
 	}
+	#tdlView .tdl_content{
+		color: var(--color-dark-grey);
+	    font-weight: bolder;
+	    font-size: 15px;
+	}
+	.progress-bar{
+		height: 30px;
+		width : 100%;
+		background-color: #6c757d5c;
+		border-radius: 30px; 
+		margin-bottom: 5px;
+	}
+	.progress-bar__line{
+		height : 30px;
+		background-color: #06b306b3;
+	}
+	.tdlView{
+		padding : 30px;
+	}
+	.tdlList-view input[type="text"]{
+		margin-left : 5px;
+		color: var(--color-dark-grey);
+	    font-weight: bolder;
+		font-size: 15px
+	}
+	
+	
+	
+	
 	/* 참여자 */	
 	#taskManager-modal, #scheParticr-modal{
 		position: absolute;
@@ -835,7 +851,6 @@
 		      			<div class="progress-bar__line"></div>
 		      		</div>
 		      		<p>To Do List 목록</p>
-		      		<hr>
 			      	<div class="tdlList-view">
 			      	</div>
 	      		</div>
@@ -1450,7 +1465,7 @@
 	
 	//tdl line 추가
 	$(document).on('click', '.addTdlLine', function(){
-		if($(this).parent().parent().attr("class")==="div_block"){
+		if($(this).parent().parent().parent().attr("class")==="div_block"){
 			let divTag = $('<div></div>')
 			let chkBoxTag = $('<input>').attr("type", "checkbox").attr("name", "success").attr("value","A1");
 			let inputTag = $('<input>').attr("type", "text").attr("name", "content").attr("placeholder","List를 입력하세요");
@@ -1653,7 +1668,7 @@
     					//ITEM항목 생성
 	    				for(let i = 0; i<result.item.length;i++){
 							let divTag = $('<div></div>')
-							let chkBoxTag = $('<input>').attr("type", "checkbox");
+							let chkBoxTag = $('<input>').attr("type", "checkbox").attr("id", "input-"+result.item[i].itemId);
 							if(result.item[i].success==="A1"){
 								chkBoxTag.prop("checked",true);
 							}
