@@ -23,7 +23,7 @@
 		<security:intercept-url pattern="/registerForm" access="permitAll" />
 		<security:intercept-url pattern="/admin/**" access="hasRole('H1')"/>
 		<security:intercept-url pattern="/member/**" access="hasAnyRole('H1', 'H2')"/>
-		<security:intercept-url pattern="/**" access="permitAll"/>	
+		<security:intercept-url pattern="/**" access="hasAnyRole('H1', 'H2', 'H3')"/>	
 		<security:form-login 
 			username-parameter="memberId"
 			password-parameter="memberPw"

@@ -193,7 +193,7 @@
 					<option value="A1">만료</option>
 				</select>
 				<c:if test="${memberInfo.memberGrade ne 'H3'}">
-					<button onclick="location.href='${pageContext.request.contextPath }/projectInsert'">프로젝트 생성</button>
+					<button onclick="location.href='${pageContext.request.contextPath }/member/projectInsert'">프로젝트 생성</button>
 				</c:if>
 			</div>
 		</div>

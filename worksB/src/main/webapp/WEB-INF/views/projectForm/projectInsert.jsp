@@ -13,7 +13,7 @@
 <body>
 	<!-- 이진 -->
     <p class="form__title">프로젝트 만들기</p>
-    <form class="project-create-form" action="projectInsert" method="post">
+    <form class="project-create-form" action="${pageContext.request.contextPath }/member/projectInsert" method="post">
         <div>
             <input type="text" class="form__input-title" name="projectName" placeholder="제목을 입력하세요." required>
         </div>

@@ -52,10 +52,9 @@ public class memberController {
 	@Autowired
 	CompanyController cc;
 	
-	@GetMapping("/member/memberList")
+	@GetMapping("/memberList")
 	@ResponseBody
 	public List<MemberVO> getMemberList(MemberVO memberVO) {
-		System.out.println("====================" + memberVO);
 		return memberService.getMemberListByCompany(memberVO);
 	}
 	
@@ -73,7 +72,7 @@ public class memberController {
 	}// selectMember
 	
 	//회원 단건 조회
-	@GetMapping("/member/getMember")
+	@GetMapping("/getMember")
 	@ResponseBody
 	public MemberVO getMember(MemberVO memberVO) {
 		return memberService.selectMember(memberVO);
@@ -224,7 +223,7 @@ public class memberController {
 	
 	
 //================== 회원 정보 수정 =================================
-	@GetMapping("member/updateForm")
+	@GetMapping("/updateForm")
 	public String updateForm(HttpSession session, Model model) {
 		CompanyVO company = (CompanyVO)session.getAttribute("companyInfo");
 		
@@ -257,7 +256,7 @@ public class memberController {
 	}//updateMember
 	
 	//프로필 사진 수정
-	@PostMapping("/member/updateProfile")
+	@PostMapping("/updateProfile")
 	@ResponseBody
 	public boolean updateProfile(MemberVO memberVO, @RequestPart MultipartFile image, HttpSession session) {
 		MemberVO dbMember = memberService.selectMember(memberVO);
@@ -296,13 +295,13 @@ public class memberController {
 	}//updateProfile
 	
 	//패스워드 변경 페이지
-	@GetMapping("/member/updatePwForm")
+	@GetMapping("/updatePwForm")
 	public String updatePwForm() {
 		return "company/updatePwForm";
 	}//updatePwForm
 	
 	//패스워드 확인
-	@PostMapping("/member/pwCheck")
+	@PostMapping("/pwCheck")
 	@ResponseBody
 	public boolean pwCheck(HttpSession session, String memberPw) {
 		String oldPw = UserSha256.encrypt(memberPw);
@@ -315,7 +314,7 @@ public class memberController {
 	}//pwCheck
 	
 //========== 회사 등록 ==================
-	@GetMapping("/member/companyRegisterForm")
+	@GetMapping("/companyRegisterForm")
 	public String companyRegisterForm() {
 		return "member/companyRegisterForm";
 	}//companyRegisterForm
@@ -344,7 +343,7 @@ public class memberController {
 	}
 
 	//회원 초대
-	@GetMapping("/member/inviteMember")
+	@GetMapping("/inviteMember")
 	@ResponseBody
 	public int inviteMember(String invitedId, HttpSession session) {
 		CompanyVO cv = (CompanyVO)session.getAttribute("companyInfo");

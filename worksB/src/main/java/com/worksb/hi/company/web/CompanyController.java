@@ -42,7 +42,7 @@ public class CompanyController {
 	MemberService memberService;
 	
 	//회사정보 등록
-	@PostMapping("/member/insertCompany")
+	@PostMapping("/insertCompany")
 	public String insertCompnay(CompanyVO companyVO, @RequestPart MultipartFile logo, HttpSession session, Model model) {
 		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
 		String message = null;
@@ -114,7 +114,7 @@ public class CompanyController {
 	}
 	
 	//회사 참여
-	@PostMapping("/member/practiceCompany")
+	@PostMapping("/practiceCompany")
 	public String practiceCompany(CompanyVO companyVO, HttpSession session) {
 		CompanyVO dbCompany = companyService.getCompanyByUrl(companyVO);
 		MemberVO member = new MemberVO();

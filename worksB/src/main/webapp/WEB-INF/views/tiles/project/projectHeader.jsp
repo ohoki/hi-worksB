@@ -232,7 +232,7 @@
 			<div class="modal-body">
 				<ul id="menuList">
 					<c:if test="${particirInfo.manager eq 'A1'}">
-						<li onclick="location.href='${pageContext.request.contextPath }/projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
+						<li onclick="location.href='${pageContext.request.contextPath }/member/projectUpdate?projectId=${projectInfo.projectId}'">프로젝트 수정</li>	
 					</c:if>
 					<c:if test="${particirInfo.manager eq 'A1'}">
 						<li class="projectCls">프로젝트 만료</li>	
@@ -242,53 +242,6 @@
 					</c:if>
 					
 				</ul>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="modal" tabindex="-1" id="subMenuModal12">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">프로젝트 나가기</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<p>프로젝트 나가기</p>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal" tabindex="-1" id="subMenuModal13">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">프로젝트 수정</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<p>프로젝트 수정</p>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal secondModal" tabindex="-1" id="subMenuModal14">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">프로젝트 삭제</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<p>프로젝트 삭제</p>
-			</div>
-			<div class="modal-footer">
-			    <button type="button" class="btn btn-primary" onclick="location.href='projectDelete?projectId=${projectInfo.projectId}'">삭제</button>
-			    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 			</div>
 		</div>
 	</div>
@@ -518,7 +471,7 @@
 		let check = confirm("프로젝트를 만료하시겠습니까?");
 		if(check){
 			$.ajax({
-				url: '${pageContext.request.contextPath}/updateProjectCls',
+				url: '${pageContext.request.contextPath}/member/updateProjectCls',
 				type: 'POST',
 				data: {'projectId' : '${projectInfo.projectId}'},
 				success: function(response){

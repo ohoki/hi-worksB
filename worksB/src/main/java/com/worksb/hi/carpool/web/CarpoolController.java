@@ -1,9 +1,6 @@
 package com.worksb.hi.carpool.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,7 +22,6 @@ import com.worksb.hi.common.SearchVO;
 import com.worksb.hi.company.service.CompanyVO;
 import com.worksb.hi.member.service.MemberVO;
 
-@RequestMapping("/member")
 @Controller
 public class CarpoolController {
 	

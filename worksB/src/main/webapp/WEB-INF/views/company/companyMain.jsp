@@ -28,7 +28,7 @@
 									<li class="d-flex project-list-item" data-prjid="${project.projectId}">
 										<div class="d-flex">
 											<img class="icon" src="${pageContext.request.contextPath }/resources/icon/star-solid.svg" data-bookmark="yes">	
-											<a href="${pageContext.request.contextPath}/member/projectFeed?projectId=${project.projectId}">${project.projectName}</a>
+											<a href="${pageContext.request.contextPath}/projectFeed?projectId=${project.projectId}">${project.projectName}</a>
 										</div>
 										<div class="d-flex">
 											${project.particirNumber }
@@ -74,7 +74,7 @@
 									<li class="d-flex notice-list-item">
 										<div class="d-flex">
 											<img class="icon" alt="즐겨찾기 별" src="${pageContext.request.contextPath }/resources/icon/clipboard-check-solid.svg"> 
-											<a href="${pageContext.request.contextPath}/noticeInfo?noticeId=${notice.noticeId}"><span>[공지사항]</span> ${notice.noticeTitle}</a>
+											<a href="${pageContext.request.contextPath}/member/noticeInfo?noticeId=${notice.noticeId}"><span>[공지사항]</span> ${notice.noticeTitle}</a>
 										</div>
 									</li>
 								</c:forEach>
@@ -272,7 +272,7 @@ $(document).on('click', 'img[data-bookmark]', function(e) {
 		$('.prjParticir-modal-content').css('top', y + 'px');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath }/member/particirList',
+			url : '${pageContext.request.contextPath }/particirList',
 			type : 'GET',
 			data : {'projectId': projectId},
 			success : function(particir){

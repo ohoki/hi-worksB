@@ -221,7 +221,7 @@
 		$('.prjParticir-modal-content').css('top', y + 'px');
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath }/member/particirList',
+			url : '${pageContext.request.contextPath }/particirList',
 			type : 'GET',
 			data : {'projectId': projectId},
 			success : function(particir){

@@ -172,7 +172,7 @@
 		}
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/member/pwCheck',
+			url : '${pageContext.request.contextPath}/pwCheck',
 			type : 'POST',
 			data : {'memberPw' : pw},
 			success : function(data) {

@@ -208,7 +208,7 @@
 			
 			
 			$.ajax({
-				url: '${pageContext.request.contextPath}/member/inviteMember',
+				url: '${pageContext.request.contextPath}/inviteMember',
 				type: 'GET',
 				data: {'invitedId' : invitedId},
 				success : function(result) {
