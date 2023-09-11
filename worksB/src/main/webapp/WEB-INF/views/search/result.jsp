@@ -224,7 +224,7 @@
 	}
 	//클릭시 개별 카풀게시판으로 이동
 	function moveToCarpool(boardId){
-		location.href="${pageContext.request.contextPath}"+"/carpoolInfo?boardId="+boardId
+		location.href="${pageContext.request.contextPath}"+"/member/carpoolInfo?boardId="+boardId
 	}
 	
 	

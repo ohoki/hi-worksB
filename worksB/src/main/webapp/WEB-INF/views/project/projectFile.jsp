@@ -369,7 +369,6 @@
 		if(checkedFile.length != 0){
 			checkedFile.each(function(index, item) {
 				let checkedFileId = $(item).attr('id');
-				
 				// 다운로드 링크 생성
 		        let downloadLink = document.createElement('a');
 		        //다운로드링크주소만들기

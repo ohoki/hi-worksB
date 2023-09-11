@@ -119,7 +119,8 @@ public class AdminController {
 		@RequestMapping("/downloadlist")
 		public String downloaded(Model m,HttpSession session,
 				@RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
-				@RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
+				@RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) 
+		{
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
 			int total=adminService.downloadCount(companyId);
 			PagingVO pagingvo=new PagingVO(total,nowPage,cntPerPage);
@@ -336,22 +337,29 @@ public class AdminController {
 		//날짜로파일다운로드목록조회
 		@GetMapping("/searchByDate")
 		public String searchByDate(HttpSession session,Model m,SearchingVO vo,
-				 @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-				 @RequestParam("endDate")  @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+				@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+			    @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
 				 @RequestParam(value="nowPage", defaultValue ="1") Integer nowPage,
 				 @RequestParam(value="cntPerPage", defaultValue ="10") Integer cntPerPage) {
 			Integer companyId=((CompanyVO)session.getAttribute("companyInfo")).getCompanyId();
-			int total=adminService.countDownloadByDate(companyId,startDate,endDate);
-			//갯수에 따른 페이징
-			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-			FileDataVO fVO=new FileDataVO();
-			fVO.setStartDate(startDate);
-			fVO.setEndDate(endDate);
-			fVO.setCompanyId(companyId);
-			//출력내용
-			List<FileDataVO> list=adminService.filteredFileList(fVO,pagingVO);
-			m.addAttribute("paging",pagingVO);
-			m.addAttribute("list",list);
+			if(startDate == null || endDate == null) {
+				int total=adminService.downloadCount(companyId);
+				PagingVO pagingvo=new PagingVO(total,nowPage,cntPerPage);
+				m.addAttribute("list",adminService.downloadList(companyId,pagingvo));
+				m.addAttribute("paging", pagingvo);
+			}else{
+				int total=adminService.countDownloadByDate(companyId,startDate,endDate);
+				//갯수에 따른 페이징
+				PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+				FileDataVO fVO=new FileDataVO();
+				fVO.setStartDate(startDate);
+				fVO.setEndDate(endDate);
+				fVO.setCompanyId(companyId);
+				//출력내용
+				List<FileDataVO> list=adminService.filteredFileList(fVO,pagingVO);
+				m.addAttribute("paging",pagingVO);
+				m.addAttribute("list",list);
+			}
 			
 			return "admin/downloadedfile";
 		}
@@ -367,4 +375,5 @@ public class AdminController {
 			}else 
 				return 0;
 		}
+
 }

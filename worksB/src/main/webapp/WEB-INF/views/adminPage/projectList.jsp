@@ -350,7 +350,7 @@
 		<div class="change-info-modal-content">
 			<div>
 				<span style="font-weight: var(--weight-bold); margin-right: 20px;">프로젝트이름</span>
-				<span><input value="" placeholder="수정할 이름" id="edited-name" size="20"></span>
+				<span><input value="" placeholder="수정할 이름" id="edited-name" size="20" style="width:300px"></span>
 			</div>
 			<div style="display: flex; align-items: center; margin: 20px 0;">
 				<span style="font-weight: var(--weight-bold); margin-right: 20px;">파일접근권한</span>
@@ -408,8 +408,6 @@
 		
 		$('#change-info-modal input').eq(0).val(projectName);
 		
-		console.log(oldFileAccess);
-		
 		if(oldFileAccess=='J1'){
 			$('#file-access2').prop('checked',true);
 		}else{
@@ -457,12 +455,9 @@
 					$('#change-info-modal').removeClass('modal-visible');
 
 					for(let i=0;i<datasize;i++){
-						console.log($('tbody tr td').eq(i).data('pjid'))
-						console.log(projectId+'projectId')
-						console.log(projectName+'projectName')
-						if($('tbody tr td').eq(i).data('pjid')==projectId){
-							$('tbody tr td').eq(i).text(projectName)
-							//break;
+						if($('#prj-list tbody tr').eq(i).find('td').data('pjid')==projectId){
+							$('#prj-list tbody tr').eq(i).find('td').eq(0).text(projectName)
+							break;
 						}
 					}
 				}
@@ -505,6 +500,9 @@
 					let employeeProfile = document.createElement('img');
 					employeeProfile.setAttribute('alt', '회원사진');
 					employeeProfile.classList.add('employee-img');
+					employeeProfile.onerror=function(){
+						employeeProfile.src = "${pageContext.request.contextPath }/resources/img/user.png";
+					}
 					if(particir[i].realProfilePath != null) {
 						employeeProfile.src = "${pageContext.request.contextPath}/images/"+particir[i].realProfilePath;
 					}else {

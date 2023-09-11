@@ -38,8 +38,6 @@ public class SearchController {
 			m.addAttribute("boardType", 1);
 			return "search/result";
 		}else if(boardType.equals("2")) {
-			//동호회목록(내가참여한 동호회)
-			m.addAttribute("clubList",service.getAllClub(memberId, searchKeyword));
 			//공지사항목록(회사별)
 			m.addAttribute("noticeList",service.getAllNotice(companyId, searchKeyword));
 			//카풀목록(회사별):departuredate칼럼에 이상한 값들어와서 일단은 패쑤
@@ -54,8 +52,6 @@ public class SearchController {
 			m.addAttribute("searchkeyword",searchKeyword);
 			m.addAttribute("boardType", 3);
 			
-			//동호회목록(내가참여한 동호회)
-			m.addAttribute("clubList",service.getAllClub(memberId, searchKeyword));
 			//공지사항목록(회사별)
 			m.addAttribute("noticeList",service.getAllNotice(companyId, searchKeyword));
 			//카풀목록(회사별):departuredate칼럼에 이상한 값들어와서 일단은 패쑤
@@ -88,12 +84,10 @@ public class SearchController {
 		}else if(boardType.equals("2")) {
 			m.addAttribute("searchkeyword",searchKeyword);
 			m.addAttribute("boardType", 2);
-			//동호회목록(내가참여한 동호회)
-			m.addAttribute("clubList",service.getClub(vo));
 			//공지사항목록(회사별)
 			m.addAttribute("noticeList",service.getNotice(vo));
 			//카풀목록(회사별):departuredate칼럼에 이상한 값들어와서 일단은 패쑤
-			//m.addAttribute("carpoolList",service. getCarpool(vo));
+			m.addAttribute("carpoolList",service. getCarpool(vo));
 			
 			return "search/result";
 		}
@@ -104,12 +98,10 @@ public class SearchController {
 			//프로젝트
 			m.addAttribute("prjList",service.getPrj(vo));
 			
-			//동호회목록(내가참여한 동호회)
-			m.addAttribute("clubList",service.getClub(vo));
 			//공지사항목록(회사별)
 			m.addAttribute("noticeList",service.getNotice(vo));
 			//카풀목록(회사별):departuredate칼럼에 이상한 값들어와서 일단은 패쑤
-			//m.addAttribute("carpoolList",service. getCarpool(vo));
+			m.addAttribute("carpoolList",service. getCarpool(vo));
 			return "search/result";
 		}
 	}
