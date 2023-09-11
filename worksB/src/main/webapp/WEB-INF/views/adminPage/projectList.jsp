@@ -31,18 +31,18 @@
 	    margin-left: 30px;
 	}
 	button[class=change-name] {
-		/* display:none; */
-		background-color: var(--color-green);
+		background-color: white;
+		border: 1px solid var(--color-dark-red);
 	    padding: 6px 12px;
 	    cursor: pointer;
 	    width: 60px;
 	    height: 20px;
 	    border-radius: 5px;
 	    font-weight: var(--weight-bold);
-	    color: white;
+	    color: var(--color-dark-red);
 	    line-height: 20px;
 	    font-size: 12px;
-/* 	    margin-left: 30px; */
+	    margin: 5px 0;
 	}
 	div p{
 		text-align:center;
@@ -207,7 +207,6 @@
 		background-color: var(--color-red);
 	}
 	
-	
 	#prjParticir-modal{
 		position: absolute;
 		width: 100%;
@@ -251,13 +250,14 @@
 	
 	.change-info-modal-content {
 		position: absolute;
-		width: 25%;
-		height: 300px;
+		width: 20%;
+		height: 130px;
+		background-color: white;
+		border-radius: 20px;
+		padding: 30px 20px;
+		font-size: var(--font-micro);
 	}
-	#change-info-modal input{
-		height:30px;
-		z-index:200;
-	}
+
 	#edit-prj-name{
 		float:right;
 		z-index:200;
@@ -292,8 +292,8 @@
 					<td>프로젝트명</td>
 					<td>관리자</td>
 					<td>참여자수</td>
-					<td>글 수 </td>
-					<td>정보변경</td>
+					<td>게시글 수 </td>
+					<td></td>
 				</tr>
 			</thead>
 			<tbody>
@@ -305,7 +305,7 @@
 							<td class="manager" data-pjid="${list.projectId }">${list.memberId }</td>
 							<td class="participants" data-pjid="${list.projectId }"><a href="#" onmouseover="this.style.fontWeight='bold'" onmouseout="this.style.fontWeight=''">${list.mnumber } 명</a></td>
 							<td>${list.boardcount }</td>
-							<td><button data-pjid="${list.projectId }" data-pjname="${list.projectName }" data-manager="${list.fileAccess }" data-deptid="${list.deptId }"class="change-name">변경하기</button></td>
+							<td><button data-pjid="${list.projectId }" data-pjname="${list.projectName }" data-manager="${list.fileAccess }" data-deptid="${list.deptId }"class="change-name">수정</button></td>
 						</tr>
 					</c:forEach>
 			</tbody>
@@ -349,13 +349,17 @@
 	<div id="change-info-modal" >
 		<div class="change-info-modal-content">
 			<div>
-				<span>프로젝트이름</span>
+				<span style="font-weight: var(--weight-bold); margin-right: 20px;">프로젝트이름</span>
 				<span><input value="" placeholder="수정할 이름" id="edited-name" size="20"></span>
 			</div>
-			<div>
-				<span>파일접근권한</span>
-				<span><label><input type="checkbox" id="file-access2" class="file-access" name="J1" value="J1">프로젝트구성원</label></span>
-				<span><label><input type="checkbox" id="file-access1" class="file-access" name="J3" value="J3">관리자+작성자</label></span>
+			<div style="display: flex; align-items: center; margin: 20px 0;">
+				<span style="font-weight: var(--weight-bold); margin-right: 20px;">파일접근권한</span>
+				<span>
+					<input type="radio" id="file-access2" class="file-access" name="file-access" value="J1"><label for="file-access2" style="cursor: pointer;">프로젝트구성원</label>
+				</span>
+				<span>
+					<input type="radio" id="file-access1" class="file-access" name="file-access" value="J3"><label for="file-access1" style="cursor: pointer;">관리자+작성자</label>
+				</span>
 			</div>
 			<div id="edit-prj-name">
 				<button onclick="editFileAccess(${list.size()})">수정하기</button>
@@ -383,14 +387,13 @@
 	});
 	
 	$('#prj-list .change-name').on("click",function(event){
-		$('#change-info-modal').css('display','block')
-		let x = event.clientX;
+		$('#change-info-modal').css('display','block');
+		
+		let x = event.clientX - 450;
 		let y = event.clientY;
 		
 		$('.change-info-modal-content').css('left', x + 'px');
 		$('.change-info-modal-content').css('top', y + 'px');
-		
-		
 		
 		let projectName=$(this).data('pjname')
 		let projectId=$(this).data('pjid');
@@ -404,16 +407,26 @@
 		
 		
 		$('#change-info-modal input').eq(0).val(projectName);
+		
+		console.log(oldFileAccess);
+		
 		if(oldFileAccess=='J1'){
 			$('#file-access2').prop('checked',true);
- 			$('#file-access1').prop('checked',false);
 		}else{
 			$('#file-access1').prop('checked',true);
- 			$('#file-access2').prop('checked',false);
 		}
-		let fileAccess=document.querySelectorAll('input[class="file-access"]:checked')[0].value;
 		
+		let fileAccess = document.querySelectorAll('input[class="file-access"]:checked')[0].value;
 	});
+	
+	$('#change-info-modal').on('click', function(e) {
+		$(e.currentTarget).css('display', 'none');
+	});
+	
+	$('.change-info-modal-content').on('click', function(e) {
+		e.stopPropagation();
+	});
+	
 	function editFileAccess(datasize){
 		//데이터속성으로 컨트롤러에서 필요한 값 불러오기
 		let projectName=$('#change-info-modal input').eq(0).val();
@@ -458,8 +471,6 @@
 				console.log(reject)
 			})
 	}
-
-
 	
 	//모달 닫기
 	$('[id*=modal]').on('click', function() {
@@ -470,7 +481,6 @@
 	$('#prj-list .participants').on('click', function(e){
 		let projectId=$(this).data('pjid');
 		let clicked=$(this);
-		console.log(clicked)
 		
 		let x = e.clientX - 320;
 		let y = e.clientY;

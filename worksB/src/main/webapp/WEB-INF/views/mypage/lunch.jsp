@@ -32,7 +32,7 @@
     <div class="ojc">
         <div class="ojc__header">
             <div class="ojc__header-title">
-                <span>오.점.추 </span>
+                <span>점.메.추 </span>
             </div>
             <div class="ojc__header-subject">
                 <span>점심 메뉴가 고민인 당신! 점심 메뉴를 랜덤으로 골라보세요</span>
@@ -100,6 +100,12 @@
     </div>
 </body>
 <script>
+	$('.btn-primary').on('click', function(e) {
+		console.log($('.btn-primary'));
+		$('.btn-group .custom-select').removeClass('custom-select');
+		$(e.currentTarget).addClass('custom-select');
+	});
+
     //모달창 띄우기
     var myModal = new bootstrap.Modal(document.getElementById('exampleModal'))
 	
@@ -145,6 +151,8 @@
                 if (index == 2 && j == 2) {
                     let tdTag = document.createElement('td')
                     tdTag.innerText = "오점추"
+                    tdTag.style.color = "var(--color-dark-red)";
+                    tdTag.style.fontWeight = "var(--weight-bold)";
                     trTag.appendChild(tdTag);
                 } else {
                     let tdTag = document.createElement('td')
