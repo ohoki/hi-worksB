@@ -2213,49 +2213,6 @@
 				});
 			}
 		});
-
-		
-		// 시작일자, 마감일자 범위 선택하기
-		$(document).on('click', 'input[data-date]', function(e) {
-			//startDate 클릭 시
-			if($(e.currentTarget).hasClass('startDate')) {
-				let startDate = $(e.currentTarget);
-				let endDate = startDate.siblings('.endDate');
-				
-				// 시작일
-				startDate.datetimepicker({
-					format:'Y-m-d H:i',
-					lang:'kr',
-					onSelectDate:function() {
-						endDate.prop('disabled', false);
-					}
-				});
-				
-				// 마감일
-				endDate.datetimepicker({
-					format:'Y-m-d H:i',
-					lang:'kr',
-					// 오늘 이후로 선택 가능하게 설정
-					onShow:function(){
-						let date = new Date(startDate.val());
-						date.setDate(date.getDate() + 1);
-						
-						this.setOptions({
-							minDate:startDate.val()?date:false
-						})
-					}
-				});
-			} //endDate 클릭 시 
-			else if($(e.currentTarget).hasClass('endDate')) {
-				let endDate = $(e.currentTarget);
-				
-				endDate.datetimepicker({
-					format:'Y-m-d H:i',
-					// 오늘 이후로 선택 가능하게 설정
-					minDate: 0
-				});
-			}
-		});
 		
 		//일정조회 모달끄기
 		$('#prjSche-modal').on('click', function(e) {
@@ -2285,6 +2242,51 @@
 		    }
 		});
 		
+		// 시작일자, 마감일자 범위 선택하기
+		$('#sche').on('click', 'input[data-date]', function(e) {
+			e.stopPropagation();
+			//startDate 클릭 시
+			if($(e.currentTarget).hasClass('startDate')) {
+				let startDate = $(e.currentTarget);
+				let endDate = startDate.siblings('.endDate');
+				
+				// 시작일
+				startDate.datetimepicker({
+					format:'Y-m-d H:i',
+					lang:'kr',
+					onSelectDate:function() {
+						endDate.prop('disabled', false);
+					},
+					onSelectTime:function() {
+						endDate.prop('disabled', false);
+					}
+				});
+				
+				// 마감일
+				endDate.datetimepicker({
+					format:'Y-m-d H:i',
+					lang:'kr',
+					// 오늘 이후로 선택 가능하게 설정
+					onShow:function(){
+						let date = new Date(startDate.val());
+						date.setDate(date.getDate() + 1);
+						
+						this.setOptions({
+							minDate:startDate.val()?date:false
+						})
+					}
+				});
+			} //endDate 클릭 시 
+			else if($(e.currentTarget).hasClass('endDate')) {
+				let endDate = $(e.currentTarget);
+				
+				endDate.datetimepicker({
+					format:'Y-m-d H:i',
+					// 오늘 이후로 선택 가능하게 설정
+					minDate: 0
+				});
+			}
+		});
 	});
 
 	
