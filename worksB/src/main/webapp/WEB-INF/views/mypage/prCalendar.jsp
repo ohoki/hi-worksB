@@ -646,9 +646,14 @@
 		border-radius: 30px; 
 		margin-bottom: 5px;
 	}
-	.progress-bar__line{
+	.progress-bar__line {
 		height : 30px;
 		background-color: #06b306b3;
+	    width: 0;
+	    transition: width 0.5s ease;
+	}
+	.progress-bar__line.changed {
+	    width: 100%;
 	}
 	.tdlView{
 		padding : 30px;
@@ -660,17 +665,17 @@
 		font-size: 15px
 	}
 	#tdlModal .btn-primary {
-	    color: #000000c2;
-	    background-color: #42ff45d6;
-	    border-color: #0dfd71;
+	    color: white;
+	    background-color: #06b306b3;
+	    border-color: #06b306b3;
         font-family: 'Noto Sans KR', sans-serif;
 	    font-size: 15px;
 	    font-weight: bolder;
 	}
 	#tdlModal .btn-primary:hover, .btn-primary:active{
 	    color: #fff;
-	    background-color: #26fb29;
-	    border-color: #0dfd71;
+	    background-color: #06b306;
+	    border-color: #06b306;
 	}
 	#tdlModal .btn-secondary {
 	    color: #fff;
@@ -700,6 +705,57 @@
 	    background-color: #9b9a9a17;
 	}
 	
+	/* 일정css  */
+	#selectModal{
+		color: var(--color-dark-grey);
+	    font-weight: bolder;
+	    font-size: 15px;
+	}
+	#selectModal .modal-header{
+		background-color: var(--color-beigie);
+	}
+	#selectModalLabel{
+	    font-weight: bolder;	
+	}
+	#scheViewForm .pScheBoardTitle{
+	    color: var(--color-blue);
+	    font-size: 20px;
+	    font-weight: bolder;
+	}
+	#scheViewForm .pScheBoardTitle .pScheTitle{
+		color: var(--color-dark-grey);
+	}
+	#scheViewForm .pScheBoardDate{
+		color: var(--color-dark-red);
+	}
+	#scheViewForm .pScheBoardDate .text{
+		color: var(--color-dark-grey);
+	}
+	#scheViewForm .pScheBoardContent{
+		margin-top: 5px;
+	}
+	
+	#selectModal .btn-primary {
+	    color: #fff;
+	    background-color: var(--color-dark-red);
+	    border-color: var(--color-dark-red);
+	}
+	#selectModal .btn-primary:hover, .btn-primary:active{
+	    color: #fff;
+	    background-color: rgb(237 74 61);
+	    border-color: rgb(237 74 61);
+	}
+	#selectModal .btn-secondary {
+	    color: #fff;
+	    background-color: #6c757da3;
+	    border-color: #6c757dad;
+	}
+	#selectModal .btn-secondary:hover, .btn-secondary:active{
+	    color: #fff;
+	    background-color: #6c757d;
+	    border-color: #6c757d;
+	}
+    
 	
 	/* 참여자 */	
 	#taskManager-modal, #scheParticr-modal{
@@ -825,19 +881,33 @@
 	      </div>
 	      <div class="modal-body">
 			<form id="scheViewForm" action="${pageContext.request.contextPath }/updateSche" method="post">
-				<input name="scheTitle" type="text"><hr>
-				<span class="text" style="color: var(--color-dark-grey);">기간 : </span>
-				<input name="startDate" type="text" id="datetimepicker3"  autocomplete="off">~
-				<input name="endDate" type="text" id="datetimepicker4"  autocomplete="off">
-				<br>
-				<span class="text">작성자 : </span><input name="memberId" type="text" value=""><br>
-				<div>
+				<div class="pScheBoardTitle">
+		      		<span>[개인 일정] </span>
+			      	<span class="pScheTitle" ></span>
+			      	<input type="text" name="scheTitle" placeholder="일정 제목를 입력하세요">
+			      	<span name="regDate"></span>
+					<hr>
+				</div>
+				<div class="pScheBoardDate">
+					<span class="text" style="color: var(--color-dark-grey);">기간 : </span>					
+					<span data-start></span>
+					<input name="startDate" type="text" id="datetimepicker3"  autocomplete="off">
+					<span> ~ </span>
+					<span data-end></span>
+					<input name="endDate" type="text" id="datetimepicker4"  autocomplete="off">
+				</div>
+				<span class="text">작성자 : ${memberInfo.memberName }</span><input name="memberId" type="text" value="" hidden="true">
+				<div class="pScheBoardAddr">
 					<label for="scheAddr">장소 : </label>
+					<span data-scheAddr></span>
 					<input type="text" placeholder="일정 장소를 설정해주세요." id="scheAddrUpdate" name="scheAddr">
 					<input type="text" id="scheAddrDetail" name="scheAddrDetail" placeholder="상세주소" disabled>
 				</div>
+				<hr>
 				<input id="scheId" name="scheId" type="text" hidden="hidden">
-				<label for="scheContent">내용 : </label><textarea name="scheContent" id="editor2" hidden="true"></textarea>
+				<textarea name="scheContent" id="editor2" hidden="true"></textarea>
+				<div class="pScheBoardContent">
+				</div>
 			</form>
 	      </div>
 	      <div class="modal-footer">
@@ -885,7 +955,7 @@
 			      	<input id="listId" name="listId" type="text" hidden="hidden">
 			      	<input name="memberId" type="hidden" value="${memberInfo.memberId}" >
 			      	<div class="tdlviewtitle">
-			      		<span>[제목] </span>
+			      		<span>[To Do List] </span>
 				      	<span name="listTitle" class="tdlListTitle" ></span>
 				      	<input type="text" name="listTitle" placeholder="TDL 제목를 입력하세요">
 				      	<span name="regDate"></span>
@@ -1332,110 +1402,106 @@
 		
 		console.log(data)
 		if(bookmark == 'no') {
-			if(confirm('이 게시글을 북마크 하시겠습니까?')) {
-				$.ajax({
-					url : '${pageContext.request.contextPath}/insertBookmark',
-					type : 'POST',
-					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-					success : function() {
-						$.ajax({
-							url : '${pageContext.request.contextPath}/getBookmarkByMe',
-							type : 'POST',
-							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
-							success : function(pinProjects) {
-								let bookmarkUl = $('.bookmark-board-contets ul');
-								
-								bookmarkUl.empty();
-								
-								if(pinProjects.length != 0) {
-									for(let i=0; i<pinProjects.length; i++) {
-										let pinProject = pinProjects[i];
-										
-										let bookmarkList = `
-											<li>
-												<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
-												<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
-													<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
-													<span>\${pinProject.prjBoardTitle}</span>									
-												</a>
-											</li>`;
-											
-										bookmarkUl.append(bookmarkList);	
-									}
-								} else {
-									let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+			$.ajax({
+				url : '${pageContext.request.contextPath}/insertBookmark',
+				type : 'POST',
+				data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+				success : function() {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/getBookmarkByMe',
+						type : 'POST',
+						data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+						success : function(pinProjects) {
+							let bookmarkUl = $('.bookmark-board-contets ul');
+							
+							bookmarkUl.empty();
+							
+							if(pinProjects.length != 0) {
+								for(let i=0; i<pinProjects.length; i++) {
+									let pinProject = pinProjects[i];
 									
-									bookmarkUl.append(noBookmark);
+									let bookmarkList = `
+										<li>
+											<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+											<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+												<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+												<span>\${pinProject.prjBoardTitle}</span>									
+											</a>
+										</li>`;
+										
+									bookmarkUl.append(bookmarkList);	
 								}
-								$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
-								$(e.currentTarget).data('bookmark', 'yes');
-							},
-							error : function(reject) {
-								console.log(reject);
+							} else {
+								let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+								
+								bookmarkUl.append(noBookmark);
 							}
-						})
-					},
-					error : function(reject) {
-						console.log(reject);
-					}
-				});	
-			}
+							$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg');								
+							$(e.currentTarget).data('bookmark', 'yes');
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					})
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			});	
 		}else if(bookmark == 'yes') {
-			if(confirm('북마크를 해제 하시겠습니까?')) {
-				$.ajax({
-					url : '${pageContext.request.contextPath}/deleteBookmark',
-					type : 'POST',
-					data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
-					success : function() {
-						$.ajax({
-							url : '${pageContext.request.contextPath}/getBookmarkByMe',
-							type : 'POST',
-							data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
-							success : function(pinProjects) {
-								let bookmarkUl = $('.bookmark-board-contets ul');
-								bookmarkUl.empty();
-								
-								if(pinProjects.length != 0) {
-									for(let i=0; i<pinProjects.length; i++) {
-										let pinProject = pinProjects[i];
-										
-										let bookmarkList = `
-											<li>
-												<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
-												<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
-													<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
-													<span>\${pinProject.prjBoardTitle}</span>									
-												</a>
-											</li>`;
-											
-										bookmarkUl.append(bookmarkList);	
-									}
-								} else {
-									let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
+			$.ajax({
+				url : '${pageContext.request.contextPath}/deleteBookmark',
+				type : 'POST',
+				data : {'memberId': memberId, 'projectId': prjId, 'prjBoardId': prjBoardId, 'boardType':boardType},
+				success : function() {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/getBookmarkByMe',
+						type : 'POST',
+						data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
+						success : function(pinProjects) {
+							let bookmarkUl = $('.bookmark-board-contets ul');
+							bookmarkUl.empty();
+							
+							if(pinProjects.length != 0) {
+								for(let i=0; i<pinProjects.length; i++) {
+									let pinProject = pinProjects[i];
 									
-									bookmarkUl.append(noBookmark);
+									let bookmarkList = `
+										<li>
+											<img class="pin-board-icon" alt="북마크 아이콘" src="${pageContext.request.contextPath }/resources/icon/bookmark-solid.svg" style="margin-right: 10px;">
+											<a href="#\${pinProject.boardType}\${pinProject.prjBoardId}" style="width: 100%">
+												<img class="pin-board-icon" src="${pageContext.request.contextPath }/resources/icon/\${pinProject.boardIconName}" alt="게시글 아이콘">
+												<span>\${pinProject.prjBoardTitle}</span>									
+											</a>
+										</li>`;
+										
+									bookmarkUl.append(bookmarkList);	
 								}
+							} else {
+								let noBookmark = `<span style="font-size: var(--font-micro);">북마크 된 게시글이 없습니다.</span>`;
 								
-								$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg').data('data-bookmark', 'no');
-								$(e.currentTarget).data('bookmark', 'no');
-							},
-							error : function(reject) {
-								console.log(reject);
+								bookmarkUl.append(noBookmark);
 							}
-						})
-					},
-					error : function(reject) {
-						console.log(reject);
-					}
-				})
-			}
-			
+							
+							$(e.currentTarget).find('img').attr('src', '${pageContext.request.contextPath }/resources/icon/bookmark-regular.svg').data('data-bookmark', 'no');
+							$(e.currentTarget).data('bookmark', 'no');
+						},
+						error : function(reject) {
+							console.log(reject);
+						}
+					})
+				},
+				error : function(reject) {
+					console.log(reject);
+				}
+			})
 		}
 	});
 	
 	//모달 폼 리셋
 	$('#selectModal, #scheModal').on('hidden.bs.modal', function (e) {
 		$(this).find('form')[0].reset();
+		$(this).find('.pScheBoardContent').children().remove();
 	});
 	
 	$('#tdlModal').on('hidden.bs.modal', function (e) {
@@ -1580,7 +1646,12 @@
 				})
 				let bar = (checkedNum/optionLength)*100;
 				let percent = Math.floor(bar)
+				$('.progress-bar__line').removeClass('changed');
 				$('.progress-bar__line').css('width',percent+'%').text(percent+'%')
+				
+			    setTimeout(function() {
+			        $('.progress-bar__line').addClass('changed');
+			    }, 0);
 			},
 			error:function(err){
 				console.log(err)
@@ -1941,25 +2012,42 @@
 						$('#updateBtn').prev('button').remove();
 						//버튼클릭이벤트 정지
 						$('#updateBtn').prop("type","button").off("click");
+						
 						$('#scheViewForm input,textarea').prop("readonly", true);
-						$('#scheViewForm input[name="scheTitle"]').val(result.title);
-						$('#scheViewForm input[name="startDate"]').val(result.start).datetimepicker('destroy');
-						$('#scheViewForm input[name="endDate"]').val(result.end).datetimepicker('destroy');
-	
+						//제목
+						$('#scheViewForm .pScheTitle').text(result.title)
+						$('#scheViewForm input[name="scheTitle"]').val(result.title).prop('hidden',true);
+						$('#scheViewForm .pScheBoardTitle span').prop('hidden',false)
+						
+						//날짜
+						$('#scheViewForm .pScheBoardDate span[data-start],span[data-end]').prop('hidden',false);
+						$('#scheViewForm input[name="startDate"]').val(result.start).datetimepicker('destroy').prop('hidden',true);
+						$('#scheViewForm input[name="endDate"]').val(result.end).datetimepicker('destroy').prop('hidden',true);
+						$('#scheViewForm span[data-start]').text(result.start);
+						$('#scheViewForm span[data-end]').text(result.end);
+						
 						$('#scheViewForm input[name="memberId"]').val(memName);
 						//주소
+						let addrTag = $('#scheViewForm input[name="scheAddr"]')
+						let addrDetailTag = $('#scheViewForm input[name="scheAddrDetail"]')
+						addrTag.prop('hidden',true);
+						addrDetailTag.prop('hidden',true);
 						if(result.scheAddr!=null){
-							let addrTag = $('#scheViewForm input[name="scheAddr"]')
-							let addrDetailTag = $('#scheViewForm input[name="scheAddrDetail"]')
 							addrTag.val(result.scheAddr).prop("disabled",true);
 							addrDetailTag.val(result.scheAddrDetail).prop("disabled",true);
+							let addrSpan = $('#scheViewForm span[data-scheAddr]')
+							if(result.scheAddrDetail!=null){
+								addrSpan.text(result.scheAddr + result.scheAddrDetail);
+							}else{
+								addrSpan.text(result.scheAddr);
+							}
 						}
 						//내용 보여주기
-						$('.scheSubject').remove();
+						let spanTag =$('<span>[일정 내용]</span>')
+						let divTag = $('<div></div>')
+						divTag.attr('class','pScheContent').append(spanTag).append(result.scheContent)
+						$('.pScheBoardContent').append(divTag)
 						$('.ck-reset_all, .ck-editor__main').css('display', 'none');
-						let divTag = $('<div></div>');
-						divTag.attr('class', 'scheSubject').append(result.scheContent);
-						$('#scheViewForm').append(divTag);
 						$('#editor2').val(result.scheContent)
 						
 						$('#scheId').val(result.scheId);
@@ -2272,20 +2360,26 @@
 		//일정 수정폼
 		function updateScheForm(info){
 			$('#scheViewForm input,textarea').prop("readonly", false);
-			$('#scheViewForm input').eq(3).prop("readonly", true);
-			$('#scheViewForm input').eq(0).focus();
+			//제목
+			$('#scheViewForm .pScheBoardTitle span').prop('hidden',true)
+			$('#scheViewForm input[name="scheTitle"]').prop('hidden',false).focus();
+			
+			//날짜
+			$('#scheViewForm .pScheBoardDate span[data-start],span[data-end]').prop('hidden',true);
+			$('#datetimepicker3, #datetimepicker4').prop('hidden', false);
 			$('#datetimepicker3, #datetimepicker4').datetimepicker({
 			    format:'Y-m-d H:i',
 			    step: 30,
 			    lang:'kr'
 			});
 			//주소검색 활성화
-			$('#scheViewForm input[name="scheAddr"]').prop("disabled",false);
-			$('#scheViewForm input[name="scheAddrDetail"]').prop("disabled",false);
+			$('#scheViewForm input[name="scheAddr"]').prop("disabled",false).prop('hidden',false);
+			$('#scheViewForm input[name="scheAddrDetail"]').prop("disabled",false).prop('hidden',false);
+			$('#scheViewForm span[data-scheAddr]').empty();
 			//ck에디터 띄우기
 			$('.ck-reset_all, .ck-editor__main').css('display','block');
 			editor2.setData($('#editor2').val())
-			$('.scheSubject').remove();
+			$('.pScheContent').remove();
 			//버튼 수정
 			$('#updateBtn').text('수정완료');
 			let $btn = $('<button type="button" class="btn btn-primary" id="deleteBtn">삭제</button>');
