@@ -704,6 +704,38 @@
 		width: 300px;
 	    background-color: #9b9a9a17;
 	}
+	/* 일정 입력 */
+	#scheModal{
+		color: var(--color-dark-grey);
+	    font-weight: bolder;
+	    font-size: 15px;
+	}
+	#scheModal .modal-header{
+	    background-color: var(--color-beigie);
+	}
+	#scheModal .modal-header h5{
+	    font-weight: bolder;
+	}
+	#scheModal .modal-footer .btn-primary {
+	    color: #fff;
+	    background-color: var(--color-dark-red);
+	    border-color: var(--color-dark-red);
+	}
+	#scheModal .btn-primary:hover, .btn-primary:active{
+	    color: #fff;
+	    background-color: rgb(237 74 61);
+	    border-color: rgb(237 74 61);
+	}
+	#scheModal .btn-secondary {
+	    color: #fff;
+	    background-color: #6c757da3;
+	    border-color: #6c757dad;
+	}
+	#scheModal .btn-secondary:hover, .btn-secondary:active{
+	    color: #fff;
+	    background-color: #6c757d;
+	    border-color: #6c757d;
+	}
 	
 	/* 일정css  */
 	#selectModal{
@@ -852,7 +884,7 @@
                 <div class="modal-body">
 					<form id="scheForm" action="${pageContext.request.contextPath}/priScheInsert" method="post">
 						<input name="scheTitle" type="text" placeholder="제목을 입력하세요."> <br><hr>
-						<input name="startDate" type="text" id="datetimepicker1" autocomplete="off">~
+						<span>기간 : </span><input name="startDate" type="text" id="datetimepicker1" autocomplete="off">~
 						<input name="endDate" type="text" id="datetimepicker2"  autocomplete="off">
 						<br>
 						<span>작성자 : </span><input id="memberId" name="memberId" type="text" value="${memberInfo.memberName }" readonly="readonly"><br>
