@@ -208,9 +208,13 @@
 	
 	<!-- 투표 항목 조회 -->
 	<select id="getVoteList" resultType="VoteVO">
-		SELECT	list_id,
-				list_content
-		FROM	vote_list
+		WITH a AS (SELECT list_id, 
+						  COUNT(list_id) list_select_count 
+					FROM vote_particir GROUP BY list_id)
+		SELECT	v.list_id,
+				v.list_content,
+	            a.list_select_count
+		FROM	vote_list v LEFT JOIN a ON v.list_id = a.list_id
 		WHERE	prj_board_id = #{prjBoardId}
 		ORDER BY	list_id
 	</select>

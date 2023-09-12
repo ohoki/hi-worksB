@@ -264,6 +264,12 @@
 </div>
 </body>
 <script>
+	//헤더 active 고정
+	$(window).on('load', function() {
+		$('.project__nav .active').removeClass('active');
+		$('.project__nav li').eq(3).addClass('active');
+	});
+
 	let fileSizeAndnotEmpty=document.querySelector('#upload');
 	let maxSize = 512000;
 	

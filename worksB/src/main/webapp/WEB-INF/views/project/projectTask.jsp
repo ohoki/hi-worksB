@@ -1098,7 +1098,15 @@
 	    console.error( error );
 	});	
 	//ckeditor 종료
-
+	
+	//헤더 active 고정
+	$(window).on('load', function() {
+		$('.project__nav .active').removeClass('active');
+		$('.project__nav li').eq(1).addClass('active');
+		$('.project__nav li').eq(1).find('a').css('color', 'var(--color-dark-red)');
+	});
+	
+	
 	//상위 업무 리스트
 	$(document).ready(function() {
 		getTaskListInfo();
