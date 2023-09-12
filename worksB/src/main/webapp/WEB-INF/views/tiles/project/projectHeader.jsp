@@ -49,8 +49,8 @@
 	border-bottom: 3px solid transparent;
 }
 
-.project__nav li:hover{
-	color: var(--color-dark-red);
+.project__nav li:hover, .project__nav li.active{
+	color: var(--color-dark-red) !important;
 	border-bottom: 3px solid var(--color-dark-red);
 	cursor: pointer;	
 	transition: all 0.5s;	
@@ -214,7 +214,7 @@
     </div>
     <div>
 		<ul class="project__nav">
-			<li><a href="${pageContext.request.contextPath }/projectFeed?projectId=${projectInfo.projectId}">피드</a></li>
+			<li class="active"><a href="${pageContext.request.contextPath }/projectFeed?projectId=${projectInfo.projectId}">피드</a></li>
 			<li><a href="${pageContext.request.contextPath }/projectTask?projectId=${projectInfo.projectId}">업무</a></li>
 			<li><a href="${pageContext.request.contextPath}/projectCalendar?projectId=${projectInfo.projectId}">캘린더</a></li>
 			<li onclick="location.href='${pageContext.request.contextPath }/filetab?projectId=${projectInfo.projectId}&fileAccess=${projectInfo.fileAccess }'">파일</li>

@@ -1098,6 +1098,12 @@
 </body>
 <!-- 상세조회 헤더 버튼 클릭 시 모달 페이지 -->
 <script >
+	//헤더 active 고정
+	$(window).on('load', function() {
+		$('.project__nav .active').removeClass('active');
+		$('.project__nav li').eq(2).addClass('active');
+	});
+
 	//상세정보 모달페이지 출력
 	$('.board-header-btn').on('click', function(e) {
 		let modal = $(e.currentTarget).parent().parent().parent().parent().find('div[data-boardmodal]');

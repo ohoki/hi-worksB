@@ -555,12 +555,16 @@
 		
 		.insert-board-area::-webkit-scrollbar, .pin-board::-webkit-scrollbar,
 		.bookmark-board-contets::-webkit-scrollbar,
-		.particir-board-contents::-webkit-scrollbar {
+		.particir-board-contents::-webkit-scrollbar,
+		.taskManager-modal-content::-webkit-scrollbar, .scheParticr-modal-content::-webkit-scrollbar,
+		.voteParticr-modal-content::-webkit-scrollbar, .voteResult-modal-content::-webkit-scrollbar {
 		    width: 10px;
 		  }
 		  .insert-board-area::-webkit-scrollbar-thumb, .pin-board::-webkit-scrollbar-thumb,
 		  .bookmark-board-contets::-webkit-scrollbar-thumb, 
-		  .particir-board-contents::-webkit-scrollbar-thumb{
+		  .particir-board-contents::-webkit-scrollbar-thumb,
+		  .taskManager-modal-content::-webkit-scrollbar-thumb, .scheParticr-modal-content::-webkit-scrollbar-thumb,
+		  .voteParticr-modal-content::-webkit-scrollbar-thumb, .voteResult-modal-content::-webkit-scrollbar-thumb{
 		    background-color: #2f3542;
 		    border-radius: 10px;
 		    background-clip: padding-box;
@@ -569,12 +573,15 @@
 		  }
 		  .insert-board-area::-webkit-scrollbar-track, .pin-board::-webkit-scrollbar-track,
 		  .bookmark-board-contet::-webkit-scrollbar-track,
-		  .particir-board-contents::-webkit-scrollbar-track {
+		  .particir-board-contents::-webkit-scrollbar-track,
+		  .taskManager-modal-content::-webkit-scrollbar-track, .scheParticr-modal-content::-webkit-scrollbar-track,
+		  .voteParticr-modal-content::-webkit-scrollbar-track, .voteResult-modal-content::-webkit-scrollbar-track {
 		    background-color: grey;
 		    border-radius: 10px;
 		    box-shadow: inset 0px 0px 5px white;
 		    background-color: var(--color-dark-beigie);
 		  }
+		  
 		
 		.board-form {
 			margin: 10px 30px 0;
@@ -893,6 +900,8 @@
 			font-weight: var(--weight-bold);
 			color: var(--color-dark-grey);
 			cursor: pointer;
+			overflow: hidden;
+			white-space: nowrap;
 		}
 		
 		.bookmark-board-contets li:hover {
@@ -903,7 +912,7 @@
 			cursor: pointer;	
 		}
 
-		#taskManager-modal, #scheParticr-modal, #voteParticr-modal, #updateSubTask-modal, #insertSubTask-modal {
+		#taskManager-modal, #scheParticr-modal, #voteParticr-modal, #updateSubTask-modal, #insertSubTask-modal, #voteResultModal {
 			position: absolute;
 			width: 100%;
 			height: 100%;
@@ -914,11 +923,15 @@
 			top: 0;
 		}
 		
+		#voteResultModal {
+			z-index: 10000;
+		}
+		
 		#updateSubTask-modal, #insertSubTask-modal {
 			z-index: 2000;
 		}
 		
-		.taskManager-modal-content, .scheParticr-modal-content, .voteParticr-modal-content {
+		.taskManager-modal-content, .scheParticr-modal-content, .voteParticr-modal-content, .voteResult-modal-content {
 			position: absolute;
 			width: 15%;
 			height: 30%;
@@ -1065,6 +1078,19 @@
 			font-size: var(--font-micro);
 			color:var(--color-dark-grey);
 		}
+		
+		.arrowBtn {
+			position: fixed;
+			bottom: 50px;
+			right: 650px;
+			width: 70px;
+			height: 70px;
+			border-radius: 50%;
+			background-color: var(--color-dark-beigie);
+			color: var(--color-dark-grey);
+			font-weight: var(--weight-bold);
+		}
+		
 	</style>
 </head>
 <body>
@@ -1087,6 +1113,12 @@
 		            'scrollTop': main.scrollTop + document.querySelector(target).getBoundingClientRect().top
 		        }, 500, 'swing');
 		    });
+		    
+		    $('.arrowBtn').on('click', function(e) {
+		    	$('#main').stop().animate({
+		            'scrollTop': main.scrollTop + document.querySelector('#pin-board').getBoundingClientRect().top - 250
+		        }, 500, 'swing');			    	
+		    });
 		});
 	</script>
 	
@@ -1095,7 +1127,7 @@
 		<div style="width: 65%;">
 			<button type="button" class="board-insert-btn" data-bs-toggle="modal" data-bs-target="#boardInsertModal">게시글 작성</button>
 			<!-- 상단 고정 게시글 -->
-			<div class="pin-board">
+			<div class="pin-board" id="pin-board">
 				<div class="pin-board-title">상단고정</div>
 				<ul>
 					<c:if test="${pinBoardInfo.size() ne 0 }">
@@ -1334,6 +1366,7 @@
 							<div class="vote-btn">
 								<button type="button" disabled name="voteAttend" class="dis-none d-b">투표</button>
 								<button type="button" name="voteNonAttend" class="dis-none">투표취소</button>
+								<button type="button" name="voteResult" class="dis-none" data-bs-toggle="modal" data-bs-target="#voteResultModal">투표결과</button>
 							</div>
 						</div>
 						<div class="board-footer">
@@ -1533,6 +1566,22 @@
 		</div>
 	</div>
 	
+	<!-- 투표 결과 모달 -->
+	<div id="voteResultModal">
+		<input type="hidden" class="modal-dialog d-none">
+		<input type="hidden" class="modal-content d-none">
+		<div class="voteResult-modal-content">
+			<div class="d-flex taskManager-modal-title">
+				<span style="color: var(--color-green);">투표 결과</span>
+				<button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div id="voteResultList">
+				<ul>
+				</ul>
+			</div>
+		</div>		
+	</div>
+	
 	<!-- 업무 담당자 모달 -->
 	<div id="taskManager-modal">
 		<div class="taskManager-modal-content">
@@ -1674,7 +1723,10 @@
 		</form>
 	</div>
 
-
+	<!-- top 버튼 -->
+	<button type="button" class="arrowBtn">
+		top	
+	</button>
 
 	<!-- 모달 페이지 -->
 	<script >
@@ -1727,7 +1779,7 @@
         			boardTitle.val(subTask.prjBoardTitle);
         			boardState.find('input[value=' + subTask.state + ']').prop('checked', true);
         			boardPriority.find('option[value=' + subTask.priority + ']').prop('selected', true);
-        			inputDate.val(subTask.endDate != null ? subTask.endDate : '-');
+        			inputDate.val(subTask.endDate != null ? subTask.endDate : '');
         			
         			taskManagerBox.empty();
         			
@@ -2140,7 +2192,7 @@
 				} else if(boardType == 'C7') {
 					// 투표 수정 가능 체크
 					$.ajax({
-						url: '${pageContext.request.contextPath}countVoteParticir',
+						url: '${pageContext.request.contextPath}/countVoteParticir',
 						type: 'GET',
 						data: {'prjBoardId' : boardId},
 						success: function(data){
@@ -2312,6 +2364,8 @@
 						let currentTime = new Date();
 						let endTime = new Date(voteData.voteInfo[0].endDate);
 						
+						console.log(voteData);
+						
 						// 복수 투표 여부
 						if (voteData.voteInfo[0].compnoVote == 'A1') {
 							compnoVote.text('복수 투표');
@@ -2362,7 +2416,19 @@
 							endDate.text(voteData.voteInfo[0].endDate);
 			                DateBox.append(overDate);
 			                voteList.find('input').prop('disabled', true);
-			                voteBtns.prop('disabled', true);
+			                voteBtns.removeClass('d-b');
+			                voteBtns.eq(2).addClass('d-b active');
+			                
+			                for (let j = 0; j < voteData.voteList.length; j++) {
+			                	let list = `
+			                		<li class="d-flex" style="padding: 10px 10px; border-bottom: 1px solid var(--color-dark-beigie);">
+										<div>\${j+1}. \${voteData.voteList[j].listContent}</div>
+										<div style="font-weight : var(--weight-bold);">\${voteData.voteList[j].listSelectCount} 표</div>
+									</li>`;
+									
+								$('#voteResultList ul').append(list);	
+			                }
+			                
 						} else {
 							endDate.text(voteData.voteInfo[0].endDate);
 						}
@@ -2878,7 +2944,17 @@
 			}	
 		}
 	}; 
-
+	
+	//투표 결과 보기
+	$('.vote-btn button[name="voteResult"]').on('click', function(e) {
+		let boardId = $(e.currentTarget).closest('.board-container').data('id');
+		let x = e.clientX + 30;
+		let y = e.clientY - 300;
+		
+		$('.voteResult-modal-content').css('left', x + 'px');
+		$('.voteResult-modal-content').css('top', y + 'px');
+	});
+	
 	// 일정 참여
 	$('.sche-btns button').on('click', function(e) {
 		let btn = $(e.currentTarget);
@@ -3077,7 +3153,6 @@
 						data : {'memberId': '${memberInfo.memberId}', 'projectId': '${projectInfo.projectId}'},
 						success : function(pinProjects) {
 							let bookmarkUl = $('.bookmark-board-contets ul');
-							console.log(pinProjects);
 							bookmarkUl.empty();
 							
 							if(pinProjects.length != 0) {
@@ -3275,10 +3350,6 @@
 								<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault2">
 								<label class="form-check-label" for="flexSwitchCheckDefault2">복수 투표</label>
 							</div>
-							<div class="form-check form-switch">
-								<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault3">
-								<label class="form-check-label" for="flexSwitchCheckDefault3">결과 나만 보기</label>
-							</div>
 						</div>
 						
 						
@@ -3460,10 +3531,6 @@
 							<div class="form-check form-switch">
 								<input name="compnoVote" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
 								<label class="form-check-label" for="flexSwitchCheckDefault">복수 투표</label>
-							</div>
-							<div class="form-check form-switch">
-								<input name="resultYn" value="A1" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-								<label class="form-check-label" for="flexSwitchCheckDefault">결과 나만 보기</label>
 							</div>
 						</div>
 						
@@ -3699,7 +3766,6 @@
 		        prjManager.push({prjBoardId, prjParticirId});
 		    });
 			
-			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			$.ajax({
 				url:'${pageContext.request.contextPath}/updateTask',
 				type:'POST',
@@ -3740,7 +3806,6 @@
 		        prjManager.push({prjBoardId, prjParticirId});
 		    });
 			
-			console.log(JSON.stringify({boardVO, taskVO, prjManager}));
 			// 수정
 			$.ajax({
 				url:'${pageContext.request.contextPath}/updateTask',
@@ -4286,13 +4351,11 @@
 					$(managerList).each(function(idx, manager) {
 						let prjParticirId = $(manager).attr('name');
 						let prjBoardId = index;
-						console.log()
 						subManager.push({prjBoardId, prjParticirId});
 					});               
 	            }
 			});
 			
-			console.log(JSON.stringify({boardVO, taskVO, subTask, prjManager, subManager}));
 			$.ajax({
 				url:'${pageContext.request.contextPath}/taskInsert',
 				type:'POST',

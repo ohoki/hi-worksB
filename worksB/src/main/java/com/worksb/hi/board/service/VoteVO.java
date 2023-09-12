@@ -43,4 +43,5 @@ PRJ_BOARD_ID NOT NULL NUMBER
 	private String memberId;
 	private String memberName;
 	private String realProfilePath;
+	private int listSelectCount;
 }

@@ -357,7 +357,7 @@ public class memberController {
 					"<h1>hi-worksB 초대메일 입니다.</h1>" +
 			        "<br><br>" + companyName + "에서 회원님을 초대합니다!!" +
 			        "<br><br>아래 링크를 통해 회원가입을 진행해주세요." +
-	                "<br><br><a href='http://localhost/hi/registerForm?companyId=" + companyId +
+	                "<br><br><a href='http://43.200.219.189:85/hi/registerForm?companyId=" + companyId +
 	                "' target='_blank'>회원가입 진행하기</a>", true);
 			sendMail.setFrom("cyh6237@gmail.com", "hi-worksB");
 			sendMail.setTo(invitedId);

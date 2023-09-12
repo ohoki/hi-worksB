@@ -56,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
 						"<h1>hi-worksB 메일인증</h1>" +
 				        "<br><br>hi-worksB에 가입해주셔서 감사합니다!!" +
 				        "<br><br>아래 [이메일 인증 확인]을 눌러주세요." +
-		                "<br><br><a href='http://localhost/hi/registerEmail?memberId=" + memberVO.getMemberId() +
+		                "<br><br><a href='http://43.200.219.189:85/hi/registerEmail?memberId=" + memberVO.getMemberId() +
 		                "&mailKey=" + mailKey +
 		                "' target='_blank'>이메일 인증 확인</a>", true);
 				sendMail.setFrom("cyh6237@gmail.com", "hi-worksB");

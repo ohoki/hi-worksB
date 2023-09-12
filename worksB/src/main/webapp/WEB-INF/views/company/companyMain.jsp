@@ -105,19 +105,6 @@
        
         $('.title-time').text(t_time);
     }
-	
- 	// 현재 위치 가져오기
-    /* navigator.geolocation.getCurrentPosition(getSuccess, getError);
-
-    function getSuccess(position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      
-    }
-
-    function getError() {
-      alert('Geolocation Error');
-    } */
     
     $.getJSON(`http://api.openweathermap.org/data/2.5/weather?q=Daegu,kr&appid=e145b6dbc8292ff00959430e13dedb7d`, function (result) {
     	  

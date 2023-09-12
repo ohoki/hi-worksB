@@ -38,7 +38,7 @@
 		align-items: flex-start;
 	}
 	
-	input {
+	#department input, #role input {
 		text-align: center;
 		background-color: var(--color-dark-beigie);
 		height: 30px;
@@ -46,7 +46,7 @@
 	}
 	
 	input:disabled {
-		background-color: white;
+		background-color: white !important;
 	}
 	
 	.addBtn {
