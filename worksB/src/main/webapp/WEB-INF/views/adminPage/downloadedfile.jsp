@@ -125,13 +125,16 @@
 	</div>
 </body>
 <script type="text/javascript">
-	function search(p){
-		if($('#start-datepicker').val()==null){
-			location.href="${pageContext.request.contextPath }/admin/downloadlist?nowPage="+p
-		}
-		searchcategories.nowPage.value=p;
-		searchcategories.submit();
-}
+	function search(p) {
+		//시작일이나 종료일이 없는 경우에는 빈값이 넘어감
+	    let startDate = $('#start-datepicker').val();
+	    let endDate = $('#end-datepicker').val() ;
+
+	
+	    let url =  `${pageContext.request.contextPath}/admin/searchByDate?nowPage=`+p+`&startDate=${startDate}&endDate=${endDate}`;
+	    location.href = url;
+	}
+
 	
 	
 	//datepicker시작일
