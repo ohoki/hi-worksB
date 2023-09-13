@@ -741,6 +741,10 @@
 		overflow-x: hidden;
 		border-radius: 5px;
 	}
+	
+	.boardName {
+		width: 30%;
+	}
 </style>
 </head>
 <body>
@@ -759,7 +763,7 @@
 			<thead>
 				<tr>
 					<th>업무구분</th>
-					<th>업무명</th>
+					<th class="boardName">업무명</th>
 					<th>상태</th>
 					<th>우선순위</th>
 					<th>담당자</th>

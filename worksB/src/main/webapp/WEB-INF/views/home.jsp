@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 
 <title>접속 페이지</title>
+<link rel="icon" href="${pageContext.request.contextPath }/resources/img/company_logo.png">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/home.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

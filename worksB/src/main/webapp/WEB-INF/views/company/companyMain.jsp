@@ -121,7 +121,6 @@
   			    '50' : 'fas fa-smog'
   			};
   	  
-  	  console.log(result);
         // 현재온도
         $(".temp").append(Math.floor(result.main.temp - 273.15)); //현재온도
         $(".feel-like").append(Math.floor(result.main.feels_like - 273.15)); //체감

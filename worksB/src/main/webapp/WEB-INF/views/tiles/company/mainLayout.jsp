@@ -6,6 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>main</title>
+<link rel="icon" href="${pageContext.request.contextPath }/resources/img/company_logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
