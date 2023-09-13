@@ -523,6 +523,7 @@ th, tfoot td {
 	openModalBtn.addEventListener("click", () => {
 	  modal.style.display = "block";
 	  document.body.style.overflow = "hidden"; // 스크롤바 제거
+	  map.relayout();
 	});
 	// 모달창 닫기
 	closeModalBtn.addEventListener("click", () => {
@@ -536,6 +537,7 @@ th, tfoot td {
 	// 모달창 열기
 	openModalBtnn.addEventListener("click", () => {
 	  modal.style.display = "block";
+	  map.relayout();
 	  document.body.style.overflow = "hidden"; // 스크롤바 제거
 	});
 	
