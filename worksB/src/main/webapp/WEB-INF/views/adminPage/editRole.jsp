@@ -258,9 +258,6 @@
 				    		'deptName':deptName
 				    		},
 				    success:function(response){
-				    	if(response!=1){
-				    		alert('부서수정에 실패했습니다.')
-				    		}
 				    	location.reload(true)
 				    },
 				    error:function(error){

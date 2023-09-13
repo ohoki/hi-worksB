@@ -271,6 +271,12 @@ public class AdminController {
 			
 			//과거 프로젝트이름추출
 			List<ProjectVO> prjName=adminService.getPrjName(deptId);
+
+			//해당부서에 등록된 프로젝트가 없는 경우
+			if(prjName.isEmpty()) {
+				adminService.updateDept(vo);
+				return 2;
+			}
 			//바꿔야할 프로젝트아이디추출
 			int prjId[]=adminService.getPrjId(deptId);
 			
@@ -283,7 +289,6 @@ public class AdminController {
 			}
 			for(int i=0;i<names.size();i++) {
 				names.set(i, "["+deptName+"]"+names.get(i));
-				System.out.println("수정한이름"+names.get(i));
 			}
 			
 			
