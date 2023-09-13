@@ -449,9 +449,12 @@
 			$(e.currentTarget).css('display', 'none');
 		});
 		
+		$('.updateMember').on('click', function(e) {
+			e.stopPropagation();	
+		});
+		
 		/* 회원 정보 수정 */
-		$(document).on("click", ".updateButton", function(e){
-			
+		$(".updateButton").on("click", function(e){
 			let memberInfo = $('#memberUpdateModal');
 			let memberId = memberInfo.find('input[data-memberId]').val();
 			let memberName = memberInfo.find('input[data-memberName]').val();
