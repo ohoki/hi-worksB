@@ -2197,9 +2197,9 @@
 						data: {'prjBoardId' : boardId},
 						success: function(data){
 							if(data > 0){
-								alert("진행 중인 투표는 수정할 수 없습니다.");
 								$('#boardUpdateModal').css('display', 'none');
 								$('.modal-backdrop').css('display', 'none');
+								alert("진행 중인 투표는 수정할 수 없습니다.");
 							}else{
 								visibleDiv.removeClass('d-b');
 								$(vote).addClass('d-b');
@@ -2363,8 +2363,6 @@
 						let overDate = `<span>(기간종료)</span>`;
 						let currentTime = new Date();
 						let endTime = new Date(voteData.voteInfo[0].endDate);
-						
-						console.log(voteData);
 						
 						// 복수 투표 여부
 						if (voteData.voteInfo[0].compnoVote == 'A1') {

@@ -203,7 +203,7 @@ img[data-bookmark] {
 .today-weather {
 	padding: 0 20px;
 	font-size: var(--font-small);
-	margin: 20px 0;
+	margin: 20px 40px;
 	flex-grow: 1;
 }
 
