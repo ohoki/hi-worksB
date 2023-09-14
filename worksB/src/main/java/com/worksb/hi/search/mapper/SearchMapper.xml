@@ -69,42 +69,47 @@
 <!-- 	</select> -->
 	<select id="getAllNotice" resultType="SearchingVO">
 		SELECT
-			notice_id,
-			notice_title,
-			notice_content,
-			member_id,
-			board_regdate,
-			board_upddate,
-			board_hit,
-			board_type,
-			company_id
+			nb.notice_id,
+			nb.notice_title,
+			nb.notice_content,
+			nb.member_id,
+			nb.board_regdate,
+			nb.board_upddate,
+			nb.board_hit,
+			nb.board_type,
+			nb.company_id,
+			m.member_name
 		FROM
-			notice_board
+			notice_board nb
+        JOIN member m on nb.member_id=m.member_id
 		WHERE
-			company_id=#{companyId}
+			nb.company_id=#{companyId}
 		AND
-			LOWER(notice_title) like'%'||LOWER(#{SearchKeyword})||'%'
+			LOWER(nb.notice_title) like'%'||LOWER(#{SearchKeyword})||'%'
+
 
 	</select>
 	<select id="getAllCarpool" resultType="SearchingVO">
 		SELECT
-			board_id,
-			board_title,
-			board_content,
-			member_id,
-			board_regdate,
-			board_upddate,
-			board_hit,
-			category,
-			departure,
-			arrival,
-			departure_date,
-			passenger,
-			board_type,
-			company_id
-		FROM carpool_board
+			c.board_id,
+			c.board_title,
+			c.board_content,
+			c.member_id,
+			c.board_regdate,
+			c.board_upddate,
+			c.board_hit,
+			c.category,
+			c.departure,
+			c.arrival,
+			c.departure_date,
+			c.passenger,
+			c.board_type,
+			c.company_id,
+			m.member_name
+		FROM carpool_board c
+		JOIN member m on c.member_id=m.member_id
 		WHERE
-			company_id=#{companyId}
+			c.company_id=#{companyId}
 		AND
 			 LOWER(board_title) like'%'|| LOWER(#{SearchKeyword})||'%'
 	</select>
@@ -179,44 +184,49 @@
 <!-- </select> -->
 <select id="getNotice" resultType="SearchingVO">
 	SELECT
-			notice_id,
-			notice_title,
-			notice_content,
-			member_id,
-			board_regdate,
-			board_upddate,
-			board_hit,
-			board_type,
-			company_id
+			nb.notice_id,
+			nb.notice_title,
+			nb.notice_content,
+			nb.member_id,
+			nb.board_regdate,
+			nb.board_upddate,
+			nb.board_hit,
+			nb.board_type,
+			nb.company_id,
+			m.member_name
 		FROM
-			notice_board
+			notice_board nb
+        JOIN member m on nb.member_id=m.member_id
 		WHERE
-			company_id=#{companyId}
+			nb.company_id=#{companyId}
 		AND
-			 LOWER(notice_title) like'%'|| LOWER(#{SearchKeyword})||'%'
+			LOWER(nb.notice_title) like'%'||LOWER(#{SearchKeyword})||'%'
+
 		AND board_regdate 
        		between TO_DATE(#{startDate},'YYYY-MM-DD') AND TO_DATE(#{endDate},'YYYY-MM-DD')
 	
 </select>
 <select id="getCarpool" resultType="SearchingVO">
-	SELECT
-			board_id,
-			board_title,
-			board_content,
-			member_id,
-			board_regdate,
-			board_upddate,
-			board_hit,
-			category,
-			departure,
-			arrival,
-			departure_date,
-			passenger,
-			board_type,
-			company_id
-		FROM carpool_board
+		SELECT
+			c.board_id,
+			c.board_title,
+			c.board_content,
+			c.member_id,
+			c.board_regdate,
+			c.board_upddate,
+			c.board_hit,
+			c.category,
+			c.departure,
+			c.arrival,
+			c.departure_date,
+			c.passenger,
+			c.board_type,
+			c.company_id,
+			m.member_name
+		FROM carpool_board c
+		JOIN member m on c.member_id=m.member_id
 		WHERE
-			company_id=#{companyId}
+			c.company_id=#{companyId}
 		AND
 			 LOWER(board_title) like'%'|| LOWER(#{SearchKeyword})||'%'
 		AND board_regdate 
