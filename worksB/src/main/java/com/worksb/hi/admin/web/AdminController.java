@@ -266,8 +266,7 @@ public class AdminController {
 			DepartmentVO vo=new DepartmentVO();
 			vo.setDeptId(deptId);
 			vo.setDeptName(deptName);
-			
-			List<String> names=new ArrayList<>();
+			List<String> names=new ArrayList<>();		
 			
 			//과거 프로젝트이름추출
 			List<ProjectVO> prjName=adminService.getPrjName(deptId);
@@ -289,14 +288,11 @@ public class AdminController {
 			}
 			for(int i=0;i<names.size();i++) {
 				names.set(i, "["+deptName+"]"+names.get(i));
-			}
-			
-			
+			}	
 			Map<String,String>pjIdAndName=new HashMap<>();
 			for(int i=0;i<prjName.size();i++) {
 				pjIdAndName.put(Integer.toString(prjId[i]), names.get(i));
 			}
-			
 			for(int i=0;i<prjId.length;i++) {
 				System.out.println(pjIdAndName.get(prjId[i]));
 			}

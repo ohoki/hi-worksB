@@ -162,7 +162,7 @@
 						</div>
 						<div style="text-align: right;">
 							<div>
-								작성자 : ${list.memberId }
+								작성자 : ${list.memberName }
 							</div>
 							<div>
 							 	<fmt:formatDate value="${list.boardRegdate }" pattern="YY/MM/dd" type="date"/>
@@ -179,7 +179,7 @@
 						</div>
 						<div style="text-align: right;">
 							<div>
-								작성자 : ${list.memberId }
+								작성자 : ${list.memberName }
 							</div>
 							<div>
 							 	<fmt:formatDate value="${list.boardRegdate }" pattern="YY/MM/dd" type="date"/>
